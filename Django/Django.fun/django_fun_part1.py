@@ -396,7 +396,7 @@ django отслеживает примененные миграции испол
         q.question_text >> "What's new?"
         q.pub_date      >> datetime.datetime(...)
         #change values by charging the attributes
-        q.question_text "What's up?"
+        q.question_text = "What's up?"
         q.save()
         #objects.all() отображает все объекты в дб
         Question.objects.all() >> <QuerySet [<Question: Question object (1)>]>
@@ -420,6 +420,7 @@ django отслеживает примененные миграции испол
 
         class Question(models.Model):
             ...
+            #вернет True if запись была опубликова в течение суток
             def was_published_recently(self):
                 ruturn self.pub_date >= timezone.now() - datetime.timedelta(days=1)
 поддержка часовых поясов: https://django.fun/docs/django/ru/2.2/topics/i18n/timezones/
@@ -435,13 +436,13 @@ django отслеживает примененные миграции испол
         Question.objects.filter(question_text__startswith='What')   >> <QuerySet [<Question: What's up?>]>
         #получить question за послединй год
         from django.utils import timezone
-        current_year = timezone.now().year
+        current_year = timezone.now().year  #int
         Question.objects.get(pub_date__year=current_year)   >> <Question: What's up?>
 
         #Запрос НЕСУЩ id
         Question.objects.get(id=2)  >> Err: DoesNotExits: Question matching query does not exits
         #поиск по primary key наиболее частая ситуация, django предоставляет ярлык для извлечения primary-key
-        Question.objects.get(pk=1)  >> <Question:What's up?>
+        Question.objects.get(pk=1)  >> <Question:What's up?> #~.get()
         #~
         Quesition.objects.get(id=1) >> <Question:What's up?>
         #проверяем кастомный метод
@@ -454,12 +455,13 @@ django отслеживает примененные миграции испол
         #django создает набор для хранения "другой стороны" отношения ForeignKey(напр. выбор вопроса) к которой можно получить доступ через API
         q = Question.objects.get(pk=1)
         #Отобразить все choice из набора связанных obj
+        q.choice_set    >> <django.db.models.fields. ...>
         q.choice_set.all()
         <QuerySet []>   #пока пусто
         #создадим выборы
         q.choice_set.create(choice_text='Not much', votes = 0)  #мне кажется что votes не обязательны(мы же вроде указали их по default)
-        q.choice_set.create(choice_text='Not much', votes = 0)
-        c = q.choice_set.create(choice_text='Just hacking again', votes=0)
+        q.choice_set.create(choice_text='The sky', votes = 0)
+        c = q.choice_set.create(choice_text='Just hacking again', votes=0) #так-же добавляетяся
         #Choice obj имеет api для доступа к связанным Question obj
         c.question  >> <Question: What's up?>
         #И наоборот
@@ -472,7 +474,7 @@ django отслеживает примененные миграции испол
         #Найдем все Choice для всех Question чей pub_date в текущем году
         Choice.objects.filter(question__pub_date__year=current_year)    >> <QuerySet [<Choice: Not much>, <Choice: The sky>, <Choice: Just hacking again>]>
         #удалим один из Choice
-        c. = q.choice_set.filter(choice_text__startswith='Just hacking')
+        c = q.choice_set.filter(choice_text__startswith='Just hacking')   #<QuerySet []>
         c.delete()
 дополнительная информация о связях в моделях:Доступ к связанным obj:https://django.fun/docs/django/ru/2.2/ref/models/relations/
 
@@ -515,16 +517,159 @@ django.contgib.auth
     editing form for question obj
         форма автоматически генерируется из модели Question
         различные типы полей модели
+            DateTimeField
+            CharField
+                соответствуют своему виджету ввода HTML, каждый тип поля знает как отобразить себя в админке
+                каждый DateTimeField получает ярлыки JS
+                    даты получают ярлык "Сегодня" и всплывающее окно календаря
+                    время получает ярлык "Сейчас" и всплывающее окно с часто вводимыми временами
+    в нижней части страницы - опции
+        Save
+        #сохраняет изменения и возвращает на страницу списка изменений для этого типа obj
+        Сохранить и продолжить редактирование
+        #сохраняет изменения и перезагружает страницу админа для этого obj
+        Удалить
+        #отображает страницу подтверждения удаления
+if val "Date published" не соотверствует времени создания вопроса - вероятно TIME_ZONE выставлен некорректно
+ИЗМЕНИМ ДАТУ ПУБЛИКАЦИИ
+    нажав на ярлыки "сегодня" и "сейчас" => сохранить и продолжить редактирование => история
+        => страница со списком всех изменений внесенных в obj через администратора django с отметкой времени и именем пользователя внесшего изменения
+PART3
+#сосредоточимся на создании открытого интерфейса-"представлений"
+в нашем приложении опроса
+    главная страница вопросов   - отображает last несколько вопросов
+    страница вопроса            - отображает текст вопроса без результатов, но с формой голосования
+    страница результатов вопроса- отображает результаты для конкретного вопроса
+    голосования                 - обрабатывает голосование за определенный выбор в конкретном вопросе
+dj использует URLconfs для перехода от шаблона к представлению
+#urlconfs сопоставляет шаблоны и представления
+#подробности про URLconfs:URL dispatcher:https://django.fun/docs/django/ru/2.2/topics/http/urls/
+НАПИСАНИЕ ПРЕДСТАВЛЕНИЙ
+#добавим представления
+    /polls/views.py
+        def detail(request, question_id):
+            return HttpResponse("You're looking at question %s." % question_id) #вспомнить что-такое HttpResponse
+        def results(request, question_id):
+            return HttpResponse("You're looking at the result of question" % question_id)
+        def vote(request, question_id):
+            return HttpResponse("You're voting on question %s." % question_id)
+#подключим новые views добавив path вызовы
+    /polls/urls.py
+        from django.urls import path
+        from . import views
+        urlpatterns = [
+            #ex: /polls/
+            path('', views.index, name='index'),    #name возможно влияент на заголовок, добавляем имя чтобы к нему можно было обращаться из любой точки проекта
+            #ex: /polls/5/
+            #использование угловых скобок захватывает часть URL для отправки в качестве ключевого arg в fx представления
+            #:question_id определяет имя для идентификации сопоставленного шаблона
+            #<int:  - преобразователь определяющий какие шаблоны должны соответствовать этой части пути url
+            path('<int:question_id>/', views.detail, name='detail'),
+            #ex: /polls/5/results/
+            path('<int:question_id>/results/', views.results, name='results'),
+            #ex: /polls/5/vote/
+            path('<int:question_id>/vote/', views.vote, name='vote')
+        ]
+при переходе в браузере по адресу /polls/34/ dj:
+    загружает модуль mysite.urls, т.к. на него указывает параметр ROOT_URLCONF
+        #подробнее о ROOT_URLCONF:https://django.fun/docs/django/ru/2.2/ref/settings/#std:setting-ROOT_URLCONF
+    находит var 'urlpatterns' и просматривает по порядку
+    после нахождения соответствия в 'polls/', он убирает 'polls/' и отправляет остаток '34/' в polls.urls URLconf для дальнейшей обработки
+    там он натыкается на <int:question_id>/
+    запустит метод detail() и отобразит идентфикатор указанный в url
+        detail(request=<HttpRequest obj>, question_id=34)
+        #question_id берется из <int:question_id>
+~ /polls/34/results/ и /polls/34/vote
 
+Нет необходимости добавлять в ulr лишнее напр
+    path('polls/latest.html', views.index)
+    #но это bad(?)
+НАПИСАНИЕ ПРЕДСТАВЛЕНИЙ КОТОРЫЕ ЧТО-ТО ДЕЛАЮТ
+#используем собственное API бд django
+    ОТОБРАЖЕНИЕ ПОСЛЕДНИХ 5 ВОПРОСОВ
+    #разделенных запятыми в соответствии с датой публикации
+    /polls/views.py
+        from django.http import HttpResponse
+        from .models import Question
 
+        def index(request):
+            latest_question_list = Question.objects.order_by('-pub_date')[:5]
+            output = ', '.join([q.question_text for q in latest_question_list])
+            return HttpResponse(output)
+    однако здесь есть проблема - дизайн страницы жестко закодирован в представлении
+        для изменения вида страницы - придется редактировать этот Python код
+        ИСПОЛЬЗУЕМ СИС-МУ ШАБЛОНО DJ ДЛЯ ОТДЕЛЕНИЯ ДИЗАЙНА ОТ PYTHON
+        #создав шаблон который может использовать представление
+        создадим каталог /polls/templates
+        #dj будет искать там шаблоны
+        создадим /polls/templates/polls
+        создадим /polls/templates/polls/index.html
+            пространство имен шаблонов
+            #теперь мы может избежать размещения шаблонов непосредственно в polls/templates, но это bad
+                #dj выберет первый найденный шаблон с таким-же именем в другом приложении(wtf?) dj не сможет различить их. Простейший способ убедиться что выбран верный шаблон - namespaces(т.е. помещая шаблоны в каталог отличный от templates названный для самого приложения)
+                polls/templates/polls/index.html
+                #какой-то шаблон кода + html
+                    {% if latest_question_list %}
+                        <ul>
+                        {% for question in latest_question_list %}
+                            <li><a href="/polls/{{ question.id }}/">{{ question.question_text }}</a></li>
+                        {% endfor %}
+                        </ul>
+                    {% else %}
+                        <p>No polls are available.</p>
+                    {% endif %}
+            теперь обновим представление index для использования шаблона
+            polls/views.py
+                #код загружает шаблон polls/index.html и передает ему контекст(dict отображающий имена var шаблона в obj Python)
+                from django.http import HttpResponse
+                from django.template import loader
 
+                from .models import Question
 
+                def index(request):
+                    lasest_question_list = Question.objects.order_by('-pub_date')[:5]
+                    template = loader.get_template('polls/index.html')
+                    context = {
+                        'latest_question_list': latest_question_list
+                    }
+                    return HttpResponse(template.render(context, request))
+            открыть страницу /polls/ => содержит
+                        маркированный список содержащий вопрос What's up
+                        ссылку на подробности вопроса
+СОКРАЩЕНИЕ render()
+#распространенная идиома:
+    загрузить шаблон
+    заполнить контекст
+    вернуть HttpResponse с результатом визуализации шаблона
+    dj - предоставляет сокращение
+        polls/views.py
+            from django.shortcuts import render
+            from .models import Question
+            ...
+            def index(request):
+                latest_question_list = Question.objects.order_by('-pub_date')[:5]
+                context = {'latest_question_list': latest_question_list}
+                return render(request, 'polls/index.html', context)
 
+django.shortcuts.render(request, template_name, [context_dict]) -> HttpResponse данного шаблона отображенный в данном контексте
+#принимает obj запроса
 
+ОШИБКА 404
+#рассмотрим подробности страницы с текстом вопроса для опроса
+    /polls/views.py
+        from django.http import Http404 #объект исключения
+        from django.shortcuts import render
 
+        from .models import Question
 
-
-
+        def detail(request, question_id):
+            try:
+                question = Question.objects.get(pk=question_id)
+            except Question.DoesNotExist:
+                raise Http404("Question does not exist")
+            return render(request, 'polls/detail.html',{'question:': question})
+    создадим шаблон
+    /polls/templates/polls/detail.html
 
 
 
