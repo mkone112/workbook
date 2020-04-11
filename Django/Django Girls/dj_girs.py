@@ -359,4 +359,443 @@ dashboard-> web->reload
     ALLOWED_HOSTS = ['mkone112.pythonanywhere.com' ]
     STATIC_ROOT = '/home/mkone112/my-first-blog/static'
 ~/my-first-blog/$ python manage.py collectstatic
-dashboard:mkone112.pythonanywhere.com-> static files -> add -> /home/mkone112/my-first-blog/static
+#команда копирует /static/ из приложений в installed_apps
+	'''херня
+	dashboard->static files-> /media/ : /home/mkone112/my-first-blog/media
+							  /static/admin /home/mkone112/.virtualenvs/<env>/lib/python3.5/site-packages/django/contrib/admin/static/admin
+	'''херня
+dashboard:mkone112.pythonanywhere.com-> static files -> add ->/static/ /home/mkone112/my-first-blog/static
+
+создаем бд
+	python manage.py migrate blog
+python manage.py migrate
+создаем пользователя
+	py manage.py createsuperuser
+	admin
+	mkone112@gmail.com
+	pass:a	
+СОВЕТЫ ПО БЕЗОПАСНОСТИ:https://docs.djangoproject.com/en/2.0/howto/deployment/checklist/
+WEB, ERROR LOG -> ошибки	
+ОБЩИЕ СОВЕТЫ ПО ОТЛАДКЕ НА PYTHONANYWHERE:http://help.pythonanywhere.com/pages/DebuggingImportError
+
+URL-АДРЕСА DJ
+#создаем домашнюю страницу блога
+dj использует URLconf
+URLconf
+#набор шаблонов которые dj сравнивает с полученным url для вызова соотв view(метод для отображения)
+djangogirls/djangogirls/urls.py
+	...
+		#любому адресу начинающимуся с admin ставится в соответствие view -> охватывается большое кол-во различных адресов => растет читаемость
+		path('admin/', admin.site.urls) 
+	...
+docstring в начале
+	модуля
+	класса
+	fx
+ПЕРВЫЙ URL DJ
+#список записей в home
+		djangogirls/djangogirls/urls.py
+			from django.contrib import admin
+			from django.urls import path, include
+			url patterns= [ 
+				path('admin/', admin.site.urls),
+				path('', include('blog.urls')),
+			]
+		blog/urls.py
+			from django.urls import path
+			from . import views
+			urlpatterns = [
+				path('', views.post_list, name='post_list')
+			]
+			#'' т.к. для URLconf http://127.0.0.1:8000/|http://localhost:8000 - не часть URL 
+			#name - имя url используемое для его идентификации- м.б. таким же как представление|или совершенно иным
+			МЫ БУДЕМ ИСПОЛЬЗОВАТЬ ИМЕНОВАННЫЕ URL'S ПОЗЖЕ
+ПОПЫТКА ЗАПУСТИТЬ 
+	#в django 1.6.4 вывод в браузере
+	#в моей версии(~2.2) - выводит в консоль и не отвечает на GET
+	module obj has no attr 'post_list'
+		request method: GET
+		request URL: http://127.0.0.1:8000/
+		Django Version: <dj_ver>
+		Exception Type: AttributeError
+		Exception Value: 'module' object has no...
+		Exception Location: <path_to_file>, <line_num>
+	#нет соотв view
+VIEWS
+#логика приложения
+#подробнее о представлениях:https://docs.djangoproject.com/en/2.0/topics/http/urls/
+blog/views.py
+		from django.shortcuts import render
+		#запрашивает информацию из модели(ранее созданной) -> передаст в шаблон
+		def post_list(request):
+			return render(request, 'blog/post_list.html', {})
+попытка запуска: templateDoesNotExit
+render()
+#собирает шаблон			
+ВВЕДЕНИЕ В HTML
+шаблоны в dj пишутся на HTML(HyperText Markup L...)
+гипертекст - тип текста поддерживающий гипер ссылки между страницами
+шаблоны хранятся в <app>/templates/<app>
+#удобное соглашение об именовании
+	blog/templates/blog/post_list.html
+теперь корень сайта возвращает пустую страницу
+if TemplateDoesNotExists => перезапути сервер
+ТЕГИ HTML
+	<p>
+	#параграф
+	вложенность тегов - нельзя закрыть тег пока внутри остаются открытые теги
+	<h1>
+	#заголовок
+	<h2>
+	#подзаголовок
+	<h3>
+	#заголовок 3го уровня
+	...
+	<h6>
+	<em>
+	#подчеркнутый текст
+	<strong>
+	#жирный текст
+	<br />
+	#переход на следующую строку
+	<a href="https://djangogirls.org">link</a>
+	<div>
+	#раздел страницы
+при переходе на localhost|127.0.0.1 ссылки меняются соответственно
+DEPLOY
+	COMMIT & PUSH В РЕПОЗИТОРИЙ GITHUB
+		проверим какие файлы были изменены с последного развертывания
+			git status
+			git add --all . # '.' текущая директория
+git add -all
+#выбор всех файлов(включая удаленные(по умолчанию отслеживает только новые/измененные файлы))
+git status
+#зеленым отмечены файлы готовые к отправке на сервер
+git commit -m "Changed the HTML for the site"
+git push			
+
+файловый менеджер github автоматом переходит /dirB/ в путях вида /dirA/dirB if dirA пуста
+PYTHONANYWHERE->
+	cd ~/my-first-blog #в dir где на github лежит .git
+	git pull
+перезапуск
+DJANGO ORM И QuerySet
+QuerySet
+#список obj заданной модели
+#позволяет читать/фильтровать данные из бд и изменять их порядок
+#подробнее:https://docs.djangoproject.com/en/1.11/ref/models/querysets/
+ИНТЕРАКТИВНАЯ КОНСОЛЬ DJANGO
+(myenv) ~/djangogirls$ py manage.py shell
+	#импортируем модель
+	from blog.models import Post
+	#получаем все записи блога
+	Post.objects.all()	>> <QuerySet [<Post: my post title>, <Post: another post title>]>
+	СОЗДАНИЕ OBJ
+	#экземпляры моделей
+		from django.contrib.auth.models import User
+		#пользователи в бд
+		#ранее созданный superuser
+		User.objects.all()		>> <QuerySet [<User: ola>]>
+		me = User.objects.get(username='ola')
+		Post.objects.create(author=me, title='Sample title', text='Test') >> <Post: Sample title>
+		Post.objects.all()	>> <QuerySet [<Post: my post title>, <Post: another post title>, <Post: Sample title>]>
+	  ПУБЛИКАЦИЯ ПОСТА
+		post = Post.objects.get(title="Sample title")
+		post.publish()
+	Фильтрация obj
+	#django ORM использует double underscore для разделения имен полей и операций/фильтров
+		Post.objects.filter(author=me)	>> <QuerySet ...>
+		Post.objects.filter(title__contains='title') >> <QuerySet ...>
+		Post.objects.filter(title_contains='title') >> FieldErr: Cannot resolve keyword title_contains
+	  ПОЛУЧИТЬ СПИСОК ВСЕХ ОПУБЛИКОВАННЫХ ЗАПИСЕЙ
+		from django.utils import timezone
+		#как то странно это работает, я думал что это сравнение с текущей датой - а он выводит все записи у которых есть графа published_date
+		Post.objects.filter(published_date__lte=timezone.now())	#по идее LessThanE
+	СОРТИРОВКА OBJ
+		Post.objects.order_by('created_date')
+		#обратный порядок
+		Post.objects.order_by('-created_date')
+	СОЕДИНЕНИЕ
+		Post.objects.filter(published_date__lte=timezone.now()).order_by('published_date')
+ДИНАМИЧЕСКИ ИЗМЕНЯЮЩИЕСЯ ДАННЫЕ В ШАБЛОНАХ		
+views соединяют модели и шаблон
+	post_list
+	#возьмет модели и передаст шаблону
+	blog/views.py
+		...
+		from .models import Post		#. - текущие dir & app
+		from django.utils import timezone
+		
+		...
+		#request - все что приходит от пользователя в запросе
+		def post_list(request):
+			posts = Post.objects.filter(published_date__lte=timezone.now()).order_by('published_date')
+			return render(request, 'blog/post_list', {'posts': posts})	#по сути отвечаем на request
+ШАБЛОНЫ DJ
+	ТЕГИ ШАБЛОНОВ
+	#отображаем шаблон списка записейcd
+		ДОБАВЛЯЕМ ТЕГ В ШАБЛОН
+			blog/templates/blog/post_list.html
+				...
+				{{ posts }}
+				...
+				#django поймет var как список obj
+			ЦИКЛ FOR МОЖНО ИСПОЛЬЗОВАТЬ В ШАБЛОНЕ
+				{% for post in posts %}
+					{{ post }}
+				{% endfor %}
+				ПЕРЕМЕШАЕМ!
+	{{<var> | linebreaksbr}}
+	#прогоняет текст через фильтр для преобразования переносов строк в параграфы
+					<div>
+						<h1><a href="/">Django Girls Blog</a></h1>
+					</div>
+					
+					{% for post in posts %}
+						<div>
+							<p>published: {{ post.published_date }}</p>
+							<h1><a href="">{{ post.title }}</a></h1>
+							<p>{{ post.text|linebreaksbr}}
+						</div>
+					{% endfor %}
+МОДЕЛИ СОДЕРЖАТ МН-ВО ИНТЕРЕСНЫХ МЕТОДОВ
+	.last
+	.intersection
+	...
+git status
+git add --all
+git status
+git commit -m "Modified templates to display posts from database."
+git push
+PythonAnywhere ->
+	#cd $USER.pythonanywhere.com мне кажется что это не та dir
+	git pull
+reload
+ВСЕ СЛОМАЛОСЬ
+	/ возвращает только заголовок => смотрю логи => ничего
+		>> бд разные - возвращаемый QuerySet - пуст => цикл не выполняется ни разу
+Добавить записи -> проверить изменения
+Т.к. я изменял репозиторий на PA - нужно отменить изменения
+ПРИНУДИТЕЛЬНАЯ ПЕРЕЗАПИСЬ ЛОКАЛЬНЫХ ФАЙЛОВ
+	#неотслеживаемые локальные файлы не будут затронуты
+	git fetch
+	#загружает последнюю версию из remote не пытаясь что-либо объединить(merge)|синхронизировать(rebase)
+	git fetch --all
+	git reset
+	#назначает главной веткой только что обновленную
+		--hard <branch>
+		#изменяет ∀ файлы в рабочей ветви в соответствие с указанной
+	git reset --hard origin/<branch>	#origin/master
+CSS
+#эл-ты идентифицируются именами тегов|attr class|attr id
+#классы определяют группы элтов, id - конкретные элты
+#class можно использовать с id
+	<a href="" class="external_link" id="link_to_wiki_page">link</a>
+#подробнее о css селекторах:http://www.w3schools.com/cssref/css_selectors.asp	
+Boostrap
+#один из наиболее популярных HTML&CSS фреймворков
+#getbootstrap.com
+#написан разработчиками из Twitter
+#вроде как просто стягивает стили из инета
+#код из файлов читается в порядке их следования -> порядок импортов - имеет val
+	blog/templates/blog/post_list.html
+		{% load static %}
+		<html>
+		<head>
+			...
+			<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+			<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">
+			<link href="https://fonts.googleapis.com/css?family=Lobster&subset=latin,cyrillic" rel="stylesheet" type="text/css">
+			<link rel='stylesheet' href="{% static 'css/blog.css' %}"
+		</head>
+		<body>
+			<div class="page-header">
+				<h1><a href="/">Django Girls Blog</a></h1>
+			</div>
+			<div class="content container">
+				<div class="row">
+					<div class="col-md-8">
+						{% for post in posts %}
+							<div class="post">
+								<div class="date">
+									<p>Опубликовано: {{ post.published_date }}</p>
+								</div>
+								<h1><a href="">{{ post.title }}</a></h1>
+								<p>{{ post.text|linebreaksbr }}</p>
+							</div>
+						{% endfor %}
+					</div>
+				</div>
+			</div>
+		...
+СТАТИЧЕСКИЕ ФАЙЛЫ В DJ
+#∀ файлы не изменяемые(создаваемые) динамически
+#содержимое не зависит от контекста запроса и одинаково для ∀ пользователей
+#dj ищет папки static внутри ∀(?) dirs приложений
+РАСПОЛОЖЕНИЕ
+	djangogirls
+		blog
+			static
+			  css
+				blog.css
+					h1 a { #селектор:∀ <a> ⊂ <h1>
+						color: #FCA205;
+						font-family: 'Lobster';
+					}
+					
+					body {
+						/*padding-left:15px;*/
+					}
+					#добавим определения блоков для различных селекторов
+					#селекторы с . - относятся к классам
+					.page-header {
+						background-color: #ff9400;
+						margin-top: 0;
+						padding: 20px 20px 20px 40px;
+					}
+					
+					.page-header h1, .page-header h1 a, .page-header h1 a:visited, .page-header h1 a:active {
+						color: #ffffff;
+						font-size: 36pt;
+						text-decoreation: none;
+					}
+					
+					.content {
+						margin-left: 40px;
+					}
+					
+					h1, h2, h3, h4 {
+						font-family: 'Lobster', cursive;
+					}
+					
+					.date {
+						color: #828282;
+					}
+					
+					.save {
+						float: right;
+					}
+					
+					.post-form textarea, .post-form input {
+						widht: 100%;
+					}
+					
+					.top-menu, .top-menu:hover, .top-menu:visited {
+						color: #ffffff;
+						float: right;
+						font-size: 26pt;
+						margin-right: 20px;
+					}
+					
+					.post {
+						margin-bottom: 70px;
+					}
+					
+					.post h1 a, .post h1 a:visited {
+						color: #000000;
+					} 
+РАСШИРЕНИЕ ШАБЛОНА
+#можно использовать одни блоки HTML для разных частей приложения
+СОЗДАЕМ БАЗОВЫЙ ШАБЛОН
+#max общая типовая форма страницы расширяемая для отдельных случаев
+blog
+	templates
+		blog
+			base.html
+				{% load static %}
+				<html>
+				<head>
+					<title>Django Girls blog</title>
+					<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+					<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">
+					<link href="https://fonts.googleapis.com/css?family=Lobster&subset=latin,cyrillic" rel="stylesheet" type="text/css">
+					<link rel="stylesheet" href="{% static 'css/blog.css' %}">
+				</head>
+				<body>
+					<div class="page-header">
+						<h1><a href="/">Django Girls Blog</a></h1>
+					</div>
+					<div class="content container">
+						<div class="row">
+							<div class="col-md-8">
+								<!--создаем block - тег шаблона позволяющий вставить HTML этого блока в другие шаблоны расширяющие base.html
+								{% block content %}
+								{% endblock %}
+							</div>
+						</div>
+					</div>
+
+				</body>
+				</html>
+			post_list.html
+				{% extends 'blog/base.html' %} #связываем шаблоны друг с другом 
+				
+				{% block content %}
+					{% for post in posts %}
+						<div class="post">
+							<div class="date">
+								{{ post.published_date }}
+							</div>
+							<h1><a href="">{{ post.title }}</a></h1>
+							<p>{{ post.text|linebreaksbr }}</p>
+						</div>
+					{% endfor %}
+				{% endblock %}
+РАСШИРЯЕМ ПРИЛОЖЕНИЕ
+СОЗДАЕМ СТРАНИЦУ ДЛЯ ОТОБРАЖЕНИЯ КОНКРЕТНОЙ ЗАПИСИ
+#используем модель Post
+СОЗДАНИЕ ССЫЛКИ НА СТРАНИЦУ ПОСТА В ШАБЛОНЕ
+		blog
+			templates
+				blog
+					post_list.html
+						...
+						<div class="date">
+							{{ post.published_date }}
+						</div>
+						#{% ... %} использование тегов шаблонов dj
+						#{% url ... %} создает url(по всей видимости на адрес имеющийся в urls) => потребуется отдельная view
+						#'post_detail' - dj ищет url с именем post_detail в blog.urls.py
+						#pk -primary(первичный) key
+							#dj автоматом создал post.pk для модели Post (каждый пост ⊂ его, по умолчанию val post.pk - int ∃
+							#post.pk идентифицирует отдельные записи в блоге ~ получению других полей obj Post(title, author, ...)
+							
+						<h1><a href="{% url 'post_detail' pk=post.pk %}">{{ post.title }}</a></h1>
+						...
+теперь dj возвращает ошибку NoReverseMatch т.к. нет прописанного URL и View для post_detail						
+СОЗДАДИМ URL ДЛЯ СТРАНИЦЫ ПОСТА
+#чтобы первый пост отображался по localhost/post/1 etc
+blog/urls.py
+	...
+	urlpatterns = [
+		path('', views.post_list, name='post_list'),
+		#<int: проверка на int
+		#'post/<int:pk>/' выражение для сравнения, int преобразуется в var pk
+		#pk передается в views.post_detail
+		#/ в конце обязателен?
+		path('post/<int:pk>/', views.post_detail, name='post_detail'),
+	]
+blog/views.py
+	...
+	#аргумент вроде должен иметь тоже имя(вообще логично - код читать легче)
+	def post_detail(request, pk):
+
+попробуем получить конкретную запись блога
+blog/views.py
+	Post.objects.get(pk=pk)
+#получаем ошибку для !∃ post
+	#localhost/post/10	>> DoesNotExist
+используем get_object_or_404
+#if !∃ экземпляра Post => возвращаем 404
+blog/views.py
+	...
+	#мне кажется довольно логичным что get_object_or_404 хранится в .shortcuts
+	from django.shortcuts import render, get_object_or_404
+	def post_detail(request, pk):
+		post = get_object_or_404(Post, pk=pk)
+		return render(request, 'blog/post_detail.html', {'post': post})
+обновляем => ошибка исчезла
+пробуем перейти по ссылке из заголовка записи (localhost/post/30) => TemplateDoesNotExist
+#неудивительно => шаблона то нет
+blog/templates/blog/post_detail.html
+		{%
