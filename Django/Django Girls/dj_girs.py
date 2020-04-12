@@ -809,7 +809,7 @@ blog/templates/blog/post_detail.html
 				<p>{{ post.text|linebreaksbr }}</p>
 			</div>
 		{% endblock %}
-перезапуск => все ок
+перезапуск => все ок(требуется т.к. при предыдущем были ошибки)
 git status => git add --all => git status => git commit -m "Added view and template for detailed blog post as well as CSS for the site." => git push
 PA
 	cd ~/mkone112.pythonanywhere.com
@@ -820,8 +820,10 @@ PA
 #нужно чтобы сервер обновил их
 PA
 	#активируем virtualenv
-	#~ source myenv/bin/activate на локальной машине(а в PA сработает?)
+	#~ $ source myenv/bin/activate на локальной машине(а в PA сработает?)
+	#у меня нихера не работает => ~ $ source .virtualenvs/venv/bin/activate
 	workon mkone112.pythonanywhere.com
 	#немного похожа на migrate(вносим изменения => применяем их
+	cd my-first-blog
 	python manage.py collectstatic
 	
