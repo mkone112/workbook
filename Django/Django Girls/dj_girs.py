@@ -629,7 +629,7 @@ Boostrap
 			</div>
 		...
 СТАТИЧЕСКИЕ ФАЙЛЫ В DJ
-#∀ файлы не изменяемые(создаваемые) динамически
+#∀ файлы не изменяемые(создаваемые) динамически(html, css, ...)
 #содержимое не зависит от контекста запроса и одинаково для ∀ пользователей
 #dj ищет папки static внутри ∀(?) dirs приложений
 РАСПОЛОЖЕНИЕ
@@ -775,11 +775,7 @@ blog/urls.py
 		#/ в конце обязателен?
 		path('post/<int:pk>/', views.post_detail, name='post_detail'),
 	]
-blog/views.py
-	...
-	#аргумент вроде должен иметь тоже имя(вообще логично - код читать легче)
-	def post_detail(request, pk):
-
+		
 попробуем получить конкретную запись блога
 blog/views.py
 	Post.objects.get(pk=pk)
@@ -787,10 +783,12 @@ blog/views.py
 	#localhost/post/10	>> DoesNotExist
 используем get_object_or_404
 #if !∃ экземпляра Post => возвращаем 404
+#можно создать свою страницу 404
 blog/views.py
 	...
 	#мне кажется довольно логичным что get_object_or_404 хранится в .shortcuts
 	from django.shortcuts import render, get_object_or_404
+	#аргумент вроде должен иметь тоже имя(вообще логично - код читать легче)
 	def post_detail(request, pk):
 		post = get_object_or_404(Post, pk=pk)
 		return render(request, 'blog/post_detail.html', {'post': post})
@@ -798,4 +796,32 @@ blog/views.py
 пробуем перейти по ссылке из заголовка записи (localhost/post/30) => TemplateDoesNotExist
 #неудивительно => шаблона то нет
 blog/templates/blog/post_detail.html
-		{%
+		{% extends 'blog/base.html' %}
+		
+		{% block content %}
+			<div class="post">
+				{% if post.published_date %} #срабатывает только if ∃
+					<div class="date">
+						{{ post.published_date }}
+					</div>
+				{% endif %}
+				<h1>{{ post.title }}</h1>
+				<p>{{ post.text|linebreaksbr }}</p>
+			</div>
+		{% endblock %}
+перезапуск => все ок
+git status => git add --all => git status => git commit -m "Added view and template for detailed blog post as well as CSS for the site." => git push
+PA
+	cd ~/mkone112.pythonanywhere.com
+	git pull
+	перезагрузить webapp
+ОБНОВИМ STATIC НА PA
+#обычно static обрабатывается отлично от исполняемых для оптимизации
+#нужно чтобы сервер обновил их
+PA
+	#активируем virtualenv
+	#~ source myenv/bin/activate на локальной машине(а в PA сработает?)
+	workon mkone112.pythonanywhere.com
+	#немного похожа на migrate(вносим изменения => применяем их
+	python manage.py collectstatic
+	
