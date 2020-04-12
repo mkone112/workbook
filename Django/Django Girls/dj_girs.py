@@ -826,4 +826,138 @@ PA
 	#немного похожа на migrate(вносим изменения => применяем их
 	cd my-first-blog
 	python manage.py collectstatic
+ФОРМЫ В DJ
+#удобный способ добавления/редактирования записей
+#дают полный контроль над интерфейсом
+дизайн админки dj сложно менять
+можно создать новую форму | воспользоваться ModelForm для сохранения содержимого формы в модель
+СОЗДАДИМ ФОРМУ ДЛЯ МОДЕЛИ Post
+blog
+	forms.py
+		#импортируем формы dj
+		from django import forms
+		
+		from .models import Post
+		
+		class PostForm(forms.ModelForm):
+		
+			class Meta:
+				#модель используемая для создания формы
+				model = Post
+				#поле author будет автоматом выбрано в зависимости от авторизованного пользователя
+				#created_date должна будет автоматом проставляться
+				fields = ('title', 'text',)
+СОЗДАЕМ ССЫЛКИ НА СТРАНИЦУ, URL, VIEW И ШАБЛОН
+ССЫЛКА НА СТРАНИЦУ С ФОРМОЙ
+	blog/templates/blog/base.html
+	...
+	<div class="page-header">
+		#называем новое представление post_new
+		#glyphicon gliphicon-plus определен в теме bootstrap - значек плюса
+		<a href="{% url 'post_new' %}" class="top-menu"><span class="glyphicon glyphicon-plus"></span></a>
+		...
+<span>
+#определение строчных эл-тов
+#в отличие от блочных эл-тов(<table>,<p>,<div>) можно выделить часть информации внутри другого тега и установить для нее свой стиль	
+update -> NoReverseMatch
+URL
+blog/urls.py
+...
+	path('post/new/', views.post_new, name='post_new'),
+	...
+update-> AttributeError
+#view post_new еще не реализовано
+blog/views.py
+	...
+	from .forms import PostForm
+	...
+	def post_new(request):
+		#для создания формы отдаем PostForm() в шаблон
+		form = PostForm()
+		return render(request, 'blog/post_edit.html', {'form': form})
+СОЗДАЕМ ШАБЛОН ПОД ФОРМУ
+#требуется
+	#отобразить форму
+		#например
+			{{ form.as_p }}
+	#строка выше должна быть обернута в <form method="POST"></form>	
+		#альтернатива - GET
+	#кнопка save
+		<button type="submit">Save</button>
+	#сразу после открытия <form...> нужно добавить
+		{% csrf_token %}
+		#делает форму защищенной
+		#без этого dj матерится -> Forbidden 403 CSRF vefification failed
+blog/templates/blog/post_edit.html
+	{% extends 'blog/base.html' %}
 	
+	{% block content %}
+		<h1>New post</h1>
+		<form method="POST" class="post-form">{% csrf_token %}
+			{{ form.as_p }}
+			<button type="submit" class="save btn btn-default">Save</button>
+		</form>
+	{% endblock %}
+update -> форма пашет
+СОХРАНЯЕМ ДАННЫЕ ИЗ ФОРМЫ
+#на данный момент после отправки формы мы возвращаемся к тому же представлению, но с новыми данными(∀ поля формы) в request(точнее в request.POST)
+#метод POST в отличие от GET используется для "публикации" данных
+blog/views.py
+#требуется обработать два случая
+	когда только зашли на страницу -> пустая форма
+	возвращаемся к view со ∀ информацией введенной в форму
+	
+	from django.shortcuts import redirect
+	
+	
+	def post_new(request):
+		if request.method == "POST":
+		#строим форму с данными из PostForm
+			form = PostForm(request.POST)
+			#проверяем заполнены ли ∀ необходимые поля и нет ли не валидных val
+			if form.is_valid():
+				#сохраняем форму
+				#commit=False - не сохраняем модель Post(т.к. сначала нужно добавить автора)
+				post = form.save(commit=False)
+				#добавляем автора
+				post.author = request.user
+				post.published_date = timezone.now()
+				#сохранение(создание) записи
+				post.save()
+				return redirect('post_detail', pk=post.pk)
+		else:
+			form = PostForm()
+		#переход на страницу записи сразу после создания
+		#post_detail - имя view(которое требует pk) post - новая запись
+		return render(request, 'blog/post_edit.html', {'form': form})
+update-> localhost/post/new -> ∀ пашет(требуется быть залогиненым в админке)
+ВАЛИДАЦИЯ ФОРМЫ
+#в модели Post не указано что поля title и text необязательны(в отличие от published_date) -> при попытке отправить незаполненную форму рядом с полями будет выведено "This field is required"
+ФОРМА РЕДАКТИРОВАНИЯ
+blog/templates/blog/post_detail.html
+	...
+	{% endif %}
+	<a class="btn btn-default" href="{% url 'post_edit' pk=post.pk %}">
+	<span class="glyphicon glyphicon-pencil"></span>
+	</a>
+	<h1>{{ post. title }}</h1>
+	...
+blog/urls.py
+	...
+	path('post/<int:pk>/edit/', views.post_edit, name='post_edit'),
+	...
+blog/views.py
+	...
+	def post_edit(request, pk):
+		post = get_object_or_404(Post, pk=pk)
+		if request.method == "POST":
+			form = PostForm(request.POST, instance=post)
+			if form.is_valid():
+				post = form.save(commit=False)
+				post.author = request.user
+				post.published_date = timezone.now()
+				post.save()
+				return redirect('post_detail', pk=post.pk)
+		else:
+			form = PostForm(instance=post)
+		return render(request, 'blog/post_edit.html', {'form': form})
