@@ -1,3 +1,15 @@
+SHORTCUTS
+  ctrl-alt-s      settings
+  alt-sh-enter    install packages
+SETTINGS
+  keymap ->
+    #keymap themes
+  Plugins
+    ChangeReminder
+    #predict files that you may have forgotten to modify
+    #use commit history for this
+    #suggests files that may be related to those you already modified
+    #suggested files are listed as "Related Files" in the "Local Changes" tab of Version Control tool window
 change fonts
 
 The layout -> The minimalist
@@ -98,3 +110,6 @@ CTRL-W or Dblclk  extend selection in the editor selects the word at the caret a
 
 IPYTHON NOTEBOOK
   pip install ipython[all]
+
+remove project
+    https://stackoverflow.com/questions/20839182/how-to-remove-project-in-pycharm
