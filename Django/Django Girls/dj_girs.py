@@ -944,13 +944,16 @@ blog/templates/blog/post_detail.html
 	...
 blog/urls.py
 	...
+	#передаем pk из url
 	path('post/<int:pk>/edit/', views.post_edit, name='post_edit'),
 	...
 blog/views.py
 	...
 	def post_edit(request, pk):
+		#получаем модель для редактирования
 		post = get_object_or_404(Post, pk=pk)
 		if request.method == "POST":
+			#передаем экземпляр post в качестве instance
 			form = PostForm(request.POST, instance=post)
 			if form.is_valid():
 				post = form.save(commit=False)
@@ -959,5 +962,19 @@ blog/views.py
 				post.save()
 				return redirect('post_detail', pk=post.pk)
 		else:
+			#открываем форму для редактирования
 			form = PostForm(instance=post)
 		return render(request, 'blog/post_edit.html', {'form': form})
+зайти на post_detail и попробовать изменить запись
+БЕЗОПАСНОСТЬ
+#на данный момент ∀ может редактировать запись
+blog/templates/blog/base.html
+	...
+	{% if user.is_authenticated %}
+	<a href="{% url 'post_new' %}" class="top-menu"><span class="glyphicon glyphicon-plus"></span></a>
+	{% endif %}
+blog/templates/blog/post_detail.html
+	...
+	{% if user.is_authenticated %}
+		<a class="btn btn-default" href="{% url 'post_edit' pk=post.pk %}"><span class="glyphicon glyphicon-pencil"></span></a>
+	{% endif %}
