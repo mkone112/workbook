@@ -26,12 +26,41 @@ samplesite/urls.py
 	urlpatterns = [
 		path('bboard/', index),
 	...
-
-
-
-
-
-
-
-
+bboard/urls.py
+	from django.urls import path
+	
+	from .views import index
+	
+	urlpatterns = [
+		#'' - корень пути из маршрута предыдущего(родительского) уровня вложенности
+		path('', index),
+	]
+#исправим urls.py из пакета конфигурации
+	...
+	from django.urls import path, include
+	...
+	 urlpatterns = [
+		path('bboard/', include('bboard.urls')),
+	...
+сайт получит запрос с http://localhost:8000/bboard/
+	маршрутизатор обнаружит совпадение с bboard/ удалит префикс(совпадающий с шаблоном) и получит "" 
+		далее последует загрузка вложенного списка маршрутов где "" совпадет с первым маршрутом => запуститься соотв view
+объявим модель объявления Bb
+bboard/models.py
+	from django.db import models
+	
+	class Bb(models.Model):
+	#модель д.б. наследником django.db.models.Model
+		#отдельные поля оформляются attr класса
+		#в кач val им присваиваются экземпляры классов полей разных типов(объявленных в том-же django.db.models
+		title = models.CharField(max_length=50)
+		content = models.TextField(null=True, blank=True)
+		price = models.FloatField(null=True, blank=True)
+		published = models.DateTimeField(auto_now_add=True, db_index=True)
+#сгенерируем миграцию на основе модели которая при применении создаст ∀ необходимые структуры в бд
+manage.py makemigrations bboard
+выполним миграцию
+#первое exe миграций рекомендуется проводить ∀ app
+#заметно увеличивает объем бд
+	manage.py migrate
 
