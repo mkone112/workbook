@@ -22,6 +22,7 @@
 			return HttpResponse("Здесь будет список объявлений")
 #свяжем маршрут с контроллером
 samplesite/urls.py
+	from bboard.views import index
 	...
 	urlpatterns = [
 		path('bboard/', index),
@@ -71,9 +72,11 @@ manage.py makemigrations bboard
 		#создание записи модели в ram
 		b1 = Bb(title='Дача', content='Общество "Двухэтажники". ' + \
 		'Два этажа, кирпич, свет, газ, канализация', price=500000)
+		b1	>> <Bb: Bb object (None)> # походу None т.к. !∃ pk(пока что)
 		#сохранение записи на диск
 		b1.save()
 		#проверим, получив val pk
+		b1					>> <Bb: Bb object (1)>
 		b1.pk				>> 1
 #обратимся к полям созданной записи
 	b1.title, b1.content, b1.published, b1.id		>> 'Дача',...,datetime.datetime(..., tzinfo=<UTC>)
@@ -90,7 +93,7 @@ manage.py makemigrations bboard
 	b2.save()
 	b2.content >> '"Жигули", 1980 года, ржавая, некрашенная, сильно битая'
 #добавим еще объявление
-Bb.objects.create(title='Дом', content='Трехэтажный, кирпич', price=50000000)	>> <Bb: Bb object (3)>
+Bb.objects.create(title='Дом', content='Трехэтажный, кирпич', price=50000000)	>> <Bb: Bb object (3)> #т.е. obj создан(т.к. обзавелся pk(3))
 #выведем ∀ объявления
 	for b in Bb.objects.all():
 		print(b.pk, ': ', b.title)
@@ -178,3 +181,26 @@ bboard/views.py
 		return render(request, 'bboard/index.html', {'bbs': bbs})
 выбираем вариант, сохраняем -> запускаем сервер -> переходим по localhost:8000/bboard/
 #видим объявления
+manage.py createsuperuser
+пакет_конфигурации/settings.py
+	...
+	LANGUAGE_CODE = 'ru_ru'
+	...
+открываем админку -> вводим пароль 
+	в списке приложений только Пользователи и Группы(django.contrib.auth)
+ЗАРЕГИСТРИРУЕМ ПРИЛОЖЕНИЕ В АДМИНКЕ
+bboard/admin.py
+#модуль административных настроек
+	from django.contrib import admin
+	
+	from .models import Bb
+	#вызываем .register() у экземпляра AdminSite представляющего саму админку
+	admin.site.register(Bb)
+сохраним, обновим страниу -> готово
+∀ название модели - ссылка на страницу списка ее записей
+кнопка [добавить <model_name>] -> страница добавления новой записи 
+щелкнуть на строку записи для ее редактирования
+	там же ее можно удалить
+записи можно выбирать и выполнять над их группами поддерживаемые действия
+раскрывающийся список ∀ поддерживаемых моделью(заданных для нее классом-редактором) действий находится над списком записей модели
+	при выборе моделей и действия и нажатии кнопки выполнения dj выведет подробности выполняемой операции и запросит подтверждение&
