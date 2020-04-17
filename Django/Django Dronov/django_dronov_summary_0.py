@@ -184,7 +184,8 @@ bboard/views.py
 manage.py createsuperuser
 пакет_конфигурации/settings.py
 	...
-	LANGUAGE_CODE = 'ru_ru'
+	LANGUAGE_CODE = 'ru-ru'
+	TIME_ZONE = 'Europe/Moscow'
 	...
 открываем админку -> вводим пароль 
 	в списке приложений только Пользователи и Группы(django.contrib.auth)
@@ -204,3 +205,78 @@ bboard/admin.py
 записи можно выбирать и выполнять над их группами поддерживаемые действия
 раскрывающийся список ∀ поддерживаемых моделью(заданных для нее классом-редактором) действий находится над списком записей модели
 	при выборе моделей и действия и нажатии кнопки выполнения dj выведет подробности выполняемой операции и запросит подтверждение&
+++++++++++++++++++++++++++++++++++++++++++++++(остановился здесь)
+ПАРАМЕТРЫ ПОЛЕЙ И МОДЕЛЕЙ::СТР::50
+#название модели и ее полей - Bbs, title, content, published - что может быть неудобно для пользователя
+#+ отсортируем объявления по убыванию даты(свежие вверху)
+eng::verbose::подробный
+#в вызове ∀ конструктора указываем verbose_name
+#verbose_name - человеко-читаемое название поля для вывода
+bboard/models.py
+	class Bb(models.Model):
+		title = models.CharField(max_length=50, verbose_name='Товар')
+		content = models.TextField(null=True, blank=True, verbose_name='Описание')
+		price = models.FloatField(null=True, blank=True, verbose_name='Цена')
+		published = models.DateTimeField(auto_now_add=True, db_index=True, verbose_name='Опубликовано')
+		
+		#attr класса Meta зададут параметры самой модели
+		class Meta:
+			#название модели в мн-ом числе
+			verbose_name_plural = 'Объявления'
+			#название модели в од-ом числе
+			verbose_name = 'Объявление'
+			#{xn} полей используемых для сортировки по умолчанию
+			ordering = ['-published']
+сохраним -> обновим
+	в списке приложений модель представляется "Объявления"
+	на странице списка записей, запись представляется "Объявление"
+	на страницах добавления|правки записи эл-ты управления представляются "Товар" "Описание" "Цена"
+теперь можно исправить контроллер, убрав указание сортировки при извлечении списка записей
+#т.к. сортировка по умолчанию, заданная в параметрах модели действует не только в админке
+bboard/views.py
+	...
+	def index(request):
+		bbs = Bb.objects.all()
+		...
+РЕДАКТОР МОДЕЛИ
+#на странице списка записей ∀ позиции представляются "<class_model_name> object (<key_val>)"
+#представление модели в админке по умолчанию
+	#можно задать свои параметры представления модели объявив для нее класс редактор
+	from django.contrib import admin
+	
+	from .models import Bb
+	#редактор объявляется как подкласс ModelAdmin ⊃ django.contrib.admin
+	#ModelAdmin ⊃ атрибуты задающие параметры представления модели
+	class BbAdmin(admin.ModelAdmin):
+		#{xn} имен полей которые должны выводиться в списке записей
+		list_display = ('title', 'content', 'price', 'published')
+		#{xn} имен полей для преобразования в гиперссылки на страницу правки записи
+		list_display_links = ('title', 'content')
+		#{xn} имен полей по которым будет выполняться фильтрация
+		search_fields = ('title', 'content', )
+	#заменили этот участок для админки
+	admin.site.register(Bb, BbAdmin)
+перейдем по списку записей и попробуем найти "газ"
+СВЯЗИ МЕЖДУ МОДЕЛЯМИ::СТР 53
+выходим из админки, останавливаем сервер
+#добавим рубрики объявлений(недвижимость, транспорт, бытовая техника, ...)
+bboard/models.py
+	...
+	class Rubric(models.Model):
+		#для модели создается индекс для вывода рубрик с сортировкой по названию
+		name = models.CharField(max_length=20, db_index=True, verbose_name='Название')
+		
+		class Meta:
+			verbose_name_plural = 'Рубрики'
+			verbose_name = 'Рубрика'
+			ordering = ['name']
+			
+добавим в модель Bb поле внешнего ключа связывающее текущую запись модели с записью в Rubric
+#связь "один-со-многими"(одна рубрика на n объявлений)
+#модель Rubric - первичная(primary), Bb - вторичная
+bboard/models.py
+	class Bb(models.Model):
+		...
+		rubric = models.ForeignKey('Rubric', null=True, on_delete=models.PROTECT, verbose_name='Рубрика')
+		class Meta:
+			...
