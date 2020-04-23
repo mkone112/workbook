@@ -277,6 +277,336 @@ bboard/models.py
 bboard/models.py
 	class Bb(models.Model):
 		...
+		#null=True : явно помечаем поле rubric как необязательное(т.к. создать новое обязательное поле в модели уже ⊃ записи - нельзя)
 		rubric = models.ForeignKey('Rubric', null=True, on_delete=models.PROTECT, verbose_name='Рубрика')
 		class Meta:
 			...
+сгенерируем миграции для внесения Δ в структуру бд
+#создание bboard/migrations/0002_auto_<date_time>.py
+#новая миграция 
+	#создаст таблицу для модели Rubric
+	#добавит в таблицу модели Bb поле rubric
+	#задаст для полей модели Bb параметры verbose_name
+	#задаст для самой модели параметры
+		verbose_name_plural
+		verbose_name
+		ordering
+		#указанные в главе1
+		#это делается "для галочки" - подобные Δ класса модели никак не отражаются на бд
+manage.py makemigrations bboard
+manage.py migrate
+
+зарегистрируем новую модель в админке
+bboard/admin.py
+	from .models import Rubric
+	admin.site.register(Rubric)
+запуск->админка->добавим пару рубрик
+СТРОКОВОЕ ПРЕДСТАВЛЕНИЕ МОДЕЛИ
+#в списке записей модели Rubric ∀ рубрики представлены строками "<model_class_name> object (<val_ключа_записи>)"
+можно объявлить для модели Rubric класс редактора и задать в нем перечень полей выводящихся в списке, но это больше подходит для моделей с несколькими значащими полями(в Rubric оно одно)
+или можно переопределить .__str__() возвращающий строковое представление класса
+bboard/models.py
+	...
+	class Rubric(models.Model):
+		...
+		def __str__(self):
+			return self.name
+		
+		class Meta:
+			...
+зайдем в список рубрик для проверки
+зайдем на страницу списка записей модели Bb и исправим ∀ объявление задав рубрику
+#на странице правки записи рубрика выбирается с помощью раскрывающегося списка ⊃ строковые представления рубрик
+организуем вывод рубрик объявлений в списке записей Bb
+#добавим в {xn} имен полей присвоенную attr list_display ⊃ классу BbAdmin, поле rubric
+/не_уверен_куда/...
+	class BbAdmin(admin.ModelAdmin):
+		list_display = ('title', 'content', 'price', 'published', 'rubric')
+		...
+обновим страницу списка объялений => появлися столбец "Рубрика"
+#строковое представление связанной записи модели
+URL-ПАРАМЕТРЫ И ПАРАМЕТРИЗОВАННЫЕ ЗАПРОСЫ
+#разбиваем объявления по рубрикам при выводе(а не только при хранении)
+#создадим панель навигации ⊃ список рубрик
+	#при щелчке на рубрику => вывод только относящиеся к нему объявления
+чтобы контроллер фильтрующий объявления из модели по рубрике работал - он должен получить ключ рубрики
+#что удобнее сделать через параметр GET-запроса(URL-параметр)
+	bboard/rubric/<rubric_key> | /bboard/<rubric_key>
+bboard/urls.py
+	...
+	from .views import index, by_rubric
+	
+	urlpatterns = [
+		#rubric_id - имя параметра контроллера которому будет присвоенно val этого URL-параметра
+#маршруты ⊃ URL-параметры - параметризованные
+		path('<int:rubric_id>/', by_rubric),
+		...
+	]
+bboard/views.py
+	from .models import Rubric
+	...
+	def by_rubric(request, rubric_id):
+		#помещаем в контекст шаблона список объяв отфильтрованных по полю внешнего ключа rubric, список ∀ рубрик и текущую рубрику
+		bbs = Bb.objects.filter(rubric=rubric_id)
+		rubrics = Rubric.objects.all()
+		current_rubric = Rubric.objects.get(pk=rubric_id)
+		context = {'bbs': bbs, 'rubrics': rubrics, 'current_rubric': current_rubric}
+		return render(request, 'bboard/by_rubric.html', context)
+bboard/templates/bboard/by_rubric.html
+	<!DOCTYPE html>
+	<html>
+		<head>
+			<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+			<title>{{ current_rubric.name }} - Доска объявлений</title>
+		</head>
+		<body>
+			<h1>Объявления</h1>
+			<h2>Рубрика: {{ current_rubric.name }}</h2>
+			<div>
+				<a href="/bboard/">Главная</a>
+				{ % for rubric in rubrics %}
+				<a href="/bboard/{{ rubric.pk }}/">{{ rubric.name }}</a>
+				{% endfor %}
+			</div>
+			{% for bb in bbs %}
+			<div>
+				<h2>{{ bb.title }}</h2>
+				<p>{{ bb.content }}</p>
+				<p>{{ bb.published|date:"d.m.Y H:i:s" }}</p>
+			</div>
+			{% endfor %}
+		</body>
+	</html>
+исправим контроллер index() и шаблон bboard/index.html для вывода панели навигации также на главной и чтобы в ∀ объяве выводилось название рубрики в виде гиперссылки
+/<хз где>/
+	...
+	def index(request):
+		bbs = Bb.objects.all()
+		rubrics = Rubric.objects.all()
+		context = {'bbs': bbs, 'rubrics': rubrics}
+		return render(request, 'bboard/index.html', context)
+/bboard/templates/bboard/index.html
+	<!DOCTYPE html>
+	<html>
+		<head>
+			<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+			<title>Главная - Доска объявлений</title>
+		</head>
+		<body>
+			<h1>Объявления</h1>
+			<div>
+				<a href="/bboard/">Главная</a>
+				{% for rubric in rubrics %}
+				<a href="/bboard/{{ rubric.pk }}/">{{ rubric.name }}</a>
+				{% endfor %}
+			</div>
+			{% for bb in bbs %}
+			<div>
+				<h2>{{ bb.title }}</h2>
+				<p>{{ bb.content }}</p>
+				<p><a href="/bboard/{{ bb.rubric.pk }}/">{{ bb.rubric.name }}</a></p>
+				<p>{{ bb.published|date:"d.m.Y H:i:s" }}</p>
+			</div>
+			{% endfor %}
+		</body>
+	</html>
+перезапуск сервера-> главная страница -> под заголовком появилась панель навигации с гиперссылками на рубрики ⊃ объява
+перейдем по ∀ ссылке => страница отдельной рубрики
+ОБРАТНОЕ РАЗРЕШЕНИЕ URLS
+#при Δ шаблонных urls в url_patterns придется вносить мн-во правок в шаблоны т.к. urls формируются прямо в шаблоне + в коде формирующем адреса легко допустить ошибки
+	решение: обратное разрешение urls
+обратное разрешение urls
+#инструмент dj
+#мы указываем маршрут, формирующий нужный url и val URL-параметров (if это параметризованный ulr), а dj генерурует на их основе url
+#для реализации обратного разрешения требуется два действия:
+	дать нужным маршрутам имана
+	#~создать именованные маршруты
+	#имя маршрута указывается в path(..., name,...)
+		bboard/urls.py
+			...
+			urlpatterns = [
+				path('<int:rubric_id>/', by_rubric, name='by_rubric'),
+				path('', index, name='index'),
+			]
+			...
+	использовать для создания url в гиперссылках шаблонов теги шаблонизатора url
+		bboard/templates/bboard/index.html
+			#заменим
+			...
+			<a href="/bboard/{{ rubric.pk }}/">
+			...
+			<a href="/bboard/">
+			#на
+			#{% url <route_name> <val_url-параметра_для_вставки_результирующий_url>}
+			<a href="{% url 'by_rubric' rubric.pk %}">
+			...
+			#маршрут index - не параметризованный => url-параметры не требуются
+			<a href="{% url 'index' %}">
+			...
+внесем ~ правки во ∀ остальные фраменты обоих шаблонов
+обновим страницу => переходы по гиперссылкам пашут
+ФОРМЫ СВЯЗАННЫЕ С МОДЕЛЯМИ
+#создаем страницу добавления в бд новых объяв
+#используем HTML-формы
+HTML-forms
+#их создание без dj - "сложно и кропотливо"
+объявим класс _формы связанной с моделью_
+ФОРМА СВЯЗАННАЯ С МОДЕЛЬЮ
+#способна генерировать теги
+	создающие эл-ты управления ⊂ форме
+	валидирующие введенные данные
+	сохраняющие данные в связанной с формой модели
+создадим форму связанную с моделью Bb
+bboard/forms.py
+	from django.forms import ModelForm
+	
+	from .models import Bb
+	#класс формы связанный с моделью Bb
+	class BbForm(ModelForm):
+		#класс ⊃ параметры формы(класс связанной модели(attr класса model), и tuple имен полей модели кот. должны ∃ в форме)
+		class Meta:
+			model = Bb
+			fields = ('title', 'content', 'price', 'rubric')
+КОНТРОЛЛЕРЫ-КЛАССЫ
+#обрабатывать формы связанные с моделью можно и в контроллерах-fx, но в мы используем контроллер-класс
+#высокоуровневый контроллер-класс будет exe большую часть работы по выводу и обработке формы
+bboard/views.py
+	...
+	from django.views.generic.edit import CreateView
+	
+	from .forms import BbForm
+	...
+	#базовый класс CreateView реализует функциональность по:
+		#созданию формы
+		#выводу с применением указанного шаблона
+		#получению занесенных в форму данных
+		#валидации данных
+		#сохранению в новой записи модели
+		#перенаправление на заданный url в случае успеха
+	class BbCreateView(CreateView):
+		template_name = 'bboard/create.html'
+		form_class = BbForm
+		success_url = '/bboard/'
+		#переопределим get_context_data для добавления в контекст дополнительных данных(список рубрик)
+		def get_context_data(self, **kwargs):
+			#получаем контекст шаблона от метода базового класса
+			context = super().get_context_data(**kwargs)
+			#т.к. на ∀ странице должна выводиться панель навигации ⊃ список рубрик => требуется добавить в контекст шаблона еще и этот список
+			context['rubrics'] = Rubric.objects.all()
+			return context
+bboard/templates/bboard/create.html
+	<!DOCTYPE html>
+	<html>
+		<head>
+			<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+			<title>Добавление объявления - Доска объявлений</title>
+		</head>
+		<body>
+			<h1>Добавление объявления</h1>
+			<div>
+				<a href="{% url 'index' %}">Главная</a>
+				{% for rubric in rubrics %}
+				<a href="{% url 'by_rubric' rubric.pk %}">
+				{{ rubric.name }}</a>
+				{% endfor %}
+			</div>
+			#форма храниться в v form создаваемую базовым классом CreateView
+			#т.к. не указан url по которому будут оправлены занесенные в форму данные -> данные будут отправлены по тому же адресу с которого была получена текущая страница(в данном случае тому же контроллеру-классу BbCreateView)
+			<form method="post">
+				{% csrf_token %}
+				#ModelForm.as_p()
+				#if это метод - то здесь ошибка(  form.as_p()  )
+				{{ form.as_p }}
+				<input type="submit" value="Добавить">
+			</form>
+		</body>
+	</html>
+добавим маршрут к CreateView
+bboard/urls.py
+	...
+	from .views import BbCrateView
+	
+	urlpatterns = [
+		path('add/', BbCrateView.as_view(), name='add'),
+		...
+	]
+создадим в панели навигации ∀ страниц гиперссылку на страницу добавления объявления
+	<a href="{% url 'add' %}">Добавить</a>
+запустим сервер => откроем сайт и перейдем по ссылке добавить
+в объявлении класса BbCreateView мы снова указали url перенаправления непосредственно(в attr класса success_url) - Bad Practice
+#сгенерируем его путем обратного разрешения
+views.py
+	from django.urls import reverse_lazy
+	
+	class BbCreateView(CreateView):
+		...
+		success_url = reverse_lazy('index')
+		...
+bboard/templates/layout/basic.html
+	<!DOCTYPE html>
+	<html>
+		<head>
+			<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+			<title>{% block title %}Главная{% endblock %} - Доска объявлений</title>
+		</head>
+		<body>
+			<header>
+				<h1>Объявления</h1>
+			</header>
+			<nav>
+				<a href="{% url 'index' %}">Главная</a>
+				<a href="{% url 'add' %}">Добавить</a>
+				{% for rubric in rubrics %}
+				<a href="{% url 'by_rubric' rubric.pk %}">{{ rubric.name }}</a>
+				{% endfor %}
+			</nav>
+			<section>
+			{% block content %}
+			{% endblock %}
+			</section>
+		</body>
+	</html>
+bboard/templates/bboard/index.html
+#перепишем шаблон чтобы он стал производным от базового
+	{% extends "layout/basic.html" %}
+	#обязан стоять в начале ∀ производного шаблона(что логично)
+	{% block content %}
+	{% for bb in bbs %}
+	<div class="b">
+		<h2>{{ bb.title }}</h2>
+		<p>{{ bb.content }}</p>
+		<p><a href="{% url 'by_rubric' bb.rubric.pk %}">{{ bb.rubric.name }}</a></p>
+		<p>{{ bb.published|date:"d.m.Y H:i:s" }}</p>
+	</div>
+	{% endfor %}
+	{% endblock %}
+сохраним-> проверим что главная !Δ
+~исправим
+bboard/templates/bboard/by_rubric.html
+	{% extends "layout/basic.html" %}
+	
+	{% block title %}{{ current_rubric.name }}{% endblock %}
+	
+	{% block content %}
+	<h2>Рубрика: {{ current_rubric.name }}</h2>
+	{% for bb in bbs %}
+	<div>
+		<h2>{{ bb.title }}</h2>
+		<p>{{ bb.content }}</p>
+		<p>{{ bb.published|date:"d.m.Y H:i:s" }}</p>
+	</div>
+	{% endfor %}
+	{% endblock %}
+bboard/templates/bboard/create.html
+	{% extends "layout/basic.html" %}
+	
+	{% block title %}Добавление объявления{% endblock %}
+	
+	{% block content %}
+	<h2>Добавление объявления</h2>
+	<form method="post">
+		{% csrf_token %}
+		{{ form.as_p }}
+		<input type="submit" value="Добавить">
+	</form>
+	{% endblock %}
