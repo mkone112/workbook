@@ -220,6 +220,7 @@ bboard/models.py
 		published = models.DateTimeField(auto_now_add=True, db_index=True, verbose_name='Опубликовано')
 		
 		#attr класса Meta зададут параметры самой модели
+		#может Meta это способ объединения attr относящихся к классу, а не экземпляру?
 		class Meta:
 			#название модели в мн-ом числе
 			verbose_name_plural = 'Объявления'
@@ -241,6 +242,7 @@ bboard/views.py
 РЕДАКТОР МОДЕЛИ
 #на странице списка записей ∀ позиции представляются "<class_model_name> object (<key_val>)"
 #представление модели в админке по умолчанию
+bboard/admin.py
 	#можно задать свои параметры представления модели объявив для нее класс редактор
 	from django.contrib import admin
 	
@@ -255,6 +257,7 @@ bboard/views.py
 		#{xn} имен полей по которым будет выполняться фильтрация
 		search_fields = ('title', 'content', )
 	#заменили этот участок для админки
+	#BbAdmin - редактор Bb
 	admin.site.register(Bb, BbAdmin)
 перейдем по списку записей и попробуем найти "газ"
 СВЯЗИ МЕЖДУ МОДЕЛЯМИ::СТР 53
@@ -294,13 +297,15 @@ bboard/models.py
 		#указанные в главе1
 		#это делается "для галочки" - подобные Δ класса модели никак не отражаются на бд
 manage.py makemigrations bboard
+#выводит список Δ в созданной миграции
 manage.py migrate
 
 зарегистрируем новую модель в админке
 bboard/admin.py
 	from .models import Rubric
+	...
 	admin.site.register(Rubric)
-запуск->админка->добавим пару рубрик
+перезапуск(видимо т.к. были миграции)->админка->добавим пару рубрик
 СТРОКОВОЕ ПРЕДСТАВЛЕНИЕ МОДЕЛИ
 #в списке записей модели Rubric ∀ рубрики представлены строками "<model_class_name> object (<val_ключа_записи>)"
 можно объявлить для модели Rubric класс редактора и задать в нем перечень полей выводящихся в списке, но это больше подходит для моделей с несколькими значащими полями(в Rubric оно одно)
@@ -319,10 +324,11 @@ bboard/models.py
 #на странице правки записи рубрика выбирается с помощью раскрывающегося списка ⊃ строковые представления рубрик
 организуем вывод рубрик объявлений в списке записей Bb
 #добавим в {xn} имен полей присвоенную attr list_display ⊃ классу BbAdmin, поле rubric
-/не_уверен_куда/...
+/bboard/admin.py
+	...
 	class BbAdmin(admin.ModelAdmin):
 		list_display = ('title', 'content', 'price', 'published', 'rubric')
-		...
+	...
 обновим страницу списка объялений => появлися столбец "Рубрика"
 #строковое представление связанной записи модели
 URL-ПАРАМЕТРЫ И ПАРАМЕТРИЗОВАННЫЕ ЗАПРОСЫ
@@ -378,7 +384,7 @@ bboard/templates/bboard/by_rubric.html
 		</body>
 	</html>
 исправим контроллер index() и шаблон bboard/index.html для вывода панели навигации также на главной и чтобы в ∀ объяве выводилось название рубрики в виде гиперссылки
-/<хз где>/
+/bboard/views.py
 	...
 	def index(request):
 		bbs = Bb.objects.all()
@@ -404,6 +410,7 @@ bboard/templates/bboard/by_rubric.html
 			<div>
 				<h2>{{ bb.title }}</h2>
 				<p>{{ bb.content }}</p>
+				#вроде rubric.pk сгенерился автоматом
 				<p><a href="/bboard/{{ bb.rubric.pk }}/">{{ bb.rubric.name }}</a></p>
 				<p>{{ bb.published|date:"d.m.Y H:i:s" }}</p>
 			</div>
@@ -417,6 +424,7 @@ bboard/templates/bboard/by_rubric.html
 	решение: обратное разрешение urls
 обратное разрешение urls
 #инструмент dj
+#reverse
 #мы указываем маршрут, формирующий нужный url и val URL-параметров (if это параметризованный ulr), а dj генерурует на их основе url
 #для реализации обратного разрешения требуется два действия:
 	дать нужным маршрутам имана
@@ -438,6 +446,7 @@ bboard/templates/bboard/by_rubric.html
 			<a href="/bboard/">
 			#на
 			#{% url <route_name> <val_url-параметра_для_вставки_результирующий_url>}
+			#по идее берем url из urls.py и передаем туда параметр
 			<a href="{% url 'by_rubric' rubric.pk %}">
 			...
 			#маршрут index - не параметризованный => url-параметры не требуются
@@ -524,10 +533,10 @@ bboard/templates/bboard/create.html
 добавим маршрут к CreateView
 bboard/urls.py
 	...
-	from .views import BbCrateView
+	from .views import BbCreateView
 	
 	urlpatterns = [
-		path('add/', BbCrateView.as_view(), name='add'),
+		path('add/', BbCreateView.as_view(), name='add'),
 		...
 	]
 создадим в панели навигации ∀ страниц гиперссылку на страницу добавления объявления
@@ -610,3 +619,34 @@ bboard/templates/bboard/create.html
 		<input type="submit" value="Добавить">
 	</form>
 	{% endblock %}
+СТАТИЧЕСКИЕ ФАЙЛЫ
+положим фон: bboard/static/bboard/bg.jpg
+/bboard/static/bboard/style.css
+	header h1 {
+		font-size: 40pt;
+		text-transform: uppercase;
+		text-align: center;
+		background: url("bg.jpg") left / auto 100% no-repeat;
+	}
+	nav {
+		font-size: 16pt;
+		width: 150px;
+		float: left;
+	}
+	nav a {
+		display: block;
+		margin: 10px 0px;
+	}
+	section {
+		margin-left: 170px;
+	}
+layout/basic.html
+	#загружаем модуль static поддерживающий static files в шаблонах
+	{% load static %}
+	...
+	<head>
+		...
+		#формируем url для статики
+		<link rel="stylesheet" type="text/css" href="{% static 'bboard/style.css' %}">
+	...
+попробуем добавить дополнительные объявления не заполняя некоторые поля
