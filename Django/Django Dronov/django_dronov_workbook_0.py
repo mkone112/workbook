@@ -56,10 +56,11 @@ django-admin
 	django-admin startproject samplesite
 		samplesite
 		#папка проекта
-		#м.б. переименована
+		#м.б. переименована/перемещена
 			manage.py
 			#программный файл с кодом соответствующей утилиты сгенерированный djngo-admin
 			#∀ что она делает - вызывает django-admin, передавая ей ∀ полученные команды и конфиругирует ее для обработки текущего проекта
+			#служебная утилита
 			samplesite
 			#формурует пакет Python ⊃ модули проекта и задают его конфигурация (⊃ основные настройки)(и конфигурацию ∀ приложений⊂проекту)
 			#название = названию проекта, при его переименовании придется вносить серьезные правки в коде
@@ -67,17 +68,147 @@ django-admin
 				__init__.py
 				setting.py
 				#модуль с настройками проекта
-					#конфиг бд
-					#пути ключевых dirs
-					#параметры безопасности
+				#конфиг бд
+				#имя v = имя параметра
+				#пути ключевых dirs
+				#параметры безопасности
+					BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__))) |os.path.join(BASE_DIR, ...)
+					#путь к проекту(по умолчанию вычисляется автоматом)
+					SECRET_KEY = <str>
+					#используется ядром dj и подсис-мой разграничения доступа для шифрования данных
+					#генерируется django-admin при создании проекта
+					#может использоваться для атаки на сайт
+					#не следует менять без необходимости
+					DEBUG=<Bool>
+					#режим работы сайта
+						True(включается при создании проекта)
+						#отладочный
+						#вывод страницы отладки при ∀ err
+						False(по умолчанию)
+						#эксплутационный
+						#при ∀ err выводит стандартное сообщение сервера(not found(404?)/internal server error(500?))
+						#более строгие настройки безопасности
+					ALLOWED_HOSTS = []
+					#
 					INSTALLED_APPS = [
+					#заполняется при создании проекта
 						'django.contrib.admin',
-						#административный сайт
+						#реализует fx административного сайта
 						'django.contrib.auth',
 						#реализует работу подсис-мы разграничения доступа						
+						#используется django.contrib.admin
+						'django.contrib.contenttypes',
+						#⊃ список ∀ моделей объявленных во ∀ app проекта
+						#используется
+							при создании полиморфных связей между моделями(дронов глава 16)
+							django.contrib.admin
+							django.contrib.auth						
 						'django.contrib.sessions',
 						#реализует работу подсис-мы обслуживающей серверные сессии
-					...
+						'django.contrib.messages',
+						'django.contrib.staticfiles',
+					]
+					MIDDLEWARE = [
+						'django.middleware.security.Security.Middleware',
+						'django.contrig.sessions.middleware.SessionMiddleware',
+						'django.middleware.common.CommonMiddleware',
+						'django.middleware.csrf.CsrfViewMiddleware',
+						#видно что-то с токенами
+						'django.contrib.auth.middleware.AuthenticationMiddleware',
+						#что-то с авторизацией
+						'django.contrib.messages.middleware.MessageMiddleware',
+						'django.middleware.clickjacking.XFrameOptionsMiddleware',
+					]
+					ROOT_URLCONF = <project_dir>.<urls.py>
+					#путь к модулю хранящем маршруты уровня проекта
+					
+					TEMPLATES = [
+						{
+							'BACKEND': 'django.template.backends.django.DjangoTemplates',
+							'DIRS': [],
+							'APP_DIRS': True,
+							'OPTIONS': {
+								'context_processors': [
+									'django.template.context_processors.debug',
+									'django.template.context_processors.request',
+									'django.contrib.auth.context_processors.auth',
+									'django.contrib.messages.context_processors.messages',
+									
+								],
+							},
+						},
+					]
+					WSGI_APPLICATION = '<project_dir>.wsgi.application'
+					DATABASES = <dict>
+					#val по умолчанию
+					{}
+					#val при создании проекта
+						#указывает единственную бд в формате SQLite ⊂ в файле <project>/db.sqlite3
+						{
+							'default': {
+								'ENGINE': 'django.db.backends.sqlite3',
+								#формат бд
+								#путь к модулю реализующему работу с нужным форматом бд
+								#доступные val	
+									django.db.backends
+										.sqlite3
+										.mysql
+										.postgresql
+										.oracle
+								'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+								#путь к файлу бд(sqlite3)|имя бд(серверные субд)
+								'TIME_ZONE'
+								#TZ для val date/time ⊂ db
+								#используется if формат бд не поддерживает val даты/времени ⊃ timezone(а такие ∃?)
+								#val по умолч: None(параметр вообще не указан)(val берется из одноименного val проекта)
+								'HOST'
+								#используется only for серверных СУБД
+								#адрес сервера СУБД
+								'PORT':''
+								#используется only for серверных СУБД
+								#порт для подключения к серверу СУБД
+								#по умолч - пустая str - использовать порт по умолчанию(порт по умолчанию для ∀ бд?|порт по умолчанию для dj)
+								'USER'
+								#используется only for серверных СУБД
+								#имя пользователся СУБД
+								'PASSWORD'
+								#используется only for серверных СУБД
+								#пароль пользователя СУБД
+								'CONN_MAX_AGE':<int>:0
+								#используется only for серверных СУБД
+								#число секунд в течение которого соединение с бд будет открыто
+									0 
+									#закрытие сразу после обработки запроса
+								'OPTIONS':<dict>:{}
+								#используется only for серверных СУБД
+								#доп параметры специфичные для СУБД
+								#∀ елт - отдельный параметр
+							}
+						}
+					#хранит ∀ бд используемые проектом
+					
+					AUTH_PASSWORD_VALIDATORS = [
+						{
+							...
+						}
+					]
+					#перечисление валидаторов паролей
+					LANGUAGE_CODE = 'ru-ru'
+					#
+					TIME_ZONE = 'Europe/Moscow'
+					#используется if формат бд не поддерживает val даты/времени ⊃ timezone(а такие ∃?)
+					#val по умолч: None(val берется из одноименного val проекта(?дронов 3.3.5))
+					USE_I18N = True
+					#
+					USE_L10N = True
+					DEFAULT_CHARSET='utf-8'
+					#кодировка страниц по умолчанию
+					STATIC_URL = ''
+					#путь до static
+					FILE_CHARSET
+					#кодировка текстовых файлов
+					#параметр отсутсвует by def
+					#кодировка по умолчанию = 'utf-8'
 				urls.py
 				#модуль маршрутизации уровня проекта
 				wsgi.py
@@ -502,6 +633,8 @@ django.forms
 		установка dj
 		#различные способы установки:docs.djangoproject.com/en/2.1/topics/install
 		установка СУБД соотв бд
+		#в большинстве случаев сайты используют одну бд
+		#конфигурирование dj для использования неск. бд и работа с ними: docs.djangoproject.com/en/2.1/topics/db/multi-db/
 			SQLite
 			#поставляется с интерпритатором python
 			#создается автоматом ПРИ ПЕРВОЙ ПОПЫТКЕ ОБРАЩЕНИЯ К НЕЙ
@@ -519,5 +652,35 @@ django.forms
 				mysqlclient 
 				#1.3.7+
 			#бд не создается автоматом
-			
+			#требуется создать пользователя(с необходимыми правами(создание/Δ/удаление таблиц/индексов/связей)) от имени которого будет подключаться dj
+			#для создания бд/пользователя можно использовать MySQL Workbench(по ⊂ MySQL)
+			PostgreSQL
+			#потребуется установить коннектор
+				psycorg
+				#2.5.4
+				#python-коннектор для PostgreSQL
+				#psycopg.org/psycopg
+			#дистрибутивные пакеты
+				openscg
+				#openscg.com/bigsql/postgresql/installers.jsp
+				#⊃ python-коннектор
+				#поддерживает PostgreSQL 9.4+
+			#не создается автоматом
+			#требуется создать пользователя(с необходимыми правами(создание/Δ/удаление таблиц/индексов/связей)) от имени которого будет подключаться dj
+			#для создания бд/пользователя можно использовать средства этой СУБД
+			Oracle
+			#СУБД
+			Microsoft SQL Server
+			#СУБД
+			Firebird
+			#клиент?
+			IBM DB2
+			#СУБД?
+			SAP SQL Anywhere
+			#СУБД?
+			ODBC
+			#механизм
+		подключение к бд
+		#docs.djangoproject.com/en/2.1/ref/databases/
+
 			
