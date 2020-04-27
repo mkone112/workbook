@@ -2,7 +2,6 @@
  django-admin startproject <project_name> [<path_to_project_dir>]
  #создание dj-проекта
  #без указания пути - создает папку с именем проекта в текущей папке
- #в 
  manage.py startapp bboard
  #регистрируем приложение в проекте
  <project_name>/settings.py

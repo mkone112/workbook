@@ -70,6 +70,13 @@ django-admin
 				#модуль с настройками проекта
 				#конфиг бд
 				#имя v = имя параметра
+				#val форматов даты и времени - на мой взгляд полная наркомания
+					<название месяца на английском>: 'F'|'E'
+					<число>						   : 'd'|'j'
+					...
+				#при записи форматов дат/времени используются те же спецсимволы что и в фильтре шаблонизатора date
+				#при записи форматов даты/времени для полей ввода используются спецсимволы используемые в вызовами strftime() и strptime()
+					#их перечень:docs.python.org/3/library/datetime.html#strftime-strptime-behavior
 				#пути ключевых dirs
 				#параметры безопасности
 					BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__))) |os.path.join(BASE_DIR, ...)
@@ -92,6 +99,7 @@ django-admin
 					#
 					INSTALLED_APPS = [
 					#заполняется при создании проекта
+					#при удалении приложения из списка => следует удалить ∀ используемые им посредники
 						'django.contrib.admin',
 						#реализует fx административного сайта
 						'django.contrib.auth',
@@ -105,20 +113,51 @@ django-admin
 							django.contrib.auth						
 						'django.contrib.sessions',
 						#реализует работу подсис-мы обслуживающей серверные сессии
+						#обеспечивает хранение данных клиента на сервере в сессиях
+						#используется django.contrib.admin
 						'django.contrib.messages',
+						#вывод/обработка всплывающих msg
+						#используется django.contrib.admin
 						'django.contrib.staticfiles',
+						#реализация обработки static
+						#не требуется if проект !⊃ static(что как-то маловероятно)
 					]
-					MIDDLEWARE = [
-						'django.middleware.security.Security.Middleware',
-						'django.contrig.sessions.middleware.SessionMiddleware',
-						'django.middleware.common.CommonMiddleware',
-						'django.middleware.csrf.CsrfViewMiddleware',
-						#видно что-то с токенами
-						'django.contrib.auth.middleware.AuthenticationMiddleware',
-						#что-то с авторизацией
-						'django.contrib.messages.middleware.MessageMiddleware',
-						'django.middleware.clickjacking.XFrameOptionsMiddleware',
-					]
+					MIDDLEWARE = <list>:[]
+					#список посредников
+					#middleware:eng:посредник
+					#val генерируемое при создании проекта - посредники ⊂ dj
+						[
+							'django.middleware.security.Security.Middleware',
+							#реализация доп защиты сайта от сетевых атак
+							#очевидно не стоит отключать
+							'django.contrig.sessions.middleware.SessionMiddleware',
+							#обеспечение работы сессий на low level
+							#используется
+								django.contrib.auth
+								django.contrib.sessions
+								django.contrib.messages
+							'django.middleware.common.CommonMiddleware',
+							#учавствует в предварительной обработке запросов
+							#не стоит отключать
+							'django.middleware.csrf.CsrfViewMiddleware',
+							#видно что-то с токенами
+							#защита от межсайтовых запросов при обработке данных переданных сайту HTTP-медодом POST
+							#не стоит отключать if сайт получает данные от пользователей через POST
+							'django.contrib.auth.middleware.AuthenticationMiddleware',
+							#что-то с авторизацией
+							#добавляет в obj запроса(request?) attr ⊃ текущего user, который можно использовать для определения какой user входил на сайт
+							#используется
+								django.contrib.admin
+								django.contrib.auth
+							'django.contrib.messages.middleware.MessageMiddleware',
+							#обработка всплывающих msg на low level
+							#используется
+								django.contrib.admin
+								django.contrib.messages
+							'django.middleware.clickjacking.XFrameOptionsMiddleware',
+							#доп защита от сетевых атак
+							#очевидно не стоит отключать
+						]
 					ROOT_URLCONF = <project_dir>.<urls.py>
 					#путь к модулю хранящем маршруты уровня проекта
 					
@@ -193,26 +232,119 @@ django-admin
 						}
 					]
 					#перечисление валидаторов паролей
-					LANGUAGE_CODE = 'ru-ru'
-					#
-					TIME_ZONE = 'Europe/Moscow'
-					#используется if формат бд не поддерживает val даты/времени ⊃ timezone(а такие ∃?)
-					#val по умолч: None(val берется из одноименного val проекта(?дронов 3.3.5))
-					USE_I18N = True
-					#
-					USE_L10N = True
-					DEFAULT_CHARSET='utf-8'
-					#кодировка страниц по умолчанию
+					LANGUAGE_CODE = 'ru-ru':'en-us'
+					#код языка используемого для вывода сис-ых msg и страниц django.contrib.admin
+					TIME_ZONE = <str>:
+					#val по умолч:'America/Chicago', при создании проекта:UTC
+UTC
+#всемирное координированное время
+					#список доступных зон:en.wikipedia.org/wiki/List_of_tz_database_time_zones
+					#возм val
+						'Europe/Moscow'
+					USE_I18N = <bool>:True
+					#состояние ⊂ dj сис-мы автоперевода на язык указанных в LANGUAGE_CODE
+						USE_I18N = True
+						#∀ сообщения админки выводятся локализованными
+						#понижает perf
+						USE_I18N = False
+						#∀ сообщения выводятся на en-us
+						#увеличивает perf
+					USE_L10N = <bool>:True
+					#в книге USE_L18N(очевидная ошибка)
+					#val по умолч:False, при создании проекта True
+						USE_L10N = True
+						#числа, даты, время при выводе форматируются по правилам языка указанного в LANGUAGE_CODE
+						USE_L10N = False
+						#числа, даты, время - при выводе форматируются согласно настройкам проекта(?)
+
+					USE_TZ=<bool>
+					#False:по умолч, при создании проекта:True
+					#хранение tz
+						USE_TZ = True
+						#dj будет хранить val даты/времени ⊃ tz => TIME_ZONE указывает tz по умолчанию
+						USE_TZ = False
+						#dj ⊃ дату/время !⊃ tz => TIME_ZONE указывает tz для них
 					STATIC_URL = ''
 					#путь до static
 					FILE_CHARSET
 					#кодировка текстовых файлов
 					#параметр отсутсвует by def
 					#кодировка по умолчанию = 'utf-8'
+					DEFAULT_CHARSET='utf-8'
+					#кодировка страниц по умолчанию
+					#параметр отсутсвует by def
+					DECIMAL_SEPARATOR=<str>:'.'
+					#требует USE_L18N = False, иначе игнорируется
+					#символ используемый для разделения целой.дробной части вещественных чисел
+					NUMBER_GROUPING=<int>:0
+					#требует USE_L18N = False, иначе игнорируется
+					#число цифр в числе составляющих группу
+						NUMBER_GROUPING=0
+						#группировка не используется
+					THOUSAND_SEPARATOR=<str>:','
+					#требует USE_L18N = False, иначе игнорируется
+					#символ разделения групп цифр при выводе
+					USE_THOUSAND_SEPARATOR=<bool>:False
+					#требует USE_L18N = False, иначе игнорируется
+					#использовать разбиение на группы
+					SHORT_DATE_FORMAT=<str>:'m/d/Y'
+					#требует USE_L18N = False, иначе игнорируется
+					#формат по умолч для вывода даты в коротком виде
+					#val по умолч: 'm/d/Y' : <месяц>/<число>/<год из 4х цифр>
+					#дронов рекомендует установить
+						SHORT_DATE_FORMAT = 'j.m.Y'
+					SHORT_DATETIME_FORMAT=<str>:'m/d/Y P'
+					#требует USE_L18N = False, иначе игнорируется
+					#формат по умолч для вывода даты и времени в коротком виде
+					#val по умолч: 'm/d/Y P' : <месяц>/<число>/<год_из_4х_цифр>/<часы в 12-ти часовом формате>
+					#примеры
+						'j.m.Y H:i:s'
+						#<число>.<месяц>.<год_из_4х_цифр> <часы_в_24х_часовом_формате>:<минуты>:<секунды>
+					DATE_FORMAT=<str>:'N j, Y'
+					#требует USE_L18N = False, иначе игнорируется
+					#формат по умолч для вывода val даты в полной записи
+					#val по умолч:'N d, Y':<eng_назв_месяца> <date> <year_xxxx>
+						'E'
+						#локализованное назв месяца?
+					DATETIME_FORMAT=<str>:'N j, Y, P'
+					#требует USE_L18N = False, иначе игнорируется
+					#формат по умолч для вывода val даты и времени
+					#дронов рекомендует: 'j E Y H:i:s'
+					TIME_FORMAT=<str>:'P'
+					#требует USE_L18N = False, иначе игнорируется
+					#default формат вывода времени
+					MONTH_DAY_FORMAT=<str>:'F, j'
+					#требует USE_L18N = False, иначе игнорируется
+					#default формат вывода месяца и числа
+					#default val:'F, j'
+					YEAR_MONTH_FORMAT=<str>:'F Y'
+					#требует USE_L18N = False, иначе игнорируется
+					#default формат вывода месяца и года
+					DATE_INPUT_FORMATS=<list>:[...]
+					#требует USE_L18N = False, иначе игнорируется
+					#список форматов в которых пользователи могут заносить val в поля ввода
+					#получив val даты в виде str dj {xn} сравнивает его со ∀ форматами в этом списке
+					#дронов рекомендует ['%d.%m.%Y']
+					DATETIME_INPUT_FORMATS=<list>:[...]
+					#требует USE_L18N = False, иначе игнорируется
+					#список форматов в которых пользователи могут заносить val даты и времени в поля ввода
+					#дронов рекомендует:['%d.%m.%Y %H:%M:%S']
+					TIME_INPUT_FORMATS=<list>:['%H:%M:%S', '%H:%M:%S.%f', '%H:%M']
+					#требует USE_L18N = False, иначе игнорируется
+					#список форматов в которых пользователи могут заносить val времени в поля ввода
+					FIRST_DAY_OF_WEEK=<int>:0
+					#требует USE_L18N = False, иначе игнорируется
+					#номер дня с которого начинается неделя
+						0 : вс
+						6 : сб
 				urls.py
 				#модуль маршрутизации уровня проекта
 				wsgi.py
 				#модуль связывающий проект с веб-сервером(используется для деплоя)
+ПОСРЕДНИКИ
+#middleware
+#программные модули exe предварительную обработку клиентского запроса перед передачей контроллеру и окончательную обработку ответа контроллера
+#∀ посредники должны быть указаны в соотв списке в settings.py
 ОТЛАДОЧНЫЙ ВЕБ-СЕРВЕР DJ
 #написан на Python
 #сразу готов к работе, не требует сложной настройки
@@ -223,8 +355,10 @@ manage.py
 	runserver
 	#запускает отладочный(только?) сервер
 	#порт по умолчанию TCP 8000
-	startapp
+	startapp <app_name> [<path_to_dir_of_app_packet]
 	#создание нового пустого приложения
+	#if путь к папке app не указан - пакет с указаным именем будет создан в текущей папке
+	#else if папка app указана - она будет преобразована в пакет приложения
 	makemigrations <app>
 	#запускает генерацию миграций для ∀ моделей в app не Δ с момента пред генерации миграций
 	#миграции сохраняются в пакете <app>/migrations
@@ -682,5 +816,8 @@ django.forms
 			#механизм
 		подключение к бд
 		#docs.djangoproject.com/en/2.1/ref/databases/
-
+СОЗДАНИЕ, НАСТРОЙКА И РЕГИСТРАЦИЯ ПРИЛОЖЕНИЙ
+APPS
+#приложения реализуют отдельные части fx проекта
+#∀ проект должен ⊃ min одно app
 			
