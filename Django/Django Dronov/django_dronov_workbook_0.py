@@ -596,6 +596,7 @@ attr класса ~ св-ва класса|статические св-ва в o
 #кажется запись = экземпляр класса модели
 	django.db.models
 	#вроде ⊃ ∀ модели
+	#поля также могут принимать args поддерживаемые полями ∀ типов не указанные здесь
 		CharField(max_length:int)
 		#строковое поле ограниченной длинны
 		#занимает в бд V необходимый для ⊃ числа символов указанных в max_length
@@ -628,14 +629,73 @@ attr класса ~ св-ва класса|статические св-ва в o
 		PositiveIntegerField()
 		#unsigned 32bit int(usual)
 		PositiveSmallInteger
+		#unsigned 16bit int(half)
 		FloatField
 		#поле для хранения вещественных чисел
+		DecimalField(max_digits, decimal_places)
+		#действит число фиксированной длинны
+		#реализован Decimal ⊂ decimal
+			max_digits
+			#max знаков ⊂ ∀ числу
+			decimal_places
+			#max знаков ⊂ дробной части
+		#пример
+			price = models.DecimalField(max_digits=8, decimal_places=2)
+		DateField([auto_now:<bool>=False],[auto_now_add=<bool>])
+		#date ⊂ datetime
+		#True для ∀ аргумента => делает поле невидимым(видимо для пользователя) и необязательным для занесения на уровне dj(editable=False, blank=True)
+			auto_now
+			#True: при ∀ сохранении записи => в поле заносится текущая дата
+			#может исп для хранения даты посл Δ записи
+			#False: val ⊂ полю !Δ при сохранении
+			auto_now_add
+			#~auto_now, ! текущая дата заносится только при создании записи, ! при послед сохранении
+			#исп для ⊃ даты создания записи
 		DateTimeField
 		#поле для хранения даты&времени
+		#~DateField, ! val ⊂ datetime.datetime
 			DateTimeField(auto_now_add=True)
 			#при создании записи(экземпляра модели) заполнять его текущими датой и временем
 			DateTimeField(db_index=True)
 			#создавать для поля индекс(напр для послед сортировки по дате)(т.е. поле походу становится индексом)
+		TimeField([auto_now:<bool>=False],[auto_now_add=<bool>])
+		#поле ⊃ время
+		#datetime.time
+			auto_now
+			#~DateField
+			auto_now_add
+			#~DateField
+		DurationField
+		#промежуток времени
+		#datetime.timedelta
+		BinaryField
+		#bytes произвольной длинны
+		GenericIPAdressField(protocol:'IPv4'|'IPv6'|'both'='both',inpack_ipv4:<bool>=False)
+		#IP-адресс(IPv4|IPv6)
+		#str
+			inpack_ipv4
+			#True=> преобразование IPv4 адресов записанных в формате IPv6 в формат IPv4
+			#требует protocol='both'
+		AutoField
+		#автоинкрементное поле ⊃ уникальные инкрементирующиеся 32bit int
+		#почти ∀ используется как ключевое, и не требует явного объявления(создается dj автоматом при отсутствии в модели)
+		BigAutoField
+		#64bit ~ AutoField
+		UUIDField
+		#уникальные, универсальный(?) id
+		#представлен UUID from uuid, в виде str
+		#может исп как ключевое вместо AutoField/BigAutoField
+		#требует ручной генерации id для записей
+			import uuid
+			from django.db import models
+			
+			class Bb(models.Model):
+				id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+				...
+		<ПОЛЕ_ДЛЯ_⊃_ФАЙЛОВ>
+		...
+		<ПОЛЕ_ДЛЯ_⊃_ИЗОБРАЖЕНИЙ>
+		...
 ПАРАМЕТРЫ ПОЛЕЙ
 	ПАРАМЕТРЫ ПОДДЕРЖИВАЕМЫЕ ПОЛЯМИ ∀ ТИПОВ
 		verbose_name
@@ -718,6 +778,60 @@ attr класса ~ св-ва класса|статические св-ва в o
 		#False - запрет на вывод в составе формы(даже при явном создании его в форме)
 		db_column=<str>
 		#имя поля, if !∃ => по умолч получает имя поля модели(механизм был указан ранее)
+ПАРАМЕТРЫ САМОЙ МОДЕЛИ
+#описываются attr непроизводного класса Meta вложенного в класс модели
+	verbose_name
+	#имя сущности(ед число) ⊂ модели для вывода
+	verbose_name
+	#имя набора сущностей(мн число) ⊂ модели для вывода
+	unique_together
+	#{xn} str ⊃ имена полей ⊃ уникальные(в пределах табл) комбинации val
+	#при попытке занести в них ∃ в таблице комбинации val -> вызвает ValidationError exept ⊂ django.core.exceptions
+		#комбинации названий товаров и даты публикации должны быть уникальны в пределах модели
+		class Bb(models.Model):
+			...
+			class Meta:
+				unique_together = ('title', 'published')
+		#можно указать несколько групп
+		class Bb(models.Model):
+			...
+			class Meta:
+				unique_together = {
+					('title', 'published'),
+					('title', 'price', 'rubric'),
+				}
+	ordering:<{xn}_str_имен_полей_по_кот_должна_exe_sort>
+	#параметры сортировки записей моделей по умолч
+		'-<field_name>'
+		#минус перед названием поля - обратный порядок сортировки
+			#сортировка сначало по убыванию published, затем по возрастанию title
+			class Bb(models.Model):
+				...
+				class Meta:
+					ordering = ['-published', 'title']
+	get_latest_by
+	#имя поля типа DateField|DateTimeField используемое для получения позднейшей/самой ранней записи с помощью .latest()|.earliest() без параметров
+	#можно задать
+		str
+		#.latest() вернет самую свежую запись(⊃max val в поле published)
+		class Bb(models.Model):
+			...
+			published = models.DateTimeField()
+			
+			class Meta:
+				get_latest_by = 'published'
+		{xn} str
+		#использование нескольких полей(if поля записей хранят одинаковое val => сравниваются след поля, ...)
+	#можно инвертировать порядок сортировки => .latest() вернет самую старую запись, .earliest() наоборот
+		...
+		class Meta:
+			get_latest_by = '-published'
+<...>.latest(...)
+#получение последней записи модели
+#if модель ⊃ get_latest_by = '-...' => получение самой ранней записи
+<...>.earliest(...)
+#получение первой записи модели
+#if модель ⊃ get_latest_by = '-...' => получение самой поздней записи
 МИГРАЦИИ
 #Python-модуль созданный dj на основе модели, предназначенный для создания в бд ∀ требуемых моделью структур
 	таблиц
@@ -874,19 +988,209 @@ django.contrib.auth
 	прав
 	#таблицы для них в бд создаются специальные миграции => для задействования встроенных средств разграничения доступа dj нужно min раз произвести миграцию
 		#затем требуется создать superuser
-+++++++++++++++++++++++++++++++++++++++++++++++++(остановился здесь)
 ПАРАМЕТРЫ ПОЛЕЙ И МОДЕЛЕЙ::СТР::50
 РЕДАКТОР МОДЕЛИ
-models.Model
-	.ForeignKey(<link_to_class>|<string_with_classname>, null=<bool>, on_delete=models.<model>, verbose_name=)
-	#представляет поле внешнего ключа, фактических хранящий ключ записи из первичной модели
-	#конструктор, первым параметром принимающий класс первичной модели в виде
-		if код объявляющий класс первичной модели распологается перед кодом класса вторичной => ссылки на класс
-		if вторичная модель объявлена раньше первичной => строки с именем класса
-	#on_delete 
-		#управляет каскадным удалением записей вторичной модели при удалении связанной записи в первичной
-			models.PROTECT
-			#запрет каскадного удаления
+...
+СВЯЗИ МЕЖДУ МОДЕЛЯМИ
+сокр:secondary:связанная вторичная модель
+сокр:primary:связанная первичная модель
+    СОЗДАНИЕ СВЯЗЕЙ МЕЖДУ МОДЕЛЯМИ
+    #связи моделей создаются объявлением ⊃ полей формируемых особыми классами django.db.models(полями внешних ключей)
+	django.db.models
+		.ForeignKey(
+			<link_to_class_primary_model>|<string_with_classname_primary_model>,
+			on_delete=django.db.models.<model>,
+			[limit_choices_to][,
+			related_name:'<имя_записи_в_primary>'|'+'=<имя_secondary>_set][,
+			related_query_name:<str>=<secondary_class_name>][,
+			to_field=<str>][,
+			db_constraint:<bool>=True][,
+			...]
+		)
+		#поле внешнего ключа
+		#создание связи "один-со-многими"
+		#связывание одну запись первичной модели с ∀ числом записей вторичной
+		#наиболее применяющаяся
+		#представляет поле внешнего ключа, фактических хранящий ключ записи из первичной модели
+		#имя поля внешнего ключа должно обозначать связываемую сущность и быть в единственном числе(напр rubric)
+		#на уровне бд поле внешнего ключа модели представляется полем таблицы с именем 
+			#<имя поля внешнего ключа>_id
+		#в веб-форме такое поле представляется раскрывающимся списком ⊃ строковые представления записей первичной модели(?проверить)
+		#модель в которой создается - вторичная
+		#конструктор, первым параметром принимающий класс связываемой первичной модели в виде
+			if код объявляющий класс первичной модели распологается перед кодом класса вторичной => ссылки на класс
+				#primary
+				class Rubric(models.Model):
+					...
+				#secondary
+				class Bb(models.Model):
+					rubric = models.ForeignKey(Rubric, on_delete=models.PROTECT)
+					...
+			if вторичная модель объявлена раньше первичной => строки с именем класса
+				#secondary
+				class Bb(models.Model):
+					rubric = models.ForeignKey('Rubric', on_delete=models.PROTECT)
+					...
+				#primary
+				class Rubric(models.Model):
+					...
+			if модель ⊂ другому app ⊂ проекту => строки '<app_name>.<model_class_name>'
+				class Rubric(models.Model):
+					...
+				class Bb(models.Model):
+					rubric = models.ForeingKey('rubrics.Rubric', on_delete=models.PROTECT)
+			рекурсивная связь => 'self'
+				parent_rubric = models.ForeignKey('self', on_delete=models.PROTECT)
+			on_delete 
+			#поведение при удалении записи первичной модели 
+			#управляет каскадным удалением записей вторичной модели при удалении связанной записи в первичной
+			#if СУБД поддерживает межтабличные связи с сохранением ссылочной целостности, попытка удаления записи ⊂ primary с которыми связаны записи secondary обламается с IntegrityError exept ⊃ django.db.models
+			#v ⊃ django.db.models
+				CASCADE
+				#удаление ∀ связанных записей вроричной модели(каскадное)
+				PROTECT
+				#запрет каскадного удаления вызовом ProtectedError exept ⊂ django.db.models
+				SET_NULL
+				#if поле внешнего ключа объявлено необязательным на уровне бд(null=True) заносит null в поле внешнего ключа ∀ связанных записей вторичной модели
+				SET_DEFAULT
+				#if поле внешнего ключа объявлено ⊃ default val(default=<default_val>) => заносит заданное default val в поле внешнего ключа ∀ связанных записей вторичной модели
+				SET(<value>|<fx_без_параметров_возвращающая_val>)
+				#заносит <value> в поле внешнего ключа
+					rubric = models.ForeignKey(Rubric, on_delete=models.SET(1))
+					def get_first_rubric():return Rubric.objects.first()
+					rubric = models.ForeignKey(Rubric, on_delete=models.SET(get_first_rubric))
+				DO_NOTHING
+				#заглушка, делает ничего
+			limit_choices_to=<dict('field_name':value)>|<class Q>
+			#позволяет вывести в списке связываемых записей primary только удовлетворяющие заданным критериям фильтрации
+			#критерии фильтрации = dict ⊃ имена полей primary по которым должна exe фильтрация с val указывающими val этих полей => выведены будут записи удовлетворяющие ∀ критериям(т.е. критерии объединяются AND)
+				#вывод только рубрик чье поле show=True
+				rubric = models.ForeignKey(Rubric, on_delete=models.PROTECT, limit_choices_to={'show': True})
+			related_name:'<имя_записи_в_primary>'|'+'=<имя_secondary>_set
+				'+'
+				#if доступ из записи ⊂ primary не требуется => можно указать dj не создавать в нем attr
+				#снижает издежки perf
+			#str ⊃ имя записи primary для доступа к записям secondary
+				#secondary
+				class Bb(models.Model):
+					#по идее это создает attr в primary
+					rubric = models.ForeignKey(Rubric, on_delete=models.PROTECT, related_name='entries')
+				...
+				#получаем первую рубрику
+				first_rubric = Rubric.objects.first()
+				#получаем доступ к связанным объявлениям через attr entries
+				#получение доступа к полям secondary через attr primary
+				bbs = first_rubric.entries.all()
+			related_query_name:<str>=<secondary_class_name>
+			#имя фильтра в secondary фильтрующий val ⊂ записи primary
+				class Bb(models.Model):
+					rubric = models.ForeignKey(Rubric, on_delete=models.PROTECT, relate_query_name='entry')
+				#получаем ∀ рубрики ⊃ объявления о продаже домов
+				rubrics = Rubric.objects.filter(entry__title='Дом')
+			to_field
+			#str имя (only уникального(unique=True)) поля primary для связывания
+			#if не указан => связывание происходит по ключевому полю primary
+			db_constraint:<bool>=True
+			#True: создание связи в таблице бд позволяющая сохранить ссылочную целостность(?)
+			#False: ссылочная целостность поддерживается только на уровне dj
+				#используется только if модель создается на основе ∃ бд ⊃ некорректные данные
+		.OneToOneField(
+			<link_to_class_primary_model>|<string_with_classname_primary_model>,
+			on_delete=django.db.models.<model>,
+			[...]
+		)
+		#связь "один-с-одним" 
+		#поле внешнего ключа
+		#исп для объединения моделей где одна ⊃ данные дополняющие другую модель(по сути JOIN с ограничениями)
+		#стандартная подсис-ма разграничения доступа ⊃ список зарегистрированных пользователей исп особую модель, которую можно заменить - ссылка на класс заменяемой модели пользователя указывается в параметре:
+			<project>/settings.py
+				...
+				AUTH_USER_MODEL = <...>
+				...
+		#создание модели ⊃ доп данные о зарегистрированном пользователе
+			from django.db import models
+			from django.contrib.auth.models import User
+			
+			class AdvUser(models.Model):
+				is_activated = models.BooleanField(default=True)
+				user = models.OneToOneField(User, on_delete=models.CASCADE)
+		#на уровне бд такая связь представляется тем-же полем что и связь "один-со-многими"
+		#поддерживает доп параметры ~ .ForeignKey и:
+			parent_link
+			#применяется при наследовании моделей
+		.ManyToManyField(
+			<link_to_class_other_model>|<string_with_classname_other_model>[,
+			limit_choices_to=][,
+			related_name=][,
+			related_query_name][,
+			db_constraint=][,
+			symmetrical][,
+			through][,
+			through_fields][,		
+		...])
+		#связь "многие-со-многими"
+		#обе модели равноправны(нет primary/secondary)
+			модель ⊃ объявление	- вещущая
+			связываемая модель	- ведомая
+		#самая сложная в реализации для dj(! не для пользователя)
+		#∀ число записей одной модели с ∀ числом записей другой
+		#на уровне бд представляется таблицей с именем:
+			<app_alias>_<имя_класса_ведущей_модели>_<имя_класса_ведомой_модели>
+			#связующая таблица ⊃
+				ключевое поле:id
+				по полю на ∀ связываемую модель: <model_class_name>_id
+				#при создании связи с той-же моделью - связующая таблица ⊃ поля:
+					id
+					from_<model_class_name>_id
+					to_<model_class_name>_id
+		#объявляется в одной из моделей(но не в обеих)
+			#пока не вижу в этом коде двух множеств
+			#ведомая, запчасти
+			class Spare(models.Model):
+				name = models.CharField(max_length=30)
+			#ведущая	
+			class Machine(models.Model):
+				name = models.CharField(max_length=30)
+				spares = models.ManyToMayField(Spare)
+				#создает таблицы в бд:
+					#связующая
+					samplesite_machine_spare
+						#⊃ поля
+							id
+							machine_id
+							spare_id
+		#поле внешнего ключа
+		#имя поля образующего эту связь нужно записывать во мн-ом числе(что очевидно т.к. число записей м.б. ∀)
+		#доп параметры
+			symmetrical:<bool>=True
+			#используется только при связывании с собой
+			#True: dj создаст симметричную связь(if машина А ⊃ деталь Б <=> деталь Б ⊂ в машину А)
+			#False: ассиметричная связь, для этого dj создает в классе attr для доступа к записям связанной модели в обратном направлении
+			through:<link_to_binding_model>|'<name_of_binding_model>'=<создается dj>
+			#модель(связующая) представляющая связующую таблицу
+			#if не указан => связующая таблица создается dj автоматом
+			#при использовании
+				!поле внешнего ключа для связи объявляется в ведущей и ведомых
+				#при создании этих полей нужно указать
+					саму связующую модель(through)
+					поля внешних ключей по которым будет установлена связь(through_fields)
+			through_field:('<имя_поля_ведущей>', '<имя_поля_ведомой>')
+			#требует through
+			#указывает поля внешних ключей по которым будет устанавливаться связь
+			#if не указано -> поля указываются dj
+			db_table
+			#имя связующей таблицы
+			#обычно применяет if связующая модель не исп
+			#if не указано -> связующая табл получит имя по умолч
+binding:eng:связующий			
+		.ProtectedError
+		#exept вызваемый при
+			удалении записи первичной модели при указании в связанной вторичной on_delete=models.PROTECT
+			#models.PROTECT ⊂ django.db.models
+	<class 'Q'>
+	#экземпляр может задавать сложные критерии фильтрации для
+		django.db
+			models.ForeignKey(..., limit_choices_to=<class 'Q'>)
 ∀ поля создаваемые в моделях - по умолчанию обязательны к заполнению
 	-> добавить новое, обязательное к заполнению поле в модель уже ⊃ записи => нельзя
 	#видимо т.к. тогда придется добавлять val этих полей в уже ∃ записи
