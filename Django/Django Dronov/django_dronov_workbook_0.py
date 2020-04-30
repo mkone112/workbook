@@ -570,6 +570,7 @@ attr класса ~ св-ва класса|статические св-ва в o
 		#представляется {xn} экземпляров соотв класса модели
 	для предоставления отдельного поля ⊂ сущности, в классе модели объявляется attr которому присваивается экземпляр класса, представляющего поле требуемого типа(int,str, float, datetime,...), доп параметры поля указываются в параметрах конструктора
 	#через них впоследствии можно получить доступ к val этих полей
+#поля хранятся в attr; поведение в методах(не уверен что это good);параметры в Meta;
 ДИСПЕТЧЕР ЗАПИСЕЙ
 #особая структура позволяющая манипулировать ∀ совокупностью записей ⊂ модели
 #представляется экземпляром класса Manager
@@ -814,24 +815,345 @@ attr класса ~ св-ва класса|статические св-ва в o
 	#можно задать
 		str
 		#.latest() вернет самую свежую запись(⊃max val в поле published)
-		class Bb(models.Model):
-			...
-			published = models.DateTimeField()
-			
-			class Meta:
-				get_latest_by = 'published'
+			class Bb(models.Model):
+				...
+				published = models.DateTimeField()
+				
+				class Meta:
+					get_latest_by = 'published'
 		{xn} str
 		#использование нескольких полей(if поля записей хранят одинаковое val => сравниваются след поля, ...)
+			class Bb(models.Model):
+				...
+				added = models.DateTimeField()
+				published = models.DateTimeField()
+				
+				class Meta:
+					get_latest_by = ['added', 'published']
 	#можно инвертировать порядок сортировки => .latest() вернет самую старую запись, .earliest() наоборот
 		...
 		class Meta:
 			get_latest_by = '-published'
+	order_with_respect_to:'<name_of_field_of_current_model>'
+	#позволяет сделать набор записей произвольно упорядочиваемым
+	#принимает str ⊃ имя поля текущей модели => записи ⊃ одинаковое val в этом поле м.б. упорядочены произвольно
+		#теперь объявления одной рубрики можно произвольно упорядочить
+		class Bb(models.Model):
+			...
+			rubric = models.ForeignKey('Rubric')
+			
+			class Meta:
+				order_with_respect_to = 'rubric'
+	#при использовании => dj создает в таблице бд поле
+		<имя_заданного_поля>_order
+		#⊃ int порядковый номер текущей записи в {xn}(сохраняя тем самым порядок)
+		и задает его как val параметра ordering
+		#=> записи извлеченные из модели будут отсортированы по этому полю и указать другие параметры будет нельзя
+	indexes
+	#{xn} Index(from django.db.models) ⊃ неск. полей
+	#типа индексирования для ускорения дальнейшего поиска?
+		#формат конструктора:
+			Index(field=[][, name=None])
+				fields
+				#список str ⊃ имена полей включаемых в индекс
+				#для сортировки по убыванию '-<field_name>'
+				name
+				#имя индекса
+				#if не указан => задается dj
+	#пример
+		class Bb(models.Model):
+			...
+			class Meta:
+				indexes = [
+					models.Index(fields=['-published', 'title'], name='main'),
+					models.Index(fields=['title', 'price', 'rubric']),
+				]
+	index_together
+	#альтернативный способ создания индексов ⊃ неск полей
+	#принимает последовательность последовательностей str ⊃ имена полей
+		class Bb(models.Model):
+			...
+			class Meta:
+				index_together = [
+					['-published', 'title'],
+					['title', 'price', 'rubric'],
+				]
+	#для создания одного индекса - {xn} полей(вместо {xn} {xn})
+		class Bb(models.Model):
+			...
+			class Meta:
+				index_together = ['-published', 'title']
+	default_related_name:<str>
+	#имя attr записи primary для доступа к записям secondary
+	#соответствует related_name конструкторов класов полей внешних ключей
+	#неявно задает val в related_name и related_query_name конструкторов
+	db_table
+	#имя таблицы ⊃ данные модели
+	#if !∃ => именуется по умолч
 <...>.latest(...)
 #получение последней записи модели
 #if модель ⊃ get_latest_by = '-...' => получение самой ранней записи
 <...>.earliest(...)
 #получение первой записи модели
 #if модель ⊃ get_latest_by = '-...' => получение самой поздней записи
+URL МОДЕЛИ
+#dj позволяет формировать url на запись модели(url модели)
+#url модели может вести на
+	страницу ⊃ содержимое записи
+	список связанных записей
+	...
+	ФОРМИРОВАНИЕ URL МОДЕЛИ
+	#два способа
+		ДЕКЛАРАТИВНЫЙ
+		#описываем формат url в 
+			<project>/settings.py
+				...
+				#"набор" адресов
+				#удобно исп lambda
+				ABSOLUTE_URL_OVERRIDES = {
+						<app_alias>.<model_class_name> : <fx(obj_записи_модели) -> 'str с готовым url'>,
+						...
+				}
+		#пример: объявление dict формирующего url вида "/bboard/<ключ_рубрики>/" на основе экземпляра Rubric(рубрики) ведущий на страницу ⊃ список связанных объяв
+			...
+			ABSOLUTE_URL_OVERRIDES = {
+				'bboard.rubric': lambda rec: "/bboard/%s/" % rec.pk,
+			}
+			...
+			#теперь для помещения url модели в код шаблона -> вставим в шаблон вызов(?по примеру что-то не похоже на вызов) метода .get_absolute_url который унаследован ∀ моделями от базового класса Model
+				<a href="{{ rubric.get_absolute_url }}">{{ rubric.name }}</a>
+				#~ url модели получается везде(напр в контроллере)
+		ИМПЕРАТИВНЫЙ
+		#непосредственное переопределение .get_absolute_url()
+			class Rubric(models.Model):
+				...
+				def get_absolute_url(self):
+					return "/bboard/%s/" % self.pk
+МЕТОДЫ МОДЕЛИ
+	.__str__()
+	#строковое представление модели
+	#используется	
+		при указании в шаблоне непосредственого вывода obj записи, а не val его поля|результата метода
+		#пример
+			{{ rubric }}
+	.save()
+	#сохранение записи(?в миграции)
+	#переопределяется для добавления логики при сохранении
+	#при определении необходимо вызвать метода базового класса
+		def save(self, *args, **kwargs):
+			# some actions before saving
+			if self.is_model_correct():
+				super().save(*args, **kwargs)
+			# some actions after saving
+	.delete()
+	#удаление записи(создает миграцию?)
+	#переопределяется для добавления логики при удалении
+	#~ .save() требуется вызов из базового класса
+		def delete(self, *args, **kwargs):
+			# some actions before deletion
+			if self.need_to_delete():
+				super().delete(*args, **kwargs)
+			# some actions after deletion
+ФУНКЦИОНАЛЬНОЕ ПОЛЕ
+#read only поля ⊃ val вычисляемыми на основе других данных
+	СОЗДАНИЕ fx-поля
+	#объявление метода без параметров, возвращающего нужное val, чье имя станет именем поля
+		#создадим fx-поле title_and_price
+		class Bb(models.Model):
+			...
+			def title_and_price(self):
+				if self.price:
+					return '%s (%.2f)' % (self.title, self.price)
+				else:
+					return self.title
+		#теперь можно вывести val fx-поля напр в шаблоне
+		<h2>{{ bb.title_and_price }}</h2>
+	#для fx-поля можно указать название для вывода на страницу в качестве
+		заголовка столбца
+		надписи на эл-те управления
+		...
+		#просто нужно присвоить attr short_description ⊃ методу str ⊃ название
+			class Bb(models.Model):	
+				...
+				def title_and_price(self):
+					...
+				title_and_price.short_description = 'Название и цена'
+ВАЛИДАЦИЯ МОДЕЛИ
+#проверка данных занесенных в поля модели на корректность
+#м.б. реализована непосредственно в модели|связанной форме
+	ВАЛИДАТОРЫ
+	#exe валидацию val ⊂ отдельным полям
+	#реализуются классами|fx
+		СТАНДАРТНЫЕ ВАЛИДАТОРЫ DJ
+		#реализующие их классы ⊃ django.core.validators
+		#if val не проходит проверку => вызывает
+			django.core.exceptions
+				.ValidationError
+		#можно указать для ∀ поля в параметре
+			validators
+			#⊃ конструктору поля		
+				from django.core import validators
+				
+				class Bb(models.Model):
+					title = models.CharField(max_length=50, validators=[validators.RegexValidator(regex='^.{4,}$')])
+		#некоторые типы полей по умолч используют валидаторы
+			CharField		->		MaxLengthValidator
+			EmailField		->		EmailValidator
+			URLField		->		URLValidator
+			GenericIPAdressField	->	validate_ipv4_adress
+										validate_ipv6_adress
+										validate_ipv46_adress
+			SlugField				->	validate_slug
+										validate_unicode_slug
+		django.core.validators
+			ВАЛИДАТОРЫ-КЛАССЫ
+				.RegexValidator(
+						regex=None[,
+						message:<str>:=None][,
+						code=None][,
+						inverse_match:<bool>=None][,
+						flags=0]
+						)
+				#проверка на соотв re
+					regex
+					#re
+					#str|<class 'regex'> ⊂ python
+					message
+					#str ⊃ errMsg
+					#if не указан -> исп default msg
+					code
+					#код ошибки
+					#if не указан -> исп default code:
+						"invalid"
+					inverse_match=False
+					#False -> val должно соотв re
+					#True -> наоборот
+					flag
+					#флаги re
+					#исп only if re ⊂ str
+				.MinLengthValidator(<min_length>[, message=None])
+				#проверяет введенное str val на достаточность длинны
+					message
+					#сообщение об ошибке
+					#if не указан => исп default
+					#код ошибки "min_length"
+				.MaxLengthValidator(<max_length>[, message=None])
+				#проверяет введенное str val на превышение max length
+					#сообщение об ошибке
+					#if не указан => исп default
+					#код ошибки "max_length"
+				.EmailValidator([message=None][, code=None][, whitelist=None])
+				#проверяет email's
+					message
+					#~others validator
+					code
+					#~RegexValidator
+					whitelist=['localhost']
+					#{xn} str⊃ имена доменов не проверяемых валидатором
+				.URLValidator([schemes=][, regex=][, message=][, code=])
+				#проверка корректности urls
+					schemes=['http', 'https', 'ftp', 'ftps']
+					#{xn} str ⊃ обозанчения протоколов для которых будет exe валидация
+					regex
+					#re для сравнения
+					#str|<class 'Regex'> ⊂ Python
+					#if !∃ => проверка !exe
+					message
+					#~others validators
+					code
+					#~RegexValidator
+				.ProhibitNull([message=None][, code=None])
+				##проверяет не содержит ли str нулевой char:'\x00'
+					message
+					#~others validators
+					code
+					#код ошибки
+					#if не указан-> исп "null_characters_not_allowed"
+				.MinValueValidator(<min_val>[, message=None])
+				#проверяет не меньше ли число минимума
+					message
+					#if не указан -> исп "min_value"
+				.MaxValueValidator(<max_val>[, message=None])
+				#проверяет не больше ли число максимума
+					message
+					#if не указан -> исп "max_value"
+				.DecimalValidator(<max_число_цифр_в_числе>,<число_цифр_дробной_части>)
+				#проверяет действительное число фиксированной точности представленное Decimal from decimal
+				#коды ошибок
+					"max_digits"
+					#число цифр во ∀ числе больше заданного
+					"max_decimal_places"
+					#число цифр дробной части больше заданного
+					"max_whole_digits"
+					#(цифр в целой части) > (число ∀ цифр) - (число цифр ⊂ дробной части)
+			ВАЛИДАТОРЫ-FX
+				validate_ipv46_adress()
+				#валидация адресов протоколов IPv4/IPv6
+				validate_ipv4_adress()
+				#валидация адресов протоколов IPv4
+				validate_ipv6_adress()
+				#валидация адресов протоколов IPv6
+				int_list_validator([sep=','][, message=None][, code='invalid'][, allow_negative=False])
+				#возвращает экземпляр RegexValidator настроенный на проверку int разделенных указанным символом-разделителем
+					allow_negative
+					#разрешение отрицательных
+			VAR ⊃ ГОТОВЫЕ OBJ ВАЛИДАТОРА НАСТРОЕННЫЙ ПОД ОПРЕД ПОВЕДЕНИЕ
+				validate_email
+				#экземпляр EmailValidator ⊃ defaults настройки
+				validate_slug
+				#экземпляр RegexValidator настроенный на проверку слагов
+				#допускает наличие в слагах только
+					latin letters
+					цифр
+					"-"
+					"_"
+				validate_unicode_slug
+				#~validate_slug, вместо латинских букв - буквы(не символы) unicode
+				validate_comma_separated_integer_list
+				#экземпляр RegexValidator настроенный на проверку str ⊂ int разделенные ','
+prohibit:eng:запрещать
+ftps
+#походу ftp с шифрованием
+ВЫВОД СВОИХ СООБЩЕНИЙ ОБ ОШИБКАХ
+#видимо то что видит user при вводе в формы
+#стандартные сообщения обычно понятны
+#указываются в параметре конструкторов полей
+	error_messages={'код_ошибки': 'msg', ...}
+	#пример
+		#указание для поля title своего error message
+		from django.core import validators
+		...
+		class Bb(models.Model):
+			title = models.CharField(max_length=50, verbose_name='Товар',
+				      validators=[validators.RegexValidator(regex='^.{4,}$')],
+				      error_messages={'invalid': 'Неправильное название товара'})
+	#коды ошибок явно берутся из валидатора
+	#доступные для указания коды ошибок
+		"null"
+		#поле таблицы не может ⊃ null => его следует заполнить
+		"blank"
+		#в эл-т управления должно быть занесено val
+		#видимо когда пользователь пытается оставить обязательное поле пустым
+		"invalid"
+		#неверный формат val
+		#видимо когда пользователь вводит дичь
+		"invalid_choice"
+		#в поле со списком заносится val не указанное в списке(?как)
+		"unique"
+		#в поле заносится не уникальное val
+		"unique_for_date"
+		#в поле заносится не уникальное val в пределах даты
+		"invalid_date"
+		#некорректная дата(напр 30.14.2018)
+		"invalid_time"
+		#некорректное время(напр 25:73:80)
+		"invalid_datetime"
+		#некорректное дата и время(напр 30.14.2018 25:73:80)		
+		"min_length"
+		#str короче указанного минимума
+		"max_length"
+		#str длиннее указанного max
+		"null_characters_not_allowed"
 МИГРАЦИИ
 #Python-модуль созданный dj на основе модели, предназначенный для создания в бд ∀ требуемых моделью структур
 	таблиц
