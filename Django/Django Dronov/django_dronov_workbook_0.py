@@ -67,6 +67,8 @@ django-admin
 			#название = названию проекта, при его переименовании придется вносить серьезные правки в коде
 			#в доках dj !⊃ внятного названия => будем называть его пакетом конфигурации
 				__init__.py
+				
+				
 				setting.py
 				#модуль с настройками проекта
 				#конфиг бд
@@ -80,13 +82,16 @@ django-admin
 					#их перечень:docs.python.org/3/library/datetime.html#strftime-strptime-behavior
 				#пути ключевых dirs
 				#параметры безопасности
+				
 					BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__))) |os.path.join(BASE_DIR, ...)
 					#путь к проекту(по умолчанию вычисляется автоматом)
+					
 					SECRET_KEY = <str>
 					#используется ядром dj и подсис-мой разграничения доступа для шифрования данных
 					#генерируется django-admin при создании проекта
 					#может использоваться для атаки на сайт
 					#не следует менять без необходимости
+					
 					DEBUG=<Bool>
 					#режим работы сайта
 						True(включается при создании проекта)
@@ -96,8 +101,11 @@ django-admin
 						#эксплутационный
 						#при ∀ err выводит стандартное сообщение сервера(not found(404?)/internal server error(500?))
 						#более строгие настройки безопасности
+						
 					ALLOWED_HOSTS = []
 					#
+					
+					
 					INSTALLED_APPS = [
 					#заполняется при создании проекта
 					#при удалении приложения из списка => следует удалить ∀ используемые им посредники
@@ -123,6 +131,7 @@ django-admin
 						#реализация обработки static
 						#не требуется if проект !⊃ static(что как-то маловероятно)
 					]
+					
 					MIDDLEWARE = <list>:[]
 					#список посредников
 					#middleware:eng:посредник
@@ -159,6 +168,7 @@ django-admin
 							#доп защита от сетевых атак
 							#очевидно не стоит отключать
 						]
+						
 					ROOT_URLCONF = <project_dir>.<urls.py>
 					#путь к модулю хранящем маршруты уровня проекта
 					
@@ -178,7 +188,9 @@ django-admin
 							},
 						},
 					]
+					
 					WSGI_APPLICATION = '<project_dir>.wsgi.application'
+					
 					DATABASES = <dict>
 					#val по умолчанию
 					{}
@@ -227,21 +239,30 @@ django-admin
 						}
 					#хранит ∀ бд используемые проектом
 					
+					
 					AUTH_PASSWORD_VALIDATORS = [
 						{
 							...
 						}
 					]
 					#перечисление валидаторов паролей
+					
+					
 					LANGUAGE_CODE = 'ru-ru':'en-us'
 					#код языка используемого для вывода сис-ых msg и страниц django.contrib.admin
+					
+					
 					TIME_ZONE = <str>:
 					#val по умолч:'America/Chicago', при создании проекта:UTC
+					
+					
 UTC
 #всемирное координированное время
 					#список доступных зон:en.wikipedia.org/wiki/List_of_tz_database_time_zones
 					#возм val
 						'Europe/Moscow'
+						
+						
 					USE_I18N = <bool>:True
 					#состояние ⊂ dj сис-мы автоперевода на язык указанных в LANGUAGE_CODE
 						USE_I18N = True
@@ -250,6 +271,8 @@ UTC
 						USE_I18N = False
 						#∀ сообщения выводятся на en-us
 						#увеличивает perf
+						
+						
 					USE_L10N = <bool>:True
 					#в книге USE_L18N(очевидная ошибка)
 					#val по умолч:False, при создании проекта True
@@ -258,6 +281,7 @@ UTC
 						USE_L10N = False
 						#числа, даты, время - при выводе форматируются согласно настройкам проекта(?)
 
+
 					USE_TZ=<bool>
 					#False:по умолч, при создании проекта:True
 					#хранение tz
@@ -265,35 +289,53 @@ UTC
 						#dj будет хранить val даты/времени ⊃ tz => TIME_ZONE указывает tz по умолчанию
 						USE_TZ = False
 						#dj ⊃ дату/время !⊃ tz => TIME_ZONE указывает tz для них
+						
+						
 					STATIC_URL = ''
 					#путь до static
+					
+					
 					FILE_CHARSET
 					#кодировка текстовых файлов
 					#параметр отсутсвует by def
 					#кодировка по умолчанию = 'utf-8'
+					
+					
 					DEFAULT_CHARSET='utf-8'
 					#кодировка страниц по умолчанию
 					#параметр отсутсвует by def
+					
+					
 					DECIMAL_SEPARATOR=<str>:'.'
 					#требует USE_L18N = False, иначе игнорируется
 					#символ используемый для разделения целой.дробной части вещественных чисел
+					
+					
 					NUMBER_GROUPING=<int>:0
 					#требует USE_L18N = False, иначе игнорируется
 					#число цифр в числе составляющих группу
 						NUMBER_GROUPING=0
 						#группировка не используется
+						
+						
 					THOUSAND_SEPARATOR=<str>:','
 					#требует USE_L18N = False, иначе игнорируется
 					#символ разделения групп цифр при выводе
+					
+					
 					USE_THOUSAND_SEPARATOR=<bool>:False
 					#требует USE_L18N = False, иначе игнорируется
 					#использовать разбиение на группы
+					
+					
 					SHORT_DATE_FORMAT=<str>:'m/d/Y'
 					#требует USE_L18N = False, иначе игнорируется
 					#формат по умолч для вывода даты в коротком виде
 					#val по умолч: 'm/d/Y' : <месяц>/<число>/<год из 4х цифр>
 					#дронов рекомендует установить
 						SHORT_DATE_FORMAT = 'j.m.Y'
+						
+						
 					SHORT_DATETIME_FORMAT=<str>:'m/d/Y P'
 					#требует USE_L18N = False, иначе игнорируется
 					#формат по умолч для вывода даты и времени в коротком виде
@@ -301,45 +343,67 @@ UTC
 					#примеры
 						'j.m.Y H:i:s'
 						#<число>.<месяц>.<год_из_4х_цифр> <часы_в_24х_часовом_формате>:<минуты>:<секунды>
+						
+						
 					DATE_FORMAT=<str>:'N j, Y'
 					#требует USE_L18N = False, иначе игнорируется
 					#формат по умолч для вывода val даты в полной записи
 					#val по умолч:'N d, Y':<eng_назв_месяца> <date> <year_xxxx>
 						'E'
 						#локализованное назв месяца?
+						
+						
 					DATETIME_FORMAT=<str>:'N j, Y, P'
 					#требует USE_L18N = False, иначе игнорируется
 					#формат по умолч для вывода val даты и времени
 					#дронов рекомендует: 'j E Y H:i:s'
+					
+					
 					TIME_FORMAT=<str>:'P'
 					#требует USE_L18N = False, иначе игнорируется
 					#default формат вывода времени
+					
+					
 					MONTH_DAY_FORMAT=<str>:'F, j'
 					#требует USE_L18N = False, иначе игнорируется
 					#default формат вывода месяца и числа
 					#default val:'F, j'
+					
+					
 					YEAR_MONTH_FORMAT=<str>:'F Y'
 					#требует USE_L18N = False, иначе игнорируется
 					#default формат вывода месяца и года
+					
+					
 					DATE_INPUT_FORMATS=<list>:[...]
 					#требует USE_L18N = False, иначе игнорируется
 					#список форматов в которых пользователи могут заносить val в поля ввода
 					#получив val даты в виде str dj {xn} сравнивает его со ∀ форматами в этом списке
 					#дронов рекомендует ['%d.%m.%Y']
+					
+					
 					DATETIME_INPUT_FORMATS=<list>:[...]
 					#требует USE_L18N = False, иначе игнорируется
 					#список форматов в которых пользователи могут заносить val даты и времени в поля ввода
 					#дронов рекомендует:['%d.%m.%Y %H:%M:%S']
+					
+					
 					TIME_INPUT_FORMATS=<list>:['%H:%M:%S', '%H:%M:%S.%f', '%H:%M']
 					#требует USE_L18N = False, иначе игнорируется
 					#список форматов в которых пользователи могут заносить val времени в поля ввода
+					
+					
 					FIRST_DAY_OF_WEEK=<int>:0
 					#требует USE_L18N = False, иначе игнорируется
 					#номер дня с которого начинается неделя
 						0 : вс
 						6 : сб
+						
+						
 				urls.py
 				#модуль маршрутизации уровня проекта
+				
+				
 				wsgi.py
 				#модуль связывающий проект с веб-сервером(используется для деплоя)
 
@@ -359,8 +423,12 @@ UTC
 #может требовать перезапуск даже в случаях когда ∀ вроде должно работать
 в связке PHP&Yii|Lavavel требуется устанавливать сервер для тестирования отдельно
 проекты на PHP в отличие от Python не загружают ∀ модули в ram при запуске => требуют перезапуски реже
+
+
 manage.py
 #по ∀ видимости можно использовать и без "префикса" python т.к. .py ассоциирован с интерпритатором
+
+
 	runserver [[<adress>][:][<port>]] [--noreload] [--nothreading] [--ipv6] [-6]
 	#запускает отладочный(только?) сервер
 		--noreload
@@ -575,9 +643,13 @@ path(template, view)
 							в списках маршрутов уровня app запишем контроллеры ⊂ логику сайта
 вложенный список маршрутов передаваемый path() должен представлять собой результат django.urls.include()							
 django.urls
+
+
 	.include()
 	#one arg?
 	#принимает строку с путем к модулю ⊃ список маршрутов
+	
+	
 	.reverse_lazy("<route_name>"[,<val_of_url_param>]) -> готовый url
 	#
 		from django.urls import reverse_lazy
@@ -586,7 +658,11 @@ django.urls
 			...
 			success_url = reverse_lazy('index')
 			...
+			
+			
 attr класса ~ св-ва класса|статические св-ва в other pl
+
+
 МОДЕЛИ
 #упрощает работу с бд
 #класс Python, объявляемый на уровне отдельного app
@@ -636,6 +712,7 @@ attr класса ~ св-ва класса|статические св-ва в o
 	b1 = Bb(title='...',content='...', price='...')
 	b1.save()
 	#pk - универсальный attr моделей, предоставляющий доступ к ключевому полю
+	#удобен if модель ⊃ ключевое поле с именем != стандарнтному(id) -> не придется вспоминать его имя
 	b1.pk			>> 1
 	b1.title		>> ...
 #∀ классы моделей ⊃ .objects
@@ -664,10 +741,15 @@ attr класса ~ св-ва класса|статические св-ва в o
 	для предоставления отдельного поля ⊂ сущности, в классе модели объявляется attr которому присваивается экземпляр класса, представляющего поле требуемого типа(int,str, float, datetime,...), доп параметры поля указываются в параметрах конструктора
 	#через них впоследствии можно получить доступ к val этих полей
 #поля хранятся в attr; поведение в методах(не уверен что это good);параметры в Meta;
+
+
 ДИСПЕТЧЕР ЗАПИСЕЙ
 #особая структура(obj) позволяющая манипулировать ∀ совокупностью записей ⊂ модели
 #представляется экземпляром класса Manager ⊃ django.db.models
+#по идее поддерживается и производными от Manager вроде RelatedManager
 	<model>.objects
+	
+	
 		.create(<field0>=<val0>, ...)
 		#создает новую запись модели, сохраняет ее и возвращает как результат
 		#вроде не требует .save()
@@ -677,9 +759,10 @@ attr класса ~ св-ва класса|статические св-ва в o
 		
 		
 		.all()
-		#возвращает "набор записей" модели(экземпляр QuerySet)(iterable)
+		#возвращает "набор ∀ записей" модели(экземпляр QuerySet)(iterable)
 		#отдельные записи- экземпляры соответствующего класса модели
-		
+			for r in Rubric.objects.all():
+				print(r.name)
 		
 		.filter(<field>=<val>)
 		#фильтрация записей по заданным критериям
@@ -708,15 +791,44 @@ attr класса ~ св-ва класса|статические св-ва в o
 			Rubric.objects.update_or_create(name='Цветы')	>> (<Rubric: Цветы>, True)
 			Rubric.objects.update_or_create(name='Цветы', defaults={'name': 'Растения'})
 			>> (<Rubric: Растения>, False)
+
 		
+		.bulk_create(<{xn} добавляемых записей> [, batch_size=None])
+		#добавление записей в модель
+			batch_size
+			#число записей в одной SQL-команде
+			#if !∃ добавление за одну команду
+		#return экземпляр QuerySet ⊃ добавленные записи
+			r = Rubric.objects.get(name='Бытовая техника')
+			Bb.objects.bulk_create([
+				Bb(title='Пылесос', content='Хороший, мощный', price=1000, rubric=r),
+				Bb(title='Стиральная машина', content='Автоматическая', price=3000, rubric=r)
+			])
+			>> [<Bb: Bb object (None)>, <Bb: Bb object (None)>]
+		#работает напрямую с бд -> возвращаемые записи ⊃ пустое pk поле -> при их создании не вызывается .save() ->
+			#-> if модель ⊃ переопред .save() ⊃ доп действия при сохранении - они !exe
+
+
+		<Query_set?>.update(<field_name=new_value>) -> count_changed_fields
+		#исправляет ∀ записи в наборе
+			Bb.objects.filter(price=None).update(price=10)
+		#не вызывает .save() -> !exe доп действия ⊃ при его переопределении
+
 		
-		
-	.order_by(<field>)
-	#сортирует записи по val поля указанного в параметре и возвращает получившийся в результате набор записей
-		.order_by('-published')
-		#видимо сортировка по убыванию
-	<запись>.delete()
-	#удаляет текущую запись и возвращает сведения о кол-ве удаленных записей
+		<Query_set?>.delete()
+		#удаляет ∀ записи набора
+			Bb.objects.filter(content=None).delete()	>> (2, {'bboard.Bb': 2})
+		#возвращает dict ~ возвращаемому <запись?>.delete() (?проверить)
+		#не вызывает .delete() модели (мб критично if он переопределен)
+		.order_by(<field>)
+		#сортирует записи по val поля указанного в параметре и возвращает получившийся в результате набор записей
+			.order_by('-published')
+			#видимо сортировка по убыванию
+			
+			
+		<запись>.delete()
+		#удаляет текущую запись и возвращает сведения о кол-ве удаленных записей
+	
 	
 КЛАССЫ ПОЛЕЙ МОДЕЛЕЙ
 #default:∀ поле обязательно для заполнения
@@ -724,41 +836,69 @@ attr класса ~ св-ва класса|статические св-ва в o
 	django.db.models
 	#вроде ⊃ ∀ модели
 	#поля также могут принимать args поддерживаемые полями ∀ типов не указанные здесь
+	
+	
 		CharField(max_length:int)
 		#строковое поле ограниченной длинны
 		#занимает в бд V необходимый для ⊃ числа символов указанных в max_length
 			#=> предпочтительно
+			
+			
 		TextField([max_length:int])
 		#неограниченное текстовое поле(memo-поле)
 			TextField(null=True, blank=True)
 			#поле которое можно не заполнять
+			
+			
 		EmailField([max_length:int=254])
 		#str⊃ корректный email
+		
+		
 		URLField([max_length:int=200])
 		#str⊃ корректный url
+		
+		
 		SlugField([max_length:int=50[, allow_unicode=<bool>:False]])
 		#слаг - str однозначно идетифицирующая запись
 		#исп как часть url
 		#allow_unicode=True - может ⊃ ∀ символы Unicode; False=> ascii only
 		#для ∀ SlugField автоматом создается индекс => db_index=True не требуется
+		
+		
 		BooleanField([null=<bool>:False])
 		#null=True : поле получает возможность хранить null
 		#val по умолч: None, а не False, что конечно логично
+		
+		
 		NullBooleanField
 		#~BooleanField(null=True)
 		#deprecated, оставлен для совместимости со старыми dj
+		
+		
 		IntegerField()
 		#signed 32bit int(обычная длинна)
+		
+		
 		SmallIntegerField
 		#signed 16bit int(half length)
+		
+		
 		BigIntegerField
 		#signed 64bit int(double)
+		
+		
 		PositiveIntegerField()
 		#unsigned 32bit int(usual)
+		
+		
 		PositiveSmallInteger
 		#unsigned 16bit int(half)
+		
+		
 		FloatField
 		#поле для хранения вещественных чисел
+		
+		
 		DecimalField(max_digits, decimal_places)
 		#действит число фиксированной длинны
 		#реализован Decimal ⊂ decimal
@@ -768,6 +908,8 @@ attr класса ~ св-ва класса|статические св-ва в o
 			#max знаков ⊂ дробной части
 		#пример
 			price = models.DecimalField(max_digits=8, decimal_places=2)
+			
+			
 		DateField([auto_now:<bool>=False],[auto_now_add=<bool>])
 		#date ⊂ datetime
 		#True для ∀ аргумента => делает поле невидимым(видимо для пользователя) и необязательным для занесения на уровне dj(editable=False, blank=True)
@@ -778,6 +920,8 @@ attr класса ~ св-ва класса|статические св-ва в o
 			auto_now_add
 			#~auto_now, ! текущая дата заносится только при создании записи, ! при послед сохранении
 			#исп для ⊃ даты создания записи
+			
+			
 		DateTimeField
 		#поле для хранения даты&времени
 		#~DateField, ! val ⊂ datetime.datetime
@@ -785,6 +929,8 @@ attr класса ~ св-ва класса|статические св-ва в o
 			#при создании записи(экземпляра модели) заполнять его текущими датой и временем
 			DateTimeField(db_index=True)
 			#создавать для поля индекс(напр для послед сортировки по дате)(т.е. поле походу становится индексом)
+			
+			
 		TimeField([auto_now:<bool>=False],[auto_now_add=<bool>])
 		#поле ⊃ время
 		#datetime.time
@@ -792,22 +938,34 @@ attr класса ~ св-ва класса|статические св-ва в o
 			#~DateField
 			auto_now_add
 			#~DateField
+			
+			
 		DurationField
 		#промежуток времени
 		#datetime.timedelta
+		
+		
 		BinaryField
 		#bytes произвольной длинны
+		
+		
 		GenericIPAdressField(protocol:'IPv4'|'IPv6'|'both'='both',inpack_ipv4:<bool>=False)
 		#IP-адресс(IPv4|IPv6)
 		#str
 			inpack_ipv4
 			#True=> преобразование IPv4 адресов записанных в формате IPv6 в формат IPv4
 			#требует protocol='both'
+		
+		
 		AutoField
 		#автоинкрементное поле ⊃ уникальные инкрементирующиеся 32bit int
 		#почти ∀ используется как ключевое, и не требует явного объявления(создается dj автоматом при отсутствии в модели)
+		
+		
 		BigAutoField
 		#64bit ~ AutoField
+		
+		
 		UUIDField
 		#уникальные, универсальный(?) id
 		#представлен UUID from uuid, в виде str
@@ -819,20 +977,32 @@ attr класса ~ св-ва класса|статические св-ва в o
 			class Bb(models.Model):
 				id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
 				...
+		
+		
 		<ПОЛЕ_ДЛЯ_⊃_ФАЙЛОВ>
 		...
+		
+		
 		<ПОЛЕ_ДЛЯ_⊃_ИЗОБРАЖЕНИЙ>
 		...
+
+
 ПАРАМЕТРЫ ПОЛЕЙ
 	ПАРАМЕТРЫ ПОДДЕРЖИВАЕМЫЕ ПОЛЯМИ ∀ ТИПОВ
+		
+		
 		verbose_name
 		#имя выводимое в 
 			админке
 			напротив эл-тов управления в веб-формах
 		#if не указано - исп имя поля
+		
+		
 		help_text = <str>:''
 		#доп поясняющий текст для вывода
 		#⊃ спец символы HTML не преобразуются в литералы, а выводятся как есть => можно форматировать текст HTML тегами
+		
+		
 		default
 		#val по умолч записываемое в поле if в него не занесено другое val
 			#может быть указано 2мя способами
@@ -844,21 +1014,31 @@ attr класса ~ св-ва класса|статические св-ва в o
 						return not is_all_post_passive
 					...
 					is_active = models.BooleanField(default=is_active_default)
+		
+		
 		unique=<bool>:False
 		#
 			unique=True
 			#уникальное поле, для которого автоматом создается индекс(=> его не нужно указывать явно)
 			#в текущее поле м.б. занесено только уникальное в пределах таблицы val
 			#при попытке занести val ⊂ полю другой записи - вызовет exept IntegrityError ⊂ django.db
+		
+		
 		unique_for_date=<str>
 		#?при указании имени поля даты|даты и времени(DateField|DateTimeField) => текущее поле может ⊃ только val уникальные в пределах даты ⊂ указанному полю
 			title = models.CharField(max_length=50, unique_for_date='published')
 			published = models.DateTimeField()
 			#title позволяет ⊃ только val уникальные в пределах даты ⊂ published
+		
+		
 		unique_for_month=<str>
 		#~unique_for_date, но вместо даты - месяц
+		
+		
 		unique_for_year=<str>
 		#~unique_for_date, но вместо даты - год
+		
+		
 		null=<bool>:False
 		#необязательность поля?
 		#затрагивает только поле модели, но не поведение dj по умолч => dj в ∀ случае не позволит занести в поле пустое val(контролируется blank)
@@ -866,11 +1046,15 @@ attr класса ~ св-ва класса|статические св-ва в o
 			#таблица может ⊃ val null => быть необязательным к заполнению
 			null=False
 			#поле обязано содержать val ⊃ пустую строку
+		
+		
 		blank=<bool>:False
 		#необязательность поля на уровне dj
 		#задает поведение dj при выводе форм и валидации введенных в них данных
 			blank=True
 			#позволяет не заносить в поле val(заносить пустое val(напр '')) даже при null=False
+		
+		
 		choices
 		#{xn} val доступных для занесения в поле
 		#∀ элт д.б. {xn} ⊃ 2 obj
@@ -894,23 +1078,39 @@ attr класса ~ св-ва класса|статические св-ва в o
 				(None, '<новый текст пустого пункта>')
 				...
 				#для текстовых полей можно исп '' вместо None
+		
+		
 		db_index=<bool>:False
 		#True - создать индекс в таблице по текущему полю
+		
+		
 		primary_key=<bool>:False
 		#True - ключевое поле(поле преобразуется в ключевое) =>неявно null=False, unique=True
 		#модель может ⊃ only одно primary_key поле
 		#if не задано явно - создается dj автоматом с именем id
+		
+		
 		editable=<bool>:True
 		#True - вывод в составе формы
 		#False - запрет на вывод в составе формы(даже при явном создании его в форме)
+		
+		
 		db_column=<str>
 		#имя поля, if !∃ => по умолч получает имя поля модели(механизм был указан ранее)
+
+
 ПАРАМЕТРЫ САМОЙ МОДЕЛИ
 #описываются attr непроизводного класса Meta вложенного в класс модели
+	
+	
 	verbose_name
 	#имя сущности(ед число) ⊂ модели для вывода
+	
+	
 	verbose_name
 	#имя набора сущностей(мн число) ⊂ модели для вывода
+	
+	
 	unique_together
 	#{xn} str ⊃ имена полей ⊃ уникальные(в пределах табл) комбинации val
 	#при попытке занести в них ∃ в таблице комбинации val -> вызвает ValidationError exept ⊂ django.core.exceptions
@@ -927,6 +1127,8 @@ attr класса ~ св-ва класса|статические св-ва в o
 					('title', 'published'),
 					('title', 'price', 'rubric'),
 				}
+	
+	
 	ordering:<{xn}_str_имен_полей_по_кот_должна_exe_sort>
 	#параметры сортировки записей моделей по умолч
 		'-<field_name>'
@@ -936,6 +1138,8 @@ attr класса ~ св-ва класса|статические св-ва в o
 				...
 				class Meta:
 					ordering = ['-published', 'title']
+	
+	
 	get_latest_by
 	#имя поля типа DateField|DateTimeField используемое для получения позднейшей/самой ранней записи с помощью .latest()|.earliest() без параметров
 	#можно задать
@@ -960,6 +1164,8 @@ attr класса ~ св-ва класса|статические св-ва в o
 		...
 		class Meta:
 			get_latest_by = '-published'
+	
+	
 	order_with_respect_to:'<name_of_field_of_current_model>'
 	#позволяет сделать набор записей произвольно упорядочиваемым
 	#принимает str ⊃ имя поля текущей модели => записи ⊃ одинаковое val в этом поле м.б. упорядочены произвольно
@@ -975,6 +1181,8 @@ attr класса ~ св-ва класса|статические св-ва в o
 		#⊃ int порядковый номер текущей записи в {xn}(сохраняя тем самым порядок)
 		и задает его как val параметра ordering
 		#=> записи извлеченные из модели будут отсортированы по этому полю и указать другие параметры будет нельзя
+	
+	
 	indexes
 	#{xn} Index(from django.db.models) ⊃ неск. полей
 	#типа индексирования для ускорения дальнейшего поиска?
@@ -994,6 +1202,8 @@ attr класса ~ св-ва класса|статические св-ва в o
 					models.Index(fields=['-published', 'title'], name='main'),
 					models.Index(fields=['title', 'price', 'rubric']),
 				]
+	
+	
 	index_together
 	#альтернативный способ создания индексов ⊃ неск полей
 	#принимает последовательность последовательностей str ⊃ имена полей
@@ -1009,19 +1219,29 @@ attr класса ~ св-ва класса|статические св-ва в o
 			...
 			class Meta:
 				index_together = ['-published', 'title']
+	
+	
 	default_related_name:<str>
 	#имя attr записи primary для доступа к записям secondary
 	#соответствует related_name конструкторов класов полей внешних ключей
 	#неявно задает val в related_name и related_query_name конструкторов
+	
+	
 	db_table
 	#имя таблицы ⊃ данные модели
 	#if !∃ => именуется по умолч
+
+
 <...>.latest(...)
 #получение последней записи модели
 #if модель ⊃ get_latest_by = '-...' => получение самой ранней записи
+
+
 <...>.earliest(...)
 #получение первой записи модели
 #if модель ⊃ get_latest_by = '-...' => получение самой поздней записи
+
+
 URL МОДЕЛИ
 #dj позволяет формировать url на запись модели(url модели)
 #url модели может вести на
@@ -1030,6 +1250,8 @@ URL МОДЕЛИ
 	...
 	ФОРМИРОВАНИЕ URL МОДЕЛИ
 	#два способа
+		
+		
 		ДЕКЛАРАТИВНЫЙ
 		#описываем формат url в 
 			<project>/settings.py
@@ -1049,31 +1271,44 @@ URL МОДЕЛИ
 			#теперь для помещения url модели в код шаблона -> вставим в шаблон вызов(?по примеру что-то не похоже на вызов) метода .get_absolute_url который унаследован ∀ моделями от базового класса Model
 				<a href="{{ rubric.get_absolute_url }}">{{ rubric.name }}</a>
 				#~ url модели получается везде(напр в контроллере)
+		
+		
 		ИМПЕРАТИВНЫЙ
 		#непосредственное переопределение .get_absolute_url()
 			class Rubric(models.Model):
 				...
 				def get_absolute_url(self):
 					return "/bboard/%s/" % self.pk
+
+
 МЕТОДЫ МОДЕЛИ
+	
 	.__str__()
 	#строковое представление модели
 	#используется	
 		при указании в шаблоне непосредственого вывода obj записи, а не val его поля|результата метода
 		#пример
 			{{ rubric }}
+	
+	
 	.save([update_fields:<{xn} полей для обновления>=None][, force_insert=False][, force_update=False])
 	#сохранение записи в бд
+	#очевидно что update_fields и force_insert конфликтуют с force_insert
 		update_fields
 		#требуется только при Δ неск полей, и !Δ поля ⊃ много данных(?насколько)
 			b = Bb.objects.get(pk=17)
 			b.title = 'Земельный участок'
 			b.save(update_fields=['title'])
 		#if !∃ -> обновляет ∀ поля
+		#задает force_update=True
 		force_insert
 		#True: принудительное создание записи
+		#может исп if таблица ⊃ не int с автоинкрементацией(напр str), val в которое при сохранении нужно заносить вручную, но т.к. pk будет ⊃ val => dj определит ее как уже сохраненную ранее и выполнит UPDATE что приведет к ошибке
+		#при force_insert=True, force_update=True(=> при update_fields) => ValueErr: Cannot force both
 		force_update
 		#True: принудительное обновление записи
+		#не требуется при update_fields
+		#при force_insert=True	-> ValueErr: Cannot force both
 	#переопределяется для добавления логики при сохранении
 	#при определении необходимо вызвать метода базового класса
 		def save(self, *args, **kwargs):
@@ -1082,8 +1317,10 @@ URL МОДЕЛИ
 				super().save(*args, **kwargs)
 			# some actions after saving
 	#if запись ⊃ ключ(pk заполнено) -> dj определит ее как уже ∃ в бд -> обновит запись используя соотв SQL-запрос UPDATE
-	.delete()
-	#удаление записи(создает миграцию?)
+	
+	
+	.delete()	-> (<число удаленных записей ∀ моделей проекта>, {'<model>':<число_удаленных_записей>})
+	#удаление записи(прямо из бд)
 	#переопределяется для добавления логики при удалении
 	#~ .save() требуется вызов из базового класса
 		def delete(self, *args, **kwargs):
@@ -1091,6 +1328,8 @@ URL МОДЕЛИ
 			if self.need_to_delete():
 				super().delete(*args, **kwargs)
 			# some actions after deletion
+
+
 ФУНКЦИОНАЛЬНОЕ ПОЛЕ
 #read only поля ⊃ val вычисляемыми на основе других данных
 	СОЗДАНИЕ fx-поля
@@ -1115,10 +1354,13 @@ URL МОДЕЛИ
 				def title_and_price(self):
 					...
 				title_and_price.short_description = 'Название и цена'
+
+
 ВАЛИДАЦИЯ МОДЕЛИ
 #проверка данных занесенных во ∀ поля модели на корректность
 #м.б. реализована непосредственно в модели|связанной форме
 	переопределение метода модели
+		
 		clean()
 		#не должен принимать параметры/возвращать val(только вызывать ValidationError)
 		#пример
@@ -1143,14 +1385,20 @@ URL МОДЕЛИ
 				...
 				errors[NON_FIELDS_ERRORS] = ValidationError('Ошибка в модели!')
 /ВАЛИДАЦИЯ МОДЕЛИ
+
+
 вызов exept ?= кинуть exept
 	ВАЛИДАТОРЫ
 	#exe валидацию val ⊂ отдельным полям
 	#реализуются классами|fx
+	
 		СТАНДАРТНЫЕ ВАЛИДАТОРЫ DJ
 		#реализующие их классы ⊃ django.core.validators
 		#if val не проходит проверку => вызывает
+		
 			django.core.exceptions
+			
+			
 				.ValidationError(<err_msg>:<str>[, code=None][, params:<dict>=None]
 				or
 				.ValidationError(<'list'_of_err's>)
@@ -1172,8 +1420,12 @@ URL МОДЕЛИ
 						dict('field_name_with_invalid_data':<{xn}_экземпляров_ValidationError>, ...)
 						#∀ экземпляр ValidationError - представляет одну из err
 					#может принимать list|tuple, ! => нельзя указать к какому полю относятся те|иные err-s => форма не выведет их напротив нужного эл-та управления
+					
+					
 				NON_FIELD_ERRORS
 				#v исп для вывода err msg относящееся ко ∀ модели, а не отдельным полям
+				
+				
 		#можно указать для ∀ поля в параметре
 			validators
 			#⊃ конструктору поля		
@@ -1190,8 +1442,12 @@ URL МОДЕЛИ
 										validate_ipv46_adress
 			SlugField				->	validate_slug
 										validate_unicode_slug
+		
 		django.core.validators
+			
+			
 			ВАЛИДАТОРЫ-КЛАССЫ
+				
 				.RegexValidator(
 						regex=None[,
 						message:<str>:=None][,
@@ -1216,17 +1472,23 @@ URL МОДЕЛИ
 					flag
 					#флаги re
 					#исп only if re ⊂ str
+				
+				
 				.MinLengthValidator(<min_length>[, message=None])
 				#проверяет введенное str val на достаточность длинны
 					message
 					#сообщение об ошибке
 					#if не указан => исп default
 					#код ошибки "min_length"
+				
+				
 				.MaxLengthValidator(<max_length>[, message=None])
 				#проверяет введенное str val на превышение max length
 					#сообщение об ошибке
 					#if не указан => исп default
 					#код ошибки "max_length"
+				
+				
 				.EmailValidator([message=None][, code=None][, whitelist=None])
 				#проверяет email's
 					message
@@ -1235,6 +1497,8 @@ URL МОДЕЛИ
 					#~RegexValidator
 					whitelist=['localhost']
 					#{xn} str⊃ имена доменов не проверяемых валидатором
+				
+				
 				.URLValidator([schemes=][, regex=][, message=][, code=])
 				#проверка корректности urls
 					schemes=['http', 'https', 'ftp', 'ftps']
@@ -1247,6 +1511,8 @@ URL МОДЕЛИ
 					#~others validators
 					code
 					#~RegexValidator
+				
+				
 				.ProhibitNull([message=None][, code=None])
 				##проверяет не содержит ли str нулевой char:'\x00'
 					message
@@ -1254,14 +1520,20 @@ URL МОДЕЛИ
 					code
 					#код ошибки
 					#if не указан-> исп "null_characters_not_allowed"
+				
+				
 				.MinValueValidator(<min_val>[, message=None])
 				#проверяет не меньше ли число минимума
 					message
 					#if не указан -> исп "min_value"
+				
+				
 				.MaxValueValidator(<max_val>[, message=None])
 				#проверяет не больше ли число максимума
 					message
 					#if не указан -> исп "max_value"
+				
+				
 				.DecimalValidator(<max_число_цифр_в_числе>,<число_цифр_дробной_части>)
 				#проверяет действительное число фиксированной точности представленное Decimal from decimal
 				#коды ошибок
@@ -1271,20 +1543,34 @@ URL МОДЕЛИ
 					#число цифр дробной части больше заданного
 					"max_whole_digits"
 					#(цифр в целой части) > (число ∀ цифр) - (число цифр ⊂ дробной части)
+			
+			
 			ВАЛИДАТОРЫ-FX
+				
 				validate_ipv46_adress()
 				#валидация адресов протоколов IPv4/IPv6
+				
+				
 				validate_ipv4_adress()
 				#валидация адресов протоколов IPv4
+				
+				
 				validate_ipv6_adress()
 				#валидация адресов протоколов IPv6
+				
+				
 				int_list_validator([sep=','][, message=None][, code='invalid'][, allow_negative=False])
 				#возвращает экземпляр RegexValidator настроенный на проверку int разделенных указанным символом-разделителем
 					allow_negative
 					#разрешение отрицательных
+			
+			
 			VAR ⊃ ГОТОВЫЕ OBJ ВАЛИДАТОРА НАСТРОЕННЫЙ ПОД ОПРЕД ПОВЕДЕНИЕ
+				
 				validate_email
 				#экземпляр EmailValidator ⊃ defaults настройки
+				
+				
 				validate_slug
 				#экземпляр RegexValidator настроенный на проверку слагов
 				#допускает наличие в слагах только
@@ -1292,13 +1578,21 @@ URL МОДЕЛИ
 					цифр
 					"-"
 					"_"
+				
+				
 				validate_unicode_slug
 				#~validate_slug, вместо латинских букв - буквы(не символы) unicode
+				
+				
 				validate_comma_separated_integer_list
 				#экземпляр RegexValidator настроенный на проверку str ⊂ int разделенные ','
+				
+				
 prohibit:eng:запрещать
 ftps
 #походу ftp с шифрованием
+
+
 ВЫВОД СВОИХ СООБЩЕНИЙ ОБ ОШИБКАХ
 #видимо то что видит user при вводе в формы
 #стандартные сообщения обычно понятны
@@ -1314,44 +1608,80 @@ ftps
 				      error_messages={'invalid': 'Неправильное название товара'})
 	#коды ошибок явно берутся из валидатора
 	#доступные для указания коды ошибок
+		
 		"null"
 		#поле таблицы не может ⊃ null => его следует заполнить
+		
+		
 		"blank"
 		#в эл-т управления должно быть занесено val
 		#видимо когда пользователь пытается оставить обязательное поле пустым
+		
+		
 		"invalid"
 		#неверный формат val
 		#видимо когда пользователь вводит дичь
+		
+		
 		"invalid_choice"
 		#в поле со списком заносится val не указанное в списке(?как)
+		
+		
 		"unique"
 		#в поле заносится не уникальное val
+		
+		
 		"unique_for_date"
 		#в поле заносится не уникальное val в пределах даты
+		
+		
 		"invalid_date"
 		#некорректная дата(напр 30.14.2018)
+		
+		
 		"invalid_time"
 		#некорректное время(напр 25:73:80)
+		
+		
 		"invalid_datetime"
 		#некорректное дата и время(напр 30.14.2018 25:73:80)		
+		
+		
 		"min_length"
 		#str короче указанного минимума
+		
+		
 		"max_length"
 		#str длиннее указанного max
+		
+		
 		"null_characters_not_allowed"
 		##str ⊃ "\x00"
+		
+		
 		"min_value"
 		#число меньше min
+	
+
 		"max_value"
 		#число > max
+		
+		
 		"max_digits"
 		#общее число цифр в сохраняемом Decimal > заданного max
+		
+		
 		"max_decimal_places"
 		#число цифр в дробной части > заданного max
+		
+		
 		"max_whole_digits"
 		#(число цифр целой части сохраняемого Decimal) > (max цифр в целой и дробной части) - (число цифр в дробной части)
+		
+		
 НАПИСАНИЕ КАСТОМНЫХ ВАЛИДАТОРОВ
 #разумеется if нужный валидатор не ⊂ dj
+	
 	валидатор-fx
 	#должен принимать one arg(wtf?) и вызывать ValidationError ⊃ django.core.exceptions
 		#см ValidationErr
@@ -1366,6 +1696,8 @@ ftps
 		class Bb(models.Model):
 			...
 			price = models.FloatField(validators=[validate_even])	
+	
+	
 	вадидатор-класс
 	#исп при необходимости передачи args
 	#валидация exe в .__call__() принимающий проверяемое val и бросающее ValidationError при его невалидности
@@ -1384,7 +1716,9 @@ ftps
 					'в диапазоне от %(min)s до %(max)s'
 					)
 					raise ValidationError(
-					          msg, code='out_of_range', params=('min': self.min_value, 'max': self.max_value))							 
+					          msg, code='out_of_range', params=('min': self.min_value, 'max': self.max_value))		
+
+							  
 МИГРАЦИИ
 #Python-модуль созданный dj на основе модели, предназначенный для создания в бд ∀ требуемых моделью структур
 	таблиц
@@ -1407,11 +1741,15 @@ ftps
 		имена exe миграций
 		app name
 		дата и время выполнения
+		
+		
 ФАЙЛЫ МИГРАЦИЙ
 #⊃ <app>/migrations/ c именем по умолч 
 	<порядковый_номер_из_4х_цифр>_<migration_name>.py
 	#номер - помечает очередность формирования
 	#не стоит переименовывать после exe т.к. dj использует имена exe миграций
+	
+	
 manage.py makemigrations bboard
 #результат
 	<app>/migrations/0001_initial.py
@@ -1437,6 +1775,8 @@ manage.py makemigrations bboard
 					],
 				),
 			]
+			
+			
 просмотрим sql генерируемый миграцией
 #сгенерированный для бд по умолчанию(sqlite)
 	manage.py sqlmigrate bboard 0001
@@ -1454,13 +1794,19 @@ manage.py makemigrations bboard
 		CREATE INDEX "bboard_bb_published_58fde1b5" ON "bboard_bb" ("published");
 		COMMIT;
 			)
+			
+			
 КОНСОЛЬ DJ
 #dj ⊃ свою редакцию python shell - консоль django
 #отличия
 	в path ⊃ путь к папке проекта в котором запущена консоль
 записи модели создаются ~ экземпляру ∀ другого класса - вызовом конструктора, val полей указываются в именованных args
+
+
 РАБОТА С ДАННЫМИ
+
 	ЗАПИСЬ ДАННЫХ
+	
 		ПРАВКА ЗАПИСЕЙ
 		#Δ ∃ в бд записей - проще всего
 		#для этого требуется предварительно извлечь запись
@@ -1475,6 +1821,8 @@ manage.py makemigrations bboard
 			#в поле со списком следует заносить val для записи в поле задающееся первым эл-том {xn}
 				#походу выбирает эл-т соотв переданному ключу(см. choices)
 			b.kind = 's'
+			
+			
 		СОЗДАНИЕ ЗАПИСЕЙ
 		#3 способа:
 			0. создать пустой экз, записать в поля val и save()
@@ -1482,15 +1830,189 @@ manage.py makemigrations bboard
 				r = Rubric()
 				r.name = 'Бытовая техника'
 				r.save()
+				
+				
 			1. создать экз с передачей val в конструкторе и save()
 				r = Rubric(name='Сельхозинвентарь')
 				r.save()
+				
+				
 			2. исп create() ⊃ диспетчеру записей
 				#сохранение не требуется
 				r = Rubric.objects.create(name='Мебель')
 				r.pk					>> 5
+				
 		#при создании записи ∀ способом dj проверяет pk записи
 			if (pk == '' or pk == None)(отсутствие ключа) => dj предпологает что записи нет в бд => посылает SQL INSERT
+			
+			
+	ОБРАБОТКА СВЯЗАННЫХ ЗАПИСЕЙ
+	
+		"ОДИН-СО-МНОГИМИ"
+		#поле внешнего ключа secondary всегда ⊃ obj primary представляющий связанную запись
+		при создании записи secondary можно присвоить полю внешнего ключа obj представляющий связываемую запись primary
+				b = Bb()
+				b.title = 'Диван'
+				b.contents, b.price = 'Продаваемый', 100
+				b.rubric = Rubric.objects.get(name='Мебель')
+				b.save()
+				#модель представляющая запись primary таблицы получает attr	с именем по умолч <secondary_name>_set(можно изменить указав related_name в конструкторе поля) ⊃ экземпляр RelatedManager ⊂ django.db.models.fields.related
+				подробнее django.db.models	fields.related
+				
+				
+		"ОДИН-С-ОДНИМ"
+		#поле внешнего ключа secondary всегда ⊃ obj primary представляющий связанную запись
+		#простейша => dj ⊃ min соовт инструментов
+			установление связи с записью primary в запись secondary
+			#присвоением primary в поле внешнего ключа secondary
+			#пример
+				#создание записи secondary AdvUser и связывание с запись primary User представляющей пользователя admin
+					from django.contrib.auth.models import User
+					from testapp.models import AdvUser
+					#primary
+					u = User.objects.get(username='admin')
+					#secondary
+					au = AdvUser.objects.create(user=u)
+					au.user			>> <User: admin>
+					#primary получает attr ⊃ связанную запись secondary с именем secondary в low case
+					u.advuser		>> <AdvUser: AdvUser objects (1)>
+					#=> можно связать запись primary с записью secondary присвоив secondary этому attr(типа вручную)
+					#связывание с другой записью той же модели
+					au2 = AdvUser.objects.get(pk=2)
+					u.advuser = au2
+					#save() требуется видимо потому что .create() создает запись в бд
+					u.save()
+					
+					
+		"МНОГИЕ-СО-МНОГИМИ"
+		#if установлена между двумя моделями -> перед связыванием записи должны быть сохранены
+		#в отличие от "ОДИН-СО-МНОГИМИ" и "ОДИН-С-ОДНИМ" attr представляющий поле ⊃ экз RelatedManager
+			#=> можно исп методы ⊂ RelatedManager для связывания записей
+				.add()
+				#подробнее RelatedManager
+				.create()
+				#подробнее RelatedManager
+				.set()
+				#подробнее RelatedManager
+	ПРОИЗВОЛЬНОЕ ПЕРЕУПОРЯДОЧИВАНИЕ ЗАПИСЕЙ
+	#if secondary ⊃ order_with_respect_to -> ее записи связанные с ∀ записью primary можно произвольно переупорядочить получив запись primary и вызвав нужный метод
+		.get_<secondary_name>_order()
+		#подробнее RelatedManager
+		.set_<secondary_name>_order()
+		#подробнее RelatedManager
+	
+	
+	МАССОВАЯ ЗАПИСЬ ДАННЫХ
+	#dj ⊃ спецсредства для массовой записи ⊂ Manager -> производным RelatedManager
+	#быстрее программных инструментов моделей(которые при их исп не работают) т.к. напрямую общаются с бд
+	
+		.bulk_create(...)
+		#подробнее <model>.objects
+		
+		<...>.update(...)
+		#подробнее <model>.objects
+		
+		<...>.delete(...)
+		#подробнее <model>.objects
+	
+	
+	ВАЛИДАЦИЯ МОДЕЛИ
+	#исп редко, чаще exe на уровне связанной формы
+		full_clean([exclude=None][, validate_unique=True]) -> None
+		#валидация модели
+			exclude:<{xn}_fields_name>
+			#if !∃ -> проверка ∀ полей
+			validate_unique
+			#True: if модель ⊃ уникальные поля -> проверяются на уникальность заносимых val
+		#if данные не корректны
+			бросает ValidationError ⊂ django.core.exceptions
+			сохраняет в <проверяемая модель>.message_dict = {field:[<messages>,...],...}
+		#примеры
+			#извлекаем заведомо корректную запись
+			b = Bb.objects.get(pk=1)
+			#запись корректна
+			b.full_clean()
+			#пустая запись не корректна(обязательные поля - пусты)
+			b = Bb()
+			b.full_clean()
+			>>
+				Traceback ...
+					raise ValidationError(errors)
+				django.core.exceptions.ValidationError: {
+					'title': ['This field cannot be blank'],
+					'rubric': ['This field cannot be blank'],
+					'content': ['Укажите описание продаваемого товара']
+				}
+	
+	
+	ВЫБОРКА ДАННЫХ
+		ИЗВЛЕЧЕНИЕ VAL ИЗ ПОЛЯ ЗАПИСИ
+			#из attr модели представляющих эти поля
+			from bboard.models import Bb
+			b = Bb.objects.get(pk=1)
+			b.title, b.content, b.price, b.pk	>> ...
+		ДОСТУП К СВЯЗАННЫМ ЗАПИСЯМ
+		#средства доступа к связанным записям и создаваемые dj различаются для разных типов связей
+			"ОДИН-СО-МНОГИМИ"
+			#получение записи primary из secondary
+				#через attr класса представляющего поле внешнего ключа
+					b.rubric	>> <Rubric: Недвижимость>
+					b.rubric.name, b.rubric.pk	>> 'Недвижимость', 1
+			#т.к. в primary создается attr <secondary>_set ⊃ диспетчер обратной связи RelatedManager
+				#чем торгуют в "Недвижимость"
+				from bboard.models import Rubric
+				r = Rubric.objects.get(name='Недвижимость')
+				for bb in r.bb_set.all():
+					print (bb.title)
+				#дешевле 10 000
+				for bb in r.bb_set.filter(price__lte=10000):
+					print(bb.title)
+				#Δ имя attr primary ⊃ RelatedManager
+				class Bb(models.Model):
+					rubric = models.ForeignKey(Rubric, on_delete=models.PROTECT, related_name='entries')
+				...
+				>> for bb in r.entries.all(): print(bb.title)
+			"ОДИН-С-ОДНИМ"
+			#элементарна
+			#получить запись primary из secondary
+				#через attr класса поля внешнего ключа
+				from testapp.models import AdvUser
+				au = AdvUser.objects.first()
+				au.user	>> <User: admin>
+				au.user.username	>> 'admin'
+				#из primary можно получить доступ к записи secondary через attr класса с именем secondary
+				from django.contrib.auth import User
+				u = User.objects.first()
+				u.advuser	>> <AdvUser: AdvUser object (1)>
+			"МНОГИЕ-СО-МНОГИМИ"
+			#набор записей ведомой модели предоставляется диспетчером обратной связи ⊂ attr класса ведущей (представлящий поле внешнего ключа)
+				from testapp.models import Machine
+				m = Machine.objects.get(pk=1)
+				m.name				>> 'Самосвал'
+				print(s.name for s in m.spares.all())	>> ['Гайка', 'Винт']
+			#доступ к записям ведущей из ведомой
+				#через attr <имя_ведущей>_set
+				from testapp.models import Spare
+				s = Spare.objects.get(name='Гайка')
+				print(m.name for m in s.machine_set.all())	>> 'Самосвал'
+		ВЫБОРКА ЗАПИСЕЙ
+			
+			ВЫБОРКА ∀ ЗАПИСЕЙ
+			#см RelatedManager-> .all()
+			
+			
+			ИЗВЛЕЧЕНИЕ ОДНОЙ ЗАПИСИ
+				.first()
+				#см .first()
+				
+				.last()
+				#см .last()
+		
+				.earliest()
+				#см .earliest()
+				
+				.latest()
+				#см .latest()
 ШАБЛОНЫ
 #образец для формирования документа(который затем можно отдать клиенту)
 	HTML
@@ -1515,13 +2037,17 @@ manage.py makemigrations bboard
 					<link rel="stylesheet" type="text/css" href="{% static 'bboard/style.css' %}">
 					...
 
+
 ШАБЛОН
 #⊃команды шаблонизатора
+
 	директивы
 	#~include c++
 	#указывают поместить в заданное место val
 		{{ <var> }}
 		#извлечь val из var и вставить в это место
+		
+		
 	теги
 	#управляют генерированием содержимого результирующего документа
 		{% for <elt> in <obj> %}
@@ -1529,6 +2055,8 @@ manage.py makemigrations bboard
 		{% endfor %}
 		#~ for in в Python
 		#obj ⊃ в состав контекста шаблона(формируется программистом)
+		
+		
 	фильтры
 	#преобразуют val перед выводом
 		#фильтр date преобразует val из obj в формат указанный после ":"
@@ -1538,6 +2066,8 @@ manage.py makemigrations bboard
 #по умолчанию ищет шаблоны в <app>/templates/
 	#можно Δ в настройках
 #очевидно что шаблоны веб-страниц должны быть в *.html(т.к. затем отсылаются клиенту(браузеру))
+
+
 РЕНДЕРИНГ ШАБЛОНОВ
 django.template.loader('path_to_template_from_templates_dir')
 #загрузка шаблона для последующего рендеринга
@@ -1546,9 +2076,12 @@ django.template.loader('path_to_template_from_templates_dir')
 	from django.template import loader
 	template = loader.get_template('bboard/index.html')
 	return HttpResponse(template.render(context, request))
+	
 контекст шаблона
 #набор данных котоные д.б. доступны внутри шаблона как var и с которыми шаблонизатор объединит этот шаблон
 #словарь Python {'var':<value>,...}
+
+
 РЕНДЕРИНГ
 #объединение шаблонизатором шаблона и данных из контекста
 	django.shortcuts.render(request)
@@ -1563,17 +2096,21 @@ django.template.loader('path_to_template_from_templates_dir')
 		def index(request):
 			bbs = Bb.objects.order_by('-published')
 			return render(request, 'bboard/index.html', {'bbs': bbs})
+			
 
 HttpRequest
 #предоставляет клиентский запрос
+
+
 СОКРАЩЕНИЯ
 	fx-сокращения(shortcuts)
 	#⊂ django.shortcuts
 	#high-level средства
+	
+	
 АДМИНИСТРАТИВНЫЙ САЙТ DJ
 #предоставляет доступ ко ∀ моделям объявленным во ∀ app(видимо ⊂ INSTALLED_APPS)
 	#на главной странице отображается список приложений зарегистрированных в проекте и объявлящих ∀ модели и их модели
-	
 #позволяет...
 	просматривать
 	добавлять
@@ -1583,6 +2120,7 @@ HttpRequest
 	сортировать
 	#...записи
 #⊃ встроенную подсис-му разграничения доступа django.contrib.auth
+
 django.contrib.auth
 #стандартное app(в админке вроде как отображется как пользователи и группы)
 #использует спец модели для хранения(по умолчанию - Пользователи и Группы)
@@ -1591,12 +2129,16 @@ django.contrib.auth
 	прав
 	#таблицы для них в бд создаются специальные миграции => для задействования встроенных средств разграничения доступа dj нужно min раз произвести миграцию
 		#затем требуется создать superuser
+		
+		
 ПАРАМЕТРЫ ПОЛЕЙ И МОДЕЛЕЙ::СТР::50
 РЕДАКТОР МОДЕЛИ
 ...
+
 СВЯЗИ МЕЖДУ МОДЕЛЯМИ
 сокр:secondary:связанная вторичная модель
 сокр:primary:связанная первичная модель
+
     СОЗДАНИЕ СВЯЗЕЙ МЕЖДУ МОДЕЛЯМИ
     #связи моделей создаются объявлением ⊃ полей формируемых особыми классами django.db.models(полями внешних ключей)
 	django.db.models
@@ -1620,6 +2162,7 @@ django.contrib.auth
 			#<имя поля внешнего ключа>_id
 		#в веб-форме такое поле представляется раскрывающимся списком ⊃ строковые представления записей первичной модели(?проверить)
 		#модель в которой создается - вторичная
+		#некоторые детали синтаксиса см ОБРАБОТКА СВЯЗАННЫХ ЗАПИСЕЙ
 		#конструктор, первым параметром принимающий класс связываемой первичной модели в виде
 			if код объявляющий класс первичной модели распологается перед кодом класса вторичной => ссылки на класс
 				#primary
@@ -1648,7 +2191,7 @@ django.contrib.auth
 			#поведение при удалении записи первичной модели 
 			#управляет каскадным удалением записей вторичной модели при удалении связанной записи в первичной
 			#if СУБД поддерживает межтабличные связи с сохранением ссылочной целостности, попытка удаления записи ⊂ primary с которыми связаны записи secondary обламается с IntegrityError exept ⊃ django.db.models
-			#v ⊃ django.db.models
+			#v ⊃ django.db.models	
 				CASCADE
 				#удаление ∀ связанных записей вроричной модели(каскадное)
 				PROTECT
@@ -1697,6 +2240,8 @@ django.contrib.auth
 			#True: создание связи в таблице бд позволяющая сохранить ссылочную целостность(?)
 			#False: ссылочная целостность поддерживается только на уровне dj
 				#используется только if модель создается на основе ∃ бд ⊃ некорректные данные
+		
+		
 		.OneToOneField(
 			<link_to_class_primary_model>|<string_with_classname_primary_model>,
 			on_delete=django.db.models.<model>,
@@ -1721,6 +2266,8 @@ django.contrib.auth
 		#поддерживает доп параметры ~ .ForeignKey и:
 			parent_link
 			#применяется при наследовании моделей
+		
+		
 		.ManyToManyField(
 			<link_to_class_other_model>|<string_with_classname_other_model>[,
 			limit_choices_to=][,
@@ -1785,53 +2332,203 @@ django.contrib.auth
 			#имя связующей таблицы
 			#обычно применяет if связующая модель не исп
 			#if не указано -> связующая табл получит имя по умолч
-binding:eng:связующий			
+		
+		
+		.fields.related
+			
+binding:eng:связующий				
+			.RelatedManager
+			#диспетчер обратной связи
+			#класс представляющий набор связанных записей secondary таблицы
+			#в отличие от диспетчера записей работает только с записями связанными с текущей записью primary
+				
+				<primary>.<secondary_related_name>_set.add(<связываемые_записи_secondary_через_запятую> [, bulk=True])
+				#см ОБРАБОТКА СВЯЗАННЫХ ЗАПИСЕЙ & ForeignKey синтаксис вызова
+				#связывает записи переданные secondary с текущей записью primary
+				#кажется создает только связи "один-со-многими"
+					bulk
+					#True -> связывание напрямую отдачей SQL-команды в СУБД без манипуляций с obj моделей представляющих связываемые записи
+						#увеличивает perf
+					#False -> связывание записей exe манипулированием obj модели представлящими связываемые записи
+					#может пригодиться if модели ⊃ переопределенные .save()/.delete() (видимо иначе эта логика не будет зайствована)
+				#к моменту вызова add(), текущая запись primary должна быть сохранена
+					#т.к. в поле внешнего ключа записи secondary сохраняется ключ записи primary, который м.б. получен только после записи(при использовании моделью стандартного автоинкрементного int pk)
+				#пример
+					r = Rubric.objects.get(name='Сельхозинвентарь')
+					b = Bb.objects.get(pk=24)
+					#заносим объявление в сельхозинвентарь
+					r.bb_set.add(b)
+					b.rubric			>> <Rubric: Сельхозинвентарь>
+				#"МНОГИЕ-СО-МНОГИМИ"
+					#добавление записей в число связанных с текущей записью
+					from testapp.models import Spare, Machine
+					s1 = Spare.objects.create(name='Болт')
+					s2 = Spare.objects.create(name='Гайка')
+					s3 = Spare.objects.create(name='Шайба')
+					s4 = Spare.objects.create(name='Шпилька')
+					m1 = Machine.objects.create(name='Самосвал')
+					m2 = Machine.objects.create(name='Тепловоз')
+					m1.spares.add(s1, s2)
+					m1.spares.all()	
+					>> <QuerySet: [<Spare: Spare object (1)>, <Spare: Spare object (2)>, <Spare: Spare object (4)>]>	
+
+					
+				.create(<fields_with_values>)
+				#унаследован от Manager
+				#создает запись secondary и связывает с текущей записью primary
+					b2 = r.bb_set.create(title='Лопата', price=10)
+					b2.rubric			>> <Rubric: Сельхозинвентарь>
+				#"МНОГИЕ-СО-МНОГИМИ"
+					#создание записи связанной модели и связывание с текущей записью
+					from testapp.models import Spare, Machine
+					m1 = Machine.objects.create(name='Самосвал')
+					m1.spares.create(name='Винт')		>> <Spare: Spare object (5)>
+					#вроде как создает запись как-бы отдельно(проверить что за херь?)
+					m1.spares.all()						>> <QuerySet [..., <Spare: Spare object ...]>
+					
+				
+				.set(<{xn} связываемых записей> [, bulk=True][, clear=False])
+				#~.add, но не добавляет записи в число связанных с текущей, а заменяет уже связанные
+					bulk
+					#~.add
+					clear
+					#True -> сначала exe очистка списка связанных записей -> указанные записи будут связаны с текущей
+					#False: добавление указанных записи !⊂ в списке связанных, и удаление отсутсвующих вызове из этого списка
+				#пример
+					s5 = Spare.objects.get(pk=5)
+					m1.spares.set([s2, s4, s5])
+					m1.spares.all()
+					>> <QuerySet [<Spare: Spare object (2)>, <Spare: Spare object (4)>, <Spare: Spare object (5)>]>
+				
+				
+				.remove(<удаляемая запись 0>, <удаляемая запись 1>, ...)
+				#удаляет указанные записи и списка связанных с текущей записью
+					m1.spares.remove(s4)
+					m1.spares.all()
+					>> <QuerySet [<Spare: Spare objec (2)>, <Spare: Spare object (5)>]>
+				#удаление ∀ записей
+					#по идее ~ clear
+					for spare in m1.spares.all():
+						m1.spares.remove(spare)
+						
+				
+				.clear()
+				#очистка списка связанных с текущей записей
+					m2.spares.set([s1, s2, s3, s4, s5])
+					m2.spares.all()						>> <QuerySet [<Spare: ...]>
+					m2.spares.clear()
+					m2.spares.all()						>> <QuerySet []>
+					
+				
+				<primary_запись>.get_<secondary_name>_order()
+				#связан с get?-> вряд ли
+				#произвольное переупорядочивание записей
+				#return список ключей записей secondary связанный с записью
+					class Bb(models.Model):
+						...
+						rubric = models.ForeignKey('Rubric')
+						
+						class Meta:	
+							order_with_respect_to = 'rubric'
+					
+					r = Rubric.objects.get(name='Мебель')
+					r.get_bb_order()					>> [33, 34, 37]
+					
+					
+				<primary_запись>.set_<secondary_name>_order()
+				#произвольное переупорядочивание записей
+				#задает новый порядок записей secondary согласно указанному списку ключей записей
+					class Bb(models.Model):	
+						...
+						rubric = models.ForeignKey('Rubric')
+						
+						class Meta:
+							order_with_respect_to = 'rubric'
+					r = Rubric.objects.get(name='Мебель')
+					r.set_bb_order([37, 34, 33])
+				.first()
+				#return первую запись модели | if набор пуст -> None
+					b = Bb.objects.first()
+					b.title			>> 'Стиральная машина'
+				
+				
+				.all()
+				#наследован от Manager
+				#!, возвращаемый набор ⊃ лишь связанные записи(что очевидно)
+					r = Rubric.objects.get(name='Недвижимость')
+					print([bb.title for bb in r.bb_set.all()])		>> ['Дом', 'Дача']
+					
 		.ProtectedError
 		#exept вызваемый при
 			удалении записи первичной модели при указании в связанной вторичной on_delete=models.PROTECT
 			#models.PROTECT ⊂ django.db.models
+			
+			
 	<class 'Q'>
 	#экземпляр может задавать сложные критерии фильтрации для
 		django.db
 			models.ForeignKey(..., limit_choices_to=<class 'Q'>)
+			
+			
 ∀ поля создаваемые в моделях - по умолчанию обязательны к заполнению
 	-> добавить новое, обязательное к заполнению поле в модель уже ⊃ записи => нельзя
 	#видимо т.к. тогда придется добавлять val этих полей в уже ∃ записи
 	#иначе СУБД вернет err
+	
+	
 СТРОКОВОЕ ПРЕДСТАВЛЕНИЕ МОДЕЛИ
 ...
+
 ОБРАТНОЕ РАЗРЕШЕНИЕ URLS
 ...
+
 ФОРМЫ СВЯЗАННЫЕ С МОДЕЛЯМИ
 django.views.generic.edit
+
 	.CreateView
 		.template_name
 		#путь к шаблону используемому для вывода страницы с формой
+		
 		.form_class
 		#класс формы связанной с моделью
+		
 		.success_url
 		#url по кот. будет выполнен переход после успешного сохранения данных
+		
 		.get_context_data()
 		#формурует контекст шаблона
+		
+		
 django.forms
+
 	.ModelForm.as_p()
 	#вывод формы с эл-тами управления на отдельных абзацах
 	#генерирует только код создающий эл-ты управления => теги
 		<form>
 		<input>
 		#придется писать вручную
+		
+		
 <form>
 #создание формы
+
+
 <input>
 #кнопка отправки данных
+
+
 {% csrf_token %}
 #тег шаблонизатора
 #создает в форме скрытое поле, хранящее токен, получение которого контроллером - гарантия того что данные получены с текущего сайта и им "можно доверять"
 #часть подсис-мы безопасности dj
 
 "цифровой жетон"= токен
+
+
 КОНТРОЛЛЕРЫ-КЛАССЫ
 #в path() ⊂ urls.urlpatterns в случае контроллера-класса передается ссылка на результат возвращаемый .as_view() ⊃ контроллеру класса вместо самого контроллера-класса
+
+
 НАСЛЕДОВАНИЕ ШАБЛОНОВ
 #для сокращения кода шаблонов
 #упрощение сопровождения
@@ -1846,28 +2543,41 @@ django.forms
 #может быть пустым|⊃ содержимое - которое
 	#будет использовано if производный шаблон не задаст для него содержимое
 	#будет заменено if производный шаблон задаст для него содержимое
+	
+	
 {% endblock %}
 #закрывающий тег блока
+
+
 СТАТИЧЕСКИЕ ФАЙЛЫ
 #файлы не обрабатываемые программно, а пересылаются клиенту как есть
 #расположение по умолчанию	
 	<app>/static
 	#меняется в настройка проекта
+	
+	
 ЧАСТЬ II
 БАЗОВЫЕ ИНСТРУМЕНТЫ DJ
+
 	СОЗДАНИЕ И НАСТРОЙКА ПРОЕКТА
 	#создаем проект, указываем настройки, формируем ∀ необходимые apps
 		установка python
 		#
+		
 		установка dj
 		#различные способы установки:docs.djangoproject.com/en/2.1/topics/install
+		
 		установка СУБД соотв бд
 		#в большинстве случаев сайты используют одну бд
 		#конфигурирование dj для использования неск. бд и работа с ними: docs.djangoproject.com/en/2.1/topics/db/multi-db/
+		#при исп бд для нескольких app кажется требуются доп настройки
+		
 			SQLite
 			#поставляется с интерпритатором python
 			#создается автоматом ПРИ ПЕРВОЙ ПОПЫТКЕ ОБРАЩЕНИЯ К НЕЙ
 				#для dj - при первом запуске отладочног сервера
+				
+				
 			MySQL
 			#требуется установка клиента
 			#требуется настроенный сервер СУБД
@@ -1883,6 +2593,8 @@ django.forms
 			#бд не создается автоматом
 			#требуется создать пользователя(с необходимыми правами(создание/Δ/удаление таблиц/индексов/связей)) от имени которого будет подключаться dj
 			#для создания бд/пользователя можно использовать MySQL Workbench(по ⊂ MySQL)
+			
+			
 			PostgreSQL
 			#потребуется установить коннектор
 				psycorg
@@ -1897,21 +2609,38 @@ django.forms
 			#не создается автоматом
 			#требуется создать пользователя(с необходимыми правами(создание/Δ/удаление таблиц/индексов/связей)) от имени которого будет подключаться dj
 			#для создания бд/пользователя можно использовать средства этой СУБД
+			
+			
 			Oracle
 			#СУБД
+			
+			
 			Microsoft SQL Server
 			#СУБД
+			
+			
 			Firebird
 			#клиент?
+			
+			
 			IBM DB2
 			#СУБД?
+			
+			
 			SAP SQL Anywhere
 			#СУБД?
+			
+			
 			ODBC
 			#механизм
+			
+			
 		подключение к бд
 		#docs.djangoproject.com/en/2.1/ref/databases/
+		
+		
 СОЗДАНИЕ, НАСТРОЙКА И РЕГИСТРАЦИЯ ПРИЛОЖЕНИЙ
+
 APPS
 #приложения реализуют отдельные части fx проекта
 #∀ проект должен ⊃ min одно app
