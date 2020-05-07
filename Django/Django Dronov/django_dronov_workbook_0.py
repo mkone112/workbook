@@ -764,15 +764,90 @@ attr класса ~ св-ва класса|статические св-ва в o
 			for r in Rubric.objects.all():
 				print(r.name)
 		
-		.filter(<field>=<val>)
+		.last()
+		#return последнюю запись набора | if набор пуст -> None
+			b = Bb.objects.first()
+			b.title -> 'Дача'
+		#учитывает сортировку заданную вызовом .order_by() | параметром модели ordering
+		
+		
+		.filter(<field0>=<val>, ...)
 		#фильтрация записей по заданным критериям
+		#см НАПИСАНИЕ УСЛОВИЙ ФИЛЬТРАЦИИ
+		#противоположен .exclude(...)
 		#возвращяет другой диспетчер записей ⊃ только отфильтрованные записи
-		
-		
+			#∀ объявления с ценой >= 10000
+			for b in Bb.objects.filter(price__gte=10000):
+				print(b.title)
+		#поддерживается QuerySet -> можно сцеплять вызовы
+			r = Rubric.objects.get(name='Недвижимость')
+			for b in Bb.objects.filter(rubric=r).filter(price__lt=1000000):
+				print(b.title)
+			#хотя конечно можно обойтись и filter
+				for b in Bb.objects.filter(rubric=r, price__lt=1000000):
+					print(b.title)
+					
+					
+		.exclude(<field0>=<val>, ...)
+		#противоположен exclude(...)
+		#возвращает записи НЕ удовлетворяющие условиям
+		#см НАПИСАНИЕ УСЛОВИЙ ФИЛЬТРАЦИИ
+			#∀ объявления кроме тех чья цена не менее 10000
+			for b in Bb.objects.exclude(price__gte=10000):
+				print(b.title)
+		#поддерживается QuerySet -> можно сцеплять вызовы(см. .filter)
+			#хотя можно обойтись и .exclude() (см .filter)
+			
+			
 		.get(<field>=<val>)
 		#возвращает одну запись подходящую под критерий
 		#быстрее filter()
+		#if записей не нашлось -> бросает DoesNotExist чей класс вложен в класс модели чья запись не была найдена
+		#if записей неск -> бросает MultipleObjectsReturned ⊃ django.core.exceptions
+			r = Rubric.objects.get(name='Растения')
+			r.pk	>> 7
+		#условия поиска объединяются and
+			r = Rubric.objects.get(pk=5, name='Сантехника') 
+			>> bboard.models.DoesNotExist: Rubric matching query does not exist
 		
+		
+		.get_next_by_<field_name>([<field>=<val>])
+		#доступен if модель ⊃ min одно поле DateField|DateTimeField
+		#return запись чье поле с указанным именем ⊃ следующее в порядке увеличения val даты
+		#if указаны условия поиска - они также учитываются
+			b = Bb.objects.get(pk=1)
+			b.title					>> 'Дача'
+			#след хронологически запись
+			b2 = b.get_next_by_published()
+			b2.title				>> 'Дом'
+			#след хронологически запись с ценой < 1000
+			b3 = b.get_next_by_published(price__lt=1000)
+			b3.title				>> 'Мотоцикл'
+			
+			
+		.get_previous_by_<field_name>([<field>=<val>])
+		#доступен if модель ⊃ min одно поле DateField|DateTimeField
+		#return запись чье поле с указанным именем ⊃ пред в порядке увеличение val даты
+		#if указаны условия поиска - они также учитываются
+		#~.get_next_by_<field_name>
+		
+		
+		<secondary>.get_next_in_order()
+		#доступен if secondary ⊃ задание произвольного переупорядочивания записей связанных с одной записью primary(указан параметр order_with_respect_to)
+		#возвращает след в установленном порядке запись
+			r = Rubric.objects.get(name='Мебель')
+			bb2 = r.bb_set.get(pk=34)
+			bb2.pk						>> 34
+			bb3 = bb2.get_next_in_order()
+			bb3.pk						>> 33
+		
+		<secondary>.get_previous_in_order()
+		#доступен if secondary ⊃ задание произвольного переупорядочивания записей связанных с одной записью primary(указан параметр order_with_respect_to)
+		#возвращает предыдущую в установленном порядке запись
+			r = Rubric.objects.get(name='Мебель')
+			bb2 = r.bb_set.get(pk=34)
+			bb1 = bb2.get_previous_in_order()
+			bb1.pk						>> 37
 		
 		.get_or_create(<kwargs_для_фильтрации> [, defaults=None]) -> (найденая|созданная запись, False (if была найдена)|True(if была создана))
 		#возвращает одну запись по фильтрам, при отсутсвии записи => создает ее на основе фильтров и сохранит и возвратит
@@ -808,7 +883,47 @@ attr класса ~ св-ва класса|статические св-ва в o
 		#работает напрямую с бд -> возвращаемые записи ⊃ пустое pk поле -> при их создании не вызывается .save() ->
 			#-> if модель ⊃ переопред .save() ⊃ доп действия при сохранении - они !exe
 
-
+		
+		.latest(['<field_name0>',<'field_name1'>, ... ])
+		#получение последней записи модели(⊃ max val в полях даты/времени)
+		#if модель ⊃ get_latest_by = '-...' => получение самой ранней записи
+		#~.earliest, наоборот
+			b = Bb.objects.latest('published')
+			b.title			>> 'Стиральная машина'
+			
+			
+		.earliest(['<field_name0>',<'field_name1'>, ... ])
+		#возвращает запись ⊃ min val в полях даты/времени(самую раннюю)
+		#предварительно exe временную сортировку по возрастанию val полей даты/времени(по умолч - по возрастанию)
+		#проверка начинается с первого указанного поля, if val одинаково у неск записей -> проверяется след поле, etc
+		#if модель ⊃ get_latest_by = '-...' => получение самой поздней записи
+		#if модель ⊃ get_latest_by задающий поля для просмотра -> метод можно вызывать без параметров
+		#if подходящих записей не нашлось -> бросает DoesNotExist
+			#первое объявление на сайте
+			b = Bb.objects.earliest('published')
+			b.title			>> 'Дача'
+			#последнее
+			b = Bb.objects.earliest('-published')
+			b.title			>> 'Стиральная машина'
+			#самое раннее объявление о продаже транспорта
+			r = Rubric.objects.get(name= 'Транспорт')
+			b = r.bb_set.earliest('published')
+			#первое объявление с ценой не менее 10000
+			b = Bb.objects.filter(price__gte=10000).first()
+			
+		.exists()
+		#быстр, рекомендуем
+		#if набор ⊃ записи -> True
+		#else	-> False
+			r = Rubric.objects.get(name='Сантехника')
+			Bb.objects.filter(rubric=r).exists()	>> False
+		
+		.count()	-> число_записей_набора
+		#быстр, рекомендуем
+			Bb.objects.count()	>> 12
+<Query_set>
+#вроде производный Manager -> поддерживает его методы
+#поддерживает .latest(), .earliest(), .last(), .first()
 		<Query_set?>.update(<field_name=new_value>) -> count_changed_fields
 		#исправляет ∀ записи в наборе
 			Bb.objects.filter(price=None).update(price=10)
@@ -820,6 +935,8 @@ attr класса ~ св-ва класса|статические св-ва в o
 			Bb.objects.filter(content=None).delete()	>> (2, {'bboard.Bb': 2})
 		#возвращает dict ~ возвращаемому <запись?>.delete() (?проверить)
 		#не вызывает .delete() модели (мб критично if он переопределен)
+		
+		
 		.order_by(<field>)
 		#сортирует записи по val поля указанного в параметре и возвращает получившийся в результате набор записей
 			.order_by('-published')
@@ -1232,14 +1349,7 @@ attr класса ~ св-ва класса|статические св-ва в o
 	#if !∃ => именуется по умолч
 
 
-<...>.latest(...)
-#получение последней записи модели
-#if модель ⊃ get_latest_by = '-...' => получение самой ранней записи
 
-
-<...>.earliest(...)
-#получение первой записи модели
-#if модель ⊃ get_latest_by = '-...' => получение самой поздней записи
 
 
 URL МОДЕЛИ
@@ -2013,6 +2123,156 @@ manage.py makemigrations bboard
 				
 				.latest()
 				#см .latest()
+			
+			ПОДСЧЕТ ЗАПИСЕЙ НАБОРА
+				.exists()
+				#см .exists()
+				
+				.count()
+				#см .count()
+				
+			ПОИСК ЗАПИСИ
+			#max частая операция
+				
+				.get()
+				#см .get()
+				
+				.get_next_by_<field_name>
+				#см .get_next_by_<field_name>
+				
+				.get_previeus_by_<field_name>
+				#см .get_previeus_by_<field_name>
+				
+				.get_next_in_order()
+				#см .get_next_in_order()
+				
+				.get_previeus_in_order()
+				#см .get_previeus_in_order()
+			
+			ФИЛЬТРАЦИЯ ЗАПИСЕЙ
+			#в отличие от поиска записей мб ∀ колво(⊃ 0)
+			#∀ возвращенное число записей не приведет к вызову exept
+			#dj ⊃ два противоположных метода для фильтрации
+				.filter()
+				#см .filter()
+				
+				.exclude()
+				#см .exclude()
+			
+			НАПИСАНИЕ УСЛОВИЙ ФИЛЬТРАЦИИ
+			#при записи условий фильтрации в методах вроде filter() и exclude() в формате
+				<field>=<value>
+				#dj отбирает записи ⊃ поле ⊃ точно совпадающее val
+				для сравнений
+					без учета регистра
+					val >|< заданной величины
+					#исп модификаторы
+			МОДИФИКАТОРЫ
+			#добавляется к имени поля и отделяется от него двойным underscore
+			<field_name>__<modificator>
+			
+			exact
+			#точное совпадение с учетом регистра
+			#~<field_name>=<value>
+			#исп if имя поля модели = ключевое слово python(только?)
+				class__exact='superclass'
+			
+			
+			iexact
+			#точное совпадение без учета регистра
+			
+			contains
+			#val ⊂ полю, ⊃ заданное val С УЧЕТОМ РЕГИСТРА
+			
+			icontains
+			#~contains БЕЗ УЧЕТА РЕГИСТРА
+			
+			startswith
+			#val поля начинается с указанного val С УЧЕТОМ РЕГИСТРА
+			
+			istartswith
+			#~startswith БЕЗ УЧЕТА РЕГИСТРА
+			
+			endswith
+			#~startwith наоборот
+			
+			iendswith
+			#~endswith БЕЗ УЧЕТА РЕГИСТРА
+			
+			lt
+			#val ⊂ полю МЕНЬШЕ заданного
+			
+			lte
+			#val ⊂ полю должно быть МЕНЬШЕ|РАВНО заданному
+			
+			gt
+			#val ⊂ полю должно быть БОЛЬШЕ заданного
+			
+			gte
+			#val ⊂ полю должно быть БОЛЬШЕ|РАВНО заданному
+			
+			range
+			#val ⊂ полю должно ⊂ ЗАДАННОМУ ДИАПАЗОНУ ⊃ ПРЕДЕЛЫ
+			#задается кортежем (<начальное_val>, <конечное_val>)
+			
+			date
+			#val поля оценивается как дата
+				published__date=datetime.date(2018, 6, 1)
+				
+			time
+			#val поля оценивается как время
+				published__time=datetime.time(12, 0)
+				
+			year
+			#сравнение с ГОДОМ извлеченным из val даты ⊂ полю
+				published__year=2018
+				published__year__lte=2017
+			
+			month
+			#сравнение с МЕСЯЦЕМ извлеченным из val даты ⊂ полю
+				
+			day
+			#сравнение  с ЧИСЛОМ извлеченным из val даты ⊂ полю
+			
+			week
+			#сравнение с НОМЕРОМ НЕДЕЛИ извлеченным из val даты ⊂ полю
+			
+			week_day
+			#сравнение с НОМЕРОМ ДНЯ НЕДЕЛИ извлеченным из val даты ⊂ полю
+			
+			quarter
+			#сравнение с НОМЕР КВАРТАЛА(1...4) извлеченным из val даты ⊂ полю
+			
+			hour
+			#сравнение с ЧАСОМ извлеченным из val даты ⊂ полю
+				published__hour=12
+				published__hour__gte=13
+				
+			minute
+			#сравнение с МИНУТОЙ извлеченной из val даты ⊂ полю
+			
+			second
+			#сравнение с СЕКУНДОЙ извлеченной из val даты ⊂ полю
+			
+			isnull
+			#True -> поле должно ⊃ null(быть пустым)
+			#False -> поле должно ⊃ !null(быть заполненным)
+				content__isnull=False
+				
+			in
+			#val поля должно ⊂ указанному списку|кортежу|QuerySet
+				pk__in=(1, 2, 3, 4,⊃)
+			
+			regex
+			#val поля должно совпадать с re С УЧЕТОМ РЕГИСТРА
+				content__regex='газ|вода'
+				
+			iregex
+			#~regex БЕЗ УЧЕТА РЕГИСТРА
+			
+		ФИЛЬТРАЦИЯ ЗАПИСЕЙ ПО VAL ПОЛЕЙ СВЯЗАННЫХ ЗАПИСЕЙ
+		#
+			
 ШАБЛОНЫ
 #образец для формирования документа(который затем можно отдать клиенту)
 	HTML
@@ -2450,6 +2710,7 @@ binding:eng:связующий
 				#return первую запись модели | if набор пуст -> None
 					b = Bb.objects.first()
 					b.title			>> 'Стиральная машина'
+				#учитывает сортировку заданную вызовом .order_by() | параметром модели ordering
 				
 				
 				.all()
