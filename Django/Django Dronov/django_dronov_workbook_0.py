@@ -937,12 +937,26 @@ attr класса ~ св-ва класса|статические св-ва в o
 		#не вызывает .delete() модели (мб критично if он переопределен)
 		
 		
-		.order_by(<field>)
-		#сортирует записи по val поля указанного в параметре и возвращает получившийся в результате набор записей
-			.order_by('-published')
-			#видимо сортировка по убыванию
-			
-			
+		.order_by(['<field0>', '<field1>', ...])
+		#сортирует записи по возрастанию val поля указанного в параметре и возвращает получившийся в результате набор записей
+		#if у записей равны val первого поля -> проверяются val в след
+			for r in Rubric.objects.order_by('name'):
+				print(r.name)
+			>> Бытовая техник >> Мебель >> Недвижимость ...
+			#сначала по названию рубрик, затем по убыванию цены
+			for b in Bb.objects.order_by('rubric__name', '-price'):
+				price(b.title)
+		#∀ вызов отменяет параметры сортировки заданные пред вызовом(а без вызова они что сохраняются?) или в параметре ordering ⊂ модели
+			#'?' => сортировка в случайном порядке
+			#мб медленна
+				for r in Rubric.objects.order_by('?'):
+					...
+		.reverse()
+		#разворачивает набор записей
+			for r in Rubric.objects.order_by('name').reverse():
+				print(r.name)
+				
+				
 		<запись>.delete()
 		#удаляет текущую запись и возвращает сведения о кол-ве удаленных записей
 	
@@ -2271,8 +2285,227 @@ manage.py makemigrations bboard
 			#~regex БЕЗ УЧЕТА РЕГИСТРА
 			
 		ФИЛЬТРАЦИЯ ЗАПИСЕЙ ПО VAL ПОЛЕЙ СВЯЗАННЫХ ЗАПИСЕЙ
-		#
+		  'ОДИН-СО-МНОГИМИ'|'ОДИН-С-ОДНИМ'
+			ФИЛЬТРАЦИЯ ЗАПИСЕЙ SECONDARY ПО VAL ПОЛЕЙ PRIMARY
+			#условие фильтрации записывается в формате
+				<имя_поля_внешнего_ключа>__<имя_поля_primary>
+					#∀ объявления о продаже транспорта
+					for b in Bb.objects.filter(rubric__name='Транспорт'):
+						print(b.title)
+			ФИЛЬТРАЦИЯ ЗАПИСЕЙ PRIMARY ПО VAL ПОЛЕЙ SECONDARY
+			#условие фильтрации записывается в формате
+				<secondary>__<имя_поля_secondary>
+				#не уникальные
+					#∀ рубрики ⊃ объявления с ценой > 10000
+					#Недвижимость ⊃ неск объявлений с указанными val полей
+					for r in Rubric.objects.filter(bb__price__gt=10000):
+						print(r.name)
+					>> Недвижимость Недвижимость Недвижимость Транспорт
+			#разумеется можно указать другой фильтр исп вместо имени secondary
+				#указывается в related_query_name конструктора поля
+				class Bb(models.Model):
+					rubric = models.ForeignKey(Rubric, on_delete=models.PROTECT, related_query_name='entry')
+				for r in Rubric.objects.filter(entry__price__gt=10000):
+					print(r.name)
+		  'МНОГИЕ-СО-МНОГИМИ'
+		  #~'ОДИН-С-ОДНИМ'|'ОДИН-СО-МНОГИМИ'
+			#∀ машины ⊃ гайки
+			for m in Machine.objects.filter(spares__name='Гайка'):
+				print(m.name)
+			>> Самосвал
 			
+			#∀ детали ⊂ самосвала
+			for s in Spare.objects.filter(machine__name='Самосвал'):
+				print(s.name)
+			>> Гайка >> Винт
+		
+		СРАВНЕНИЕ С VAL ДРУГИХ ПОЛЕЙ
+		#сравнение val полей друг с другом
+		#dj ⊃ класс F ⊃ django.db.models
+			F('<имя поля для сравнения>')
+			#экземпляр класса исп для сравнения
+				#объявления у которых название ⊂ в описании
+				from django.db.models import F
+				f = F('title')
+				for b in Bb.objects.filter(content__icontains=f):
+					print(b.title)
+			#можно исп для занесения нового val в поля
+				#уменьшим вдвое цены ∀ объявлений
+				f = F('price')
+				for b in Bb.objects.all():
+					b.price = f / 2
+					b.save()
+		
+		
+		СЛОЖНЫЕ УСЛОВИЯ ФИЛЬТРАЦИИ
+		#возможности .filter()|.exclude() позволяют лишь указать набор условий объедиенных and
+			объединение по правилам ИЛИ
+			#исп класс Q ⊃ django.db.models
+			Q(<условие_фильтрации>)
+			#только одно усл
+			#экз исп в вызовах .exclude()|.filter()
+			#экз мб объединены
+				&
+				|
+				~
+				#эти оператры возвращают новй экз Q
+					#выборка объявлений недвижимости ИЛИ бытовой техники
+					from django.db.models import Q
+					q = Q(rubric__name='Недвижимость') | \
+					      Q(rubric__name='Бытовая техника')
+					for b in Bb.objects.filter(q):
+						print(b.title)
+						#видимо ∀ объявление должно ⊂ только одной рубрике, но не обеим сразу
+					>> Пылесос >> Стиральная машина >> Земельный участок >> Дом >> Дача
+					#выборка объявлений о продаже транспорта с ценой <= 5000
+					q = Q(rubric__name='Транспорт') & ~Q(price__gt=5000)
+					for b in Bb.objects.filter(q):
+						print(b.title)
+					>> Мотоцикл
+		ВЫБОРКА УНИКАЛЬНЫХ ЗАПИСЕЙ
+			distinct([<field0>, <field1>, ...])
+			#при исп PostgreSQL можну указать в параметрах имена полей val которых определяют уникальность записи
+			#if параметры !∃ -> уникальность записи определяется val ∀ ее полей
+				#вывод рубрик ⊃ объявления с ценой > 10000
+				for r in Rubric.objects.filter(bb__price__gt=10000).distinct():
+					print(r.name)
+				>> Недвижимость Транспорт
+		
+		ВЫБОРКА УКАЗАННОГО ЧИСЛА ЗАПИСЕЙ
+		#QuerySet поддерживает срезы
+		#отриц индексы не поддерживаются
+		#?проверить подробнее
+			Rubric.objects.all()[:3]
+		
+		
+		СОРТИРОВКА ЗАПИСЕЙ
+			.order_by()
+			#см .order_by()
+			
+		
+		АГРЕГАТНЫЕ ВЫЧИСЛЕНИЯ
+		#затрагивают val поля ∀ записей модели
+			вычисление кол-ва объявлений
+				∀
+				удовлетворяющих условиям
+			среднее арифметическое цены
+			max цена
+			...
+		#exe агрегатными fx
+			
+			ВЫЧИСЛЕНИЯ ПО ∀ ЗАПИСЯМ МОДЕЛИ
+				aggregate(<agregate_fx0>, <agregate_fx1>, ...)
+				#return dict ⊃ результары exe соотв агрегатных fx
+				#принимает позиционные/именованные args
+					#if fx - позиционный arg -> dict = 
+						{<field_name_по_кот_exe_вычисление>_<имя_класс_агрегатной_fx>:<результат_exe_fx>}
+							#min цена объявления
+							from django.db.models import Min
+							Bb.objects.aggregate(Min('price'))
+							>> {'price__min': 10.0}
+					#if fx - именованный arg -> ключ = имени параметра
+						from django.db.models import Max
+						Bb.objects.aggregate(max_price=Max('price'))
+						>> {'max_price': 50000000.0}
+						#именованные параметры в отличие от позиционных поддерживают вычисления над результатами агрегатных fx
+							result  = Bb.objects.aggregate(diff=Max('price')-Min('price'))
+							result['diff']	>> 499999990.0
+				#примеры
+					result = Bb.objects.aggregate(Min('price'), Max('price'))
+					result['price__min'], result['price__max']
+					>> (10.0, 5000000.0)
+			
+			
+			ВЫЧИСЛЕНИЯ ПО ГРУППАМ ЗАПИСЕЙ
+				annotate(<aggregate_fx0>, <aggregate_fx1>, ...) -> <набор_записей>
+				#агрегатное вычисление по группам записей сформированных по критерию
+					#число объявления ∀ рубрики
+					from django.db.models import Count
+					for r in Rubric.objects.annotate(Count('bb')):
+						print(r.name, ': ', r.bb__count, sep='')
+					>> Бытовая техника: 2>> Мебель: 0 >> ...
+					#тоже, но с именованным параметром
+					for r in Rubric.objects.annotate(cnt=Count('bb')):
+						print(r.name, ': ', r.cnt, sep='')
+					#min цена объявления ∀ рубрики
+					#рубрики без цены вернут None
+					for r in Rubric.objects.annotate(min=Min('bb__price')):
+						print(r.name, ': ', r.min, sep='')
+				#используя именованный параметр мы создаем в наборе записей новое поле =>
+					#можно фильтровать по его val
+						#исключим рубрики без объявлений
+						for r in Rubric.objects.annotate(cnt=Count('bb')),
+												min=Min('bb__price')).filter(cnt__gt=0):
+							print(r.name, ': ', r.min, sep='')
+				#return новый набор записей, ∀ запсь ⊃ attr с именем 
+					<field_name_по_кот_exe_вычисление>_<имя_класс_агрегатной_fx>
+					#⊃ результат exe fx
+			
+			АГРЕГАТНЫЕ FX
+			#экз классов ⊃ django.db.models
+			#необязательные параметры конструкторов классов допустимы лишь при задании именованных параметров в вызовах aggregate|annotate (иначе -> exept)
+				Count(<field_name>[, distinct=False][, filter:<class 'Q'>=None])
+				#число записей ⊃ указанное поле
+					#подсчет объявлений с ценой > 100 000 по рубрикам
+						for r in Rubric.objects.annotate(cnt=Count('bb', filter=Q(bb__price__gt=100000))):
+							print(r.name, ': ', r.cnt)
+				#if нужно узнать число записей secondary связаных с этой записью -> следует указать имя secodary
+					distinct
+					#True -> подсчет только уникальных записей
+					filter
+					#усл фильтрации в виде экз Q
+					#по умолч не exe
+			
+				
+				Sum(<field_name|exp> [, ouput_field=None][, filter=None])
+				#вычисляет Σ val поля
+					<field_name|exp>
+					#поле Σ чьих val вычисляется | exp представленное экз F
+					output_field
+					#задает тип результата экземпляром класса представляющего поле нужного типа
+					#умолч: = типу поля
+					filter
+					#усл фильтрации экз Q
+					#по умолч !exe
+				
+				
+				Min(<field_name|exp> [, ouput_field=None][, filter=None])
+				#вычисляет min val из ⊂ полю
+				#параметры ~Sum
+				
+				
+				Max(<field_name|exp> [, ouput_field=None][, filter=None])
+				#~Min
+				
+				Avg(<field_name|exp> [, output_field=FloatField()][, filter=None])
+				#вычисляет среднее арифметическое val ⊂ указанному полю
+				#параметры ~Min
+				
+				
+				StrDev(<field_name|exp> [, sample=False][, filter=None])
+				#вычисляет стандартное отклонение
+					<field_name|exp>
+					#~Min
+					sample
+					#True -> вычисление стандартного отклонения выборки
+					#False -> вычисление стандартного отклонения
+					filter
+					#~Min
+					
+					
+				Variance(<field_name|exp> [, sample=False][, filter=None])
+				#вычисление дисперсии
+					sample
+					#True -> вычисление стандартной дисперсии образца
+					#False -> вычисление дисперсии
+					<field_name|exp>
+					#~Min
+					filter
+					#~Min
+			ВЫЧИСЛЯЕМЫЕ ПОЛЯ
+			#модели могут ⊃ fx-поля чьи val вычисляются на основе других данных, а не берутся из бд
+				#вычисляемые поля позволяют перенести подобные вычисления в СУБД вместо dj
+			#обычно исп для операций не требующих сложных вычислений
 ШАБЛОНЫ
 #образец для формирования документа(который затем можно отдать клиенту)
 	HTML
