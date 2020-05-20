@@ -242,6 +242,8 @@ PreparedRequests
 getpass.getpass() -> str
 #вроде выводит запрос для ввода пароля в консоль без отображения вводимых символов(как в unix)
 #prompt for password with echo off, using Windows getch()
+#echo - показывание пароля
+#мб запущен из idle, но будет ругаться что не пароль отображается
 #дополнительно позволяет не хранить пароль в исходниках
 
 
@@ -284,6 +286,7 @@ certifi
 
 ПРОИЗВОДИТЕЛЬНОСТЬ APPS
 	КОНТРОЛЬ ТАЙМАУТА
+	#обеспечивает эффективность кода, и стабильность app
 		при отправке встроенного(?) запроса внешней службе, сисма ждет ответ 
 			if app ждет ответа слишком долго
 				запросы к службе мб сохранены(?)
@@ -305,12 +308,12 @@ certifi
 				print('The request timed out')
 			else:
 				print('The request did not time out')
-
-======================проверил_до_сюда
+	
 	
 	СЕАНСЫ
 	#сессии
 	#исп для сохранения параметров в запросах
+	#обеспечивает эффективность кода, и стабильность app
 		Sessions
 		#класс реализующий работу таких высокоуровневых абстракций как .get()/.post()/...
 		#исп для 
@@ -331,7 +334,7 @@ certifi
 	
 	
 	ОГРАНИЧЕНИЯ ПОВТОРНЫХ ПОПЫТОК
-		
+	#обеспечивает эффективность кода, и стабильность app	
 		HTTPAdapter
 		#max число повторов запроса при сбое
 		#by def requests не exe повторный запрос
@@ -343,3 +346,14 @@ certifi
 					import requests
 					from requests.adapters import HTTPAdapter
 					from requests.exceptions import ConnectionError
+					
+					github_adapter = HTTPAdapter(max_retries=3)
+					
+					session = requests.Session()
+					
+					#исп адептер для ∀ запросов начинающихся с 'https://api.github.com', github_adapter)
+					#session будет поддерживаться своей конфигурации для ∀ запроса к этому url
+					try:
+						session.get('https://api.github.com')
+					exept ConnectonError as ce:
+						print(ce)

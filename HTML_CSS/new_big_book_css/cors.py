@@ -26,3 +26,7 @@ CORS
 				Host:site.ru
 				Origin: http://site.com
 					if запрос принят-> запрашиваемый сервер добавляет к ответу заголовок Access-Control-Allow-Origin ⊃ домен запроса site.com
+
+FIREFOX 68+
+about:config
+	privacy.file_unique_origin
