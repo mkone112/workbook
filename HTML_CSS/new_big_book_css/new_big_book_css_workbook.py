@@ -7,7 +7,8 @@
 		font в начале?
 	порядок attr?
 		<link href=... rel=...>?
-		
+	возм для стилей ⊃ только одно свво не требуется ;, но нужны пробелы вокруг свва
+		ul { font-size: 75% }
 		
 ТЕГИ
 #СХЕМА ВЫБОРА HTML5 ТЕГА:tinyurl.com/o298cs6
@@ -62,11 +63,14 @@
 				<input type="text">
 			checkbox
 			#флаг
+			
+			
 	<ol>
 	#нумерованный список
 	#исп
 		ряд {xn} exe операций
 		порядок набора эл-тов
+		
 		
 	<dl>
 	#список определений терминов
@@ -188,11 +192,17 @@
 	
 	
 	<strong>
-	#выделение текста полужирным
+	#выделение текста полужирным(вес)
+	#имеет смысловую нагрузку
+		акцентируется screenreader'ами
+	
 	
 	<em>
 	#выделение текста курсивом
-	
+	#имеет смысловую нагрузку
+		акцентируется screenreader'ами
+		
+		
 	<meta>
 	#метаданные
 		charset
@@ -237,6 +247,9 @@
 	#наткнувшись на тег -> браузер загружает указанный ресурс(?подробнее)
 		<link href='http://fonts.googleapis.com/css?family=Kurale' rel='stylesheet'>
 	#attr
+		type
+		#устарел, не требуется HTML5
+			type='text/css'
 		rel
 		#тип ссылки(ресурса)
 			stylesheet
@@ -410,7 +423,7 @@
 	
 	
 	<th>
-	#тег?
+	#table header
 	
 	
 	<td>
@@ -463,20 +476,64 @@
 		<b>
 		#вытеснен CSS|strong
 		#жирный текст
-		#вроде в HTML5 позволяет изменить начертание без семантического выделения
+		#вроде в HTML5 позволяет изменить начертание без семантического выделения(в отличие от <strong>)
+		
 		
 		<i>
 		#вытеснен CSS|em
 		#курсив
-		#вроде в HTML5 позволяет изменить начертание без семантического выделения
+		#вроде в HTML5 позволяет изменить начертание без семантического выделения(в отличие от <em>)
 	
 СВОЙСТВА
 #~attr
-
-
+	
+	font:[<other_params>] <font_size>[/<line_height>] <font_family0[, ...]>
+	font: <keyword>
+	#мб установлен одним keyword
+		caption
+		icon
+		menu
+		message-box
+		small-caption
+		status-bar
+	#сокращеная форма форматирования текста ⊃
+		font-style
+		font-variant
+		font-weight
+		font-size
+		line-height
+		font-family
+	#позволяет установить системный шрифт для элтов интерфейса
+	#примеры
+		font: italic bold small-caps 18px/1.5 Arial, Helvetica, sans-serif;
+		font: bold small-caps italic 1.4em Arial;
+	#свва
+		font-size-adjust
+		font-kerning
+		#не могут быть установлены в font, но ∀ равно сбрасываются к начальным val
+	
+	#опущенные свва устанавливаются by def(по идее только normal)
+		font: 1.5em Arial; = font: normal normal normal 1.5em/normal Arial;
+		#пример:
+		p {
+			font: bold italic small-caps 18px/2000% Arial;
+		}
+		
+		.special-Paragraph {
+			font: 1.5em Arial;
+		}
+		...
+		/* Не унаследует bold, italic small-caps и line-height
+		<p style='special-Paragraph'>...</p>
+	
+	
 	font-size
 	#размер шрифта(кегль?)
-	
+	#ед измерения - обязательна(по идее кроме 0)
+		px
+		keywords
+		em
+		%
 	
 	font-family
 	#шрифт(начертание)
@@ -529,18 +586,63 @@
 				Arial Black
 				Arial Narrow
 				Impact
-			#МНОГИЕ ШРИФТЫ(напр Arial Black, Impact) ⊃ только одно начертание -> при исп font-weight|font-style=!normal -> браузер сделает ∀ возможное чтобы текст выглядел ужасно
-				
+			#МНОГИЕ ШРИФТЫ(напр Arial Black, Impact) ⊃ только одно начертание -> при исп font-weight|font-style=!normal -> браузер сделает ∀ возможное чтобы текст выглядел ужасно(возможно это преувеличение)
+	
+	
+	font-display
+	#?
+		swap
 	font-weight
-	#жирность шрифта
-	#при исп шрифтов без соотв начертания браузер сделает ∀ возможное чтобы текст выглядел ужасно
+	#жирность шрифта(исп соотв шрифта)
+	#вроде google fonts не понимает bold, normal -> исп числа
+	#при исп шрифтов без соотв начертания браузер сделает ∀ возможное чтобы текст выглядел ужасно(?преувеличение)
+		#не требуется при ∃ нужного начертания
 		font-weight: normal;
+	#val с шагом 100
+		100		"крайне легкий, почти невидимый"
+		...
+		normal	400
+		bold	700
+		...
+		900		"супернасыщенный"
 	
 	
 	font-style
-	#начертание шрифта?
-	#при исп шрифтов без соотв начертания браузер сделает ∀ возможное чтобы текст выглядел ужасно
+	#начертание шрифта(исп соотв шрифта)
+	#при исп шрифтов без соотв начертания(отсутствии соотв файлов) браузер сделает ∀ возможное чтобы текст выглядел ужасно(?преувеличение)
 		italic
+		normal
+		oblique
+		#~italic
+	
+	
+	font-stretch
+	#не работает почти нигде
+	
+	
+	font-variant
+	#
+		normal
+		small-caps
+		#капитель(вроде ~text-transform)
+		inherit
+	
+	letter-spacing
+	#Δ относительного размера межсимвольного интервала(трекинга)
+		#сжатие для повышения визуальной плотности и "тяжести" + помещяется больше текста
+			#исп val < 0
+			letter-spacing: -1px;
+		#увеличение промежутка для придания более "спокойного и величественного" вида
+			#положительные val
+			letter-spacing: .7em;
+	#поддерживает ∀ единицы измерения что и font-size
+	#при больших отрицательных val char будут накладываться друг на друга
+	
+	
+	word-spacing
+	#интервалы между словами(размер пробельных символов?)
+	#поддерживает ∀ единицы измерения что и font-size
+	#в основном ~ letter-spacing
 	
 	
 	vertical-align
@@ -549,19 +651,47 @@
 		
 		
 	text-align
-	#выравнивание?
+	#выравнивание по ширине
 		center
-		#текст прямо в центре
-		
+		#центр
+		left
+		right
+		justify
+		#по формату - разные промежутки между словами(трудночитаем)
+	
+	
+	text-indent
+	#отступ/выступ первой строки(абзацный)
+	#единицы 
+		em	зависят от размера шрифта
+		%	зависит от ширины элта ⊃ абзац(?p)
+		#напр при 50% первая строка будет начинаться с середины и будет Δ при Δ размера элта
+	#отриц val исп для создания выступа(висячая строка) обычно исп с добавлением поля чтобы текст не вылезал за границы элта
+	
+	
 	margin
-	#пространство вокруг элта и другими элтами
-		#центрирование блока
+	#пространство вокруг элта и другими элтами(поля?)
+	#исп
+		центрирование блока
 		#val левого и правого края auto
-		margin: 0 auto;
+			margin: 0 auto;
+		удаление полей между <p>
+			p {
+				margin-top: 0;
+				margin-bottom: 0;
+			}
+		отрицательные val сдвигают элт на другие
+	#единицы измерения
+		em
+		px
+		%
+		#зависят от ширины(sic!)(?проверить) элта
+	#тк некоторые браузеры обрабатывают верхние и нижние поля заголовков и абзацев не согласованно -> рекомендуется исп сброс стилей
 	
 	border
 	#рамка вокру эл-та
 	#не наследуется
+	#предпочтилен text-decoration: overline|underline; тк поддается настройке
 	
 	border-bottom
 	#<размер> <цвет> <стиль>
@@ -582,16 +712,64 @@
 		border-radius: 0 0 10px 10px;
 		
 	box-shadow
-	#
+	#особенно хорошо поддерживает rgba
 		box-shadow: 10px 10px 10px rgba(0, 0, 0,.5)
 	
+	text-shadow
+	#особенно хорошо поддерживает rgba
+		text-shadow: <right_offset> <down_offset> <blur> <color>, ...;
+	#CSS3
+	#другие примеры: tinyurl.com/kh5dj2s
+	#примеры
+		text-shadow: -4px 4px #999999;
+		#вторая тень придает V
+		text-shadow: -4px 4px #666, 1px -1px 2px #000;
+	#исп
+		придания тексту глубины и выразительности
+	#edge+
 	
+	text-transform
+	#Δ регистра текста
+		uppercase
+		#трансформация в uppercase(прописные)
+		lowercase
+		#трансформация в нижний регистр(строчные)
+		capitalize
+		#первые буквы в uppercase
+		small-caps
+		#капитель(придает фрагментам "старосветскую, книжную многозначительность")
+		none
+		#запрет Δ регистра текста(видимо исп с наследованием)
+	#может не работать с ::first-line в WebKit и Safari
+		.intro::first-line { text-transform: uppercase; }
+	
+	text-decoration
+	#добавление доп элтов
+		underline
+		#подчеркивание
+		#не стоит перегибать тк ассоциируется с гиперссылками
+		#менее предпочтительно чем border тк не поддается настройке
+		overline
+		#надчеркивание
+		#менее предпочтительно чем border тк не поддается настройке
+		line-through
+		#зачеркнуты
+		blink
+		#мигание
+		#не пашет в большинстве браузеров
+		none
+		#отмена декорирования(напр для удаления подчеркивания ссылок)
+	#можно комбинировать ∀ val
+		text-decoration: underline overline;
+		
+		
 	margin-top
 	#
 	
 	
 	margin-left
-	#
+	#исп
+		Δ отступа между списком и маркером(IE)
 	
 	
 	margin-right
@@ -604,7 +782,7 @@
 		right
 	
 	margin-bottom
-	#
+
 	
 	
 	color
@@ -616,6 +794,12 @@
 	#пространство между границами(border) элта и его содержимым
 		padding: 20px;
 		padding: 0 0 2px 60px;
+	
+	
+	padding-left
+	#исп
+		Δ отступа между списком и маркером(Fifefox, Safari)
+	padding-right
 		
 padding:eng:набивка
 margin:eng:поле, край, предел, грань, боковушка
@@ -624,12 +808,25 @@ margin:eng:поле, край, предел, грань, боковушка
 
 	padding-top
 	#пространство между верхней частью эл-та и содержимым
-	
-	
+
+(межстрочный интервал) = (интерлиньяж) - (размер шрифта)
+выравнивание текста = выключка
+
+
 	line-height
-	#межстрочный интервал(интерлиньяж)
-	#
-	
+	#интерлиньяж(!=межстрочный интервал) - расстояние между строками(не символами)
+	#def: 120% = (высота строки) - (высота шрифта)
+		#пример: 
+			{
+				font-size = 12;
+				line-height = 150%;
+				...
+			}
+			#-> line-height = 18px --> 18 - 12 = 6 --> промежуток между строками
+	#принимает ∀ единицы измерения что и font-size, но Relative зависит от шрифта и его размера
+	#принимает обычное числовое val (умножается на размер шрифта) - не имеет проблем наследования -> ∀ элты наследуют его и исп в соотв со своим размером шрифта
+	#имеет проблемы наследования при указании em|% (но не числовое val)
+		#размер интервала расчитывается в px от базового и наследники получают val в px которое мб меньше их шрифта
 	
 	display
 	#отображение элта
@@ -644,8 +841,68 @@ margin:eng:поле, край, предел, грань, боковушка
 	
 	
 	list-style
-	#ul, ol
-		decimal
+	#сокращенная форма записи attr списков
+		list-style-image
+		list-style-position
+		list-style-type
+	#примеры
+		ul { list-style: circle inside; }
+	#при указании list-style-type и list-style-image исп изображение
+		{ list-style: circle url(images/bullet.gif) inside; }
+		#но if изображение !∃ -> исп circle
+	
+	list-style-type
+	#выбор маркера/нумерации
+	#вроде может исп не для списков
+	#может исп для отдельных пунктов
+		li { list-style-type: square; }
+		li:nth-of-type(odd) { list-sytle-type: circle; }
+	#другие схемы нумерации: tinyurl.com/pmkpsj9
+			none
+			#скрыть маркер
+			#может исп для задания своих маркеров|создания панели навигации
+		#ul
+			disc
+			#
+			circle
+			#
+			square
+			#сплошной квадрат
+		#ol
+			decimal
+			decimal-leading-zero
+			#предварен нулем
+			upper-alpha
+			#буквы
+			lower-alpha
+			upper-roman
+			#римские цифры
+			lower-roman
+			lower-greek
+			#греческий алфавит
+			<армянский>
+			<грузинский>
+			<катакана>
+			<...>
+			
+	list-style-image
+	#исп собственных маркеров 
+		list-style-image: url(images/bullet.gif)
+	#в отличие от background-image не позволяет Δ положение -> приходится редактировать изображение
+	
+	
+	list-style-position
+	#позиционирование маркеров списков
+		outside
+		#val by def
+		#вне текстового блока
+			[х]Текст
+			     абзаца
+		inside
+		#в текстовом блоке
+		#контент заполняет исп больше пространства
+			[х]Текст
+			абзаца
 	
 	background
 	#позволяет комбинировать различные свва
@@ -657,7 +914,9 @@ margin:eng:поле, край, предел, грань, боковушка
 	#фоновое изображение
 		#неперекрывающаяся мозаика слева напрово, сверху-вниз
 		background-image: url(images/bg_page.png);
-	
+	#исп
+		создания маркеров списка
+		#в отличие от list-style-image позволяет Δ положение маркера
 	
 	background-color
 	#
@@ -1014,6 +1273,26 @@ window.location.hash
 			.tip::before {
 				content: "ADVICE!";
 			}
+		#красные маркеры списка
+			ul li {
+				list-style-type: none;
+			}
+			ul li:before {
+				content: counter(item, disc) " ";
+			}
+		#красные числа нумерованного списка
+		#подробнее стиль нумерованного списка: tinyurl.com/qcevfy7
+			ol li {
+				list-style-type: none;
+				counter-increment: item
+			}
+			ol li:before {
+				content: counter(item) ". ";
+			}
+
+counter?
+counter-increment?
+			
 		::selection
 		#исп только с ::
 		#выделенный текст только цвет/фон
@@ -1211,6 +1490,9 @@ window.location.hash
 		
 	БРАУЗЕРНЫЕ СТИЛИ
 	#браузеры исп свои стили форматирования(⊃ большую специфичность)
+		текст: 16px
+		#базовый размер шрифта(Δ в настройках)
+		масштабирование !Δ базовые размеры
 	#∀ браузеры ⊃ отличия стандартных стилей
 		разные размеры элтов
 		разные размеры отступов
@@ -1225,9 +1507,10 @@ window.location.hash
 		шрифт h1 > h2
 		заголовки bold
 		подчеркивание ссылок
-		отступ маркированных списков
+		отступ маркированных списков		
 	#разумеется переопределяются пользовательскими стилями с = специфичностью
-	h<n> - обычно крупный bold
+		h<n> - обычно крупный bold
+		th полужирный
 	#if body ⊃ font-size -> заголовки все равно будут больше
 		a	- синий цвет
 	CSS Reset
@@ -1235,7 +1518,7 @@ window.location.hash
 	#∃ базовый набор стилей для включения в начало стиля - устанавливают базовые val свв обычно по разному обрабатывающихся браузерами
 		ШАБЛОН СБРОСА СТАНДАРТНЫХ СТИЛЕЙ
 		#создан Эриком Мейером: tinyurl.com/2amlyf
-		#∀ элты становятся практически одинаковыми
+		#∀ элты становятся практически одинаковыми(хотя списки еще bold)
 			html, body, div, span, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, a, abbr, acronym, address, big, cite, code, del, dfn, em, img, ins, kbd, q, s, samp, small, strike, strong, sub, sup, tt, var, b, u, i, center, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td, article, aside, canvas, details, embed, figure, figcaption, footer, header, hgroup, menu, nav, output, ruby, section, summary, time, mark, audio, video {
 				margin: 0;
 				padding: 0;
@@ -1415,45 +1698,251 @@ jscript
 			или создать новый класс
 	
 ЗНАЧЕНИЯ
+
 	float
 	#можно записывать без 0
 		.5
 	
+	
 	ПРОЦЕНТЫ
 	
+	
+	ПУТИ
+		url()
+		#attr
+		#может принимать абс|отностит ссылки
+			#доступ к файлу в соседней папке
+			src: url('../_fonts/my_font.woff')
+			list-style-image: url(images/bullet.gif)
+		#при исп относительных путей - путь должен задаваться относительно текущего файла(напр внешней таблицы стилей), а не итоговой страницы
+		
+		
 	colors
-		rgba(<r:0..255>,<g:0..255>,<b:0..255>,<alpha:0..1>)
+		rgba(<r:0..255|0..100%>,<g:0..255|0..100%>,<b:0..255|0..100%>,<alpha:0..1>)
 		#цветовая модель rgba
 		#тогда цвет foreground элтов зависит от background элтов
+		#исп для
+			создания прозрачных теней
+			...
+		#современнее rgb
+		#alpha - уровень смешивания с фоном
+		#поддержка
+			IE9+
+			#fix
+				color: rgb(255, 100, 50);	/* IE8 */
+				color: rgba(255, 100, 50, .5); /* other отменяет первую только if распознана*/
 		rgb()
 		#~rgba !⊃ alpha
 		
-		значения
-			#fff
+		
+hue:eng:тон
+saturation:eng:насыщенность
+lightness:eng:светлота
+luminance:eng:яркость
+
+
+		hsl(<градус_цветового_круга>, <насыщенность_оттенка>, <светлота>)
+		#Hue Saturation Lightness(|luminance)
+		#вообще имеет смысл(задумывался как интуитивно понятный)
+		#hslpicker.com : палитра
+			hue=0..360
+			#градус цветового круга(цвета радуги)
+			#тон?
+			#∀ цвет ~ 51°
+				#?не уверен в точности
+				красный 		0|360
+				оранжевый	~100
+				желтый		~50
+				зеленый		~150
+				голубой
+				синий
+				фиолетовый
+			saturation=0..100%
+			#чистота(насыщенность) цвета
+				0	тусклый серый оттенок(не зависит от тона)
+			lightness|luminance
+			#степень светлоты(яркости)
+				0%		черный
+				50%		!Δ
+				100%	белый
+		#поддержка
+			IE9+
+			∀ остальные браузеры
+		#примеры
+			hsl(0, 100%, 50%);	/* ярко-красный */
+			
+			
+		hsla()
+		#hsl + alpha 0..1
+		
+		
+		HEX НОТАЦИЯ
 			#fafafa
 			
-		keywords
-		#
+			
+		СОКРАЩЕННАЯ HEX НОТАЦИЯ
+		#повторяющиеся цифры
+			#6600FF	->	#60F
+		
+		
+		HTML keywords
+		#классический
+		#17 шт
+			aqua
 			black
-			white
+			blue
+			fuchsia
+			gray
+			green
+			lime
+			maroon
+			navy
+			olive
 			orange
+			purple
+			red
+			silver
 			teal
+			white
+			yellow
 			#зеленовато-голубой
 		#примеры
 			color: black;
+		X11
+		#иксы?
+		#цветовая схема
+		#поддерживается большинством браузеров
+		#147 svg-цветов
+		#перечень: tinyurl.com/kqdborf
+		#цвета по оттенкам: tinyurl.com/m4jb9e5
 			
 ЕДИНИЦЫ ИЗМЕРЕНИЯ
-	em
-	#вроде мб float
-	#1em - размер в браузере by def, 2em - 200% от стандартного
-		font-size: 1.25em;
-	%
-	#мб > 100
-		line-height: 150%;
-	px
-	#
-	
-	
+#исп без пробела
+#для некоторых св допустимы отрицательные val
+#обычно исп
+    em
+    rem
+	Absolute
+	#используется if известен размер выходного носителя(напр бумаги)
+	#обычно исп в типографии
+	#неудобены для web тк нельзя предугадать размер -> не рекомендованы для дисплеев
+		cm
+		#сантиметры
+		#~0.39in
+		mm
+		#миллиметры
+		#1cm/10
+		in
+		#inches
+		#1in = 96px = 2.54cm
+		px
+		#зависит от дисплея(по факту не очень-то Absolute)
+		#1px = 1in / 96
+		#не зависят от браузера
+		#при исп дисплея/другого устройства высокой(насколько?) плотности val * 2, для принтеров еще больше(тк там плотность очень высокая)
+		pt
+		#points
+		#1pt=1in/72
+		pc
+		#picas(пики)
+		#1pc = 12pt
+		#видимо исп для больших кеглей
+
+		
+	Relative
+	#зависящие от других val
+	#больше подходят для разных сред
+	#базовый - наследованный от предка|определенный стилем браузера(кроме rem)
+		em
+		#вроде мб float
+		#стандарт в типографии(размер буквы M в шрифте Cicero)
+		#1em - размер в браузере by def, 2em - 200% от стандартного
+			font-size: 1.25em;
+		#в большинстве случаев ~ %
+		
+		
+		ex
+		#~em, но исп размер X в шрифте Cicero(|относительно размера текущего шрифта?)
+		
+		
+		ch
+		#относительно нуля
+		
+		
+		rem
+		#позволяет избежать проблем наследования размеров
+		#Root em
+		#относительно font-size корневого элта(<html>)
+		#позволяет форматировать ∀ элты относитльно одной величины
+		#CSS3
+		
+		
+		числа
+		#исп line-height
+		
+		
+		vw
+		#относительно 1% ширины Viewport(окна браузера)
+		
+		
+		vh
+		#относительно 1% высоты Viewport(окна браузера)
+		
+		
+		vmin
+		#относительно 1% меньшей области просмотра(текущего элта?)
+		
+		
+		vmax
+		#относительно 1% большей области просмотра(родительского элта?)
+		
+		
+		%
+		#мб > 100
+			line-height: 150%;
+		#в большинстве случаев ~ em
+		
+		
+капитель: способ выделения текста, когда строчные выглядят как уменьшенные заглавные
+особенности управления контрастностью:tinyurl.com/ng39zb9
+ПРОБЛЕМЫ НАСЛЕДОВАНИЯ ОТНОСИТЕЛЬНЫХ РАЗМЕРОВ
+#могут быть для вложенных списков
+	ul { font-size: 75%; }
+	<ul>
+		<ul> #75 от внешнего = 56.25%
+	РЕШЕНИЕ
+		исп доп стиля с селектором потомков
+			ul ul {font-size: 100%;}
+		rem
+
+		
+
+		
+
+		
+
+		
+
+		
+
+		keywords
+		#исп множители - зависит от базового val(~ %|em)
+		#7 шт
+			xx-small	#~56%	~9px
+			x-small		#62.5%	~10px
+			small		#~81%	~13px
+			medium		#базовый размер браузера
+			large		#~112%	~18px
+			x-large		#~150%	~24px
+			xx-large	#~200%	~32px
+		
+
+ЦВЕТА
+#согласованные коллекции цветов, etc: colourlovers.com
+#инструмент создания веб-цвета&палитры: paletton.com
+
+
+
 можно объединить ∀ набор div, span в блоке div как
 	заголовок
 	маркированный список
@@ -1591,15 +2080,90 @@ jscript
 	#зависит от настроек
 	#подробнее: tinyurl.com/pmzxbnm
 	OSX
- ВЕБ-ШРИФТЫ
- #учитывая кеширования почти нет разницы между сторонним cdn и self-hosted
- #можно исп почти ∀ шрифты ⊃ те что не установлены у посетителя
- #вроде подключение шрифтов дб до подключения стилей, тк шрифты задаются стилями
-	Google Web Fonts
+
+
+squirrel:eng:белка, беличий, запасаться
+ЛИЦЕНЗИЯ НА ИСП ШРИФТОВ
+#if не уверен в правомерности исп шрифта -> не стоит его исп
+#шрифты которые можно исп на пк не всегда можно исп на сервере(даже купленные)
+#решение
+	Google Fonts
+	#берет на себя заботу о технических и правовых требованиях(фактически шрифты находятся на его серверах и отдаются пользователю напрямую минуя "мой" сервер)
+	
+	Adobe TypeKit(Fonts)
+	#коммерческий ~ Google Fonts(по подписке 50$+ год(⊃ подписку на Creative Cloud)) 
+	#создает шрифты
+	#исп для создания наборов шрифтов
+
+	
+Fireworks
+#графический редактор
+
+
+СВОБОДНЫЕ ШРИФТЫ
+#бесплатны
+	tinyurl.com/olkcst6
+	#создан группой дизайнеров - один из первых предложивших бесплатное исп ручных шрифтов
+	#созданные шрифты
+		League Gothic
+	exljbris.com
+	#классические бесплатные шрифты
+		Museo
+		Museo Sans
+		Museo Slab
+	openfontlibrary.org
+	#700+ бесплатных шрифтов
+	FontSquirrel
+	#1000+ шрифтов
+	#конвертация шрифтов
+		Webfont Generator
+		#https://www.fontsquirrel.com/tools/webfont-generator
+		#создание шрифтов(форматов) и пробных HTML/CSS
+		#варианты преобразования
+			Basic
+				EOT
+				WOFF
+				SVG
+			Optimal
+			#basic + оптимизация шрифтов для повышения perf
+			Expert
+			#настройка
+				набора chars(искл символов)
+				выбор форматов
+	fonts.google.com
+	#Google Web Fonts
+	#вместо bold, normal исп числовые val для font-weight
 	#сервис шрифтов	
 	#генерит css исп который можно сделать шрифты локальными
 		<link href='http://fonts.googleapis.com/css?family=Kurale' rel='stylesheet'>
-#подключение локального
+		<link href='http://fonts.googleapis.com/css?family=Lato:300,400,300italic,400italic|Oswald:400,700' rel='stylesheet' type='text/css'>
+	#название шрифта может ⊃ его характеристики вроде размера
+		<link href="http://font.googleapis.com/css?family=Slabo+27px" rel="stylesheet">
+		...
+		... { font: 3.5em "Slabo 27px";}
+		
+		
+		
+ЯЗЫКИ ШРИФТОВ
+	Extended версии ⊃ символы турецкого/валлийского/венгерского/церковнославянские/...
+	#подробнее: https://en.wikipedia.org/wiki/Latin_Extended-A; 
+ДРУГИЕ ТИПЫ ШРИФТОВ
+	Экранные(Display)
+	#обычно полужирные/декоративные
+	Handwriting
+slant:eng:наклон
+VARIABLE FONTS?
+
+ ВЕБ-ШРИФТЫ
+ #∀ файл шрифта может ⊃ только одно начертание
+ #для кажд начертания нужен отдельный font-face
+	жирный
+	курсивный+жирный
+	...
+ #учитывая кеширования почти нет разницы между сторонним cdn и self-hosted
+ #можно исп почти ∀ шрифты ⊃ те что не установлены у посетителя
+ #вроде подключение шрифтов дб до подключения стилей, тк шрифты задаются стилями
+ #подключение локального
 	#правило загружающее шрифт
 	@font-face {
 		# название шрифта(чтобы не запутаться лучше указать название папки со шрифтом) 
@@ -1610,28 +2174,244 @@ jscript
 		font-weight: normal;
 		font-style: normal;
 	}
-
+	#более старое правило
+	@font-face {
+		font-family: 'League Gothic';
+		/*IE9 в режиме совместимости(эмуляции IE8)*/
+		#было добавлено для сайтов исп фичи(баги) IE8-
+		#включается пользователем
+		src: url('fonts/League_Gothic-webfont.eot');
+		#попытка приспособиться к доп багам IE6-8
+		src: url('fonts/League_Gothic-webfont.eot?#iefix') format('embeddedopentype'),
+		        url('fonts/League_Gothic-webfont.woff2') format('woff2'),
+		        url('fonts/League_Gothic-webfont.woff') format('woff'),
+		        url('fonts/League_Gothic-webfont.ttf') format('truetype'),
+		        url('fonts/League_Gothic-webfont.svg') format('svg');
+	}
 	<selector> {
 		font-family: "RalewayRegular"
 	}
 #для совметимости можно исп неск форматов шрифтов
 #форматы
 	ttf
+	#True Type Font
+	#поддерживается большинством браузеров
 	woff
+	#Web Open Font
+	#создан специально для Web, заместил ttf/eot/otf
+	#сжатая версия ttf
+		android 4.4+
+		IE 9+
 	eot
+	#Embedded Open Type
+	#IE 5-8 понимал только его
 	otf
+	#Open Type Font
+	#поддерживается большинством браузеров
 	svg
+	#Scalable Vector Graphic
+		safari
+		android 4.3 -
+	#единственный поддерживаемый mobile safari 4.1-
+	#x2 от ttf
 	woff2
 	#современный
-		ЗАГРУЗКА ЛОКАЛЬНЫХ ШРИФТОВ
-		#https://google-webfonts-helper.herokuapp.com/fonts
+	#на 30% меньше
+	#подробнее о поддержке:tinyurl.com/pucouja	
 #список шрифтов by def ⊂ OSX/WIN ⊃ процентные соотношения
 	Courier New: 99,73% Win, 95,68% Mac
 	Monaco: 100% Mac
+	
+	
+ЗАГРУЗКА ЛОКАЛЬНЫХ ШРИФТОВ
+#https://google-webfonts-helper.herokuapp.com/fonts	
+#обычные расположения шрифтов
+	/fonts/
+	/_fonts/
+	/webfonts/
+	css/
+	...
+	
+	
+ИСПОЛЬЗОВАНИЕ ФОРМАТОВ
+	ПК
+		ttf
+		otf
+	IE
+		5-8 
+			eot
+		9+
+			woff
+	CHROME
+		woff
+		woff2
+		ttf
+		svg
+	FIREFOX
+	Android
+		4.3-
+			svg
+		4.4 + 
+			woff
+	IOS Safari
+		4.1-
+			svg
+@import
+#директива ~ import python
+#слегка сажает perf
+#добавляется в начало таблицы стиля(в отличие от link) -> 
+	для Δ стилей неск страниц исп общий стиль достаточно исп @import в ней вместо Δ HTML кода ∀ страниц
 @font-face
 #директива для подключения шрифтов
 #требует отдельного объявления для ∀ начертания
+	format('<>')
+	#attr
+	#требуется после ∀ src
+	src
+	#attr
+	#может быть неск
+	#может хранить неск шрифтов
+		src: local('Roboto'), local('Roboto-Regular'), url(...) format(...);
+	unicode-range
+	#
+		unicode-range: U+1EA0-1EF9, U+20AB;
+	font-weight
+	#идентифицирует шрифт как
+		normal
+		bold
+	font-style
+	#идетрифицирует шрифт как
+		normal
+		italic
+	font-display
+	#?
+		swap
+#следует помещать в начало стиля чтобы браузер начал загружать их как можно раньше(ДАЖЕ ПЕРЕД КОДОМ СБРОСА СТИЛЕЙ)
+	@font-face {
+		/*имя присваиваемое шрифту*/
+		font-family: "League Gothic";
+		src: url('fonts/League_Gothic-web font.woff') format('woff')
+		        url(...)
+			...;
+		src: url(...
+	}
+#браузер загрузит только первый попавшийся подходящий шрифт -> порядок важен(max часто исп в начало)
+	#итоговый порядок
+		eot(ie)
+		woff2
+		woff
+		ttf
+		svg
+		
+		
+BOLD+ITALIC
+#создание
+	#∀ шрифты ⊃ одно имя и выбираются на основе attr(Δ ∀ остальные attr)
+	#прием не работает в IE8-(прочитает только первое правило - остальные будет генерить)
+		#возможно это и не плохо
+	@font-face {
+		/*исп общее имя для семейства шрифтов вместо имени файла*/
+		font-family: 'PTSans';
+		src: url('PTSansRegular.woff2') format('woff2'),
+		        url('PTSansRegular.woff') format('woff');
+		font-weight: normal;
+		font-style: normal;
+	}
 	
+	@font-face {
+		font-family: 'PTSans';
+		src: url('PTSansItalic.woff2') format('woff2'),
+		        url('PTSansItalic.woff') format('woff');
+		font-weight: normal;
+		font-style: italic;
+	}
+	
+	@font-face {
+		font-family: 'PTSans';
+		src: url('PTSansBold.woff2') format('woff2'),
+		        url('PTSansBold.woff') format('woff');
+		font-weight: bold;
+		font-style: normal;
+	}
+	
+	@font-face {
+		font-family: 'PTSans';
+		src: url('PTSansBold.woff2') format('woff2'),
+		        url('PTSansBold.woff') format('woff');
+		font-weight: bold;
+		font-style: italic;
+	}
+	
+	#IE 8-
+	#∀ имя - уникально, свва веса и стиля !∃ за ненадобностью
+	#для применения - указывается название, не сработает с font-weight/font-style
+	@font-face {
+		font-family: 'PTSansRegular';
+		src: url('PTSansRegular.eot?#iefix') format('embedded-opentype'),
+		        url('PTSansRegular.woff2') format('woff2'),
+		        url('PTSansRegular.woff') format('woff');
+	}
+	
+	@font-face {
+		font-family: 'PTSansItalic';
+		src: url('PTSansItalic.eot?#iefix') format('embedded-opentype'),
+		        url('PTSansItalic.woff2') format('woff2'),
+		        url('PTSansItalic.woff') format('woff');
+	}	
+	
+	@font-face {
+		font-family: 'PTSansBold';
+		src: url('PTSansBold.eot?#iefix') format('embedded-opentype'),
+		        url('PTSansBold.woff2') format('woff2'),
+		        url('PTSansBold.woff') format('woff');
+	}
+	
+	@font-face {
+		font-family: 'PTSansBoldItalic';
+		src: url('PTSansBoldItalic.eot?#iefix') format('embedded-opentype'),
+		        url('PTSansBoldItalic.woff2') format('woff2'),
+		        url('PTSansBoldItalic.woff') format('woff');
+	}
+#исп
+	одно название + св-ва
+		#прозрачное
+			font-family: PTSans;
+			<em>...</em>
+			<i>...</i>
+	разные названия без свв
+	#HTML
+		<p>
+			<em><strong>Привет!</strong></em>
+			Я говорю с
+			<strong><em>тобой</em></strong>
+		</p>
+	#CSS
+		#∀ только для текстовых абзацев
+		#требуется указывать font-style и font-weight тк иначе браузеры будут пытаться Δ шрифты в тегах <i>;<strong>...
+		p {
+			font-family: PTSansRegular;
+			font-size: 48px;
+			font-style: normal;
+			font-weight: normal;
+		}
+		
+		p em {
+			font-family: PTSansItalic;
+			font-style: normal;
+			font-weight: normal;
+		}
+		
+		#только для текстовых абзацев
+		p strong {
+			font-family: PTSansBold;
+			font-style: normal;
+			font-weight: normal;
+		}
+		
+		p strong em, p em strong {
+			
+		}
+		
  HTML
  #подробнее:tinyurl.com/oujmfqw
  #названия тегов и attr регистронезависимы, но не val attr
