@@ -1,4 +1,15 @@
- pip install django
+ СОЗДАНИЕ VENV
+    cd dj
+    python3.8-venv -mvenv myvenv
+    #py -3.7 -m venv venv
+    source myvenv/bin/activate #активация
+	#myvenv/scripts/activate
+  UBUNTU
+  #может требовать
+    virtualenv --python=python3.6 myvenv
+djangogirls/requirements.txt
+    Django~=2.2.4
+ pip install -r requirements.txt
  django-admin startproject <project_name> [<path_to_project_dir>]
  #создание dj-проекта
  #без указания пути - создает папку с именем проекта в текущей папке
