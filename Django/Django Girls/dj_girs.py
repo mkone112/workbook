@@ -1,48 +1,3 @@
-server(serve-облуживание)
-submarinacablemap.com - карта подводных кабелей
-cli(command line interface)/prompt - текстовое приложение
-whoami  >> user name
-pwd
-#print working directory
-#работает в ps
-cd
-#Без параметров ~ pwd
-#change directory
-powershell поддерживает кучу unix команд
-rm
-#
-    #удалить файл
-        rm
-    #удалить каталог
-        rm -r
-mv
-#перемещение файлов
-    mv <currentPath> <newPath>
-mkdir
-#Unix|Win
-rmdir
-#удаление файла Win
-del
-#удаление win
-copy
-#копирование файла win
-    copy <currentPath> <newPath>
-cp
-#копирование файлов Unix
-python появился в конце 80x
-dfn
-#менеджер пакетов fedora
-zypper
-#менеджер пакетов openSUSE
-%HomePath%
-#домашняя dir
-CLOUDS IDE
-    https://paiza.cloud/
-    https://aws.amazon.com/cloud9/
-python3.8-venv
-#пакет venv
-venv
-#набор файлов
 СОЗДАНИЕ VENV
     cd dj
     python3.8-venv -mvenv myvenv
@@ -83,10 +38,7 @@ pythonanywhere.com
       print(response.content)
     else:
       print('Got unexpected status code {}: {!r}'.format(response.status_code, response.content))
-имя venv
-#короткое
-#строчное
-#без пробелов
+
 АКТИВАЦИЯ venv
 win
 myvenv\Scripts\activate
@@ -186,9 +138,7 @@ DATABASES = {
 МОДЕЛИ DJANGO
 	ООП - моделирование объектов с указанием их взаимодейсвий
 	obj - поведение + св-ва
-mood - настроение
-purr - мурчать
-scratch - царапать
+
 ОПИСАНИЕ ЗАПИСИ
 	title
 	text
@@ -216,6 +166,8 @@ blog/models.py
 	from django.utils import timezone	#видно для получения fx возвращающей текущую datetime в UTC
 
 	class Post(models.Model):	#теперь Post - модель Django и dj сохранит его в бд
+		#один-со-многими, можно будет получить этого юзера через AUTH_USER_MODEL
+		#при удалении записи пользователь будет удален из AUTH_USER_MODEL? бред видимо
 		author = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
 		title = models.CharField(max_length=200)
 		text = models.TextField()
@@ -229,17 +181,6 @@ blog/models.py
 		def __str__(self):
 			return self.title
 
-dunder( from double underscore)
-ТИПЫ ПОЛЕЙ
-	models
-		.CharField(max_length=<int>)
-		#текстовое поле с ограниченным числом символов
-		.TextField()
-		#текстовое поле без ограничений на число символов(выглядит как уязвимость)
-		.DateTimeField([default=<datetime>, blank=<bool>, null=<bool>)
-		#datetime
-		.ForeignKey(<model>,on_delete)
-		#ссылка на другую модель
 ДОБАВЛЕНИЕ МОДЕЛЕЙ В БД
 #dj берет модели из бд
 	#создание файлов миграций
@@ -276,7 +217,7 @@ static в том числе для админки хранятся в соотв
 			db.sqlite3	#Т.к. будет заменена
 			/static
 			.DS_Store	#?
-MySQL выдерживает большие нагрузки чем SQLite
+
 	git status
 	#возвращает информацию о ВСЕХ ранее
 		неотслеживаемых
@@ -397,7 +338,7 @@ docstring в начале
 		djangogirls/djangogirls/urls.py
 			from django.contrib import admin
 			from django.urls import path, include
-			url patterns= [ 
+			urlpatterns= [ 
 				path('admin/', admin.site.urls),
 				path('', include('blog.urls')),
 			]
@@ -718,7 +659,7 @@ blog
 					<div class="content container">
 						<div class="row">
 							<div class="col-md-8">
-								<!--создаем block - тег шаблона позволяющий вставить HTML этого блока в другие шаблоны расширяющие base.html
+								<!--создаем block - тег шаблона позволяющий вставить HTML этого блока в другие шаблоны расширяющие base.html-->
 								{% block content %}
 								{% endblock %}
 							</div>
@@ -782,6 +723,7 @@ blog/views.py
 #получаем ошибку для !∃ post
 	#localhost/post/10	>> DoesNotExist
 используем get_object_or_404
+#по идее возвращает экземпляры моделей
 #if !∃ экземпляра Post => возвращаем 404
 #можно создать свою страницу 404
 blog/views.py
@@ -789,6 +731,7 @@ blog/views.py
 	#мне кажется довольно логичным что get_object_or_404 хранится в .shortcuts
 	from django.shortcuts import render, get_object_or_404
 	#аргумент вроде должен иметь тоже имя(вообще логично - код читать легче)
+	#этот кусок довольно непрозрачно работает -> 404 ведь идет в render
 	def post_detail(request, pk):
 		post = get_object_or_404(Post, pk=pk)
 		return render(request, 'blog/post_detail.html', {'post': post})
