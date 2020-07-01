@@ -503,108 +503,294 @@ UTC
 manage.py
 #по ∀ видимости можно использовать и без "префикса" python т.к. .py ассоциирован с интерпритатором
 
-
-	runserver [[<adress>][:][<port>]] [--noreload] [--nothreading] [--ipv6] [-6]
-	#запускает отладочный(только?) сервер
-		--noreload
-		#отключение автоперезапуска при Δ кода
-		--nothreading
-		#force one thread
-		--ipv6|-6
-		#использовать IPv6
-		#адрес по умолч	::1
-	#порт по умолчанию TCP 8000, адресс 127.0.0.1, режим многопоточный
-		python manage.py runserver 1.2.3.4
-		python manage.py runserver 4000
-
-		
-	startapp <app_name> [<path_to_dir_of_app_packet]
-	#создание нового пустого приложения
-	#if путь к папке app не указан - пакет с указаным именем будет создан в текущей папке
-	#else if папка app указана - она будет преобразована в пакет приложения
+	[auth]
+	
+		changepassword [-h|--help] [--database <database_to_use>] [--version] [-v {0,1,2,3}] [--settings <python_path_to_settings_module>] 
+								  [--traceback] [--no-color] [--force-color] [username]
+		#change user pass for django.contrib.auth
+		#остальные параметры ~ create superuser
+			username=<current_username>
+			#
+			--version
+			#по ∀ видимости версия утилиты changepassword
+			--v|--verbosity
+			#~createsuperuser
 
 
-	makemigrations [<apps_aliases_через_пробел>] [--name|-n <migration_name>] [--noinput|--no-input] [--dry-run] [--check] [--merge] [--empty]
-	#запускает генерацию одного файла миграции для ∀ моделей в app не Δ с момента пред генерации миграции
-	#миграции сохраняются в пакете <app>/migrations
-		<apps_alises_через_пробел>
-		#if не указан -> обрабатываются модели объявленные во ∀ apps проекта
-		--name|-n
-		#имя формируемой миграции добавляемое к порядковому номеру
-		#if !∃ => default имя:
-			initial
-			#для начальной миграции(создающей первые версии ∀ необходимых структур)
-			auto_<date_time_stamp>
-			#созданные после initial Δ созданные ранее структуры
-		--noinput|--no-input
-		#скрыть вывод сведений о формируемой миграции
-		--dry-run
-		#вывод сведений о формируемой миграции без ее формирования
-		--check
-		#вывод сведений о Δ моделей с последней миграции без формирования миграции
-		--merge
-		#исп для устранения конфликтов миграций
-		--empty
-		#создание "пустой" миграции для ручного формирования
+		createsuperuser [-h|--help] [--username <username>] [--noinput|--no-input] [--database <database_to_use>]
+								   [--email <superuser_email>] [--version] [-v|--verbosity {0,1,2,3}] [--settings <python_path_to_settings_module>]
+								   [--pythonpath <python_path>] [--traceback] [--no-color] [--force-color]
+		#создание зарегистрированного пользователя с max правами
+			--noinput|--no-input
+			#not prompt the user for any kinds
+			#требует --username, и val остальных обязательных полеи
+			#тк передать pass в параметре нельзя(по очевидным причинам) созданныи superuser не сможет логиниться до получения пароля
+			--database="default"
+			#
+			--version
+			#по ∀ видимости версия утилиты createsuperuser
+			--v|--verbosity
+			#output verbosity level
+				0: minimal
+				1: normal
+				2: verbose
+				3: very verbose
+			--settings=DJANGO_SETTINGS_MODULE
+			#пример
+				--settings "myproject.settings.main"
+			--pythonpath
+			#dir to add to the Python path
+				--pythonpath "/home/django_projects/myproject"
+			--traceback
+			#raise on CommandError except
+		#pass: min 8 char ⊃ цифры, буквы в разных регистрах
 		
-		
-	migrate [<app_alias> [<migration_name>|<номер>]] [--fake_initial] [--noinput|--no-input] [--fake]
-	#выполнение миграции
-	migrate <app_alias> zero
-	#отмена ∀ миграций ⊂ app с удалением ∀ созданных ими структур из бд
-		НЕЛЬЗЯ ОТМЕНИТЬ ОТДЕЛЬНУЮ МИГРАЦИЮ
-	#без указания <app_alias> [<migration_name>] => exe ∀ не exe миграции ⊂ ∀ apps
-	#без указания <migration_name> => ∀ миграции ⊂ <app>
-		--fake-initial
-		#пропуск exe начальной миграции
-		#исп if бд ⊃ ∀ необх структуры для модификации
-		--noinput|--no-input
-		#отключить вывод сведений о применеии
-		--fake
-		#помечает ∀ миграции как exe без Δ бд
-		#исп if ∀ Δ были внесены в бд вручную
-		
-		
-	sqlmigrate <app> <number_part_of_migration_file_name>
-	#выводит sql генерируемого миграцией
-		#bboard/0001_initial.py
-		make migrations bboard 0001
-		
-		
-	shell
-	#запускает консоль dj
-	
-	
-	createsuperuser
-	#создание зарегистрированного пользователя с max правами
-	#pass: min 8 char ⊃ цифры, буквы в разных регистрах
 
+	[contenttypes]
+		remove_stale_contenttypes
+		#
+		
+		
+		
+	[django]
+		check
+		#
+		
+		
+		compilemessages
+		#
+		
+		
+		createcachetable
+		#
+		
+		
+		dbshell
+		#
+		
+		
+		diffsettings
+		#
+		
+		
+		dumpdata
+		#
+		
+		
+		flush
+		#
+		
+		
+		inspectdb
+		#
 	
-	squashmigrations <app_alias> [<first_migration_name>] <last_migration_name> [--squashed_name <имя_результирующей_миграции>] [--no-optimize] [--noinput|--no-input]
-	#слияние миграций в одну для уменьшения их числа что ускоряет их применение к свежей бд
-	#исп if модель многократно Δ с последующей генерацией миграций => миграций м.б. много
-		--squashed_name
-		#if отсутствует
-			<имя_первой_слитой_миграции>_squashed_<имя_последней_слитой_миграции>.py
-		--no-optimize
-		#исп при неудачном слиянии|неработоспособности результирующей миграции
-		--noinput|--no-input
-		#не выводить сведения о слиянии
-	#~слияние патчей
-		#слияние с initial по указанную
-			squashmigrations bboard 0004
-		#слияние с указанной по указанную
-			squashmigrations bboard 0002 0004
+	
+		loaddata
+		#
+		
+		
+		makemessages
+		#
+		
+		
+		makemigrations [<apps_aliases_через_пробел>] [--name|-n <migration_name>] [--noinput|--no-input] [--dry-run] [--check] [--merge] [--empty]
+		#запускает генерацию одного файла миграции для ∀ моделей в app не Δ с момента пред генерации миграции
+		#миграции сохраняются в пакете <app>/migrations
+			<apps_alises_через_пробел>
+			#if не указан -> обрабатываются модели объявленные во ∀ apps проекта
+			--name|-n
+			#имя формируемой миграции добавляемое к порядковому номеру
+			#if !∃ => default имя:
+				initial
+				#для начальной миграции(создающей первые версии ∀ необходимых структур)
+				auto_<date_time_stamp>
+				#созданные после initial Δ созданные ранее структуры
+			--noinput|--no-input
+			#скрыть вывод сведений о формируемой миграции
+			--dry-run
+			#вывод сведений о формируемой миграции без ее формирования
+			--check
+			#вывод сведений о Δ моделей с последней миграции без формирования миграции
+			--merge
+			#исп для устранения конфликтов миграций
+			--empty
+			#создание "пустой" миграции для ручного формирования
+			
+			
+		migrate [<app_alias> [<migration_name>|<номер>]] [--fake_initial] [--noinput|--no-input] [--fake]
+		#выполнение миграции
+		migrate <app_alias> zero
+		#отмена ∀ миграций ⊂ app с удалением ∀ созданных ими структур из бд
+			НЕЛЬЗЯ ОТМЕНИТЬ ОТДЕЛЬНУЮ МИГРАЦИЮ
+		#без указания <app_alias> [<migration_name>] => exe ∀ не exe миграции ⊂ ∀ apps
+		#без указания <migration_name> => ∀ миграции ⊂ <app>
+			--fake-initial
+			#пропуск exe начальной миграции
+			#исп if бд ⊃ ∀ необх структуры для модификации
+			--noinput|--no-input
+			#отключить вывод сведений о применеии
+			--fake
+			#помечает ∀ миграции как exe без Δ бд
+			#исп if ∀ Δ были внесены в бд вручную
+			
+			
+		sendtestemail
+		#
+
+
+		shell
+		#запускает консоль dj
+
+
+		showmigrations [<apps_aliases_через_пробел>] [--plan|-p]
+		#просмотр списка миграций отсортированных по алфавиту
+			<apps_aliases_через_пробел>
+			#при !∃ -> вывод ∀ с разбиениям по apps
+			--plan|-p
+			#вывод плана миграций(отсортированный в порядке очереди) вместо миграций
+		#[x] exe миграция
+
+
+		sqlflush
+		#
+
+
+		sqlmigrate <app> <number_part_of_migration_file_name>
+		#выводит sql генерируемого миграцией
+			#bboard/0001_initial.py
+			make migrations bboard 0001
+			
+		
+		sqlsequencereset
+		#
+		
+
+				
+		squashmigrations <app_alias> [<first_migration_name>] <last_migration_name> [--squashed_name <имя_результирующей_миграции>] [--no-optimize] [--noinput|--no-input]
+		#слияние миграций в одну для уменьшения их числа что ускоряет их применение к свежей бд
+		#исп if модель многократно Δ с последующей генерацией миграций => миграций м.б. много
+			--squashed_name
+			#if отсутствует
+				<имя_первой_слитой_миграции>_squashed_<имя_последней_слитой_миграции>.py
+			--no-optimize
+			#исп при неудачном слиянии|неработоспособности результирующей миграции
+			--noinput|--no-input
+			#не выводить сведения о слиянии
+		#~слияние патчей
+			#слияние с initial по указанную
+				squashmigrations bboard 0004
+			#слияние с указанной по указанную
+				squashmigrations bboard 0002 0004
+		
+
+
+		startapp <app_name> [<path_to_dir_of_app_packet]
+		#создание нового пустого приложения
+		#if путь к папке app не указан - пакет с указаным именем будет создан в текущей папке
+		#else if папка app указана - она будет преобразована в пакет приложения
+
+		
+		startproject
+		#вероятно = startproject ⊂ django-admin
+		
+		
+		
+		test
+		#
+		
+		
+		
+		testserver
+		#
 	
 	
-	showmigrations [<apps_aliases_через_пробел>] [--plan|-p]
-	#просмотр списка миграций отсортированных по алфавиту
-		<apps_aliases_через_пробел>
-		#при !∃ -> вывод ∀ с разбиениям по apps
-		--plan|-p
-		#вывод плана миграций(отсортированный в порядке очереди) вместо миграций
-	#[x] exe миграция
 	
+	[django_extensions]
+		admin_generator
+		#
+		
+		
+		
+		clean_pyc
+		#
+		
+		
+		
+		clear_cache
+		#
+		
+		
+		
+		compile_pyc
+		#
+		
+		
+		
+		create_command
+		#
+		
+		
+		
+		create_jobs
+		#
+		
+		
+		
+		create_template_tags
+		#
+		
+		
+		
+		delete_squashed_migrations
+		#
+		
+		
+		
+		describe_form
+		#
+		
+		
+		
+		
+	[staticfiles]
+		collectstatic
+		#
+		
+		
+		findstatic
+		#
+		
+		
+		runserver [[<adress>][:][<port>]] [--noreload] [--nothreading] [--ipv6] [-6]
+		#запускает отладочный(только?) сервер
+			--noreload
+			#отключение автоперезапуска при Δ кода
+			--nothreading
+			#force one thread
+			--ipv6|-6
+			#использовать IPv6
+			#адрес по умолч	::1
+		#порт по умолчанию TCP 8000, адресс 127.0.0.1, режим многопоточный
+			python manage.py runserver 1.2.3.4
+			python manage.py runserver 4000
+			
+
+		
+		
+verbose:eng:подробно?
+		
+		
+
+DJANGO ENVIRONEMENT
+		ENVIRONEMENT VARIABLES
+			#их явно можно менять
+				os.environ["DJANGO_ALLOW_ASYNC_UNSAFE"] = "true"
+
+			DJANGO_SETTINGS_MODULE
+			#⊃ python путь к <project>.settings.main
+			
+			
+			
 app в терминологии dj - отдельный фрагмент функциональности сайта более-менее независимый от других
 #может реализовывать работу ∀ сайта|раздела| внутренней подсис-мы используемой другими app
 #пакет Python ⊃ модули
@@ -954,7 +1140,7 @@ bulk:eng:наваливать
 			#-> if модель ⊃ переопред .save() ⊃ доп действия при сохранении - они !exe
 
 		
-		.latest(['<field_name0>',<'field_name1'>, ... ])	->	<model_instance> | raise <app>.models.Empty.DoesNotExists
+		.latest(['[-]<field_name0>',<'[-]field_name1'>, ... ])	->	<model_instance> | raise <app>.models.Empty.DoesNotExists
 		#получение последней записи модели(⊃ max val в полях даты/времени)
 		#if модель ⊃ get_latest_by = '-...' => получение самой ранней записи
 		#~.earliest, наоборот
@@ -1491,21 +1677,26 @@ bulk:eng:наваливать
 
 
 		unique_for_date=<str>
-		#?при указании имени поля даты|даты и времени(DateField|DateTimeField) => текущее поле может ⊃ только val уникальные в пределах даты ⊂ указанному полю
+		#при указании имени поля даты|даты и времени(DateField|DateTimeField) => текущее поле может ⊃ только val уникальные в пределах даты ⊂ указанному полю
 			title = models.CharField(max_length=50, unique_for_date='published')
 			published = models.DateTimeField()
 			#title позволяет ⊃ только val уникальные в пределах даты ⊂ published
-		#миграции -> не смог проверить(вероятно валидация происходит на уровне dj)
+		#миграции -> не смог проверить(вероятно валидация происходит на уровне dj) -> походу исп валидаторами(возм требуется поддерзка бд)
+		#разумеется при добавлении записеи через консоль валидации не происходит -> можно добавлять ~ записи
+		#в админке dj при попытке создать записи ⊃ ~ даты
+			>> Значение в поле «Title» должно быть уникальным для фрагмента «date» даты в поле Published.
 		
 		
 		unique_for_month=<str>
-		#~unique_for_date, но вместо даты - месяц
-		#миграции -> не смог проверить(вероятно валидация происходит на уровне dj)
+		#~unique_for_date, но вместо даты - конкретный месяц конкретного года
+		#миграции -> не смог проверить(вероятно валидация происходит на уровне dj) -> походу исп валидаторами(возм требуется поддерзка бд)
+ 
 		
 		
 		unique_for_year=<str>
 		#~unique_for_date, но вместо даты - год
 		#миграции -> не смог проверить(вероятно валидация происходит на уровне dj)
+		#не уверен что также принимает date(dj не среагировал)
 		
 		
 		null=<bool>:False
@@ -1598,14 +1789,17 @@ bulk:eng:наваливать
 	
 	
 	verbose_name
-	#имя сущности(ед число) ⊂ модели для вывода
+	#имя сущности(ед число) ⊂ модели для вывода в
+		админке
 	#не влияет на бд
+	#вроде не отображается в orm
 	
-	
-	verbos_name_plural
-	#имя набора сущностей(мн число) ⊂ модели для вывода
+	verbose_name_plural
+	#имя набора сущностей(мн число) ⊂ модели для вывода в
+		админке
 	#не влияет на бд
-	
+	#вроде не отображается в orm
+
 	
 	unique_together
 	#{xn} str ⊃ имена полей ⊃ уникальные(в пределах табл) комбинации val
@@ -1623,8 +1817,13 @@ bulk:eng:наваливать
 					('title', 'published'),
 					('title', 'price', 'rubric'),
 				}
-	
-	
+		#при попытке записи одинаковых сочетании -> dj выведет <model_verbose_name> с такими val полеи уже ∃
+	#в бд дополнительно создает индекс из указанных полеи
+		#sqlite
+			...
+			CREATE UNIQUE INDEX "<app_name>_<project_name>_<field0_field1_...>_..._uniq" ON "<app_name>_<project_name>" ("<field0>","<field1>",...)
+			...
+
 	ordering:<{xn}_str_имен_полей_по_кот_должна_exe_sort>
 	#параметры сортировки записей моделей по умолч
 		'-<field_name>'
@@ -1634,10 +1833,13 @@ bulk:eng:наваливать
 				...
 				class Meta:
 					ordering = ['-published', 'title']
+	#по всеи видимости не влияет на бд и обрабатывается dj
+	#влияет на порядок вывода в orm -> и в dj
+		
 	
 	
-	get_latest_by
-	#имя поля типа DateField|DateTimeField используемое для получения позднейшей/самой ранней записи с помощью .latest()|.earliest() без параметров
+	get_latest_by:<str|{xn}⊃str>
+	#имя поля типа DateField|DateTimeField используемое для получения позднейшей/самой ранней записи с помощью .latest()|.earliest() без параметров(поэтому например '-' переданные в get_latest_by и .latest() не накладываются друг на друга)
 	#можно задать
 		str
 		#.latest() вернет самую свежую запись(⊃max val в поле published)
@@ -1660,6 +1862,9 @@ bulk:eng:наваливать
 		...
 		class Meta:
 			get_latest_by = '-published'
+	#вроде не влияет на порядок вывода в админке|orm
+	#!Δ бд
+	
 	
 	
 	order_with_respect_to:'<name_of_field_of_current_model>'
@@ -2246,6 +2451,7 @@ ftps
 	import django.db.models.deletion
 	...
 	#порядок полеи немного !~ порядку обЪявления в модели
+	#dependencies - пред "инкрементные" миграции
 	class Migration(migrations.Migration):
 		initial = <bool>
 		dependencies = [
@@ -2257,8 +2463,24 @@ ftps
 				]
 			)
 		]
-
-
+#миграции не Δ бд, все-равно генерируют sql
+	<app>/models.py
+		...
+		class ExampleModel(models.Model):
+			...
+			class Meta:
+				ordering = ['-created']
+	...
+	py manage.py makemigrations && py manage.py sqlmigrate
+	>>
+		BEGIN;
+		--
+		-- Change Meta options on fieldstest
+		--
+		COMMIT;
+#при Δ моделеи !Δ структуру бд, Δ отражаются на orm и без создания/exe миграции
+		
+		
 СЛОЖНЫЕ СЛУЧАИ ПРИ МИГРАЦИЯХ
 #] нужно связать модели поста и комментария, изначально комментарии ⊃ только текст
 	class Post(models.Model):
@@ -2350,8 +2572,27 @@ manage.py makemigrations bboard
 
 
 ИНТЕГРАЦИЯ С JUPYTER NOTEBOOK
+	pip install ipython jypyter django-extensions
 	settings.py
+		INSTALLED_APPS = [
+			...
+			'django_extensions',			
+		]
+		...
+		# dj 3+?
+		os.environ["DJANGO_ALLOW_ASYNC_UNSAFE"] = "true"
 		
+	~/.jupyter/jupyter_notebook_config.py
+		c.NotebookApp.browser = ".../Firefox52/firefox.exe -new-window %s"
+		...
+		c.NotebookApp.port = 20000
+		...
+		c.NotebookApp.webbrowser_open_new = 1
+	сменить defaut браузер на тот-же firefox(52) в PyCharm
+	py manage.py shell_plus --notebook
+#при Δ проекта(например моделеи) требуется перезапуск kernel
+
+
 
 РАБОТА С ДАННЫМИ
 
