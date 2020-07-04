@@ -502,180 +502,447 @@ UTC
 
 manage.py
 #по ∀ видимости можно использовать и без "префикса" python т.к. .py ассоциирован с интерпритатором
-
+#основные параметры
+	[-h|--help]
+	#py manage.py <command> -h ~ py manage.py help <command>
+	[--version]
+	#по ∀ видимости версия ∀ отдельнои утилиты
+	[--noinput|--no-input]
+	#без вывода
+	[-v|--verbosity {0,1,2,3}]
+	#output verbosity level
+		0: minimal
+		1: normal
+		2: verbose
+		3: very verbose
+	[--traceback]
+	#raise on CommandError except
+	[--no-color] [--force-color]
+#команды
 	[auth]
 	
-		changepassword [-h|--help] [--database <database_to_use>] [--version] [-v {0,1,2,3}] [--settings <python_path_to_settings_module>] 
-								  [--traceback] [--no-color] [--force-color] [username]
+		changepassword
 		#change user pass for django.contrib.auth
-		#остальные параметры ~ create superuser
-			username=<current_username>
-			#
-			--version
-			#по ∀ видимости версия утилиты changepassword
-			--v|--verbosity
-			#~createsuperuser
+		#optional args(вероятно могут стоять в ∀ порядке)
+			[-h|--help] [--database <database_to_use>]
+			[--version]
+			[-v {0,1,2,3}] [--settings <python_path_to_settings_module>] [--traceback] [--no-color] [--force-color]
+		#positional arg(вероятно должен стоять в конце)
+			[username] = <current_username>
+			
 
 
-		createsuperuser [-h|--help] [--username <username>] [--noinput|--no-input] [--database <database_to_use>]
-								   [--email <superuser_email>] [--version] [-v|--verbosity {0,1,2,3}] [--settings <python_path_to_settings_module>]
-								   [--pythonpath <python_path>] [--traceback] [--no-color] [--force-color]
+		createsuperuser
 		#создание зарегистрированного пользователя с max правами
-			--noinput|--no-input
+		#очевидно нуждается в ∃ бд
+		#optional args(вероятно могут стоять в ∀ порядке)
+			[-h|--help] [--username <username>]
+			[--noinput|--no-input]
 			#not prompt the user for any kinds
 			#требует --username, и val остальных обязательных полеи
 			#тк передать pass в параметре нельзя(по очевидным причинам) созданныи superuser не сможет логиниться до получения пароля
-			--database="default"
+			[--database <database_to_use>] = "default"
 			#
-			--version
+			[--email <superuser_email>]
+			[--version]
 			#по ∀ видимости версия утилиты createsuperuser
-			--v|--verbosity
-			#output verbosity level
-				0: minimal
-				1: normal
-				2: verbose
-				3: very verbose
-			--settings=DJANGO_SETTINGS_MODULE
+			[-v|--verbosity {0,1,2,3}]
+			[--settings <python_path_to_settings_module>] = DJANGO_SETTINGS_MODULE
 			#пример
 				--settings "myproject.settings.main"
-			--pythonpath
+			[--pythonpath <python_path>]
 			#dir to add to the Python path
 				--pythonpath "/home/django_projects/myproject"
-			--traceback
-			#raise on CommandError except
+			[--traceback] [--no-color] [--force-color]
 		#pass: min 8 char ⊃ цифры, буквы в разных регистрах
 		
 
+
 	[contenttypes]
 		remove_stale_contenttypes
-		#
+		#?
+		#optional args(вероятно могут стоять в ∀ порядке)
+			[-h|--help] [--noinput|--no-input] [--database <db_name>] [--version] [-v {0,1,2,3}] [--settings <setting>] [--pythonpath <python_path>] [--traceback] [--no-color] [--force-color]
+		
 		
 		
 		
 	[django]
 		check
-		#
+		#проверяет ∀ dj проект на потенциальные проблемы
+		#запускается автоматом при старте dj? исп подсисмами(напр для вывода err msg на страницах) dj?
+		#optional args(вероятно могут стоять в ∀ порядке)
+			[-h|--help]
+			[-t|--tag <tags>]
+			#run only check labeled with given tag
+			[--list-tags]
+			#list available tags
+			[--deploy]
+			#check deployment settings
+			[--fail-level {CRITICAL,ERROR,WARNING,INFO,DEBUG}] = ERROR
+			#message level that will cause the command to exit with a non-zero status
+			[--version] [-v|--verbosity {0,1,2,3}] [--settings <python_path_to_settings_module>]
+			[--pythonpath <python_path>] [--traceback] [--no-color] [--force-color]
+		#positional arg(вероятно должен стоять в конце)
+			[app_label [app_label ...]]
+			
 		
 		
 		compilemessages
-		#
+		#компилит .po фаилы в .mo используя встроенную поддержку gettext
+		#optional args(вероятно могут стоять в ∀ порядке)
+			[-h|--help]
+			[-l|--locale LOCALE]
+			#Locale(s) to process (e.g. de_AT). Default is to process all. Can be used multiple times.
+			[-x|--exclude EXCLUDE] = none
+			#исключенные локали, мб исп мн-во раз
+			[--use-fuzzy] [--version] [-v|--verbosity {0,1,2,3}] [--settings <python_path_to_settings_module>]
+			[--pythonpath <python_path>] [--traceback] [--no-color] [--force-color]
+
 		
 		
 		createcachetable
-		#
-		
-		
+		#create the tables needed to use the SQL cache backend
+		#optional args(вероятно могут стоять в ∀ порядке)
+			[-h|--help]
+			[--database <db_name>] = "default"
+			#дб для создания таблиц
+			[--dry-run]
+			#вывод SQL для запуска без его запуска
+			[--version] [--settings <python_path_to_settings_module>]
+			[--pythonpath <python_path>] [--traceback] [--no-color] [--force-color]
+		#positional arg(вероятно должен стоять в конце)
+			[table_name [table_name ...]]
+			#opt table names. Otherwise, settings.CACHES is used to find cache tables.
+			
+			
+			
 		dbshell
-		#
-		
-		
+		#runs the command-line for specifisd db
+			[-h|--help]
+			[--database <db_name>] = "default"
+			[--version] [-v {0,1,2,3}] [--settings <setting>] [--pythonpath <python_path>] [--traceback] [--no-color] [--force-color]
+
+
+
 		diffsettings
-		#
+		#отображает Δ settings.py от его default вида
+		#optional args(вероятно могут стоять в ∀ порядке)
+			[-h|--help]
+			[--all]
+			#(?)display all settings, regardless of their val. In "hash" mode
+			#default val are prefexed  by "###"
+			[--default MODULE]
+			#settings module to compare the curr settings against
+			#leave empty to compare against dj defaut settings
+			[--output {hash, unified}]
+			#формат вывода
+				'hash'
+				#вывод ∀ Δ настроек, with the settings that don't appear in the defaults followed by ###
+				'unified'
+				#prefixes the default settings with a '-', followed by the changed setting with a '+' 
+			[--version] [-v {0,1,2,3}] [--settings <setting>] [--pythonpath <python_path>] [--traceback] [--no-color] [--force-color]
+
 		
 		
 		dumpdata
-		#
-		
-		
+		#output the content of the database as a  fixture(?) of the given format(using ∀ model's default manager unless --all is specified)
+		#optional args(вероятно могут стоять в ∀ порядке)
+			[-h|--help]
+			[--format <format>]
+			#specifies the outpet serialization format for fixtures
+			[--indent <indent>]
+			#specifies the indent leve to use when pretty-printing output
+			[--database <db_name>] = "default"
+			#db to dump fixtures from
+			[-e|--exclude <app_label|<app_label.ModelName>]
+			#можно исп неск раз
+			[--natural-foreign]
+			#(?)исп natural foreign keys if доступны
+			[--natural-primary]
+			#(?) исп natural primary keys if доступны
+			[-a|--all]
+			#use dj base manager to dump all models stored in the database ⊃ those that would otherwise be filtered|modified by a custom manager
+			[--pks <primary_key0, primary_key1,...]
+			#only dump obj with given primary keys.
+			#работает only if указана ОДНА модель
+			[-o|--output <file_for_output>]
+			[--version] [-v {0,1,2,3}] [--settings <setting>] [--pythonpath <python_path>] [--traceback] [--no-color] [--force-color]
+		#positional arg(вероятно должны стоять в конце)
+			[app_label0[.ModelName] [app_label1[.ModelName]] ...]
+			#restricts dumped data to the specified app_label|app_label.ModelName
+
+fixtures:eng:?			
+			
+
 		flush
-		#
+		#УДАЛЯЕТ ∀ ДАННЫЕ ⊂ ∀ бд, ⊂ добавленные миграциями
+		#does not achive a "fresh install" state
+			[-h|--help] [--noinput|--no-input] [--database <db_name>] [--version] [-v {0,1,2,3}] [--settings <setting>]
+			[--pythonpath <python_path>] [--traceback] [--no-color] [--force-color]
 		
+
 		
 		inspectdb
-		#
-	
-	
+		#(sic!) introspects the db tables & outputs a dj model module
+		#optional args(вероятно могут стоять в ∀ порядке)
+			[-h|--help]
+			[database <db_name>] = "default"
+			[--include-partitions]
+			#также выводить модели для partition tables
+			[--include-views]
+			#также выводить модели для views
+			[--version] [-v {0,1,2,3}] [--settings <setting>] [--pythonpath <python_path>] [--traceback] [--no-color] [--force-color]
+		#positional arg(вероятно должны стоять в конце)
+			[table [table ...]]
+			#tables|views for introspection
+			
+
+
 		loaddata
-		#
-		
-		
+		#install the name fixture(s) in the db
+		#optional args(вероятно могут стоять в ∀ порядке)
+			[-h|--help] [--database <db_name>] = "default"
+			[--app <app_label>]
+			#only look for fixtures in the specified app
+			[-i|--ignorenonexistent]
+			#ignores entries in the serialized data for fields that do not currently exist on the model
+			[-e|--exclude <app_label|<app_label.ModelName>]
+			#можно исп неск раз
+			[--format <format>]
+			#format of serialized data when reading from stdin
+			[--version] [-v {0,1,2,3}] [--settings <setting>] [--pythonpath <python_path>] [--traceback] [--no-color] [--force-color]
+		#positional arg(вероятно должен стоять в конце)
+			fixture0 [fixture1 ...]
+			#fixture labels
+
+
+
 		makemessages
-		#
+		#runs over the entire source tree of the current directory and pulls out all strings marked for translation
+			#it creates|updates a msg file in the conf/locale(in dj tree) | locale (for projects&apps) dir
+		#должна быть запущенна с --locale|--exclude|-all
+		#optional args(вероятно могут стоять в ∀ порядке)
+			[-h|--help]
+			[-l|--locale <locale>]
+			#создание|обновление msg files для заданных локалеи
+			#локали
+				pt_BR
+			#мб исп неск раз
+			[-x|--exclude <locales_to_exclude>] = none
+			#мб исп неск раз
+			
+			[-d|--domain <domain>] = "django"
+			#the domain of the msg files
+			[-a|--all]
+			#обновить msg фаилы для ∀ ∃ локалеи
+			[-e|--extensions <comma_separated_extensions>] = "js" if (domain is "djangojs") else "html,txt,py"
+			#расширения фаилов для проверки
+			#мб исп неск раз
+			[-s|--symlinks]
+			#следовать по симлинкам
+			[-i|--ignore <glob_style_pattern>]
+			#мб исп неск раз
+			#ignore files|dirs
+			[--no-default-ignore]
+			#don't ignore common glob-style patterns 'CSV', '.*', '*~', '*.pyc'
+			[--no-wrap]
+			#don't break long msg lines into several lines
+			[--no-location]
+			#don't write '#: filename:line' lines
+			#~ --add-location 'never'
+			[--add-location [{full, file, never}]] = 'full'
+			#control '#: filename:line' lines
+				'full'
+				#the lines ⊃ file name&line number
+				'file'
+				#line number is omitted(опущены?)
+				'never'
+				#the lines are supressed
+				#~ --no-location
+			#requires gettext 0.19+
+			[--no-obsolete]
+			#remove obsolete msg strs
+			[--keep-pot]
+			#keep .pot file after making msgs(for debugging)
+			[--version] [-v {0,1,2,3}] [--settings <setting>] [--pythonpath <python_path>] [--traceback] [--no-color] [--force-color]
+			
+ommited:eng:опущен?
+obsolete:eng:?
+
+
+gettext
+#(?) вероятно модуль получения текста
+#используется manage.py makemessages
+			
+obsolete:eng:?
 		
-		
-		makemigrations [<apps_aliases_через_пробел>] [--name|-n <migration_name>] [--noinput|--no-input] [--dry-run] [--check] [--merge] [--empty]
+		makemigrations
 		#запускает генерацию одного файла миграции для ∀ моделей в app не Δ с момента пред генерации миграции
 		#миграции сохраняются в пакете <app>/migrations
-			<apps_alises_через_пробел>
-			#if не указан -> обрабатываются модели объявленные во ∀ apps проекта
-			--name|-n
+		#optional args(вероятно могут стоять в ∀ порядке)
+			[-h|--help]
+			[--dry-run]
+			#вывод сведений о формируемой миграции без ее формирования
+			#тупо выводит в консоль тоже что и при миграции
+				py manage.py makemigrations --dry-run
+					Migrations for '<app>':
+						<app>\migrations\<migration_name>
+							- Create model <model_name>
+							...
+			#думаю подходит для тестов моделеи
+			[--merge]
+			#исп для устранения конфликтов миграций
+			[--empty]
+			#создание "пустой" миграции для ручного формирования
+			[--noinput|--no-input]
+			#скрыть вывод сведений о формируемой миграции
+
+			[-n|--name <migration_name>]
 			#имя формируемой миграции добавляемое к порядковому номеру
 			#if !∃ => default имя:
 				initial
 				#для начальной миграции(создающей первые версии ∀ необходимых структур)
 				auto_<date_time_stamp>
 				#созданные после initial Δ созданные ранее структуры
-			--noinput|--no-input
-			#скрыть вывод сведений о формируемой миграции
-			--dry-run
-			#вывод сведений о формируемой миграции без ее формирования
-			--check
+			[--no-header]
+			#не добавлять заголовок ⊃ комментариями
+			[--check]
+			#exit with !0 status if model changes are missing migrations
 			#вывод сведений о Δ моделей с последней миграции без формирования миграции
-			--merge
-			#исп для устранения конфликтов миграций
-			--empty
-			#создание "пустой" миграции для ручного формирования
+			[--version] [-v {0,1,2,3}] [--settings <setting>] [--pythonpath <python_path>] [--traceback] [--no-color] [--force-color]
+		#positional arg(вероятно должен стоять в конце)
+			[<apps_labels(aliases)_через_пробел>]
+			#if не указан -> обрабатываются модели объявленные во ∀ apps проекта			
 			
-			
-		migrate [<app_alias> [<migration_name>|<номер>]] [--fake_initial] [--noinput|--no-input] [--fake]
+		migrate
 		#выполнение миграции
-		migrate <app_alias> zero
-		#отмена ∀ миграций ⊂ app с удалением ∀ созданных ими структур из бд
-			НЕЛЬЗЯ ОТМЕНИТЬ ОТДЕЛЬНУЮ МИГРАЦИЮ
-		#без указания <app_alias> [<migration_name>] => exe ∀ не exe миграции ⊂ ∀ apps
-		#без указания <migration_name> => ∀ миграции ⊂ <app>
-			--fake-initial
-			#пропуск exe начальной миграции
-			#исп if бд ⊃ ∀ необх структуры для модификации
-			--noinput|--no-input
+		#optional args(вероятно могут стоять в ∀ порядке)
+			[-h|--help]
+			[--noinput|--no-input]
 			#отключить вывод сведений о применеии
-			--fake
+			[--database <db_name>]
+			[--fake]
 			#помечает ∀ миграции как exe без Δ бд
 			#исп if ∀ Δ были внесены в бд вручную
 			
+			[--fake_initial]
+			#пропуск exe начальной миграции
+			#исп if бд ⊃ ∀ необх структуры для модификации
+			[--plan]
+			#show a list of the migration action that will be performed
+			[--run-syncdb]
+			#создает таблицы для apps без миграций
+			[--version] [-v {0,1,2,3}] [--settings <setting>] [--pythonpath <python_path>] [--traceback] [--no-color] [--force-color]
+		#positional arg(вероятно должен стоять в конце)
+			[<app_alias> [<migration_name>|<номер>]]
+			#без указания -> exe ∀ не exe миграции ⊂ ∀ apps
+			#без указания <migration_name> => ∀ миграции ⊂ <app>
+		migrate <app_alias> zero
+		#отмена ∀ миграций ⊂ app с удалением ∀ созданных ими структур из бд
+			#НЕЛЬЗЯ ОТМЕНИТЬ ОТДЕЛЬНУЮ МИГРАЦИЮ
+
+			
 			
 		sendtestemail
-		#
+		#отправка testemail
+			[-h|--help]
+			[--managers]
+			#исп адреса указанные в settings.MANAGERS
+			[--admins]
+			#исп адреса указанные в settings.ADMINS
+			[--version] [-v {0,1,2,3}] [--settings <setting>] [--pythonpath <python_path>] [--traceback] [--no-color] [--force-color]
+
 
 
 		shell
 		#запускает консоль dj
+		#пытается исп IPython|bpython при наличии
+		#optional args(вероятно могут стоять в ∀ порядке)
+			[-h|--help]
+			[--no-startup]
+			#if using plain python -> ignore env v PYTHONSTARTUP & ~/.pyhonrc.py
+			[-i|--interface {ipython, bpython,python}]
+			[-c|--command <command>]
+			#exe <command> & exit
+			[--version] [-v {0,1,2,3}] [--settings <setting>] [--pythonpath <python_path>] [--traceback] [--no-color] [--force-color]
 
 
-		showmigrations [<apps_aliases_через_пробел>] [--plan|-p]
+
+		showmigrations
 		#просмотр списка миграций отсортированных по алфавиту
-			<apps_aliases_через_пробел>
-			#при !∃ -> вывод ∀ с разбиениям по apps
-			--plan|-p
+		#[x] - exe миграция
+		#optional args(вероятно могут стоять в ∀ порядке)
+			[-h|--help]
+			[--database <db_name>] = "default"
+			[-l|--list]
+			#show a list of all migrations and which are applied
+			#исключает [--plan|-p]
+			[--plan|-p]
 			#вывод плана миграций(отсортированный в порядке очереди) вместо миграций
-		#[x] exe миграция
+			#verbosity level 2+ -> ⊂ all direct migrations dependencies & reverse dependencies(run_before)
+			#исключает [-l|--list]
+			[--version] [-v {0,1,2,3}] [--settings <setting>] [--pythonpath <python_path>] [--traceback] [--no-color] [--force-color]
+		#positional arg(вероятно должен стоять в конце)
+			[<app_label> [<app_label> ...]]
+			#при !∃ -> вывод ∀ с разбиениям по apps
 
 
 		sqlflush
-		#
+		#возвращает sql необходимыи для возвращения ∀ таблиц бд к состоянию fresh install
+			[-h|--help]
+			[--database <db_name>] = "default"
+			[--version] [-v {0,1,2,3}] [--settings <setting>] [--pythonpath <python_path>] [--traceback] [--no-color] [--force-color]
+			
 
 
-		sqlmigrate <app> <number_part_of_migration_file_name>
+		sqlmigrate
 		#выводит sql генерируемого миграцией
 			#bboard/0001_initial.py
 			make migrations bboard 0001
-			
-		
-		sqlsequencereset
-		#
-		
+		#optional args(вероятно могут стоять в ∀ порядке)
+			[-h|--help]
+			[--database <db_name>] = "default"
+			[--backwards]
+			#creates sql to UNAPPLY the migration, rather(?) than to apply it
+			[--version] [-v {0,1,2,3}] [--settings <setting>] [--pythonpath <python_path>] [--traceback] [--no-color] [--force-color]
+		#positional arg(вероятно должен стоять в конце)
+			<app_label> <migration_name>
+			#app ⊃ миграции <number_part_of_migration_file_name>
 
-				
-		squashmigrations <app_alias> [<first_migration_name>] <last_migration_name> [--squashed_name <имя_результирующей_миграции>] [--no-optimize] [--noinput|--no-input]
+rather:eng:тоже?
+
+
+		sqlsequencereset
+		#prints the sql for resetting {xn} for the given apps
+		#optional args(вероятно могут стоять в ∀ порядке)
+			[-h|--help]
+			[--database <db_name>] = "default"
+			[--version] [-v {0,1,2,3}] [--settings <setting>] [--pythonpath <python_path>] [--traceback] [--no-color] [--force-color]
+		#positional arg(вероятно должен стоять в конце)
+			<app_label> [<app_label> ...]
+
+
+
+		squashmigrations
 		#слияние миграций в одну для уменьшения их числа что ускоряет их применение к свежей бд
 		#исп if модель многократно Δ с последующей генерацией миграций => миграций м.б. много
-			--squashed_name
-			#if отсутствует
-				<имя_первой_слитой_миграции>_squashed_<имя_последней_слитой_миграции>.py
-			--no-optimize
+		#optional args(вероятно могут стоять в ∀ порядке)
+			[-h|--help]
+			[--no-optimize]
 			#исп при неудачном слиянии|неработоспособности результирующей миграции
-			--noinput|--no-input
+			#видимо тупое объединение фаилов
+			[--noinput|--no-input]
 			#не выводить сведения о слиянии
+			[--squashed_name <имя_результирующей_миграции>]
+			#if отсутствует
+				<имя_первой_слитой_миграции>_squashed_<имя_последней_слитой_миграции>.py			
+			[--no-header]
+			#не добавлять заголовочныи коммент к результату
+			[--version] [-v {0,1,2,3}] [--settings <setting>] [--pythonpath <python_path>] [--traceback] [--no-color] [--force-color]
+		#positional arg(вероятно должен стоять в конце)
+			<app_alias> [<first_migration_name>] <last_migration_name>
+			#указанные миграции ⊂ диапазону
 		#~слияние патчей
 			#слияние с initial по указанную
 				squashmigrations bboard 0004
@@ -684,11 +951,26 @@ manage.py
 		
 
 
-		startapp <app_name> [<path_to_dir_of_app_packet]
-		#создание нового пустого приложения
-		#if путь к папке app не указан - пакет с указаным именем будет создан в текущей папке
-		#else if папка app указана - она будет преобразована в пакет приложения
+		startapp
+		#создание нового пустого приложения(структуры директорий dj app)
+		#optional args(вероятно могут стоять в ∀ порядке)
+			[-h|--help]
+			[--template <template>]
+			#путь|url для загрузки шаблонов
+			[-е|--extension <extension0>[, <extension1> ...] ] = "py"
+			#file extension for render
+			#мб исп неск раз
+			[-n|--name <file_name0> [,<file_name1> ...]]
+			#file name(s) to render
+			[--version] [-v {0,1,2,3}] [--settings <setting>] [--pythonpath <python_path>] [--traceback] [--no-color] [--force-color]
+		#positional arg(вероятно должен стоять в конце)
+			<app_name>
+			#app|project name
+			[<path_to_dir_of_app_packet]
+			#if путь к папке app не указан - пакет с указаным именем будет создан в текущей папке
+			#else if папка app указана - она будет преобразована в пакет приложения
 
+		
 		
 		startproject
 		#вероятно = startproject ⊂ django-admin
@@ -751,6 +1033,187 @@ manage.py
 		
 		
 		
+		drop_test_database
+		#
+		
+		
+		
+		dumpscript
+		#
+		
+		
+		
+		export_emails
+		#
+		
+		
+		
+		find_template
+		#
+		
+		
+		
+		generate_password
+		#
+		
+		
+		
+		generate_secret_key
+		#
+		
+		
+		
+		graph_models
+		#
+		
+		
+		
+		mail_debug
+		#
+		
+		
+		
+		merge_model_instances
+		#
+		
+		
+		
+		notes
+		#
+		
+		
+		
+		passwd
+		#
+		
+		
+		
+		pipchecker
+		#
+		
+		
+		
+		print_settings
+		#
+		
+		
+		
+		print_user_for_session
+		#
+		
+		
+		
+		reset_db
+		#
+		
+		
+		
+		reset_schema
+		#
+		
+		
+		
+		runjob
+		#
+		
+		
+		
+		runjobs
+		#
+		
+		
+		
+		runprofileserver
+		#
+		
+		
+		
+		runscript
+		#
+		
+		
+		
+		runserver_plus
+		#
+		
+		
+		
+		set_default_site
+		#
+		
+		
+		
+		set_fake_emails
+		#
+		
+		
+		
+		set_fake_passwords
+		#
+		
+		
+		
+		shell_plus
+		#
+		
+		
+		
+		show_templatetags
+		#
+		
+		
+		
+		show_urls
+		#
+		
+		
+		
+		sqlcreate
+		#
+		
+		
+		
+		sqldiff
+		#
+		
+		
+		
+		sqldsn
+		#
+		
+		
+		
+		sync_s3
+		#
+		
+		
+		
+		syncdata
+		#
+		
+		
+		
+		unreferenced_files
+		#
+		
+		
+		
+		update_permissions
+		#
+		
+		
+		
+		validate_templates
+		#
+		
+		
+		
+	[sessions]
+		clearsessions
+		#
+		
+		
+		
 		
 	[staticfiles]
 		collectstatic
@@ -761,16 +1224,18 @@ manage.py
 		#
 		
 		
-		runserver [[<adress>][:][<port>]] [--noreload] [--nothreading] [--ipv6] [-6]
+		runserver
 		#запускает отладочный(только?) сервер
-			--noreload
+			[[<adress>][:][<port>]] = 127.0.0.1:8000(TCP)
+			[--noreload]
 			#отключение автоперезапуска при Δ кода
-			--nothreading
+			[--nothreading]
 			#force one thread
-			--ipv6|-6
+			#по умолчанию режим многопоточный
+			[--ipv6] [-6]
 			#использовать IPv6
 			#адрес по умолч	::1
-		#порт по умолчанию TCP 8000, адресс 127.0.0.1, режим многопоточный
+		#examples
 			python manage.py runserver 1.2.3.4
 			python manage.py runserver 4000
 			
