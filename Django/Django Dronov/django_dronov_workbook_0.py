@@ -974,77 +974,236 @@ rather:eng:тоже?
 		
 		startproject
 		#вероятно = startproject ⊂ django-admin
-		
-		
-		
+		#создание структуры директории проэкта
+		#args ~ startapp
+
+
+
 		test
-		#
-		
-		
-		
+		#discover & run tests ⊂ specified modules|current dir
+		#optional args(вероятно могут стоять в ∀ порядке)
+			[-h|--help]
+			[--noinput|--no-input]
+			[--failfast]
+			#break test suite after first fail
+			[--testrunner <testrunner>]
+			#use specified test runner class instead of the one specified by the TEST_RUNNER setting(видимо ⊂ settings.py ⊂ project)
+			[-t|--top-level-directory <top_level>]
+			#top level of project for unitest discovery
+			[-p|--pattern <pattern>] = test*.py
+			#the test matching pattern
+			[-k|-keepdb]
+			#preserves the test db between runs
+			[-r|--reverse]
+			#reverse test cases order
+			[--debug-mode]
+			#sets settings.DEBUG = True
+			[-d|--debug-sql]
+			#prints logged SQL queries on failure
+			[--parallel [N]]
+			#use up to N processes
+			[--tag <tags>]
+			#run only tests ⊃ <tags>
+			#мб исп неск раз
+			[--exclude-tag <tags>]
+			#искл тесты ⊃ <tags>
+			#мб исп неск раз
+			[--version] [-v {0,1,2,3}] [--settings <setting>] [--pythonpath <python_path>] [--traceback] [--no-color] [--force-color]
+		#positional arg(вероятно должен стоять в конце)
+			[test_label0 [test_label1 ...]]
+			#module paths to test(module name|TestCase|TestCase.test_method)
+
+preserves:eng:предохраняет?
+
 		testserver
-		#
-	
-	
+		#(?)runs a development server ⊃ data from given fixtures
+		#optional args(вероятно могут стоять в ∀ порядке)
+			[-h|--help] [--noinput|--no-input]
+			[--addrport <addrport>]
+			#port|ip:port to run server
+			[--ipv6]
+			#use ipv6 address
+			[--version] [-v {0,1,2,3}] [--settings <setting>] [--pythonpath <python_path>] [--traceback] [--no-color] [--force-color]
+		#positional arg(вероятно должен стоять в конце)
+			[fixture0 [fixture0 ...]]
+			#path to fixtures to load before server running
 	
 	[django_extensions]
 		admin_generator
-		#
-		
-		
+		#generate a 'admin.py' for given app(models)
+		#optional args(вероятно могут стоять в ∀ порядке)
+			[-h|--help]
+			[-s|--search-field <search_field>] = ('name', 'slug')
+			#fields named like this will be added to 'search_fields'
+			[-d|--date-hierarchy <date_hierarchy>] = ('joined_at', 'updated_at', 'created_at')
+			#a field named like this will be set as 'date_hierarchy'
+			[-p|--prepopulated-fields <prepopulated_fields>] = ('slug=name',)
+			#(?)these fields will be prepopulated by the other field
+			#the field names can be specified like	
+				'spam=eggA,eggB,eggC'
+			[-l|--list-filter-threshold <list_filter_threshold>] = 100
+			#if foreign key ⊂ < LIST_FILTER_THRESHOLD items it will be added to 'list_filter'
+			[--version] [-v {0,1,2,3}] [--settings <setting>] [--pythonpath <python_path>] [--traceback] [--no-color] [--force-color]
+		#positional arg(вероятно должен стоять в конце)
+			app_name [model_name [model_name ...]]
+
+
+prepopulated:eng:?
 		
 		clean_pyc
-		#
+		#remove ∀ py bytecode compiled files ⊂ project(-> противоположна compile_pyc)
+		#optional args(вероятно могут стоять в ∀ порядке)
+			[-h|--help]
+			[-o|-O|--optimize]
+			#remove ∀ optimized py bytecode files
+			#а без него?
+			[-p|--path]
+			#specify path to recurse into
+			[--version] [-v {0,1,2,3}] [--settings <setting>] [--pythonpath <python_path>] [--traceback] [--no-color] [--force-color]
 		
-		
-		
+
+какова логика порядка альтернативных args в справке утилит manage.py?
+#пример: py manage.py help clear cache >> ... [--all, -a ...] ... [-v, --verbosity ...]
+
+
 		clear_cache
-		#
+		#fully clear site-wide cache
+		#optional args(вероятно могут стоять в ∀ порядке)
+			[-h|--help]
+			[--cache <cache>]
+			#name of cache to clear
+			[-a|--all]
+			#clear ∀ configured caches
+			[--version] [-v {0,1,2,3}] [--settings <setting>] [--pythonpath <python_path>] [--traceback] [--no-color] [--force-color]
 		
 		
 		
 		compile_pyc
-		#
-		
+		#compile py bytecode files for project(-> противоположна clean_pyc)
+		#optional args(вероятно могут стоять в ∀ порядке)
+			[-h|--help]
+			[-p|--path]
+			#specify path to recurse into
+			[--version] [-v {0,1,2,3}] [--settings <setting>] [--pythonpath <python_path>] [--traceback] [--no-color] [--force-color]
 		
 		
 		create_command
-		#
+		#creates a dj management dir structure for given app name in the app dir
+		#optional args(вероятно могут стоять в ∀ порядке)
+			[-h|--help]
+			[-n|--name <command_name>]
+			#name to use for the management command
+			[-b|--base <base_command>]
+			#the base class used for implementation of this command
+				Base
+				App
+				Label
+				NoArgs
+			[--dry-run]
+			#don't actually create ∀ files
+			[--version] [-v {0,1,2,3}] [--settings <setting>] [--pythonpath <python_path>] [--traceback] [--no-color] [--force-color]
+		#positional arg(вероятно должен стоять в конце)
+			app_label [app_label ...]
 		
 		
 		
 		create_jobs
-		#
-		
-		
-		
+		#creates a dj jobs command dir structure for the given app name in curr dir
+		#optional args(вероятно могут стоять в ∀ порядке)
+			[-h|--help] [--version] [-v {0,1,2,3}] [--settings <setting>] [--pythonpath <python_path>] [--traceback] [--no-color] [--force-color]
+		#positional arg(вероятно должен стоять в конце)
+			<app_label> [<app_label> ...]
+
+
+
 		create_template_tags
-		#
-		
+		#creates a dj template tags dir structure for the given app in the app's dir
+		#optional args(вероятно могут стоять в ∀ порядке)
+			[-h|--help]
+			[-n|--name <tag_library_name>] = `appname`_tags	(да - это grave accents)
+			#the name to use for the template tag base name
+			[--version] [-v {0,1,2,3}] [--settings <setting>] [--pythonpath <python_path>] [--traceback] [--no-color] [--force-color]
+		#positional arg(вероятно должен стоять в конце)
+			<app_label> [<app_label> ...]
 		
 		
 		delete_squashed_migrations
-		#
+		#deletes left over migrations that have been replaced by a
+		#optional args(вероятно могут стоять в ∀ порядке)
+			[-h|--help]
+			[--noinput|--no-input]
+			[--dry-run]
+			#don't acpually delete|change ∀ files
+			[--version] [-v {0,1,2,3}] [--settings <setting>] [--pythonpath <python_path>] [--traceback] [--no-color] [--force-color]
+		#positional arg(вероятно должен стоять в конце)
+			app_label
+			[squashed_migration_name] = <first_found_migration>
+			#the squashed migration to replace
 		
-		
-		
+
+
 		describe_form
-		#
-		
-		
+		#outputs the specified model as a form definition to shell
+		#optional args(вероятно могут стоять в ∀ порядке)
+			[-h|--help]
+			[--fields <fields>]
+			#describe form with these fields only
+			[--version] [-v {0,1,2,3}] [--settings <setting>] [--pythonpath <python_path>] [--traceback] [--no-color] [--force-color]
+		#positional arg(вероятно должен стоять в конце)
+			<label>
+			#app & model names
+
+
+describe:eng:?
+
+
 		
 		drop_test_database
-		#
-		
+		#drops test db for this project
+		#кладет db?
+		#optional args(вероятно могут стоять в ∀ порядке)
+			[-h|--help]
+			[--noinput]
+			#вроде !⊃ --no-input
+			[-U|--user <user>]
+			#use another user for the db then defined in settings.py
+			[-P <password>]
+			#use another password for the db then defined in settings.py
+			[-D|--dbname <db_name>]
+			#use another db name for the db then defined in settings.py
+			[-R|--router <router>]
+			#use another router-db for the db then defined in settings.py
+			[--version] [-v {0,1,2,3}] [--settings <setting>] [--pythonpath <python_path>] [--traceback] [--no-color] [--force-color]
+
 		
 		
 		dumpscript
-		#
+		#dumps the data as a customised python script
+		#optional args(вероятно могут стоять в ∀ порядке)
+			[-h|--help]
+			[--autofield]
+			#include Autofields (like pk fields)
+			[--version] [-v {0,1,2,3}] [--settings <setting>] [--pythonpath <python_path>] [--traceback] [--no-color] [--force-color]
+		#positional arg(вероятно должен стоять в конце)
+			appname [appname ...]
 		
 		
 		
 		export_emails
-		#
+		#export user email list in one of a number of formats
+		#optional args(вероятно могут стоять в ∀ порядке)
+			[-h|--help]
+			[-g|--group <group>]
+			#limit to users which are part of the supplied group name
+			[-f|--format <format>]
+			#output format
+				adress
+				emails
+				google
+				outlook
+				linkedin
+				vcard
+			[--version] [-v {0,1,2,3}] [--settings <setting>] [--pythonpath <python_path>] [--traceback] [--no-color] [--force-color]
 		
 		
 		
