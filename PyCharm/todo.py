@@ -1,0 +1,1 @@
+вернуть paste/paste without formatting

@@ -467,7 +467,17 @@ UTC
 						0 : вс
 						6 : сб
 						
-						
+					
+					MANAGERS
+					#не уверен в ∃
+					#вроде исп manage.py sendtestemail
+					
+					
+					ADMINS
+					#не уверен в ∃
+					#вроде исп manage.py sendtestemail
+					
+					
 				urls.py
 				#модуль маршрутизации уровня проекта
 				
@@ -511,6 +521,7 @@ manage.py
 	#без вывода
 	[-v|--verbosity {0,1,2,3}]
 	#output verbosity level
+	#выводит неожиданно много информации о внутреннеи структуре dj
 		0: minimal
 		1: normal
 		2: verbose
@@ -523,18 +534,22 @@ manage.py
 	
 		changepassword
 		#change user pass for django.contrib.auth
+		#Δ возможно в realtime на работающем сервере
+		#min 8 char ⊃ цифры, буквы в разных регистрах
 		#optional args(вероятно могут стоять в ∀ порядке)
 			[-h|--help] [--database <database_to_use>]
 			[--version]
 			[-v {0,1,2,3}] [--settings <python_path_to_settings_module>] [--traceback] [--no-color] [--force-color]
 		#positional arg(вероятно должен стоять в конце)
 			[username] = <current_username>
+			#current_username - имя профиля в ос
 			
 
 
 		createsuperuser
 		#создание зарегистрированного пользователя с max правами
 		#очевидно нуждается в ∃ бд
+		#email - opt
 		#optional args(вероятно могут стоять в ∀ порядке)
 			[-h|--help] [--username <username>]
 			[--noinput|--no-input]
@@ -554,8 +569,9 @@ manage.py
 			#dir to add to the Python path
 				--pythonpath "/home/django_projects/myproject"
 			[--traceback] [--no-color] [--force-color]
-		#pass: min 8 char ⊃ цифры, буквы в разных регистрах
-		
+		#ругается при указании pass не удовлетв min 8 char ⊃ цифры, буквы в разных регистрах
+		#можно создать мн-во superusers
+		#при ∃ пользователя с таким именем -> предлагает ввести другое
 
 
 	[contenttypes]
@@ -570,6 +586,8 @@ manage.py
 	[django]
 		check
 		#проверяет ∀ dj проект на потенциальные проблемы
+			manage.py check >> System check identified no issues (0 silenced)
+			#?silenced(?~warning)
 		#запускается автоматом при старте dj? исп подсисмами(напр для вывода err msg на страницах) dj?
 		#optional args(вероятно могут стоять в ∀ порядке)
 			[-h|--help]
@@ -577,8 +595,19 @@ manage.py
 			#run only check labeled with given tag
 			[--list-tags]
 			#list available tags
+				manage.py check --list-tags
+				>>
+					admin
+					caches
+					database
+					models
+					staticfiles
+					templates
+					translation
+					urls
 			[--deploy]
 			#check deployment settings
+			#вывел мне кучу warnings
 			[--fail-level {CRITICAL,ERROR,WARNING,INFO,DEBUG}] = ERROR
 			#message level that will cause the command to exit with a non-zero status
 			[--version] [-v|--verbosity {0,1,2,3}] [--settings <python_path_to_settings_module>]
@@ -619,6 +648,10 @@ manage.py
 			
 		dbshell
 		#runs the command-line for specifisd db
+		#требует наличия соотв по
+			manage.py dbshell
+			>> CommandError: You appear not to have the 'sqlite3' program installed | on your path
+		#optional args(вероятно могут стоять в ∀ порядке)
 			[-h|--help]
 			[--database <db_name>] = "default"
 			[--version] [-v {0,1,2,3}] [--settings <setting>] [--pythonpath <python_path>] [--traceback] [--no-color] [--force-color]
@@ -626,19 +659,22 @@ manage.py
 
 
 		diffsettings
-		#отображает Δ settings.py от его default вида
+		#отображает Δ settings.py от его default вида(вида key = <new_val>)
+		#для DEBUG default val = False
 		#optional args(вероятно могут стоять в ∀ порядке)
 			[-h|--help]
 			[--all]
-			#(?)display all settings, regardless of their val. In "hash" mode
+			#display all settings, regardless of their val. In "hash" mode(hash - видимо имеется в виду предварение '###' !Δ val
 			#default val are prefexed  by "###"
 			[--default MODULE]
 			#settings module to compare the curr settings against
 			#leave empty to compare against dj defaut settings
 			[--output {hash, unified}]
 			#формат вывода
+			#def val вроде hash
 				'hash'
 				#вывод ∀ Δ настроек, with the settings that don't appear in the defaults followed by ###
+				#!~ --all
 				'unified'
 				#prefixes the default settings with a '-', followed by the changed setting with a '+' 
 			[--version] [-v {0,1,2,3}] [--settings <setting>] [--pythonpath <python_path>] [--traceback] [--no-color] [--force-color]
@@ -651,8 +687,10 @@ manage.py
 			[-h|--help]
 			[--format <format>]
 			#specifies the outpet serialization format for fixtures
+			#какие val доступны?
 			[--indent <indent>]
-			#specifies the indent leve to use when pretty-printing output
+			#specifies the indent level to use when pretty-printing output
+			#какие val доступны?
 			[--database <db_name>] = "default"
 			#db to dump fixtures from
 			[-e|--exclude <app_label|<app_label.ModelName>]
@@ -672,12 +710,23 @@ manage.py
 			[app_label0[.ModelName] [app_label1[.ModelName]] ...]
 			#restricts dumped data to the specified app_label|app_label.ModelName
 
-fixtures:eng:?			
+fixtures:eng:арматура
+
+fixtures
+#фаилы предварительнои настроики ⊃ набор данных для загрузки в бд
 			
 
 		flush
 		#УДАЛЯЕТ ∀ ДАННЫЕ ⊂ ∀ бд, ⊂ добавленные миграциями
+			manage.py flush
+			>>
+				You have requested a flush of the db
+				This will IRREVERSIBLY DESROY ∀ data currently in the <abs_path_to_db> db & return each table to an empty state
+				Are you sure you want to do this
+					Type 'yes' to continue,| 'no' to cancel:
+				#ответ регистрозависим
 		#does not achive a "fresh install" state
+		#судя по выводу dumpdata - в бд остается дохрена данных
 			[-h|--help] [--noinput|--no-input] [--database <db_name>] [--version] [-v {0,1,2,3}] [--settings <setting>]
 			[--pythonpath <python_path>] [--traceback] [--no-color] [--force-color]
 		
@@ -685,6 +734,7 @@ fixtures:eng:?
 		
 		inspectdb
 		#(sic!) introspects the db tables & outputs a dj model module
+		#вроде выводет описание ∀ содержимого бд в виде моделеи
 		#optional args(вероятно могут стоять в ∀ порядке)
 			[-h|--help]
 			[database <db_name>] = "default"
@@ -722,6 +772,9 @@ fixtures:eng:?
 		#runs over the entire source tree of the current directory and pulls out all strings marked for translation
 			#it creates|updates a msg file in the conf/locale(in dj tree) | locale (for projects&apps) dir
 		#должна быть запущенна с --locale|--exclude|-all
+		#вроде исп GNU gettext
+			py manage.py makemessages -l pt_BR
+			>> CommandError: Cant find msguniq. Make sure you have GNU gettext tools 0.15+
 		#optional args(вероятно могут стоять в ∀ порядке)
 			[-h|--help]
 			[-l|--locale <locale>]
@@ -731,7 +784,6 @@ fixtures:eng:?
 			#мб исп неск раз
 			[-x|--exclude <locales_to_exclude>] = none
 			#мб исп неск раз
-			
 			[-d|--domain <domain>] = "django"
 			#the domain of the msg files
 			[-a|--all]
@@ -797,7 +849,6 @@ obsolete:eng:?
 			#создание "пустой" миграции для ручного формирования
 			[--noinput|--no-input]
 			#скрыть вывод сведений о формируемой миграции
-
 			[-n|--name <migration_name>]
 			#имя формируемой миграции добавляемое к порядковому номеру
 			#if !∃ => default имя:
@@ -807,14 +858,18 @@ obsolete:eng:?
 				#созданные после initial Δ созданные ранее структуры
 			[--no-header]
 			#не добавлять заголовок ⊃ комментариями
+			#initial ⊃ only "# Generated by Django ... <datetime>"
 			[--check]
 			#exit with !0 status if model changes are missing migrations
 			#вывод сведений о Δ моделей с последней миграции без формирования миграции
+			#else >> "No changes detected"
 			[--version] [-v {0,1,2,3}] [--settings <setting>] [--pythonpath <python_path>] [--traceback] [--no-color] [--force-color]
 		#positional arg(вероятно должен стоять в конце)
 			[<apps_labels(aliases)_через_пробел>]
 			#if не указан -> обрабатываются модели объявленные во ∀ apps проекта			
-			
+
+
+
 		migrate
 		#выполнение миграции
 		#optional args(вероятно могут стоять в ∀ порядке)
@@ -825,14 +880,13 @@ obsolete:eng:?
 			[--fake]
 			#помечает ∀ миграции как exe без Δ бд
 			#исп if ∀ Δ были внесены в бд вручную
-			
 			[--fake_initial]
 			#пропуск exe начальной миграции
 			#исп if бд ⊃ ∀ необх структуры для модификации
 			[--plan]
 			#show a list of the migration action that will be performed
 			[--run-syncdb]
-			#создает таблицы для apps без миграций
+			#?создает таблицы для apps без миграций
 			[--version] [-v {0,1,2,3}] [--settings <setting>] [--pythonpath <python_path>] [--traceback] [--no-color] [--force-color]
 		#positional arg(вероятно должен стоять в конце)
 			[<app_alias> [<migration_name>|<номер>]]
@@ -841,6 +895,7 @@ obsolete:eng:?
 		migrate <app_alias> zero
 		#отмена ∀ миграций ⊂ app с удалением ∀ созданных ими структур из бд
 			#НЕЛЬЗЯ ОТМЕНИТЬ ОТДЕЛЬНУЮ МИГРАЦИЮ
+		#?~ manage.py flush
 
 			
 			
@@ -848,11 +903,12 @@ obsolete:eng:?
 		#отправка testemail
 			[-h|--help]
 			[--managers]
-			#исп адреса указанные в settings.MANAGERS
+			#исп адреса указанные в settings.MANAGERS(⊄ settings by def)
 			[--admins]
-			#исп адреса указанные в settings.ADMINS
+			#исп адреса указанные в settings.ADMINS(⊄ settings by def)
 			[--version] [-v {0,1,2,3}] [--settings <setting>] [--pythonpath <python_path>] [--traceback] [--no-color] [--force-color]
-
+		#возм умеет принимать emails в args
+			py manage.py sendtestemail >> err: You must specify some email recipients| pass the --managers|--admin opt
 
 
 		shell
@@ -861,8 +917,9 @@ obsolete:eng:?
 		#optional args(вероятно могут стоять в ∀ порядке)
 			[-h|--help]
 			[--no-startup]
-			#if using plain python -> ignore env v PYTHONSTARTUP & ~/.pyhonrc.py
+			#if using plain python -> ignore env v PYTHONSTARTUP(?) & ~/.pythonrc.py(?)
 			[-i|--interface {ipython, bpython,python}]
+			#разумеется соотв интерфеис должен ∃
 			[-c|--command <command>]
 			#exe <command> & exit
 			[--version] [-v {0,1,2,3}] [--settings <setting>] [--pythonpath <python_path>] [--traceback] [--no-color] [--force-color]
@@ -873,6 +930,7 @@ obsolete:eng:?
 		#просмотр списка миграций отсортированных по алфавиту
 		#[x] - exe миграция
 		#optional args(вероятно могут стоять в ∀ порядке)
+		#-p/-l почти не отличаются
 			[-h|--help]
 			[--database <db_name>] = "default"
 			[-l|--list]
@@ -893,6 +951,13 @@ obsolete:eng:?
 			[-h|--help]
 			[--database <db_name>] = "default"
 			[--version] [-v {0,1,2,3}] [--settings <setting>] [--pythonpath <python_path>] [--traceback] [--no-color] [--force-color]
+		#пример
+			py manage.py sqlflush
+				BEGIN;
+				DELETE FROM "auth_group_permissions";
+				DELETE FROM <table>;
+				...
+				COMMIT;
 			
 
 
@@ -905,6 +970,14 @@ obsolete:eng:?
 			[--database <db_name>] = "default"
 			[--backwards]
 			#creates sql to UNAPPLY the migration, rather(?) than to apply it
+				py manage.py sqlmigrate --backwards app 0001
+				>>
+					BEGIN;
+					--
+					-- Create model <model_name>
+					--
+					DROP TABLE "<app_name>_<model_name>"
+					COMMIT;
 			[--version] [-v {0,1,2,3}] [--settings <setting>] [--pythonpath <python_path>] [--traceback] [--no-color] [--force-color]
 		#positional arg(вероятно должен стоять в конце)
 			<app_label> <migration_name>
@@ -914,7 +987,8 @@ rather:eng:тоже?
 
 
 		sqlsequencereset
-		#prints the sql for resetting {xn} for the given apps
+		#?prints the sql for resetting {xn} for the given apps
+		#хз зачем - мне ен вывел ничего
 		#optional args(вероятно могут стоять в ∀ порядке)
 			[-h|--help]
 			[--database <db_name>] = "default"
@@ -936,7 +1010,7 @@ rather:eng:тоже?
 			#не выводить сведения о слиянии
 			[--squashed_name <имя_результирующей_миграции>]
 			#if отсутствует
-				<имя_первой_слитой_миграции>_squashed_<имя_последней_слитой_миграции>.py			
+				<имя_первой_слитой_миграции>_squashed_<имя_последней_слитой_миграции>.py
 			[--no-header]
 			#не добавлять заголовочныи коммент к результату
 			[--version] [-v {0,1,2,3}] [--settings <setting>] [--pythonpath <python_path>] [--traceback] [--no-color] [--force-color]
@@ -974,7 +1048,7 @@ rather:eng:тоже?
 		
 		startproject
 		#вероятно = startproject ⊂ django-admin
-		#создание структуры директории проэкта
+		#создание структуры директории проeкта
 		#args ~ startapp
 
 
@@ -1035,6 +1109,7 @@ preserves:eng:предохраняет?
 			[-h|--help]
 			[-s|--search-field <search_field>] = ('name', 'slug')
 			#fields named like this will be added to 'search_fields'
+			#?может это для admin.site.register(<field>)
 			[-d|--date-hierarchy <date_hierarchy>] = ('joined_at', 'updated_at', 'created_at')
 			#a field named like this will be set as 'date_hierarchy'
 			[-p|--prepopulated-fields <prepopulated_fields>] = ('slug=name',)
@@ -1049,14 +1124,18 @@ preserves:eng:предохраняет?
 
 
 prepopulated:eng:?
-		
+
+by def pycharm игнорит .pyc и не дает сождавать их в file tree
+
+
 		clean_pyc
 		#remove ∀ py bytecode compiled files ⊂ project(-> противоположна compile_pyc)
+		#работает вполне ожидаемым образом
 		#optional args(вероятно могут стоять в ∀ порядке)
 			[-h|--help]
 			[-o|-O|--optimize]
 			#remove ∀ optimized py bytecode files
-			#а без него?
+			#а без него? -> не заметил Δ
 			[-p|--path]
 			#specify path to recurse into
 			[--version] [-v {0,1,2,3}] [--settings <setting>] [--pythonpath <python_path>] [--traceback] [--no-color] [--force-color]
@@ -1064,7 +1143,8 @@ prepopulated:eng:?
 
 какова логика порядка альтернативных args в справке утилит manage.py?
 #пример: py manage.py help clear cache >> ... [--all, -a ...] ... [-v, --verbosity ...]
-
+#подозреваю - сортировка по читабельности -> на примере sqlcreate так и не скажешь
+	#возможно по времени появления
 
 		clear_cache
 		#fully clear site-wide cache
@@ -1080,6 +1160,8 @@ prepopulated:eng:?
 		
 		compile_pyc
 		#compile py bytecode files for project(-> противоположна clean_pyc)
+		#ничего не выводит
+		#разумеется хранит ∀ в __pycache__
 		#optional args(вероятно могут стоять в ∀ порядке)
 			[-h|--help]
 			[-p|--path]
@@ -1088,7 +1170,20 @@ prepopulated:eng:?
 		
 		
 		create_command
-		#creates a dj management dir structure for given app name in the app dir
+		#creates a dj management dir structure(py packet) for given app name in the app dir
+			app/management/
+				__init__.py
+				commands/
+					__init__.py
+					sample.py
+						from django.core.management.base import BaseCommand
+						class Command(BaseCommand):
+							help = "My shiny new management command."
+							def add_arguments(self, parser):
+								parser.add_argument('sample', nargs='+')
+							def handle(self, *args, **options):
+								raise NotImplementedError()
+		#ничего не выводит(по краинеи мере при успехе)
 		#optional args(вероятно могут стоять в ∀ порядке)
 			[-h|--help]
 			[-n|--name <command_name>]
@@ -1101,6 +1196,7 @@ prepopulated:eng:?
 				NoArgs
 			[--dry-run]
 			#don't actually create ∀ files
+			#разумеется у меня нихрена не вывел
 			[--version] [-v {0,1,2,3}] [--settings <setting>] [--pythonpath <python_path>] [--traceback] [--no-color] [--force-color]
 		#positional arg(вероятно должен стоять в конце)
 			app_label [app_label ...]
@@ -1109,6 +1205,25 @@ prepopulated:eng:?
 		
 		create_jobs
 		#creates a dj jobs command dir structure for the given app name in curr dir
+			app/jobs/
+				daily/
+					__init__.py
+				hourly/
+					__init__.py
+				monthly/
+					__init__.py
+				weekly/
+					__init__.py
+				yearly/
+					__init__.py
+				__init__.py
+				sample.py
+					from django_extensions.management.jobs import BaseJob
+					class Job(BaseJob):
+						help = "My sample job."
+						def execute(self):
+							# executing empty sample job
+							pass
 		#optional args(вероятно могут стоять в ∀ порядке)
 			[-h|--help] [--version] [-v {0,1,2,3}] [--settings <setting>] [--pythonpath <python_path>] [--traceback] [--no-color] [--force-color]
 		#positional arg(вероятно должен стоять в конце)
@@ -1118,6 +1233,12 @@ prepopulated:eng:?
 
 		create_template_tags
 		#creates a dj template tags dir structure for the given app in the app's dir
+			py manage.py create_template_tags app
+				app/templatetags
+					__init__.py
+					app_tags.py
+						from django import template
+						register = template.Library()
 		#optional args(вероятно могут стоять в ∀ порядке)
 			[-h|--help]
 			[-n|--name <tag_library_name>] = `appname`_tags	(да - это grave accents)
@@ -1133,7 +1254,7 @@ prepopulated:eng:?
 			[-h|--help]
 			[--noinput|--no-input]
 			[--dry-run]
-			#don't acpually delete|change ∀ files
+			#don't actually delete|change ∀ files
 			[--version] [-v {0,1,2,3}] [--settings <setting>] [--pythonpath <python_path>] [--traceback] [--no-color] [--force-color]
 		#positional arg(вероятно должен стоять в конце)
 			app_label
@@ -1144,13 +1265,30 @@ prepopulated:eng:?
 
 		describe_form
 		#outputs the specified model as a form definition to shell
+		#adding labels(titled) & Form to form field name!
+			py manage.py describe_form app.FieldsTest
+				from django import forms
+				from app.models import FieldsTest
+				class FieldsTestForm(forms.Form):
+					cf = forms.CharField(label='Cf')
+					t0 = forms.DateTimeField(label='T0')
+					t0 = forms.DateTimeField(label='T1')
 		#optional args(вероятно могут стоять в ∀ порядке)
 			[-h|--help]
 			[--fields <fields>]
 			#describe form with these fields only
+				py manage.py describe_form app.FieldsTest --fields cf
+					...
+					class FieldsTestForm(forms.Form):
+						cf = forms.CharField(label='Cf')
+			#мб исп неск раз, но я не понял как передавать неск val в один --fields
+				... --fields cf t0	>> err
+				... --fields "cf" "t0"	>> err
+				... --fields 'cf' 't0'	>> err
+				... --fields cf, t0	>> err
 			[--version] [-v {0,1,2,3}] [--settings <setting>] [--pythonpath <python_path>] [--traceback] [--no-color] [--force-color]
 		#positional arg(вероятно должен стоять в конце)
-			<label>
+			<label>.<model>
 			#app & model names
 
 
@@ -1161,6 +1299,15 @@ describe:eng:?
 		drop_test_database
 		#drops test db for this project
 		#кладет db?
+			py manage.py drop_test_database
+			>>
+				You have requsted to drop the test database.
+				This will IRREVERSIBLY DESTROY
+				∀ data in the db "<path>"
+				Are you sure you want to do this?
+				>> yes
+					>> Reset successful
+					#но что-то !Δ
 		#optional args(вероятно могут стоять в ∀ порядке)
 			[-h|--help]
 			[--noinput]
@@ -1179,6 +1326,7 @@ describe:eng:?
 		
 		dumpscript
 		#dumps the data as a customised python script
+		#генерит простои скрипт(?не знаю с каким назначением) и выводит его в консоль
 		#optional args(вероятно могут стоять в ∀ порядке)
 			[-h|--help]
 			[--autofield]
@@ -1208,192 +1356,816 @@ describe:eng:?
 		
 		
 		find_template
-		#
-		
+		#finds the location of the given template by resolving its path
+		#optional args(вероятно могут стоять в ∀ порядке)
+			[-h|--help] [--version] [-v {0,1,2,3}] [--settings <setting>] [--pythonpath <python_path>] [--traceback] [--no-color] [--force-color]
+		#positional arg(вероятно должен стоять в конце)
+			<template0> <path0> [<template1> <path1>]
+
 		
 		
 		generate_password
-		#
-		
+		#generates a new pass that can be used for a user password
+			py manage.py generate_password --length >> BAPCtgaWXx
+		#uses dj core's default parrword generator
+			`BaseUserManager.make_random_password()`
+		#optional args(вероятно могут стоять в ∀ порядке)
+			[-h|--help]
+			[--length [<length>]]
+			#password length
+			#может в справке err? - как val мб optional?(реально opt - видимо для упрощения генерации запросов к manage.py)
+			[--version] [-v {0,1,2,3}] [--settings <setting>] [--pythonpath <python_path>] [--traceback] [--no-color] [--force-color]
 		
 		
 		generate_secret_key
-		#
+		#generates a new SECRET_KEY that can be used in a project settings file
+			py manage.py generate_secret_key >> <new_secret_key>
+		#optional args(вероятно могут стоять в ∀ порядке)
+			[-h|--help] [--version] [-v {0,1,2,3}] [--settings <setting>] [--pythonpath <python_path>] [--traceback] [--no-color] [--force-color]
 		
 		
 		
 		graph_models
-		#
+		#creates a GraphViz dot file for the specified app names
+		#multiple app names will all be combined into a single model
+		#output is usually directed to a dot file
+		#optional args(вероятно могут стоять в ∀ порядке)
+			[-h|--help]
+			[--pygraphviz] [--pydot][--dot][--json]
+			#output graph data as [image using PyGraphViz|image uring PyDot(Plus)|raw DOT(graph description lang) text data|JSON]
+			[-d|--disable-fields]
+			#don't show the class member fields
+			[--disable-abstract-fields]
+			#don't show the class member fields that were inderited
+			[-g|--group-models]
+			#group models together respective to their app
+			[-a|--all-applications]
+			#auto include ∀ apps from INSTALLED_APPS
+			[-o|--output <file>]
+			#render output file
+			#type of output dependend on file extensions
+				png|jpg
+				#render graph to image
+			[-l|--layout <layout>]
+			#layout to be used by GraphViz for visualization
+				circo
+				dot
+				fdp
+				neato
+				nop
+				nop1
+				top2
+				twopi
+			[-t|--theme <theme>]
+			#supplied are
+				'original
+				'django2018'
+			#i can create my own by creating dot templates ⊂
+				'django_extentions/graph_models/themename/'
+			[-n|--verbose-names]
+			#use verbose_name of models&fields
+			[-L|--language <language>]
+			#for verbose_name localization
+			[-x|--exclude-columns <columns>]
+			#exclude columns from the graph
+			#can also loadexclude list from file
+			[-X|--exclude-models <models>]
+			#exclude models from the graph
+			#can also load exclude list from file
+			#wildcards (*) are allowed
+			[-I|--include-models <models>]
+			#restrict the graph to specified models
+			#wildcards (*) are allowed
+			[-e|--inderitance]
+			#include inderitance arrows(default)
+			[-E|--no-inderitance]
+			#do not include inderitance arrows
+			[-R|--hide-relations-from-fields]
+			#don't show relations as fields in the graph
+			[-S|--disable-sort-fields]
+			#don't sort fields
+			[--hide-edge-labels]
+			#don't show relations labels in the graph
+			[--arrow-shape {box, crow, curve, icurve, diamond, dot, inv, none, normal, tee, vee}] = dot
+			#arrow shape to use for relations
+			[--version] [-v {0,1,2,3}] [--settings <setting>] [--pythonpath <python_path>] [--traceback] [--no-color] [--force-color]
+		#positional arg(вероятно должен стоять в конце)
+			[<app_label0> [<app_label1> ...]]
 		
 		
 		
 		mail_debug
-		#
+		#starts a test mail server for development
+			py manage.py mail_debug >> Now accepting mail at 127.0.4.8:1025
+		#optional args(вероятно могут стоять в ∀ порядке)
+			[-h|--help]
+			[--output <file>]
+			#file to send a copy of ∀ msgs(not flush immediately)
+			[--use-settings]
+			#use EMAIL_HOST & HOST_PORT ⊂ dj settings
+			[--version] [-v {0,1,2,3}] [--settings <setting>] [--pythonpath <python_path>] [--traceback] [--no-color] [--force-color]
 		
 		
 		
 		merge_model_instances
-		#
+		#removes duplicate model instances(val самих моделеи?) based on a specified model & fields names
+		#make sure that any OneToOne|ForeignKey|ManyToMany relationships attached to a deleted model(s) get reattached to the remaining model
+		#based on the following:
+			https://djangosnippets.org/snippets/2283/
+			https://stackoverflow.com/a/41291137/2532070
+			https://gist.github.com/edelvalle/01886b6f79ba0c2dce66
+		#optional args(вероятно могут стоять в ∀ порядке)
+			[-h|--help] [--version] [-v {0,1,2,3}] [--settings <setting>] [--pythonpath <python_path>] [--traceback] [--no-color] [--force-color]
 		
 		
 		
 		notes
-		#
+		#show ∀ annotation ~ TODO | FIXME | BUG | HACK | WARNING | NOTE | XXX ⊂ .py & .html
+		#optional args(вероятно могут стоять в ∀ порядке)
+			[-h|--help]
+			[--tag <tag>]
+			#search for specific tags only
+			[--version] [-v {0,1,2,3}] [--settings <setting>] [--pythonpath <python_path>] [--traceback] [--no-color] [--force-color]
 		
 		
 		
 		passwd
-		#
-		
-		
-		
+		#clone of the UNIX `passwd` for django.contrib.auth
+		#Δ пароля
+		#deprecated!
+			py manage.py passwd
+			>>
+				`django_extensions.management.commands.passwd` is deprecated. You shiuld use built-in `changepassword` django command instead
+				#но все-же пашет и предлагает сменить pass
+		#optional args(вероятно могут стоять в ∀ порядке)
+			[-h|--help] [--version] [-v {0,1,2,3}] [--settings <setting>] [--pythonpath <python_path>] [--traceback]
+			[--no-color] [--force-color]
+		#positional arg(вероятно должен стоять в конце)
+			[username]
+
+
+
 		pipchecker
-		#
+		#scan pip requirement files for out-of-date packages
+		#⊅ args что-то вылетел в except
+		#optional args(вероятно могут стоять в ∀ порядке)
+			[-h|--help]
+			[-t|--github-api-token <token>]
+			[-r|--requirement <filename>]
+			#check ∀ the packages ⊂ requirements file
+			#мб исп неск раз
+			#а if без него?
+			[-n|--never]
+			#also show when newer version then available is installed
+			[--version] [-v {0,1,2,3}] [--settings <setting>] [--pythonpath <python_path>] [--traceback] [--no-color] [--force-color]
 		
 		
 		
 		print_settings
-		#
-		
+		#print active dj settings
+		#название говорит само за себя
+		#optional args(вероятно могут стоять в ∀ порядке)
+			[-h|--help]
+			[--format <format>]
+			#output format
+			[--indent <indent>]
+			#indent level for JSON & YAML
+			[--version] [-v {0,1,2,3}] [--settings <setting>] [--pythonpath <python_path>] [--traceback] [--no-color] [--force-color]
+		#positional arg(вероятно должен стоять в конце)
+			[<setting> [<setting> ...]]
+			#specifies setting to be printed
 		
 		
 		print_user_for_session
-		#
+		#print the user info for provided session key
+		#very helpful when trying to track down the person who experienced a site crash
+		#optional args(вероятно могут стоять в ∀ порядке)
+			[-h|--help] [--version] [-v {0,1,2,3}] [--settings <setting>] [--pythonpath <python_path>] [--traceback] [--no-color] [--force-color]
+		#positional arg(вероятно должен стоять в конце)
+			<session_id> [<session_id> ...]
+			#user session id
 		
-		
-		
+
+
 		reset_db
-		#
+		#resets the db for this project
+			py manage.py reset_db
+			>>
+				You have requested a db reset.
+				This will IRREVERSIBLY DESTROY
+				∀ data in the db "<abs_path_to_db>"
+				Are you sure you wat to do this? yes|no
+		#сносит ∀ кроме служебнои инфы бд
+		#optional args(вероятно могут стоять в ∀ порядке)
+			[-h|--help]
+			[--noinput]
+			#вроде !⊃ --no-input
+			[--no-utf8]
+			#tells dj to not create a UTF-8 db
+			[-U|--user <user>]
+			#use another user for the db than ⊂ settings.py
+			[-O|--owner <owner>]
+			#use anther owner for creating the db than the user dfined in settings| --user
+			[-P|--password <password>]
+			#use another password for the db than ⊂ settings.py
+			[-D|--dbname <db_name>]
+			#use another db_name than ⊂ settings.py
+			[-R|--router <router>]
+			#use another router-db than ⊂ settings.py
+			[-c|--close-sessions]
+			#close db connections before dropping db
+			#PostgreSQL only
+			[--version] [-v {0,1,2,3}] [--settings <setting>] [--pythonpath <python_path>] [--traceback] [--no-color] [--force-color]
 		
 		
 		
 		reset_schema
-		#
+		#recreates the public schema for this project
+		#optional args(вероятно могут стоять в ∀ порядке)
+			[-h|--help]
+			[--noinput]
+			#вроде !⊃ --no-input
+			[-R|--router <router>]
+			#router-db instead of the one ⊂ settings.py
+			[-S|--schema <schema>]
+			#drop this scheam instead of "public"
+			[--version] [-v {0,1,2,3}] [--settings <setting>] [--pythonpath <python_path>] [--traceback] [--no-color] [--force-color]
 		
 		
 		
 		runjob
-		#
-		
-		
-		
+		#run a single maintenance job
+		#optional args(вероятно могут стоять в ∀ порядке)
+			[-h|--help]
+			[-l|--list]
+			#∀ jobs with thier description
+			[--version] [-v {0,1,2,3}] [--settings <setting>] [--pythonpath <python_path>] [--traceback] [--no-color] [--force-color]
+		#positional arg(вероятно должен стоять в конце)
+			[<app_name>] [<job_name>]
+
+
+
 		runjobs
-		#
+		#runs scheduled maintenance jobs
+		#optional args(вероятно могут стоять в ∀ порядке)
+			[-h|--help]
+			[-l|--list]
+			#∀ jobs with thier description
+			[--version] [-v {0,1,2,3}] [--settings <setting>] [--pythonpath <python_path>] [--traceback] [--no-color] [--force-color]
+		#positional arg(вероятно должен стоять в конце)
+			[<when>]
+			#opts
+				minutely
+				quarter_hourly
+				hourly
+				daily
+				weekly
+				monthly
+				yearly
 		
 		
 		
 		runprofileserver
-		#
-		
+		#starts a lightweight Web server ⊃ profiling
+		#у меня что-то вывалилось в except
+		#optional args(вероятно могут стоять в ∀ порядке)
+			[-h|--help]
+			[--noreload]
+			#no auto-reloader
+			[--nothreading]
+			[--prof-path <prof_path>]
+			#specifies the dir which to save profile information in
+			[--prof-file <prof_file>] = "{path}.{duration:06d}ms.{time}"
+			#set filename format
+			[--nomedia]
+			#don't protile MEDIA_URL
+			[--use-cprofile]
+			#use cProfile if available
+			#disabled per default because of incompatibilities
+			[--kcachegrind]
+			#create kcachegrind compatible lsprof files
+			#requires & auto enables cProfile
+			[--nostatic]
+			#tells dj to not auto serve static files at STATIC_URL
+			[--insecure]
+			#allows serving static files even if DEBUG = False
+			[--version] [-v {0,1,2,3}] [--settings <setting>] [--pythonpath <python_path>] [--traceback] [--no-color] [--force-color]
+		#positional arg(вероятно должен стоять в конце)
+			[addport]
+			#port|addr:port]
 		
 		
 		runscript
-		#
+		#runs a script in dj context
+		#optional args(вероятно могут стоять в ∀ порядке)
+			[-h|--help]
+			[--email-notifications]
+			#send email notification for command
+			#не очень понял откуда берутся email's
+			[--email-exception]
+			#send email notification for command exeptions
+			[--fixtures]
+			#(?)also look in app.fixtures subdir
+			[--noscripts]
+			#don't look in app.scripts subdir
+			[-s|--silent]
+			#don't show errs/tracebacks
+			[--no-traceback]
+			#don't show traceback
+			[--script-args [SCRIPT_ARGS [SCRIPT_ARGS ...]]]
+			#space separated args list to be passed to the script
+			#note that the same args will be passed to ∀ named scripts
+			[--dir-policy {none, each, root}]
+			#policy of selecting scripts execution dir(for ∀ scripts)
+				none
+				#curr dir
+				each
+				#start ∀ scripts in thir dirs
+				root
+				#in BASE_DIR
+			[--chdir <chdir>]
+			#if ∃ --dir-policy -> determines execution dir
+			[--version] [-v {0,1,2,3}] [--settings <setting>] [--pythonpath <python_path>] [--traceback] [--no-color] [--force-color]
+		#positional arg(вероятно должен стоять в конце)
+			<path_to_script> [<path_to_script> ...]
 		
 		
 		
 		runserver_plus
-		#
-		
-		
+		#starts a lightweight web server for dev
+		#Werkzeug required
+			pip install Werkzeug
+		#optional args(вероятно могут стоять в ∀ порядке)
+			[-h|--help]
+			[-6|--ipv6]
+			[--noreload]
+			#not use auto-reloader
+			[--browser]
+			#open a browser
+			[--nothreading]
+			#что будет if указать с --threaded? -> не вывел ничего не необычного
+			[--threaded]
+			#что будет if указать с --nothreading? -> не вывел ничего не необычного
+			[--output <file>]
+			#file to send a copy ∀ msgs(not flushed immediately)
+			[--print-sql]
+			#(?)print sql queries as they're executed
+			#вывел only запросы что по идее отражено в описании
+			[--print-sql-location]
+			#(SIC!!!)show location in code where SQL query generated from
+			#вернул тонну except, может они ⊃ информацию о источнике, может баг, а может не хватает ∀ модуля
+			[--cert <path_to_certificate_file>]
+			#deprecated alias for --cert-file
+			[--cert-file <path_to_SSL_.crt_certificate_file>]
+			#if not provided -> path from --key-file will be selected
+			#Either --cert-file|--key-file must be provided to use SSL
+			[--key-file <key_SSL_.key_file_path>]
+			#if not provided -> path from --cert-file will be selected
+			#Either --cert-file|--key-file must be provided to use SSL
+			[--extra-file <extra_files>]
+			#(?)auto-reload whenever the given file changes too
+			#мб исп неск раз
+			[--reloader-interval <interval>] = 1
+			#secs
+			#after how many secs auto-reload should scan for updates in pooler-mode
+			[--reloader-type <reloader_type>] = auto
+			#werkzeug reloader type
+				auto
+				watchdog
+				stat
+			[--pdb]
+			#drop into pdb shell at the strt of ∀ view
+			[--ipdb]
+			#drop into ipdb shell at the strt of ∀ view
+			[--pm]
+			#drop into (i)pdb shell if an exception is raised in a view
+			[--startup-messages <startup_msgs>] = reload
+			#when to show startut msgs
+				reload
+				once
+				always
+				never
+			[--keep-meta-shutdown]
+			#keep request.META['werkzeug.server.shutdown'] fx which is auto removed because dj debug pages tries to call the fx and unintentionally shuts down the Werkzeug server
+			[--nopin]
+			#disable the PIN in werkzeug
+			#USE IT WISELY!
+			[--nostatic]
+			#tells dj to not auto serve static files at STATIC_URL
+			[--insecure]
+			#allow serving static files even if DEBUG is False
+			[--version] [-v {0,1,2,3}] [--settings <setting>] [--pythonpath <python_path>] [--traceback] [--no-color] [--force-color]
+		#positional arg(вероятно должен стоять в конце)
+			[<[addr:]port>]
+
+
+Werkzeug
+#пакет
+	pip install Werkzeug
+
+
+Werkzeug:eng(а это вообще eng?):(?)
+whenever:eng:(?)
 		
 		set_default_site
-		#
-		
+		#set params of the default django.contrib.sites Site
+		#optional args(вероятно могут стоять в ∀ порядке)
+			[-h|--help]
+			[--name <site_name>]
+			[--domain <site_domain>]
+			[--system-fqdn]
+			#use systems FQDN as name & domain as name & domain
+			#can be combination with --name
+			[--version] [-v {0,1,2,3}] [--settings <setting>] [--pythonpath <python_path>] [--traceback] [--no-color] [--force-color]
+
+
+FQDN
+#Fully Qualified Domain Name
 		
 		
 		set_fake_emails
-		#
-		
-		
+		#DEBUG only
+		#give ∀ users a new email based on their account data
+		#("%(username)s@example.com") by default
+		#possible params:
+			username
+			first_name
+			last_name
+		#optional args(вероятно могут стоять в ∀ порядке)
+			[-h|--help]
+			[--email <default_email>]
+			#new email format
+			[-a, --no-admin]
+			#don't change admin acc
+			#либо я что-то не понимаю|названия параметров слегка не логично
+				#нихера - ∀ логично -> (минус)a(dmin)
+			[-s]
+			#don't change staff acc's
+			[--include <regexp>]
+			#⊃ user ⊃ matching usernames
+			[--exclude <regexp>]
+			#!⊃ user ⊃ matching usernames
+			[--include-groups <comma_separated_groups>]
+			#⊃ user ⊂ matching groups
+			[--exclude-group <exclude_groups>]
+			#!⊃ user ⊂ matching groups
+			[--version] [-v {0,1,2,3}] [--settings <setting>] [--pythonpath <python_path>] [--traceback] [--no-color] [--force-color]
+
+
 		
 		set_fake_passwords
-		#
+		#DEBUG ONLY
+		#sets ∀ user passwords to a common val
+		#optional args(вероятно могут стоять в ∀ порядке)
+			[-h|--help]
+			[--prompt]
+			#prompts for the new password
+			[--password <default_password>] = "password"
+			#use this as default password
+			[--version] [-v {0,1,2,3}] [--settings <setting>] [--pythonpath <python_path>] [--traceback] [--no-color] [--force-color]
 		
 		
 		
 		shell_plus
-		#
-		
+		#~ manage.py shell, but autoloads the models of ∀ instaled dj apps
+		#optional args(вероятно могут стоять в ∀ порядке)
+			[-h|--help]
+			[--plain]
+			#use plain python
+			[--idle]
+			#use idle
+			[--bpython]
+			#use bpython
+			[--ptpython]
+			#use ptpython
+			[--ptipython]
+			#use ptipython
+			[--ipython]
+			#use ipython|jupyter
+			#в чем отличие от ipython notebook?
+			[--notebook]
+			#use ipython notebook
+			#∃ отличие от --ipython?
+			[--kernel]
+			#start IPython kernel
+			[--connection-file <connection_file>]
+			#specifies the connection file to use if uring the --kernel opt
+			[--no-startup]
+			#if using plain Python -> ignore PYTHONSTARTUP env v & ~/.pythonrc.py
+			[--use-pythonrc]
+			#(?)=--no-startup
+			[--print-sql]
+			#print SQL queries as they're exe
+			#что-то не сработало
+			[--print-sql-location]
+			#show location in code wher SQL query generated from
+			#что-то не сработало
+			[--dont-load DONT_LOAD]
+			#ignore autoloading of some apps/models
+			#мб исп неск раз
+			[--quiet-load]
+			#dont display loaded models messages
+			[--vi]
+			#load vi key bindings for --ptpython & --ptipython
+			[--no-browser]
+			#don't open notebook in browser after startup
+			[-c|--command <command>]
+			#instead of opening an interactive shell, run a command & exit
+			
+			[--version] [-v {0,1,2,3}] [--settings <setting>] [--pythonpath <python_path>] [--traceback] [--no-color] [--force-color]
 		
 		
 		show_templatetags
-		#
-		
-		
-		
+		#deprecated in favour of "show_template_tags"
+		#displays template tags & filters availabel in the current project
+		#optional args(вероятно могут стоять в ∀ порядке)
+			[-h|--help] [--version] [-v {0,1,2,3}] [--settings <setting>] [--pythonpath <python_path>] [--traceback] [--no-color] [--force-color]
+
+
+
 		show_urls
-		#
-		
-		
-		
+		#displays ∀ of the url matching routes for the project
+		#optional args(вероятно могут стоять в ∀ порядке)
+			[-h|--help]
+			[-u|--unsorted]
+			#show urls unsorted but same order as found in url patterns
+			[-l|--language <language>]
+			#(?)only show this language code
+			#(?)useful for i18n_patterns
+			#видимо что-то с unicode urls
+			[-d|--decorator <decorator>]
+			#(?)show the presence of given decorator on views
+			[-f|--format <format_style>]
+			#output style
+			#choices:
+				dict_keys([
+					'dense',
+					'table',
+					'aligned',
+					'verbose',
+					'json',
+					'pretty-json'
+				])
+			[--urlconf <urlconf>]
+			#set the settings URL conf v to use
+			[--version] [-v {0,1,2,3}] [--settings <setting>] [--pythonpath <python_path>] [--traceback] [--no-color] [--force-color]
+
+
+
+presence:eng:?
+
+
+
 		sqlcreate
-		#
+		#(?)generates the SQL to create your db for you, as specified in settings.py
+			py manage.py sqlcreate >> -- manage.py syncdb will automatically create a sqlite3 db file
+				py manage.py syncdb >> Unknown command: 'syncdb'. Did you mean syncdata?
+		#the envisioned use case is something like this
+			./manage.py sqlcreate [--router=<routername>] | mysql -u <db_administrator> -p ./manage.py sqlcreate [--router=<routername>] | psql -U <db_administrator> -W
+		#optional args(вероятно могут стоять в ∀ порядке)
+			[-h|--help]
+			[-R|--router <router>]
+			#router-db than ⊂ settings.py
+			[-D|--drop]
+			#includes commands to drop ∀ ∃ user & db
+			[--version] [-v {0,1,2,3}] [--settings <setting>] [--pythonpath <python_path>] [--traceback] [--no-color] [--force-color]
 		
 		
 		
 		sqldiff
-		#
+		#prints the (approximated) diff befween models & fields in the db for the given apps
+		#(?)indicates how columns ⊂ db are different from the sql that would be generated by dj
+		#(?)is NOT a db migration tool (Th[ugh it can certainly help])
+		#(?) purpose is to show the curr diff as a way to check/debug ur models compared to the real db tables/columns
+		#примеры
+			py manage.py sqldiff app
+				BEGIN;
+				-- Application: <app>
+				-- Model: <model>
+				-- Table missing: <app>_<model>
+				COMMIT;
+			py manage.py sqldiff otherapp
+				--no differences
+		#optional args(вероятно могут стоять в ∀ порядке)
+			[-h|--help]
+			[-a|--all-applications]
+			#auto include ∀ app ⊂ INSTALLED_APPS
+			[-e|--not-only-existing]
+			#check ∀ tables that ∃ in db, not only tables that should ∃ based on models
+			[-d|--dense-output]
+			#(?)output in dense format
+			#normally output is spreaded over multiple lines
+			[-t|--output_text]
+			#outputs the diffs as descriptive text instead of SQL
+			[--include-proxy-models]
+			#(?) include proxy models in the graph
+			[--include-defaults]
+			#include default vals in SQL output
+			#beta feature(2.2.13)
+			[--version] [-v {0,1,2,3}] [--settings <setting>] [--pythonpath <python_path>] [--traceback] [--no-color] [--force-color]
+		#positional arg(вероятно должен стоять в конце)
+			<app_label0> [<app_label1> ...]
+
+
 		
-		
-		
+dense:eng:?
+
+
+
 		sqldsn
-		#
-		
-		
+		#prints DSN on stdout, as specified in settings.py
+			./manage.py sqldsn [--router=<routername>] [--style=pgpass]
+		#exaples
+			py manage.py sqldsn
+			>>
+				DSN for router 'default' with engine 'sqlite3':
+					<path_to_db_file>
+		#optional args(вероятно могут стоять в ∀ порядке)
+			[-h|--help]
+			[-R|--router <router>]
+			#specified router
+			[-s|--style <style>]
+			#DSN format style
+				keyvalue
+				uri
+				pgpass
+				all
+			[-a|--all]
+			#show DSN for ∀ db routes
+			[-q|--quiet]
+			#only show DSN
+			[--version] [-v {0,1,2,3}] [--settings <setting>] [--pythonpath <python_path>] [--traceback] [--no-color] [--force-color]
+
+
+DSN
+#
 		
 		sync_s3
-		#
+		#(?)syncs the complete MEDIA_ROOT structure & files to S3 into the given bucket name
+			py manage.py sync_s3
+			>>
+				CommandError: Please instll the 'boto' Python library
+		#optional args(вероятно могут стоять в ∀ порядке)
+			[-h|--help]
+			[-p|--prefix <prefix>]
+			#prefix to pretend to the path on S3
+			[-d|--dir <dir>]
+			#custom static root dir to use
+			[--s3host <s3host>]
+			#enables connecting to other providers/regions
+			[--acl <acl>]
+            #enables to override default acl(public-read)
+			[--gzip]
+            #enables gzipping CSS & JS files
+			[--renamegzip]
+            #enables renaiming of gzipped assets to have '.gz' appended to the filename
+			[--expires]
+            #enables setting a far future expires header
+			[--force]
+            #skip the file mtime check to force upload of ∀ files
+			[--filter-list <filter_list>]
+            #?override default dir & file exclusion filters
+			#comma separated lst
+			[--invalidate]
+			#invalidates the associated obj in CloudFront
+			[--media-only]
+			#only MEDIA_ROOT files will be uploaded to S3
+			[--static-only]
+			#only STATIC_ROOT files will be uploaded to S3
+			[--version] [-v {0,1,2,3}] [--settings <setting>] [--pythonpath <python_path>] [--traceback] [--no-color] [--force-color]
 		
-		
-		
+boto
+#lib
+#требуется py manage.py sync_s3 ⊂ django_extensions
+
+
+
+ACL
+#?что-то с сетями?
+
+
+pretend:eng:предваряет?
+exclusion:eng:?
+
+
 		syncdata
-		#
-		
-		
+		#makes the curr db have the same data as the fixture(s)(!>/!<)
+		#у меня ничего не вывело
+		#optional args(вероятно могут стоять в ∀ порядке)
+			[-h|--help]
+			[--skip-remove]
+			#avoid remove ∀ obj from db
+			[--database <db_name>]
+			[--version] [-v {0,1,2,3}] [--settings <setting>] [--pythonpath <python_path>] [--traceback] [--no-color] [--force-color]
+		#positional arg(вероятно должен стоять в конце)
+			[<fixture_labels0> [, <fixture_label1>]]
+			#specify the fixture label
+			
+			
 		
 		unreferenced_files
-		#
+		#print a lst of ∀ files ⊂ MEDIA_ROOT that are not referencds in the db
+		#optional args(вероятно могут стоять в ∀ порядке)
+			[-h|--help] [--version] [-v {0,1,2,3}] [--settings <setting>] [--pythonpath <python_path>] [--traceback] [--no-color] [--force-color]
 		
 		
 		
 		update_permissions
-		#
+		#reloads perm's for specified app|∀ apps if no args are specified
+		#требует ∃ бд, у меня ничего не вывело
+		#optional args(вероятно могут стоять в ∀ порядке)
+			[-h|--help]
+			[--apps <app0> [, <app1> ...]]
+			[--create-only]
+			#only create missing perm's
+			[--version] [-v {0,1,2,3}] [--settings <setting>] [--pythonpath <python_path>] [--traceback] [--no-color] [--force-color]
 		
 		
 		
 		validate_templates
-		#
+		#validate templates on syntax & compile err's
+		#examples
+			py manage.py validate_templates >> 0 errors found
+		#optional args(вероятно могут стоять в ∀ порядке)
+			[-h|--help]
+			[--no-apps]
+			#don't auto include apps
+			[-b|--break]
+			#break on first err
+			[-i|--include <paths_to_template_dirs>]
+			#append these paths to TEMPLATE DIRS
+			[--ignore-app <ignore_apps>]
+			[--version] [-v {0,1,2,3}] [--settings <setting>] [--pythonpath <python_path>] [--traceback] [--no-color] [--force-color]
 		
 		
 		
 	[sessions]
 		clearsessions
-		#
+		#can be run as a cronjob|directly to clead out expired sessions
+		#у меня ничего не вывело
+		#only with the db backend at the moment
+		#optional args(вероятно могут стоять в ∀ порядке)
+			[-h|--help] [--version] [-v {0,1,2,3}] [--settings <setting>] [--pythonpath <python_path>] [--traceback] [--no-color] [--force-color]
 		
 		
 		
 		
 	[staticfiles]
 		collectstatic
-		#
+		#collect static in a single location
+			py manage.py collectstatic
+			>>
+				<num> static files copied to '<...>\static'
+		#optional args(вероятно могут стоять в ∀ порядке)
+			[-h|--help] [--noinput|--no-input]
+			[--no-post-process]
+			#don't post process collected files
+			[-i <glob_pattern>]
+			#ignore matching files|dirs
+			#can use multiple times
+			[-n|--dry-run]
+			#do everything except modify fs
+			[-c|--clear]
+			#?clear ∃ files usind the storage before trying to copy|link the original file
+			[-l]
+			#create a symbolic link to each file instead of copying
+			[--no-defalt-ignore] = ('CVS', '.*' and '*~')
+			#don't ignore the common private glob-style patterns
+			 [--version] [-v {0,1,2,3}] [--settings <setting>] [--pythonpath <python_path>] [--traceback] [--no-color] [--force-color]
+		
 		
 		
 		findstatic
-		#
+		#finds the absolute path for the given static
+		#optional args(вероятно могут стоять в ∀ порядке)
+			[-h|--help]
+			[--first]
+			#only return the first match for each static
+			[--version] [-v {0,1,2,3}] [--settings <setting>] [--pythonpath <python_path>] [--traceback] [--no-color] [--force-color]
+		#positional arg(вероятно должен стоять в конце)
+			<staticfile0> [<staticfile1> ...]
+		
 		
 		
 		runserver
-		#запускает отладочный(только?) сервер
-			[[<adress>][:][<port>]] = 127.0.0.1:8000(TCP)
-			[--noreload]
-			#отключение автоперезапуска при Δ кода
+		#запускает отладочный сервер & also serves static files
+		#optional args(вероятно могут стоять в ∀ порядке)
+			[-h|--help]
+			[--ipv6|-6]
+			#использовать IPv6
+			#адрес по умолч	::1
 			[--nothreading]
 			#force one thread
 			#по умолчанию режим многопоточный
-			[--ipv6] [-6]
-			#использовать IPv6
-			#адрес по умолч	::1
+			[--noreload]
+			#отключение автоперезапуска при Δ кода(don't use auto-reloader)
+			[--nostatic]
+			#dont auto serve static ad STATIC_URL
+			[--insecure]
+			#allows serving static even if DEBUG=False
+			[--version] [-v {0,1,2,3}] [--settings <setting>] [--pythonpath <python_path>] [--traceback] [--no-color] [--force-color]
+		#positional arg(вероятно должен стоять в конце)
+			[[<adress>][:][<port>]] = 127.0.0.1:8000(TCP)
 		#examples
 			python manage.py runserver 1.2.3.4
 			python manage.py runserver 4000
@@ -1434,7 +2206,7 @@ manage.py startapp bboard
 
 
 			admin.py
-			#модуль административных настроек и классов редакторов(?)
+			#модуль административных настроек и классов редакторов(?)(возм admin.site.registers() создает что-то ~ класса позволяющих редактировать бд?)
 
 
 			apps.py
@@ -3215,7 +3987,21 @@ manage.py makemigrations bboard
 	сменить defaut браузер на тот-же firefox(52) в PyCharm
 	py manage.py shell_plus --notebook
 #при Δ проекта(например моделеи) требуется перезапуск kernel
-
+#ps вывод при запуске idle
+# Shell Plus Model Imports
+	from app.models import FieldsTest
+	from django.contrib.admin.models import LogEntry
+	from django.contrib.auth.models import Group, Permission, User
+	from django.contrib.contenttypes.models import ContentType
+	from django.contrib.sessions.models import Session
+	# Shell Plus Django Imports
+	from django.core.cache import cache
+	from django.conf import settings
+	from django.contrib.auth import get_user_model
+	from django.db import transaction
+	from django.db.models import Avg, Case, Count, F, Max, Min, Prefetch, Q, Sum, When, Exists, OuterRef, Subquery
+	from django.utils import timezone
+	from django.urls import reverse
 
 
 РАБОТА С ДАННЫМИ
