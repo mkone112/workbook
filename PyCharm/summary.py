@@ -3,3 +3,4 @@ ctrl-sh-a
 ctrl-alt-r
 #tools-> run manage.py task
 можно просматривать фаилы бд просто открыв их в проекте
+при переключении acejump на qwerty -> restart pycharm
