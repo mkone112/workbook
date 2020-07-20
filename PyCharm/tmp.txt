@@ -1,0 +1,8 @@
+Disabled
+Editor -> General -> Smart Keys
+	Reformat block on typing '}' ×
+	Smart indent ×
+	Reformat on paste:none
+Editor -> Code Style
+	Formatter Control
+		Do not format, optimize imports, arrange code:
