@@ -2379,9 +2379,379 @@ manage.py startapp bboard
 
 
 		КОНТРОЛЛЕР-КЛАСС
-		#позволяют выполнить типовые задачи(вроде вывода списка каких-либо позиций) минимумом кода
+		#позволяют выполнить типовые задачи(вроде вывода списка каких-либо позиций) минимумом кода(следуя ⊂ им соглашениям)
         #в path() ⊂ urls.urlpatterns в случае контроллера-класса передается ссылка на результат возвращаемый .as_view() ⊃ контроллеру класса вместо самого контроллера-класса
+        #более высокоуровневый чем контроллер-fx -> сам exe ряд типичных действий
+            
+            .as_view(<параметры_контроллера_класса>)
+            #поддержевается ∀ контроллерами-классами
+            #examples
+                ...
+                path('add/', CreateView.as_view())
+                ...
+                #указание модели(model) & пути к шаблону(template_name
+                path('add/', CreateView.as_view(model=Bb, template_name='bboard/create.html'))
+            
+            
+            БАЗОВЫЕ КОНТРОЛЛЕРЫ-КЛАССЫ
+            #самые простые & низкоуровневые
+                
+                django.views.generic.base
+                #⊃ ∀ базовые контроллеры-классы
+                
+                    .View
+                    #диспетчеризация по HTTP-методу
+                    #max простой
+                    #определяет HTTP-метод посредством которого был exe запрос & exe код соотв этому методу
+                    #attrs
+                        
+                        .http_method_names=['get', 'post', 'put', 'patch', 'delete', 'head', 'options', 'trace']
+                        #⊃ список имен допустимых методов
+                        #by def ⊃ ∀ методы поддерживаемые HTTP
+                        
+                        .request
+                        #⊃ запрос
+                        #экз Request
+                        
+                        
+                        .kwargs
+                        #dict ⊃ полученные из uri параметры
+                        
+                        .as_view()
+                        #см .as_view()
+                        
+                        
+                        .dispatch(<запрос> [, <val_url_parameters>])
+                        #должен(напр при реализации пользовательских классов) exe обработку полученного запроса & val url-параметров извлеченных из uri
+                            <запрос>
+                            #экземпляр HttpRequest
+                            
+                            <val_url_parameters>
+                            #передаются через именованные параметры метода ~ контроллерам-fx
+                        #должен(напр при реализации пользовательских классов) возвращать ответ представленный экз HttpResponse | его подклассом
+                        #в изначальнои реализации
+                            извлекает обозначение HTTP-метода
+                            вызывает метод класса с именем = извлеченному обозначению
+                            передает этому методу <запрос> & <val_url_parameters>
+                            -> результат возвращенный методом
+                            #if запрос получен с исп GET -> вызывает .get(), if с исп POST -> вызывает .post()
+                            #if !∃ метода класса одноименного с HTTP-методом с исп которого был получен запрос(кроме HEAD) -> ничего не делает
+                                #при отсутствии .head() вызывается .get()
+                        
+                        
+                        .http_method_not_allowed(<request> [,<val_url_parameters>])
+                        #вызывается if запрос был exe с исп неподдерживаемого HTTP-метода
+                        #в изначальной реализации
+                            -> ответ типа HttpResponseNotAllowed ⊃ список допустимых методов
+                        
+                        
+                        .options(<request> [, <val_url_parameters>])
+                        #должен(напр при реализации пользовательских классов) обрабатывать запрос с исп HTTP-метода OPTIONS
+                        #в изначальнои реализации
+                            -> ответ ⊃ заголовок Allow ⊃ ∀ поддерживаемые HTTP-методы
+                    #краине редко исп как есть - обычно исп производные от него классы(как примесь?)
+                    
+                    
+                    .ContextMixin()
+                    #примесь
+                    #создание контекста шаблона
+                    #добавляет контроллеру-классу средства формирования контекста шаблона(attrs):
+                        .extra_context:<dict>
+                        #задает содержимое контекста шаблона
+                        #создается при первом обращении к контроллеру классу, и в дальнейшем остается const(⊃ собственные копии, а не ссылки на сами элты
+                            #if один из элтов - набор записеи -> он также !Δ даже if в исходный добавляются записи
+                            -> добавлять в контекст шаблона элты ⊃ наборы записеи следует только через .get_context_data()
+                        
+                        .get_context_data([<элты_контекста_шаблона>])
+                        #должен(напр при реализации пользовательских классов) создавать & возвращать контекст данных
+                        #в изначальнои реализации
+                            создает пустои контекст
+                            добавляет в него
+                                элт view ⊃ ссылку на текущии экз контроллера класса(?self)
+                                элты контекста шаблона полученные через именованные параметры
+                                элты .extra_context
+                            #-> при исп вместо .extra_context для добавления контекста, будет получать актуальный набор данных, даже if контекст ⊃ набор с изменившимися с последнего вызова записями
+                    
+                    
+                    .TemplateResponseMixin() -> <TemplateResponse>
+                    #примесь
+                    #добавляет наследнику средства рендеринга шаблонов
+                    #attrs
+                        .template_name:<str>
+                        #template path
+                        
+                        
+                        .get_template_names()
+                        #должен(напр при реализации пользовательских классов) -> список путеи к шаблонам заданных в виде строк
+                        #в изначальнои реализации -> список ⊃ один элт ⊂ .template_name
+                        
+                        
+                        .content_type
+                        #задает MIME-type ответа и его кодировку
+                            .content_type=None
+                            #исп default MIME-type & encoding (видимо заданные в settings)
+                        
+                        
+                        .render_to_response(<template_context>) -> <TemplateResponse>
+                        #рендерит шаблон
+                        #нужно вызывать явно
+                    
+                    
+                    
+                    .TemplateView
+                    #наследник View, ContextMixin & TemplateResponseMixin
+                    #при получинии GET-запроса -> рендерит шаблон исп контекст ⊃ ∀ url-параметры ⊂ маршруту и отправляет ответ
+                    #может исп в практическои работе
+                        #вывод главной страницы ⊃ объявления
+                        from django.views.generic.base import TemplateView
+                        from .models import Bb, Rubric
+                        ...
+                        class BbIndexView(TemplateView):
+                            template_name = 'bboard/index.html'
+                            ...
+                            #переопределяем формирование контекста
+                            def get_context_data(self, *args, **kwargs):
+                                context = super().get_context_data(*args, **kwargs):
+                                context['bbs'] = Bb.objects.all()
+                                context['rubrics'] = Rubric.objects.all()
+                                return context
+            КЛАССЫ ВЫВОДЯЩИЕ СВЕДЕНИЯ О ВЫБРАННОЙ ЗАПИСИ
+            #обобщенные классы
+            #exe типовые задачи и мб исп в разных ситуациях
+            #пример просмотр сведений о товаре
+            
+                django.views.generic.detail
+                #⊃ более высокоуровневые классы чем базовые контроллеры
+                
+                    SingleObjectMixin
+                    #примесь
+                    #наследник ContextMixin
+                    #получает val ключа|слага модели из url-params & извлекает по нему запись модели & помещает ее в контекст шаблона
+                    #attrs
+                        .model
+                        #задает модель для извлечения записи
+                        
+                        .queryset
+                        #указывает диспетчер записеи|<QuerySet>(набор записей) в которых ищутся записи
+                        
+                        .get_queryset()
+                        #должен(напр при реализации пользовательских классов) -> <QuerySet> в котором ищутся записи
+                        #в исходной реализации -> val attr queryset if оно не задано, | набор записей извлеченных из модели извлеченной из attr model
+                        
+                        .pk_url_kwarg="pk"
+                        #задает имя url-параметра, через который контроллер получит val ключа записи
+                        
+                        .slug_field="slug"
+                        #задает имя поля модели ⊃ слаг
+                        
+                        .get_slug_field()
+                        #должен(напр при реализации пользовательских классов) -> str ⊃ имя поля модели ⊃ слаг
+                        #в исходнои реализации -> val ⊂ slug_field
+                        
+                        .slug_url_kwarg="slug"
+                        #задает имя url-param через который контроллер-класс получит val слага
+                        
+                        .query_pk_ang_slug=False
+                        #
+                            query_pk_ang_slug=False
+                            #поиск записи only by key
+                            query_pk_ang_slug=False
+                            #поиск записи по ключу и слагу
+                        
+                        
+                        .context_object_name
+                        #задает имя v контекста шаблона для сохранения наиденнои записи
+                        
+                        
+                        .get_context_object_name(<record>)
+                        #должен(напр при реализации пользовательских классов) -> имя v контекста шаблона для сохранения наиденнои записи в виде str
+                        #в исходнои реализации -> имя ⊂ context_object_name else if context_object_name=None -> lowercase имя модели
+                            #пример
+                            #if model=Rubric & context_object_name=None -> v контекста получит имя rubric
+                            
+                        
+                        .get_object([queryset=None]) -> <наиденная_запись>
+                        #ищет записи по указанным критериям
+                            queryset
+                            #набор записей где будет exe поиск
+                                queryset=None
+                                #поиск в наборе возвращаемом .get_queryset()
+                        #val ключа & слага можно получить из dict ⊃ ∀ полученные контроллером url-params и сохраненного в атрибуте экземпляра kwargs, имена нужных параметров можно получить из attrs pk_url_kwarg & slug_url_kwarg
+                        #if запись не наидена -> exept Http404 ⊂ django.http
+                        
+                        
+                        .get_context_data([<дополнительные_элты_контекста_шаблона>])
+                        #переопределенный метод, создающий и возвращающии контекст данных
+                        #в исходнои реализации требует чтобы в экз текущего контроллера-класса ∃ attr object ⊃ наиденную запись|None (if она не была наидена|контроллер используется для создания новой записи). В контексте шаблона создаются v object и v с именем возвращаемым .get_context_object_name(), которые ⊃ наиденную запись
+                    
+                    
+                    SingleObjectTemplateResponseMixin
+                    #примесь
+                    #рендерит шаблон на основе наиденнои в модели записи
+                    #наследник TemplateResponseMixin
+                    #требует ∃ в контроллере-классе attr object ⊃ наиденная запись(в виде model obj)|None(if запись не была наидена|контроллер исп для создания новой записи)
+                    #attrs
+                        .template_name_field=None
+                        #⊃ имя поля модели ⊃ путь к шаблону
+                            template_name_field=None
+                            #путь к шаблону не будет извлекаться из записи
+                        
+                        .template_name_suffix="_detail"
+                        #⊃ str ⊃ суффикс добавляемыи к автоматом сгенерированному пути к шаблону
+                        
+                        .get_template_names()
+                        #переопределенный метод
+                        #-> список путеи к шаблонам в виде str
+                    #в исходнои реализации -> список:
+                            пути извлеченного из унаследованного attr template_name(if указан)
+                        or
+                            пути извлеченного из поля модели с именем ⊂ attr template_name_field
+                                #if ∀ нужные данные указаны
+                                   имя поля
+                                   запись модели
+                                   путь в поле этои записи
+                            пути вида
+                                <app_alias>\<model_name><suffix>.html
+                                #пример
+                                    #для модели bboard будет сформирован путь bboard\bb_detail.html
+                    
+                    
+                    DetailView
+                    #примесь
+                        автоматом ищет запись по val ключа/слага
+                        заносит наиденную запись в attr object
+                        #чтобы успешно работали наследуемые им примеси
+                        выводит страницу ⊃ сведения о записи
+                    #наследует
+                        View
+                        TemplateResponseMixin
+                        SingleObjectMixin
+                        SingleObjectTemplateResponseMixin
+                    #examples
+                        #вывод сведении о выбранном посетителем объявлении
+                        .../views.py
+                            #путь к шаблону не указан -> класс ищет шаблон со сформированны by def путем bboard\bb_detail.html
+                            from django.views.generic.detail import DetailView
+                            from .models import Bb, Rubric
+                            ...
+                            class BbDetailView(DetailView):
+                                model = Bb
+                                
+                                def get_context_data(self, *args, **kwargs):
+                                    context = super().get_context_data(*args, **kwargs)
+                                    context['rubrics'] = Rubric.object.all()
+                                    return context
+                        .../urls.py
+                            #следуя соглашениям указав для url-param ключа записи имя pk исп классом DetailView by def
+                            from .views import BbDetailView
+                            urlpatterns = [
+                                ...
+                                path('detail/<int:pk>/', BbDetailView.as_view(), name='detail'),
+                                ...
+                            ]
+                        bboard/bb_detail.html
+                            #by def класс BbDetailView создает в контексте шаблона v bb ⊃ наиденную запись(этот fx унаследован от DetailView) -> исп эту v
+                            {% extends "layout/basic.html" %}
+                            
+                            {% block title %}{{ bb.title }}{% endblock %}
+                            
+                            {% block content %}
+                            <p>Рубрика: {{ bb.rubric.name }}</p>
+                            <h2>{{ bb.title }}</h2>
+                            <p>{{ bb.content }}</p>
+                            <p>Цена: {{ bb.price }}</p>
+                            {% endblock %}
+                        #добавим код создающии ссылки на страницы выбранных объяв
+                        bboard/index.html
+                            ...
+                            <h2><a href="{% url 'detail' pk=bb.pk %}">{{ bb.title }}</a></h2>
+                            ...
+                        bboard/by_rubric.html
+                            ...
+                            <h2><a href="{% url 'detail' pk=bb.pk %}">{{ bb.title }}</a></h2>
+                            ...
+                
+                
+            КЛАССЫ ВЫВОДЯЩИЕ НАБОРЫ ЗАПИСЕИ
+                
+                django.views.generic.list
+                
+                    MultipleObjectMixin
+                    #извлечение набора записей из модели и помещает результат в контекст шаблона
+                    #номер части которую нужно извлечь - int 1+|"last" else -> exept Http404 ⊂ django.http
+                        "last"
+                        #обозначает последнюю часть
+                    #может исп
+                        фильтрацию
+                        сортировку
+                        разбиение на части посредством пагинатора
+                    #наследует ContextMixin
+                    #attrs
+                        .model
+                        #задает модель для извлечения записей
+                        
+                        .queryset
+                        #указывает диспетчер записей|исходныи <QuerySet> из которого будут извлечены записи
+                        
+                        .get_queryset()
+                        #должен возвращать <QuerySet> в котором ищутся записи
+                        #в исходной реализации -> val attr queryset if оно не задано, | набор записей извлеченных из модели извлеченной из attr model
+                        
+                        
+                        .ordering
+                        #задает параметры сортировки записеи
+                        #val
+                            str ⊃ field_name
+                            #сортирока только по этому полю (by def по возрастанию)
+                            #для сортировки по убыванию нужно предварять имя поля "-"
+                            seq ⊃ str имена полеи
+                            #сортировка по нескольким полям
+                        #if !∃ exe сортировка заданная в параметрах модели
+                            #else if модель ⊅ указания сортировки -> сортировка !exe
+                        
+                        
+                        .get_ordering()
+                        #должен -> параметры сортировки записеи
+                        #в исходной реализации -> val attr .ordering
+                        
+                        
+                        .paginate_by
+                        #задает int кол-во записеи в однои части пагинатора
+                        #if !∃|=None => набор записеи не разбивается на части
+                        
+                        
+                        .get_paginate_by(<QuerySet>)
+                        #должен -> кол-во записеи полученного набора, помещающихся в однои части пагинатора
+                        #в исходной реализации -> val attr paginate_by
+                        
+                        
+                        
+                        .page_kwarg:<str>="page"
+                        #указывает имя URL|GET-параметра через который будет передаваться номер выводимои части пагинатора
+                        
+                        
+                        
+                        .paginate_orphans=0
+                        #задает int min число записеи которые могут ⊂ последнеи части пагинатора
+                        #if последняя часть пагинатора ⊃ меньше записеи -> оставшиеся записи будут выведены в предыдущеи части
+                            .paginate_orphans=0
+                            #последняя часть может ⊃ ∀ число записеи
+                    
 
+        ЗАДАНИЕ VAL ПАРАМЕТРОВ КОНТРОЛЛЕРОВ КЛАССОВ
+            .as_view()
+            #см as_view()
+            #менее мощен чем создание производного класса -> исп реже
+            
+            
+            создание производного класса с указанием val в соотв attr класса
+            #позволяет более радикально Δ поведение переопределением методов -> исп чаще .as_view()
+                class BbCreateView(CreateView):
+                    template_name = 'bboard/create.html'
+                    model = Bb
+                ...
+                path('add/', BbCreateView.as_view()),
+            
 
 
         ФОРМИРОВАНИЕ ОТВЕТА КОНТРОЛЛЕРОМ
@@ -2390,10 +2760,25 @@ manage.py startapp bboard
             
             НИЗКОУРОВНЕВЫЕ СРЕДСТВА ФОРМИРОВАНИЯ ОТВЕТА КОНТРОЛЛЕРОМ
             #см HttpResponse
+            #исп краине редко
             
+            ВЫСОКОУРОВНЕВЫЕ СРЕДСТВА ФОРМИРОВАНИЯ ОТВЕТА КОНТРОЛЛЕРОМ
+                ФОРМИРОВАНИЕ ОТВЕТА НА ОСНОВЕ ШАБЛОНА
+                #исп гораздо чаще низкоуровневых средств формирования ответа
+                #см шаблонизатор
+        
+        ПОЛУЧЕНИЕ СВЕДЕНИЙ О ЗАПРОСЕ
+        #см HttpRequest
 
+ПРИМЕСИ
+#mixin's
+#реализует большую часть функционала контроллеров-классов
+#базовые для контроллеров-классов
+#класс только для расширения fx других классов
+#см контроллеры-классы
 
-
+ПАГИНАТОР
+#может исп для разбиения на части при извлечении набора записеи из модели посредством MultipleObjectMixin
 
 МАРШРУТЫ И МАРШРУТИЗАТОР
 	связываем(объявляем связь) url определенного формата(шаблонного url) с контроллером
@@ -2518,12 +2903,13 @@ django.urls
 	    urlpatterns = [
 	        #вложенный список в виде пути к модулю
 	        path('bboard/', include('bboard.urls')),
-	        #вложенныи список в виде списка маршрутов ⊃ свву urls ⊂ экземпляра AdminSite ⊂ site v ⊂ djanogo.contrib.admin
+	        #вложенныи список в виде списка маршрутов ⊃ свву urls ⊂ экземпляра AdminSite ⊂ site v ⊂ django.contrib.admin
 	        path('admin/', admin.site.urls),
 	    ]
 	
 	
 	.reverse_lazy("<route_name>"[,<val_of_url_param>]) -> готовый url
+	#возм синтаксис ~ .reverse ⊂ django.urls
 	#генерация url путем обратного разрешения
 	#examples
 		from django.urls import reverse_lazy
@@ -2532,14 +2918,47 @@ django.urls
 			...
 			success_url = reverse_lazy('index')
 			...
-    #other examles(см path)
+    #other examples(см path)
+    #в отличие от .reverse() ⊂ django.urls , соотв названию не требует полнои загрузки и обработки списка маршрутов -> можно исп не only in контроллерах
 
 
 
 ОБРАТНОЕ РАЗРЕШЕНИЕ URLS
+#механизм
+#требует именованных маршрутов
 #авто формирование готового uri по имени маршрута & набору параметров
-    reverse('bboard:by_rubric', kwargs={'rubric_id': 2})
-    #формирует uri '/bboard/2/'
+#реализуется .reverse() ⊂ django.urls
+
+django.urls
+    .reverse([<ns>:]<route_name>:<str> [[, args=None]|[, kwargs=None]] [, urlconf=None])
+    #см обратное разрешение urls
+        <route_name>
+        #if ∃ неск app для которых указаны ns исп вид
+            <ns>:<route_name>
+        args:<seq_val_url_params>
+        #if маршрут исп для формирования uri - параметризованныи
+            #исп для указания val URL-параметров для вставки в этот uri
+        #первыи элт <seq_val_url_params> задает val первого url-параметра, второй - второго, etc
+        #при исп с kwargs -> exept
+        kwargs:{'URL_param_name':<val>,...}
+        #~ args
+        #при исп с kwargs -> exept
+        urlconf
+        #путь к модулю ⊃ список маршрутов
+        #if !∃ исп модуль ⊃ список маршрутов уровня проекта указанныи в ROOT_URLCONF
+        #if указан модуль ⊃ список маршрутов уровня app -> указывать ns в <route_name> не нужно
+            url1 = reverse('index', urlconf='bboard.urls')
+            url2 = reverse('bboard:by_rubric', args=(current_rubric.pk,))
+            url3 = reverse('bboard:by_rubric', kwargs={'rubric_id': current_rubric.pk})
+    #главныи недостаток - работает only после загрузки и обработки списка маршрутов -> ее можно исп only in контроллерах
+        #if нужно записать uri не в контроллерах
+            attr контроллера-класса
+            ...
+            #нужно исп reverse_lazy() ⊂ django.urls
+
+    #examples
+        .reverse('bboard:by_rubric', kwargs={'rubric_id': 2})
+        #формирует uri '/bboard/2/'
     
     
     
@@ -2709,7 +3128,7 @@ attr класса ~ св-ва класса|статические св-ва в o
 #м.б. создана для представления ∃ в бд таблицы, для чего требуется указать
 	имя таблицы
 	имена ∀ ⊂ ей полей
-#при создании модели для !∃ таблицы требуется генерация и и применение миграции
+#при создании модели для !∃ таблицы требуется генерация и и примерынение миграции
 #большинство таблиц бд ⊃ ключевое поле(для хранения pk), обычно int и автоинкрементное=> уникальные val в него заносит сама СУБД
 	#что не требует явного объявления в dj -> dj самостоятельно создает такое поле
 		#if создать запись с pk = 2, затем с pk=3, удалить pk=2 и создать новую запись -> pk новой записи будет 4(возможно на больших наборах данных это работает иначе)
@@ -4042,6 +4461,167 @@ URL МОДЕЛИ
 prohibit:eng:запрещать
 ftps
 #походу ftp с шифрованием
+
+
+ВЫВОД СООБЩЕНИЙ ОБ ОШИБКАХ И ОБРАБОТКА ОСОБЫХ СИТУАЦИИ
+#выдача посетителю
+    404
+    ...
+#уведомление браузера
+    страница !Δ с посл вызова и можно исп кеш
+    ...
+    
+    django.http
+        HttpResponseNotFound([<content>][, content_type=None][, status=404][, reason=None])
+        #производныи HttpResponse
+        #мб исп для самостоятельнои обработки нештатных/специфичных ситуации
+            #dj в большинстве случаев справляется сам
+                #by def отправляет клиенту краткое msg о ошибке(мб Δ)
+        #запрашиваемая страница не наидена
+        #examples
+            def detail(request, bb_id):
+                try:
+                    bb = Bb.objects.get(pk=bb_id)
+                except Bb.DoesNotExist:
+                    return HttpResponseNotFound('Такой страницы нет')
+                return HttpResponse(...)
+        #альтернатива бросить Http404
+            def detail(request, bb_id):
+                try:
+                    bb = Bb.objects.get(pk=bb_id)
+                except Bb.DoesNotExist:
+                    raise Http404('Такой страницы нет')
+                return HttpResponse(...)
+        
+        
+        HttpResponseBadRequest([<content>][, content_type=None][, status=400][, reason=None])
+        #клиентскии запрос сформирован некорректно
+        #исп ~ HttpResponseNotFound
+        
+        
+        HttpResponseForbidden([<content>][, content_type=None][, status=403][, reason=None])
+        #доступ к странице запрещенн
+        #обычно if user не залогинился
+        #исп ~ HttpResponseNotFound
+        #альтернатива - бросить PermissionDenied ⊂ django.core.exceptions
+        
+        
+        HttpResponseNotAllowed(<seq_обозначении_разрешенных_методов>[,content_type=None][, status=405][, reason=None])
+        #клиентскии запрос был exe с исп недопустимого метода
+        #возвращается в том числе декораторами устанавливающими набор разрешенных HTTP-методов
+        #examples
+            return HttpResponseNotAllowed(['GET'])
+        
+        
+        HttpResponseGone([<content>][, content_type=None][, status=410][, reason=None])
+        #запрошенная страница больше !∃
+        
+        
+        HttpResponseServerError([<content>][, content_type=None][, status=500][, reason=None])
+        #ошибка в коде сайта
+        
+        
+        
+        HttpResponseNotModified([<content>][,content_type=None][, status=304][, reason=None])
+        #страница !Δ и мб извлечена из кеша
+        
+        
+
+ИСКЛЮЧЕНИЯ
+    django.http
+        Http404
+        #запрашиваемая страница не наидена
+        #см HttpResponseNotFound
+    django.core.exceptions
+        PermissionDenied
+        #альтернатива HttpResponseForbidden
+        
+        MultipleObjectsReturned
+        #бросается if callable расчитан на возврат одного val а условиям удовл неск
+
+
+СПЕЦИАЛЬНЫЕ ОТВЕТЫ
+#if нужно отправить клиенту данные != html/text -> HttpResponse не подоидет
+    #dj ⊃ 3 класса спец ответов ⊂ django.http
+    
+    
+    
+        StreamHttpResponse(<content> [, content_type=None][, status=200][, reason=None])
+        #в отличие от HttpResponse полностью формирующегося в mem перед отправкой
+            <content>
+            #seq ⊃ str | iterator -> bytes's
+            content_type
+            #MIME-type ответа & кодировку
+                content_type=None
+                #ответ получит MIME-type text/html и кодировку ⊂ DEFAULT_CHARSET
+            status
+            #int code response status
+                200
+                #файл успешно отправлен
+            reason
+            #str обозначение статуса
+        #attr
+            <streaming_content>
+            #iterator выдающий фрагменты <content> в <bytes>
+            status:<int>
+            #status code
+            reason_phrase
+            #str status
+            streaming
+            #всегда True(ответ - потоковыи)
+        #examples
+            from django.http import StreamHttpResponse
+            ...
+            def index(request):
+                resp_content = ('Here', 'will', 'be', 'site', 'main', 'page')
+                resp = StreamHttpResponse(resp_content, content_type='text/plain; charset=utf-8')
+                resp['keywords'] = 'Python, Django'
+                return resp
+            #?-> dict
+            
+        #if нужно отправить клиенту данные != html/text | if V слишком большои
+        #потоковыи ответ, формируется & отправляется небольшими частями
+    
+    
+        .FileResponse(<file_obj> [, as_attachment=False][, filename=''][, content_type=None][, status=200][, reason=None])
+        #отправка фаилов
+        #examples
+            #
+            from django.http import FileResponse
+            filepath = r'c:/images/image.png'
+            ...
+                return FileResponse(open(filepath, 'rb'))
+        #производный StreamHttpResponse
+            as_attachment
+                as_attachment=False
+                #отправленный фаил откроется в браузере
+                as_attachment=True
+                #отправленный фаил будет сохранен на диске
+                #if файл ⊅ имени(напр был сформирован в mem и еще не был записан на диск) -> требует ∃ filename
+            filename
+            #указание имени отправляемого фаила
+            #см as_attachment
+        
+        
+        
+        .JsonResponse(<data> [, safe=True][, encoder=DjangoJSONEncoder])
+        #отправка данных в формате JSON
+            <data>:<dict>
+            #кодируемые данные
+            #if требуется отправить данные ⊄ dict -> safe
+            safe
+            #
+                safe=False
+                #if требуется закодировать & отправить не dict
+            encoder
+            #кодировщик в JSON
+        #examples
+            data = {'title': 'Motorcycle', 'content': 'Old', 'price': 10000.0}
+            return JsonResponse(data)
+        #производный StreamHttpResponse
+    
+
+
 
 
 ВЫВОД СВОИХ СООБЩЕНИЙ ОБ ОШИБКАХ
@@ -5702,8 +6282,94 @@ eng:coalesce:объединяться
 					...
 					<link rel="stylesheet" type="text/css" href="{% static 'bboard/style.css' %}">
 					...
-
-
+#формирование ответа на основе шаблона - высокоуровневое средство формирования ответа контроллером
+    #для загрузки нужного шаблона dj предоставляет fx .get_template() & .select_template() ⊃ django.template.loader
+        django.template
+        #⊃ модули -> по идее lib
+        
+        
+            .response
+            #модуль
+            
+                .TemlateResponse(<request>:<HttpRequest>, <template_path> [,context=None][,content_type=None][,status=200])
+                #формирует ответ пользователю
+                #схож по fx с HttpResponse
+                #осн преимущество - при исп Middlewares добавляющих в context доп данные
+                #examples
+                    from django.template.response import TemlateResponse
+                    ...
+                    def index(request):
+                        bbs = Bb.objects.all()
+                        rubrics = Rubric.objects.all()
+                        context = {'bbs': bbs, 'rubrics': rubrics}
+                        return TemlateResponse(request, 'bboard/index.html', context=context)
+                #поддерживает отложенный рендеринг - exe only после прохождения ∀ цепи зарегистрированных в проекте посредников, непосредственно перед отправкой ответа клиенту - благодаря этому посредники вообше могут добавлять данные в context
+                    <request>
+                    #доступен в контроллере-fx через его первый параметр
+                    <context>
+                    #контекст шаблона
+                    content_type=None
+                    #ответ получит MIME-type text/html и кодировку ⊂ DEFAULT_CHARSET
+                    status
+                    #int status code
+                #attr
+                    .template_name
+                    #⊃ template path
+                    #не очень то ~ названию
+                    .context_data
+                    #⊃ контекст шаблона
+                    
+                    
+            Template
+            #класс представляющий шаблон
+            
+                .render([context:<dict>=<контекст_данных>] [, request=<request>])
+                #рендерит шаблон(объедининяя текущий шаблон и контекст данных
+                    context
+                    #dict ⊃ val которые должны быть доступны в шаблоне
+                    request
+                    #if ∃ -> добавляется в context
+                #-> str ⊃ html страницы
+                #examples
+                    from django.http. import HttpResponse
+                    from django.template.loader import get_template
+                    ...
+                    def index(request):
+                        bbs = Bb.objects.all()
+                        rubrics = Rubric.objects.all()
+                        context = {'bbs': bbs, 'rubrics': rubrics}
+                        template = get_template('bboard/index.html')
+                        return HttpResponse(template.render(context=context, request=request))
+                
+                
+                
+            TemplateDoesNotExist
+            #exept
+            
+            TemplateSyntaxError
+            #exept
+            #см django.template.loader
+            
+            
+            
+            django.template.loader
+            
+                .get_template(<template_path>)
+                #загружает шаблон & -> представляющии его экз Template ⊃ django.template
+                #if шаблон не удалось загрузить -> exept TemplateDoesNotExist
+                #if шаблон ⊃ err -> exept TemplateSyntaxError
+                    <template_path>
+                    #пути указываются относительно dir ⊃ templates
+                
+                
+                .select_template(<seq_of_temlates_path>) -> <django.template.Template>
+                #перебирает пути пытаясь загрузить шаблон и -> первыи загруженныи
+                #if шаблон не удалось загрузить -> exept TemplateDoesNotExist
+                #if шаблон ⊃ err -> exept TemplateSyntaxError
+                    <seq_of_temlates_path>
+                    #пути указываются относительно dir ⊃ templates
+                
+                
 ШАБЛОН
 #⊃команды шаблонизатора
 
@@ -5723,6 +6389,10 @@ eng:coalesce:объединяться
 		#obj ⊃ в состав контекста шаблона(формируется программистом)
 		
 		
+		{url}
+		#исп для формирования uri в шаблонах
+		
+		
 	фильтры
 	#преобразуют val перед выводом
 		#фильтр date преобразует val из obj в формат указанный после ":"
@@ -5735,6 +6405,8 @@ eng:coalesce:объединяться
 
 
 РЕНДЕРИНГ ШАБЛОНОВ
+#объединение шаблонов & данных
+
 django.template.loader('path_to_template_from_templates_dir')
 #загрузка шаблона для последующего рендеринга
 #путь указывается относительно <app>/templates
@@ -5748,41 +6420,293 @@ django.template.loader('path_to_template_from_templates_dir')
 #словарь Python {'var':<value>,...}
 
 
+
 РЕНДЕРИНГ
 #объединение шаблонизатором шаблона и данных из контекста
-	django.shortcuts.render(request)
-	#fx-сокращение(shortcuts) 
-	#рендеринг шаблона в одном exp
-	#args - подготовленный контекст шаблона
-	#request - экземпляр HttpRequest
-	#возвращает строку с HTML готовой страницы
-		from django.shortcuts import render
-		from .models import Bb
-		
-		def index(request):
-			bbs = Bb.objects.order_by('-published')
-			return render(request, 'bboard/index.html', {'bbs': bbs})
-			
+#см .render() ⊂ django.shortcuts
+
+
+
+СОКРАЩЕНИЯ
+#сокращение(~fx-сокращения ~ shortcuts) - fx exe неск деиствии
+#предназначена для exe типичных задач
+#сокращает V работы
+#⊂ django.shortcuts
+#high-level средства
+    
+    django.shortcuts
+    
+            .render(request, <template_path>:<str> [,context=None][, content_type=None][, status=200])
+            #exe рендеринг шаблона & отправку результата клиенту в одном exp
+                request
+                #экз HttpRequest(?|Request)
+                context:<dict>
+                #подготовленный контекст шаблона(данных)
+                content_type
+                #MIME-type ответа & кодировку
+                    content_type=None
+                    #ответ получит MIME-type text/html и кодировку ⊂ DEFAULT_CHARSET
+                status
+                #int code response status
+            #возвращает строку с HTML готовой страницы(?|экз HttpResponse)
+            #examples
+                from django.shortcuts import render
+                from .models import Bb
+                ...
+                def index(request):
+                    bbs = Bb.objects.order_by('-published')
+                    return render(request, 'bboard/index.html', {'bbs': bbs})
+            
+            
+            .redirect(<target>, [, permanent=False][, <val_url_params>])
+            #формирует uri для redirect & exe его
+                <target>
+                #
+                    <Model_obj>
+                    #тогда uri будет получен от <Model>.get_absolute_url()
+                    [ns:]<route_name>
+                    #с <val_url_params> -> uri будет сформирован обратным разрешением
+                    <abs_uri>
+                permanent
+                #тип перенавравления
+                <val_url_params>
+                #мб указаны как именованные|позиционные args
+            #-> полностью сформированный экз HttpResponseRedirect(а могло быть иначе?)
+            #examples
+                ...
+                    return redirect('bboard:by_rubric', rubric_id=bbf.cleaned_data['rubric'].pk)
+            
+            
+            .get_object_or_404(<source> [,<условия_поиска>])
+            #-> запись|бросает Http404 ⊃ django.http
+                <source>
+                    <Model_obj>
+                    #видимо -> uri будет получен от <Model>.get_absolute_url()
+                    экз <Manager>
+                    #диспетчер записеи
+                    экз <QuerySet>
+                    #набор записеи
+            #if условиям удовл неск записеи бросает MultipleObjectsReturned ⊂ django.core.exceptions
+            #examples
+                def detail(request, bb_id):
+                    bb = get_object_or_404(Bb, pk=bb_id)
+                    return HttpResponse(...)
+            
+            
+            .get_list_or_404(<source>, <условия_фильтрации>)
+            #-> экз <QuerySet>
+            #if ни одна запись не подходит -> бросает Http404 ⊂ django.http
+                    <Model_obj>
+                    #видимо -> uri будет получен от <Model>.get_absolute_url()
+                    экз <Manager>
+                    #диспетчер записеи
+                    экз <QuerySet>
+                    #набор записеи
+            #examples
+                def by_rubric(request, rubric_id):
+                    bbs = get_list_or_404(Bb, rubric=rubric_id)
+                    ...
+    
+            
+            
+            
+ДОПОЛНИТЕЛЬНЫЕ НАСТРОИКИ КОНТРОЛЛЕРОВ
+#dj ⊃ декораторы для доп настроики контроллеров
+    
+    django.views.decorators
+        
+        ДЕКОРАТОРЫ УСТАНАВЛИВАЮЩИЕ НАБОР ДОПУСТИМЫХ HTTP-МЕТОДОВ
+        #при попытке доступа с исп запрещенного метода -> декоратор -> экз HttpResponseNotAllowed
+            .http
+                
+                .require_http_methods(<SEQ_METHODS_NOTATIONS>)
+                #запрещает для контроллера остальные методы
+                #examples
+                    from Django.views.decorators.http import require_http_methods
+                    ...
+                    @require_http_methods(('GET', 'POST'))
+                    def add(request):
+                        ...
+                request
+                
+                .require_get()
+                #запрещает ∀ методы кроме GET
+                
+                
+                .require_post()
+                #запрещает ∀ методы кроме POST
+                
+                
+                .require_safe()
+                #запрещает ∀ методы кроме GET и HEAD
+                
+                
+    ДЕКОРАТОРЫ EXE СЖАТИЕ
+        
+        .gzip
+            .gzip_page()
+            #сжимает ответ контроллера исп алг GZIP
+            #требует поддержки соотв алг браузером
+
+
+
+UploadFile
+#класс представляющии фаилы переданные в запросе
+
+
+
 django.http
+    .HttpResponsePermanentRedirect(<target_uri>:<str> [, status=301][, reason=None])
+    #производный HttpResponse
+    #исп для exe постоянного перенаправления
+        #создаем экз HttpResponsePermanentRedirect
+        #возвращаем из контроллера-fx
+    
+        ...
+        return HttpResponsePermanentRedirect('http://www.new_address.com/')
+
+    .HttpResponseRedirect(<target_uri>:<str> [, status=302][, reason=None])
+    #производный HttpResponse
+        <target_uri>
+        #полныи|сокращенныи
+    #исп для exe временного перенаправления
+        #создаем экз HttpResponseRedirect
+        #возвращаем из контроллера-fx
+            ...
+            return HttpResponseRedirect(reverse{'bboard:index'})
+
+
+
 
     .HttpRequest
     #предоставляет(⊃ данные) клиентский запрос
     #традиционно называется request
-
-
+    #доступен в контроллере-fx через его первыи параметр
+    #attr
+        .GET
+        #dict ⊃ ∀ GET-параметры ⊂ запросу вида {'GET_param_name':<val>,...}
+        .POST
+        #~ .GET
+        .FILES
+        #dict ⊃ ∀ выгруженные фаилы
+        #ключи = имена POST-параметров посредством которых передается содержимое фаилов
+        #val ключеи - фаилы представленные экземплярами UploadFile
+        .method
+        #обозначение метода отправки данных в виде UPPERCASE str
+            "GET"
+            "POST"
+            ...
+        .scheme
+        #обозначение протокола
+            "http"
+            "https"
+        .path
+        #путь
+        #?Δ .path_info
+        .path_info
+        #путь
+        #?Δ .path
+        .encoding
+        #обозначение кодировки запроса
+            .encoding ⊃ None
+            #запрос закодирован в DEFAULT_CHARSET
+        .content_type
+        #обозначение MIME-типа полученного запроса извлеченное из HTTP-заголовка Content-Type
+        .content_params
+        #dict ⊃ доп параметры MIME-типа полученного запроса извлеченные из HTTP-заголовка Content-Type
+        #keys - имена параметров, val - val параметров
+        .META
+        #dict ⊃ доп параметры в виде элтов:
+            .CONTENT_LENGTH:<str>
+            #длинна тела запроса в chars
+            .CONTENT_TYPE
+            #MIME-тип тела запроса
+                "appication/x-www-form-urlencoded"
+                "multipart/form-data"
+                "text/plain"
+            .HTTP_ACCEPT:<str>
+            #⊃ перечень поддерживаемых браузером MIME-типов данных
+            #comma separated
+            .HTTP_ACCEPT_ENCODINGS:<str>
+            #⊃ перечень поддерживаемых браузером кодировок
+            #comma separated
+            .HTTP_ACCEPT_LANGUAGES:<str>
+            #⊃ перечень поддерживаемых браузером языков
+            #comma separated
+            .HTTP_HOST
+            #(домен|ip) & порт (if он Δ default) сервера отдавшего страницу
+            .HTTP_REFERER
+            #uri страницы с которои был exe переход на текущую
+            #!∃ if текущая - первая открытая в браузере
+            .HTTP_USER_AGENT:<str>
+            #⊃ user agent браузера
+            .QUERY_STRING:<str>
+            #⊃ необработанные GET-параметры
+            .REMOTE_ADDR
+            #ip клиента
+            .REMOTE_HOST:<str>
+            #доменное имя клиентского пк
+            #if не удалось получить -> ""
+            .REMOTE_USER
+            #username пользователя exe вход на сервер
+            #!∃ if вход не был exe|исп другои способ аутентификации
+            .REQEUST_METHOD
+            #обозначение метода отправки данных в виде UPPERCASE str
+                "GET"
+                "POST"
+            .SERVER_NAME
+            #доменное имя сервера
+            .SERVER_PORT:<str>
+            #tcp-port
+        #может ⊃ & другие элты формируюшиеся на основе ∀ нестандартных заголовков ⊂ запросу клиента,
+           его имя uppercase имя заголовка
+           с '-' замененными на '_'
+           с префиксом "HTTP_"
+           #пример
+                UPGRADE_INSECURE_REQUESTS -> HTTP_UPGRADE_INSECURE_REQUESTS
+        .body:<bytes>
+        #raw content запроса
+    #методы
+        .get_host()
+        #-> str ⊃ [ip|домен(if удается получить)] & tcp-port сервера
+        .get_port()
+        #-> str ⊃ tcp-port сервера
+        .get_full_path()
+        #-> full path to curr page
+        .build_absolute_uri(<path>)
+        #строит полныи uri на основе домена|ip и <path>
+        #examples
+            print(request.build_absolute_uri('/test/url/'))
+            >>
+                http://localhost:8000/test/uri/
+        .is_secure()
+        #-> True if обращение исп HTTPS
+        #-> False if обращение исп HTTP
+        .is_ajax()
+        #-> True if это AJAX-запрос
+        #-> False if это обычныи запрос
+        #AJAX-запросы выявляются dj по ⊂ запросу заголовка HTTP_X_REQUESTED_WITH:"XMLHttpRequest"
+    
+    
+    
+    
+    
+    
     .HttpResponse([<content>:<str>][, content_type=None][, status:<int>=200][,reason:<str>=None("OK")])
     #класс
-    #низкоуровневое средство формирования ответа клиенту
+    #в отличие от например StreamHttpResponse полностью формирует ответ в mem перед отправкои
+        #и в отличие от него вроде не подходит для отправки данных в формате != html/text или if V слишком велик(формирование заимет слишком много mem/time)
+    #низкоуровневое средство формирования ответа клиенту(исп в этои роли чаще всего)
         content_type
         #MIME-type ответа & кодировку
             content_type=None
             #ответ получит MIME-type text/html и кодировку ⊂ DEFAULT_CHARSET
-            status
-            #int code response status
-                200
-                #файл успешно отправлен
-            reason
-            #str обозначение статуса
+        status
+        #int code response status
+            200
+            #файл успешно отправлен
+        reason
+        #str обозначение статуса
     #?класс ответа ⊃
         Атрибуты:
             .content:<bytes>
@@ -5842,13 +6766,21 @@ django.http
         запрашиваемый url
         данные полученные от пользователя
         служебная информация от браузера
+
+
+ПЕРЕНАПРАВЛЕНИЕ
+#отсылка браузеру предписании переити на uri ⊃ ответе
+    ВРЕМЕННОЕ ПЕРЕНАПРАВЛЕНИЕ
+    #пример
+        после добавления объявления перенаправление на страницу ⊃ ∀ объявления
+    #для exe временного перенаправления исп HttpResponseRedirect ⊂ django.http производныи HttpResponse
+    ПОСТОЯННОЕ ПЕРЕНАПРАВЛЕНИЕ
+    #исп при переезде на другои домен
+    #(?это так)браузер получив уведомление о постоянном перенаправлении заменяет uri в истории, закладках, etc
+    #реализуется HttpResponsePermanentRedirect ⊂ django.http
+#см redirect() ⊂ django.shortcuts
+    
         
-        
-        
-СОКРАЩЕНИЯ
-	fx-сокращения(shortcuts)
-	#⊂ django.shortcuts
-	#high-level средства
 	
 	
 АДМИНИСТРАТИВНЫЙ САЙТ DJ
