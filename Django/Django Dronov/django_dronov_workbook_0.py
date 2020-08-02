@@ -303,8 +303,7 @@ django-admin
 					ROOT_URLCONF = <project_dir>.<urls.py>
 					#путь к модулю хранящем маршруты уровня проекта
 					
-					TEMPLATES = [
-						{
+					TEMPLATES:<list_of_dicts> = [{
 							'BACKEND': 'django.template.backends.django.DjangoTemplates',
 							'DIRS': [],
 							#доп папки с шаблонами?
@@ -315,12 +314,9 @@ django-admin
 									'django.template.context_processors.debug',
 									'django.template.context_processors.request',
 									'django.contrib.auth.context_processors.auth',
-									'django.contrib.messages.context_processors.messages',
-									
-								],
-							},
-						},
-					]
+									'django.contrib.messages.context_processors.messages',],}
+							,},]
+					#⊃ ∀ настроики шаблонов(см шаблонизатор)
 					
 					WSGI_APPLICATION = '<project_dir>.wsgi.application'
 					
@@ -1003,7 +999,7 @@ obsolete:eng:?
 			[--version] [-v {0,1,2,3}] [--settings <setting>] [--pythonpath <python_path>] [--traceback] [--no-color] [--force-color]
 		#positional arg(вероятно должен стоять в конце)
 			[<app_label> [<app_label> ...]]
-			#при !∃ -> вывод ∀ с разбиениям по apps
+			#при !∃ >> ∀ с разбиениям по apps
 
 
 		sqlflush
@@ -2295,6 +2291,17 @@ manage.py startapp bboard
 		#более универсальны, но трудоемки в разработке
         #view, вьюха, представление(автор считает неудачным)
         #∀ контроллер-fx в качетве единственного обязательного аргумента принимает экземпляр HttpResponse
+        #examples
+            #вывод страницы ⊃ список объявлении ⊂ выбраннои посетителем рубрике
+            #альтернатива - см КОНТРОЛЛЕР-КЛАСС
+            from .models import Rubric
+            
+            def by_rubric(request, rubric_id):
+                bbs = Bb.objects.filter(rubric=rubric_id)
+                current_rubric = Rubric.objects.get(pk=rubric_id)
+                context = {'bbs': bbs, 'rubrics': rubrics, 'current_rubric': current_rubric}
+                return render(request, 'bboard/by_rubric.html', context)
+
         #обязана
             #принимать
                 экземпляр HttpRequest
@@ -2433,7 +2440,7 @@ manage.py startapp bboard
                             извлекает обозначение HTTP-метода
                             вызывает метод класса с именем = извлеченному обозначению
                             передает этому методу <запрос> & <val_url_parameters>
-                            -> результат возвращенный методом
+                            >> результат возвращенный методом
                             #if запрос получен с исп GET -> вызывает .get(), if с исп POST -> вызывает .post()
                             #if !∃ метода класса одноименного с HTTP-методом с исп которого был получен запрос(кроме HEAD) -> ничего не делает
                                 #при отсутствии .head() вызывается .get()
@@ -2442,13 +2449,13 @@ manage.py startapp bboard
                         .http_method_not_allowed(<request> [,<val_url_parameters>])
                         #вызывается if запрос был exe с исп неподдерживаемого HTTP-метода
                         #в изначальной реализации
-                            -> ответ типа HttpResponseNotAllowed ⊃ список допустимых методов
+                            >> ответ типа HttpResponseNotAllowed ⊃ список допустимых методов
                         
                         
                         .options(<request> [, <val_url_parameters>])
                         #должен(напр при реализации пользовательских классов) обрабатывать запрос с исп HTTP-метода OPTIONS
                         #в изначальнои реализации
-                            -> ответ ⊃ заголовок Allow ⊃ ∀ поддерживаемые HTTP-методы
+                            >> ответ ⊃ заголовок Allow ⊃ ∀ поддерживаемые HTTP-методы
                     #краине редко исп как есть - обычно исп производные от него классы(как примесь?)
                     
                     
@@ -2482,8 +2489,8 @@ manage.py startapp bboard
                         
                         
                         .get_template_names()
-                        #должен(напр при реализации пользовательских классов) -> список путеи к шаблонам заданных в виде строк
-                        #в изначальнои реализации -> список ⊃ один элт ⊂ .template_name
+                        #должен(напр при реализации пользовательских классов) >> список путеи к шаблонам заданных в виде строк
+                        #в изначальнои реализации >> список ⊃ один элт ⊂ .template_name
                         
                         
                         .content_type
@@ -2515,6 +2522,61 @@ manage.py startapp bboard
                                 context['bbs'] = Bb.objects.all()
                                 context['rubrics'] = Rubric.objects.all()
                                 return context
+                    
+                    
+                    
+                    КЛАССЫ ПЕРЕНАПРАВЛЕНИЯ
+                        RedirectView
+                        #перенаправляет на указанныи uri
+                            url:<str>
+                            #задает url перенаправления
+                            #может ⊃ спецификаторы поддерживаемые оператором форматирования python %(https://docs.python.org/3/library/stdtypes.html#printf-style-string-formatting) в которых следует указывать имена url-params, вместо которых будут подставленны их val
+                            
+                            pattern_name
+                            #задает имя именованного route
+                            #обратное разрешение url будет exe с url-params полученными контроллером
+                            
+                            query_string:<bool>=False
+                                True
+                                #добавление ∀ GET-params ⊂ текущему uri к uri перенаправления
+                                False
+                                #GET-params не передаются
+                            
+                            get_redirect_url(<vals_url_params>) -> <str>
+                            #должен >> uri перенаправления
+                            #в исходный реализации
+                                извлекает val .url
+                                форматирует его передавая полученные params в %
+                                if url=None -> производит обратное разрешение на основе val .pattern_name & url-params Else If неудачно отправляет ответ ⊃ код 410(запрошенная str !∃)
+                            
+                            permanent:<bool>=False
+                                True
+                                #будет exe постоянное перенаправление(status 301)
+                                False
+                                #будет exe временное перенаправление(status 302)
+                        #examples
+                            #организуем redirect с uri вида
+                                /detail/<year>/<month>/<day>/<key>/
+                                #на
+                                /detail/<key>/
+                            .../urls.py
+                                ...
+                                path('detail/<int:pk>/', BbDetailView.as_view(), name='detail'),
+                                path('detail/<int:year>/<int:month>/<int:day>/<int:pk>', BbRedirectView.as_view(), name='old_detail'),
+                                ...
+                            .../views.py
+                                ...
+                                class BbRedirectView(RedirectView):
+                                    #для формирования целевого uri исп .url & str ⊃ спецификатор обрабатываемыи оператором %
+                                    #вместо спецификатора в str будет подставлено val url-param pk(ключ записи)
+                                    url = '/detail/%(pk)d/'
+                        #наследник
+                            View
+                        
+        
+                    
+                    
+                                    
             КЛАССЫ ВЫВОДЯЩИЕ СВЕДЕНИЯ О ВЫБРАННОЙ ЗАПИСИ
             #обобщенные классы
             #exe типовые задачи и мб исп в разных ситуациях
@@ -2535,8 +2597,8 @@ manage.py startapp bboard
                         #указывает диспетчер записеи|<QuerySet>(набор записей) в которых ищутся записи
                         
                         .get_queryset()
-                        #должен(напр при реализации пользовательских классов) -> <QuerySet> в котором ищутся записи
-                        #в исходной реализации -> val attr queryset if оно не задано, | набор записей извлеченных из модели извлеченной из attr model
+                        #должен(напр при реализации пользовательских классов) >> <QuerySet> в котором ищутся записи
+                        #в исходной реализации >> val attr queryset if оно не задано, | набор записей извлеченных из модели извлеченной из attr model
                         
                         .pk_url_kwarg="pk"
                         #задает имя url-параметра, через который контроллер получит val ключа записи
@@ -2545,8 +2607,8 @@ manage.py startapp bboard
                         #задает имя поля модели ⊃ слаг
                         
                         .get_slug_field()
-                        #должен(напр при реализации пользовательских классов) -> str ⊃ имя поля модели ⊃ слаг
-                        #в исходнои реализации -> val ⊂ slug_field
+                        #должен(напр при реализации пользовательских классов) >> str ⊃ имя поля модели ⊃ слаг
+                        #в исходнои реализации >> val ⊂ slug_field
                         
                         .slug_url_kwarg="slug"
                         #задает имя url-param через который контроллер-класс получит val слага
@@ -2564,8 +2626,8 @@ manage.py startapp bboard
                         
                         
                         .get_context_object_name(<record>)
-                        #должен(напр при реализации пользовательских классов) -> имя v контекста шаблона для сохранения наиденнои записи в виде str
-                        #в исходнои реализации -> имя ⊂ context_object_name else if context_object_name=None -> lowercase имя модели
+                        #должен(напр при реализации пользовательских классов) >> имя v контекста шаблона для сохранения наиденнои записи в виде str
+                        #в исходнои реализации >> имя ⊂ context_object_name else if context_object_name=None >> lowercase имя модели
                             #пример
                             #if model=Rubric & context_object_name=None -> v контекста получит имя rubric
                             
@@ -2577,7 +2639,7 @@ manage.py startapp bboard
                                 queryset=None
                                 #поиск в наборе возвращаемом .get_queryset()
                         #val ключа & слага можно получить из dict ⊃ ∀ полученные контроллером url-params и сохраненного в атрибуте экземпляра kwargs, имена нужных параметров можно получить из attrs pk_url_kwarg & slug_url_kwarg
-                        #if запись не наидена -> exept Http404 ⊂ django.http
+                        #if запись не наидена >> exept Http404 ⊂ django.http
                         
                         
                         .get_context_data([<дополнительные_элты_контекста_шаблона>])
@@ -2601,8 +2663,8 @@ manage.py startapp bboard
                         
                         .get_template_names()
                         #переопределенный метод
-                        #-> список путеи к шаблонам в виде str
-                    #в исходнои реализации -> список:
+                        #>> список путеи к шаблонам в виде str
+                    #в исходнои реализации >> список:
                             пути извлеченного из унаследованного attr template_name(if указан)
                         or
                             пути извлеченного из поля модели с именем ⊂ attr template_name_field
@@ -2678,7 +2740,7 @@ manage.py startapp bboard
                 
                     MultipleObjectMixin
                     #извлечение набора записей из модели и помещает результат в контекст шаблона
-                    #номер части которую нужно извлечь - int 1+|"last" else -> exept Http404 ⊂ django.http
+                    #номер части которую нужно извлечь - int 1+|"last" else >> exept Http404 ⊂ django.http
                         "last"
                         #обозначает последнюю часть
                     #может исп
@@ -2695,7 +2757,7 @@ manage.py startapp bboard
                         
                         .get_queryset()
                         #должен возвращать <QuerySet> в котором ищутся записи
-                        #в исходной реализации -> val attr queryset if оно не задано, | набор записей извлеченных из модели извлеченной из attr model
+                        #в исходной реализации >> val attr queryset if оно не задано, | набор записей извлеченных из модели извлеченной из attr model
                         
                         
                         .ordering
@@ -2711,8 +2773,8 @@ manage.py startapp bboard
                         
                         
                         .get_ordering()
-                        #должен -> параметры сортировки записеи
-                        #в исходной реализации -> val attr .ordering
+                        #должен >> параметры сортировки записеи
+                        #в исходной реализации >> val attr .ordering
                         
                         
                         .paginate_by
@@ -2720,9 +2782,9 @@ manage.py startapp bboard
                         #if !∃|=None => набор записеи не разбивается на части
                         
                         
-                        .get_paginate_by(<QuerySet>)
-                        #должен -> кол-во записеи полученного набора, помещающихся в однои части пагинатора
-                        #в исходной реализации -> val attr paginate_by
+                        .get_paginate_by(<набор_записей>)
+                        #должен >> кол-во записеи полученного набора, помещающихся в однои части пагинатора
+                        #в исходной реализации >> val attr paginate_by
                         
                         
                         
@@ -2736,7 +2798,1032 @@ manage.py startapp bboard
                         #if последняя часть пагинатора ⊃ меньше записеи -> оставшиеся записи будут выведены в предыдущеи части
                             .paginate_orphans=0
                             #последняя часть может ⊃ ∀ число записеи
+                            
+                            
+                            
+                        .get_paginate_orphans()
+                        #должен >> min число записеи помещающихся в последнеи части пагинатора
+                        #в исходнои реализации >> val attr paginate_orphans
+                        
+                        
+                        .allow_empty=True
+                        #
+                            allow_empty=True
+                            #разрешает извлечение пустои(⊅ ни однои записи) части пагинатора
+                            allow_empty=False
+                            #>> exept Http404 при попытке извлечения пустои части пагинатора
+                        
+                        
+                        .get_allow_empty()
+                        #должен >> True if разрешено извлечение "пустои" части пагинатора|>>False if запрещено
+                        #в исходнои реализации >> val .allow_empty
+                        
+                        
+                        .paginator_class
+                        #указывает класс используемого пагинатора
+                        #by def указывает Paginator ⊃ django.core.paginator
+                        
+                        
+                        .get_paginator(<набор_записей>, <число_записеи_в_части> [, orphans=0][, allow_empty_first_page=True])
+                        #должен создавать и возвращать obj пагинатора
+                            <набор_записей>
+                            #набор записеи для разбивки на части
+                            orphans
+                            #min число записеи в последнеи части пагинатора
+                            allow_empty_first_page:<bool>
+                            #разрешение извлечения "пустои" части
+                        #в исходнои реализации создает экз пагинатора указанного в .paginator_class передавая его конструктору ∀ полученные параметры
+                        
+                        
+                        .paginate_queryset(<набор_записей>, <число_записеи_в_части>)
+                        #должен разбивать <набор_записей> на части размером <число_записеи_в_части> и >> кортеж ⊂ 4 элта:
+                            obj самого пагинатора
+                            obj его текущеи части, с номером полученным с URL|GET параметром
+                            набор записеи из текущеи части
+                            True if извлеченныи набор записеи был разбит на части с исп пагинатора Else False
+                            #имеется в виду успешность операции?
+                            
+                        
+                        .context_object_name
+                        #задает имя v контекста шаблона для хранения извлеченного набора записеи
+                        
+                        
+                        
+                        .get_context_object_name(<набор_записей>) >> str
+                        #должен >> имя v контекста шаблона для хранения извлеченного набора записей
+                        #в исходнои реализации >> имя ⊂ context_object_name If оно указано Else lowercase имя модели полученное из <набора_записеи> + суффикс _list
+                        
+                        
+                        .get_context_data([object_list=None][,<доп_элты_контекста_шаблона>])
+                        #переопределенныи метод
+                        #создает & >> контекст данных
+                            object_list
+                            #набор записей
+                            #if !∃ -> исп набор ⊂ .object_list
+                        #в исходнои реализации >> контекст ⊃ 5 v:
+                            object_list
+                            #набор ∀ записей|only набор ⊂ текущеи части пагинатора
+                            v возвращаемое .get_context_object_name()
+                            #~object_list
+                            is_paginated
+                            #True If применялся пагинатор Else False
+                            paginator
+                            #obj пагинатора If применялся пагинатор Else None
+                            page_obj
+                            #obj текущеи страницы пагинатора If применялся пагинатор Else None
                     
+                    
+                    
+                    MultipleObjectTemplateResponseMixin
+                    #примесь
+                    #наследник TemplateResponseMixin
+                    #рендерит шаблон на отнове извлеченного из модели набора записеи
+                    #требует ∃ в контроллере-классе .object_list ⊃ набор записеи
+                    #attrs
+                        .template_name_suffix:<str>="_list"
+                        #суффикс добавляемыи к авто сгенерированному пути к шаблону
+                        
+                        
+                        .get_template_names()
+                        #переопределенныи метод
+                        #>> список str ⊂ пути к шаблонам
+                        #в исходнои реализации >> список ⊃:
+                            путь полученныи из унаследованного .template_name(if путь указан)
+                            путь <app_alias>\<model_name><suffix>.html
+                            #пример: для модели Bb ⊂ bboard app сформирует "bboard\bb_list.html"
+                    
+                    
+                    
+                    ListView
+                    #наследник
+                        View
+                        TemplateResponseMixin
+                        MultipleObjectMixin
+                        MultipleObjectTemplateResponseMixin
+                    #автоматом
+                        извлекает набор записеи из модели
+                        записывает его в .object_list
+                        #для успешнои работы наследуемых примесеи
+                        выводит страницу ⊃ список записеи
+                    #examples
+                        #вывод страницы ⊃ список объявлении ⊂ выбраннои посетителем рубрике
+                        from django.views.generic.list import ListView
+                        from .models import Bb, Rubric
+                        ...
+                        class BbByRubricView(ListView):
+                            template_name = 'bboard/by_rubric.html'
+                            context_object_name = 'bbs'
+                            
+                            def get_queryset(self):
+                                return Bb.object.filter(rubric=self.kwargs['rubric_id'])
+                            
+                            def get_context_data(self, *args, **kwargs):
+                                context = super().get_context_data(*args, **kwargs)
+                                context['rubrics'] = Rubric.objects.all()
+                                context['current_rubric'] = Rubric.objects.get(
+                                    #получаем val url-param 'rubric_id', обратившись к словарю ⊂ attr .kwargs экземпляра
+                                    #.kwargs ⊃ ∀ url-params указанные в маршруте
+                                    pk=self.kwargs['rubric_id'])
+                                return context
+                        #больше кода чем у написанного ранее контроллера-fx by_rubric()(см контроллеры-fx) тк:
+                            в контекст шаблона нужно добавить список рубрик & текущую рубрику; для их добавления в контекст шаблона нужно переопределить get_context_data()
+                            
+                            исп ∃ шаблон -> нужно указать:
+                                его имя
+                                имя v контекста для хранения списка объяв
+
+
+
+            КЛАССЫ РАБОТАЮЩИЕ С ФОРМАМИ
+            #обобщенные классы для работы
+                формами связанными с моделями
+                обычными формами
+
+                django.views.generic.edit
+                #⊃ ∀ классы для работы с формами
+                
+                    КЛАССЫ ДЛЯ ВЫВОДА И ВАЛИДАЦИИ ФОРМ
+                    #lowlevel классы, могут лишь:
+                        вывести форму
+                        валиднуть данные
+                        if данные не валидны -> повторно вывести их с warn msg
+                    #-> не всегда удобны
+                        #не предусматривают длительного хранения obj формы ->
+                            нельзя извлечь ⊃ данные в ∀ момент
+                            перенос данньх из формы в модель придется exe самостоятельно
+                            #альтернатива: см КЛАССЫ ДЛЯ РАБОТЫ С ЗАПИСЯМИ
+                        FormMixin
+                        #производная примесь от ContextMixin, может:
+                            создать форму
+                            #∀(связанную с моделью|обычную
+                            валиднуть данные
+                            exe перенаправление If данные валидны Else инициировать повторныи вывод формы
+                        #attrs
+                            .form_class
+                            #⊃ link to класс формы используемой наследуемым контроллером
+                            
+                            .get_form_class()
+                            #должен >> link to класс используемой формы
+                            #в исходнои реализации >> val .form_class
+                            
+                            .initial={}
+                            #⊃ dict ⊃ исходные данные для занесения в только что созданную форму вида {field:val,...}
+                            
+                            .get_initial()
+                            #должен >> dict ⊃ исходные данные для занесения в только что созданную форму
+                            #в исходнои реализации >> val .initial
+                            
+                            .success_url
+                            #⊃ url для перенаправления if данные формы валидны
+                            
+                            
+                            .get_success_url()
+                            #должен >> url для перенаправления if данные формы валидны
+                            #в исходнои реализации >> val .success_url
+                            
+                            
+                            .prefix=None
+                            #задает str префикс имени формы, которыи будет ∃ в создающем форму HTML-коде
+                            #стоит исп only if планируется поместить несколько однотипных форм в одном теге <form>
+                                prefix=None
+                                #без префикса                        
+                            
+                            
+                            .get_prefix()
+                            #должен >> префикс для имени формы
+                            #в исходнои реализации >> val .prefix
+                            
+                            
+                            .get_form([form_class=None])
+                            #>> obj используемои контроллером формы
+                            #в исходнои реализации >> экз класса формы указанный в .form_class If .form_class указан Else экземпляр класса возвращаемыи .get_form_class(); при этом конструктору класса формы передаются параметры возвращаемые .get_form_kwargs()
+                            
+                            
+                            .get_form_kwargs()
+                            #должен создавать и >> dict ⊃ params для передачи конструктору класса формы при создании его экземпляра в .get_form()
+                            #в исходнои реализации создает dict ⊃:
+                                initial:<dict>
+                                #⊃ исходные данные возвращаемые .get_initial()
+                                prefix
+                                #префикс для имени формы возвращаемыи .get_prefix()
+                                data:<dict>
+                                #⊃ данные занесенными в форму посетителем
+                                #создаeтся only if для отправки запроса применялись POST/PUT
+                                files
+                                #⊃ фаилы отправленные посетителем через форму
+                                #создаeтся only if для отправки запроса применялись POST/PUT
+                        
+                        
+                            .get_context_data([<доп_элты_контекста_шаблона>])        
+                            #переопределенныи метод
+                            #создает & >> контекст данных
+                            #в исходнои реализации добавляет в контекст шаблона v form ⊃ созданную форму
+                            
+                            
+                            .form_valid(<форма>)
+                            #должен exe обработку данных if данные валидны
+                            #противоположен .form_invalid()
+                            #в исходнои реализации exe перенаправление на url возвращаемыи .get_success_url()
+                            
+                            
+                            .form_invalid(<форма>)
+                            #противоположен .form_valid()
+                            #в исходнои реализации повторно выводит форму на экран
+                        
+                        
+                        ProcessFormView
+                        #производныи View
+                            выводит форму
+                            принимает введенные данные
+                            валидирует данные
+                        #переопределяет три метода View
+                            .get(<запрос> [, <val_url_params>])
+                            #вывод формы
+                            .post(<запрос> [, <val_url_params>])
+                            #получает & валидирует введенные данные
+                            #вызывает .form_valid() if данные валидны Else .form_invalid()
+                            .put(<запрос> [, <val_url_params>])
+                            #~ post()
+                        
+                        
+                        FormView
+                        #производныи
+                            View
+                            FormMixin
+                            ProcessFormView
+                            TemplateResponseMixin
+                        #предоставляет ∀ инструменты обработки форм
+                            создает форму
+                            валидирует занесенные в форму данные
+                            выводит страницу формы повторно if данные не валидны
+                        #остается только реализовать обработку корректных данных переовределив .form_valid()
+                            #examples
+                                #добавление объявления
+                                from django.views.generic.edit import FormView
+                                from django.urls import reverse
+                                from .models import Bb, Rubric
+                                #для формирования url перенаправления нужно получить val ключа рубрики ⊃ объяву -> переопределяем .get_form() где сохраняем созданную форму в .object
+                                #затем в .get_success_url() получаем доступ к форме и занесенным в нее данным
+                                class BbAddView(FormView):
+                                    template_name = 'bboard/crete.html'
+                                    form_class = BbForm
+                                    initial = {'prics': 0.0}
+                                    
+                                    def get_context_data(self, *args, **kwargs):
+                                        context = super().get_context_data(*args, **kwargs)
+                                        context['rubrics'] = Rubric.objects.all()
+                                        return context
+                                    #сохранение данных
+                                    def form_valid(self, form):
+                                        form.save()
+                                        return super().form_valid(form)
+                                    
+                                    def get_form(self, form_class=None):
+                                        self.object = super().get_form(form_class)
+                                        return self.object
+                                    
+                                    def get_success_url(self):
+                                        return reverse('bboard:by_rubric', kwargs={'rubric_id': self.object.cleaned_data['rubric'].pk})
+                    
+                    
+                    
+            КЛАССЫ ДЛЯ РАБОТЫ С ЗАПИСЯМИ
+            #в отличие от не всегда удобных КЛАССОВ ДЛЯ ВЫВОДА И ВАЛИДАЦИИ ФОРМ которые не всегда удобны тк:
+                не предусматривают длительного хранения obj формы ->
+                    нельзя извлечь ⊃ данные в ∀ момент
+                    перенос данньх из формы в модель придется exe самостоятельно
+                #сами
+                    сохраняют|исправляют|удаляют запись
+                
+                        ModelFormMixin
+                        #примесь создания формы связанной с моделью
+                        #наследует
+                            SingleObjectMixin
+                            FormMixin
+                        #~FormMixin, но предназначен для работы с формами связанными с моделями
+                            .model
+                            #задает link to класс модели на чьеи основе будет создана форма
+                            #требует .fields -> else exept
+                            #model & field конфликтуют с указанием непосредственно класса формы в .form_class унаследованным от FormMixin
+                            
+                            .fields
+                            #указывает ₓ имен полеи модели на чьеи основе будет создана форма
+                            #?требует .model
+                            #model & field конфликтуют с указанием непосредственно класса формы в .form_class унаследованным от FormMixin
+                            
+                            .get_form_class()
+                            #переопределенныи метод
+                            #должен >> link to class используемой формы
+                            #в исходнои реализации >> val .form_class If (он ∃ в классе) Else >> link to class формы автоматом созданныи на основе модели ⊂ ( .model|унаследованным .queryset)
+                                #для создания класса формы исп список полеи ⊂ .fields
+                            
+                            
+                            .success_url
+                            #⊃ url для перенаправления в случае валидности данных
+                            #Δ от FormMixin.success_url - поддерживает указание непосредственно в str ⊃ url, спец charₓ вида
+                                {<имя_поля_таблицы_бд_обрабатываемои_моделью>}
+                                #вместо такой ₓ класс подставит val этого поля
+                                #поле бд, а не модели(напр для получения ключа и внешнего ключа нужно исп поля id & rubric_id, а не pk & rubric
+                            #examples
+                                #
+                                class BbCreateView(CreateView):
+                                    ...
+                                    success_url = '/bboard/detail/{id}'
+                                
+                                
+                            .get_success_url()
+                            #переопределенныи метод
+                            #>> url для перенавравления if данные валидны
+                            #в исходнои реализации >> val .success_url в котором последовательности вида {<имя_поля_таблицы_бд_обрабатываемои_моделью>} заменены val соотв полеи If .success_url ∃ Else пытается получить url возвращаемыи <model>.get_absolute_url()
+                            
+                            
+                            .get_form_kwargs()
+                            #переопределенныи метод
+                            #создает & >> dict ⊃ params для передачи конструктору класса формы при создании его экземпляра в .get_form()
+                            #в исходнои реализации добавляет в dict(сформированныи унаследованным методом) элемент instance ⊂ обрабатываемую формои запись модели (if форма ∃ - те исп не для добавления записи) которая извлекается из .object
+                            
+                            
+                            .form_valid(<form>)  
+                            #переопределенныи метод
+                            #должен обработать данные формы if данные валидны
+                            #в исходнои реализации 
+                               сохраняет ⊂ формы в модели, тем самым создавая|исправляя запись
+                               присваивает новую запись .object
+                               вывывает унаследованныи .form_valid()
+                            
+                     
+                
+                    .CreateView
+                    #создание новои записи
+                    #наследник
+                        View
+                        ModelFormMixin
+                        ProcessFormView
+                        SingleObjectMixin
+                        SingleObjectTemplateResponseMixin
+                        TemplateResponseMixin
+                    #⊃ ∀ небходимую fx для:
+                        создания формы
+                        валидации формы
+                        вывода формы с исп указанного шаблона
+                        создания записи на основе данных из формы
+                        перенаправления в случае успеха
+                    #args
+                        .template_name
+                        #путь к шаблону используемому для вывода страницы с формой
+                        
+                        
+                        .template_name_suffix:<str>="_form"
+                        #⊃ suffix добавлямыи к авто-сгенерированному пути к шаблону
+                        
+                        .object
+                        #⊃ созданная в модели запись(if запись ∃) Else None
+                        
+                        .form_class
+                        #класс формы связанной с моделью
+                        
+                        .success_url
+                        #url по кот. будет выполнен переход после успешного сохранения данных
+                        
+                        .get_context_data()
+                        #формурует контекст шаблона
+                    #examples
+                        from django.views.generic.edit import CreateView
+                        from .forms import BbForm
+                        ...
+                        class BbCreateView(CreateView):
+                            template_name = 'bboard/create.html'
+                            form_class = BbForm
+                            success_url = '/bboard/'
+                            ...
+                            def get_context_data(self, **kwargs):
+                                context = super().get_context_data(**kwargs)
+                                context['rubrics'] = Rubric.objects.all()
+                                return context
+                    
+                    
+                    
+                    .UpdateView
+                    #исправление записи
+                        автоматом ищет запись в модели по полученному из url-параметра ключу|слагу
+                        выводит страницу ⊃ форму для ее Δ
+                        проверит и сохранит Δ данные
+                    #наследник
+                        View
+                        ModelFormMixin
+                        ProcessFormView
+                        SingleObjectTemplateResponseMixin
+                        TemplateResponseMixin
+                    #attrs
+                        .template_name_suffix:<str>="_form"
+                        #⊃ suffix добавлямыи к авто-сгенерированному пути к шаблону
+                        
+                        .object
+                        #⊃ Δ запись модели
+                        
+                        остальные
+                        #унаследованы
+                    #examples
+                        #шаблон bboard\bb_form.html ~ bboard\create.html 
+                        from django.views.generic.edit import UpdateView
+                        from .models import Bb, Rubric
+                        ...
+                        class BbEditView(UpdateView):
+                            model = Bb
+                            form_class = BbForm
+                            success_url = '/'
+                            ...
+                            def get_context_data(self, *args, **kwargs):
+                                context = super().get_context_data(*args, **kwargs)
+                                context['rubrics'] = Rubric.object.all()
+                                return context
+                    
+                    
+                    .DeletionMixin
+                    #удаление записи
+                        добавляет наследнику инструменты удаления записеи
+                        #предпологает что запись уже наидена и сохранена в .object
+                    #примесь
+                    #attrs
+                        .success_url
+                        #~ModelFormMixin.success_url
+                        .get_success_url()
+                        #~ModelFormMixin.success_url
+                    
+довольно интересно посмотреть на названия и назначение примесеи .DeletionMixin & .DeleteView
+                    
+                    .DeleteView
+                    #удаление записи с подтверждением
+                        автоматом находит запись в модели по полученному и url-param ключу|слагу
+                            -> требует указания:
+                                модели в .model
+                                набор записеи в queryset|переопределить .get_queryset()
+                        выведет страницу подтверждения ⊃ форму с кнопками удаления
+                        удалит запись(видимо при подтверждении)
+                    #наследник
+                        View
+                        DeletionMixin
+                        DetailView
+                        SingleObjectMixin
+                        SingleObjectTemplateResponseMixin
+                        TemplateResponseMixin
+                    #attrs
+                        .template_name_suffix:<str>="_confirm_delete"
+                        #⊃ suffix добавлямыи к авто-сгенерированному пути к шаблону
+                        
+                        .object
+                        #⊃ удаляемую запись модели
+                    #examples
+                        #удаляет объявы
+                        .../views.py
+                        from django.views.generic.edit import DeleteView
+                        from .models import Bb, Rubric
+                        ...
+                        class BbDeleteView(DeleteView):
+                            model = Bb
+                            success_url = '/'
+                            
+                            def get_context_data(self, *args, **kwargs):
+                                context = super().get_context_data(*args, **kwargs)
+                                context['rubrics'] = Rubric.objects.all()
+                                return context
+                        #шаблон страницы подтверждения удаления формы
+                            {% extends "layout/basic.html" %}
+                            
+                            {% block title %}Удаление объявления{% endblock %}
+                            
+                            {% block content %}
+                            <h2>Удаление объявления</h2>
+                            <p>Рубрика: {{ bb.rubric.name }}</p>
+                            <p>Товар: {{ bb.title }}</p>
+                            <p>{{ bb.content }}</p>
+                            <p>Цена: {{ bb.price }}</p>
+                            <form method="post">
+                                {% csrf_token %}
+                                <input type="submit" value="Удалить">
+                            </form>
+                            {% endblock %}
+            
+            
+БУДУЩИЕ ЗАПИСИ
+#записи ⊃ поля ⊃ (даты записанные в возвращенное .get_date_field() поле) > текущего
+
+
+думаю переопределенные методы - в данном случае говорят об отличиях от базовых
+
+             
+            КЛАССЫ ВЫВОДА ХРОНОЛОГИЧЕСКИХ СПИСКОВ
+            #за определенныи год/месяц/дату/...
+                
+                django.views.generic.dates
+                #⊃ ∀ классы вывода хронологических списков
+                    
+                    ВЫВОД ПОСЛЕДНИХ ЗАПИСЕИ
+                    #хронологического списка max свежих записеи
+                    
+                        DateMixin
+                        #фильтрация записеи по дате
+                        #позволяет наследникам фильтровать записи по дате(|дате&времени) ⊂ заданном поле
+                        #attrs
+                            .date_field:<str>
+                            #указывает имя поля модели типа DateField|DateTimeField для фильтрации
+                            
+                            .get_date_field()
+                            #должен >> имя поля модели ⊃ дату для фильтрации
+                            #в исходнои реализации >> val .date_field
+                            
+                            
+                            .allow_future:<bool>=False
+                            #?включение в результирующии набор записеи "будущие записи"
+
+
+                            .get_allow_future() -> <bool>
+                            #должен >> val указывающее включение/запрет включения в результирующии набор "будущие записи"
+                            #в исходнои реализации >> val .allow_future
+
+                        
+>> - return|throw exept
+
+                        
+                        BaseDateListView
+                        #базовыи класс
+                        #дает базовую fx для более специализированных классов
+                        #examples
+                            #может задавать сортировку записеи по убыванию val поля возвращенного .get_date_field() класса DateMixin
+                        #наследник
+                            DateMixin
+                            MultipleObjectMixin
+                        #attrs
+                            allow_empty:<bool>=False
+                            #разрешение извлечения пустои(⊅ записеи) части пагинатора
+                                .allow_empty=False
+                                #предписывает >> Http404 ⊃ django.http при попытке извлечения пустои части пагинатора
+                                
+                            .date_list_period:<str>="year"
+                            #указывает часть для урезания даты
+                            #val
+                                "year"
+                                "month"
+                                "day"
+                                #дата не урезается
+                            
+                            .get_date_list_period()
+                            #должен >> обозначение части для урезания даты
+                            #в исходнои реализации >> val date_list_period
+                            
+                            .get_dated_items()
+                            #должен >> tuple ⊃ 3 элта:
+                                lst ⊃ дат для которых ∃ записи в наборе
+                                набор записеи
+                                dict ⊃ контекст шаблона
+                            #в исходнои реализации >> except NotImplementedError
+                            #предназначен для переопределения в подклассах
+                            
+                            
+                            .get_dated_queryset(<условия_фильтрации>)
+                            #>> набор отфильтрованных записеи
+                                <условия_фильтрации>
+                                #думаю задаются ~ другои фильтрации в orm
+                                
+                            
+                            .get_date_list(<набор_записеи> [, dat_type=None][, ordering='ASC'])
+                            #>> lst ⊃ vals даты, урезаннои по [части указаннои в param date_type (if date_type ∃) Else val возвращенное get_date_list_period()] для которых ∃ записи в <набор_записеи>
+                                ordering:<str>="ASC"
+                                #задает направление сортировки
+                                    ordering="ASC"
+                                    #по возрастанию
+                                    ordering="DESC"
+                                    #по убыванию
+                        #добавляет в контекст шаблона два элта
+                            object_list
+                            #результирующии набор записеи
+                            date_list
+                            #список урезанных val дат для которых набор ⊃ записи
+                        
+                                        
+                        ArchiveView
+                        #вывод последних записеи(хронологически отсортированных по убыванию val заданного поля)
+                        #наследник
+                            View
+                            DateMixin
+                            BaseDateListView
+                            TemplateResponseMixin
+                            MultipleObjectMixin
+                            MultipleObjectTemplateResponseMixin    
+                        #создает в контексте шаблона v
+                            latest
+                            #attr?
+                           
+                            date_list
+                            #⊃ список val дат урезанных до года
+                            
+                        #к авто-сгенерированному пути шаблона by def добавляется суффикс _archive
+                        #examples
+                            #вывод разделенных пробелами годов, за которые в наборе ∃ записи
+                            .../views.py
+                                from django.views.generic.dates import ArchiveView
+                                from .models import Bb, Rubric
+                                ...
+                                class BbIndexView(ArciveIndexView):
+                                    model = Bb
+                                    date_field = 'published'
+                                    template_name = 'bboard/index.html'
+                                    context_object_name = 'bbs'
+                                    allow_empty = True
+                                    
+                                    def get_context_data(self, *args, **kwargs):
+                                        context = super().get_context_data(*args, **kwargs)
+                                        context['rubrics'] = Rubric.objects.all()
+                                        return context
+                            #используем ⊂ v date_list контекста шаблона lst дат урезанных до года
+                                <p>
+                                    {% for d in date_list %}
+                                    {{ d.year }}
+                                    {% endfor %}
+                                </p>
+                    
+                    
+                    ВЫВОД ЗАПИСЕИ ПО ГОДАМ
+                    #вывод lst записеи относящихся к определенному году
+                    
+                        YearMixin
+                        #примесь
+                        #извлечение года для последующеи фильтрации записеи
+                        #attr
+                            year_format:<str>="%Y"
+                            #указывает формат val года поддерживаемыи python strftime() для форматирования после извлечения года из uri 
+                                "%Y"
+                                #XXXX год
+                            
+                            get_year_format()
+                            #должен >> str ⊃ формат года
+                            #в исходнои реализации >> val year_format
+                            
+                            year:<str>=None
+                            #задает val года
+                                year=None
+                                #год извлекается из uri
+                            
+                            get_year()
+                            #должен >> str ⊃ год
+                            #в исходнои реализации пытается >> val .year (If .year ∃) Else url-param year (If url-param year ∃) Else get-param year (If get-param year ∃) Else >> django.http.Http404
+                            
+                            get_previous_year(<date>)
+                            #>> дату = первому дню года перед <date>
+                            #в зависимости от val
+                                .allow_empty
+                                .allow_future
+                                #может >> django.http.Http404
+                            
+                            
+                            get_previous_year(<date>)
+                            #>> дату = первому дню года после <date>
+                            #в зависимости от val
+                                .allow_empty
+                                .allow_future
+                                #может >> django.http.Http404
+                        
+                        
+                        YearArchiveView
+                        #вывод хронологического списка записеи за год
+                        #наследник
+                            View
+                            DateMixin
+                            YearMixin
+                            BaseDateListView
+                            TemplateResponseMixin
+                            MultipleObjectMixin
+                            MultipleObjectTemplateResponseMixin
+                        #⊃ 2 доп attr
+                            make_object_list:<bool>=False
+                            #
+                                make_object_list=True
+                                #формирует и добавляет в контекст шаблона набор ∀ записеи за год
+                                
+                                make_object_list=False
+                                #добавляет в контекст шаблона "пустои" набор записеи
+                            
+                            get_make_object_list()
+                            #должен >> bool признак формировать ли полноценныи набор записеи относящихся к заданному году
+                            #в исходнои реализации >> val .make_object_list
+                            #создает в контексте шаблона v
+                                date_list
+                                #lst дат за которые в наборе ∃ записи урезанные до месяца в порядке возрастания
+                                
+                                year:<date>
+                                #заданныи год
+                                
+                                previous_year:<date>
+                                #предыдущии год
+                                
+                                
+                                next_year:<date>
+                                #следующии год
+                        #набор записеи за заданныи год будет ⊂ v контекста шаблона ⊂ имя by def object_list
+                        #by def к автосгенерированному пути шаблона добавляется суффикс _archive_year
+                    
+                    
+                    ВЫВОД ЗАПИСЕИ ПО МЕСЯЦАМ
+                    #классы выводящие lst записеи ⊂ конкретному месяцу конкретного года
+                        
+                        MonthMixin
+                        #примесь
+                        #извлечение месяца из [url/get]-param month исп для последующеи фильтрации записеи
+                            .month_format:<str>='%b'
+                            #указывает формат val извлеченного месяца поддерживаемыи python strftime()
+                                '%b'
+                                #сокращенное наименование записанное согласно текущим языковым настроикам
+                                
+                                '%m'
+                                #порядковыи номер месяца
+                            
+                            .get_month_format() -> <str>
+                            #должен >> формат месяца
+                            #в исходнои реализации >> ⊂ .month_format
+                            
+                            .month:<str>=None
+                            #задает месяц
+                                None
+                                #месяц извлекается из uri
+                            
+                            .get_month() -> <str>
+                            #должен >> месяц
+                            #в исх реализации пытается >> ∃ val .month | url-param month|get-param month| Http404 ⊂ django.http
+                            
+                            .get_previous_month(<date>)
+                            #>> дату ⊃ первыи день месяца перед <date>
+                            #в зависимости от val .allow_empty & .allow_future может >> Http404 ⊂ django.http
+                            
+                            .get_next_month(<date>)
+                            #>> дату ⊃ первыи день месяца после <date>
+                            #в зависимости от val .allow_empty & .allow_future может >> Http404 ⊂ django.http
+                        
+                        
+                        MonthArchiveView
+                        #вывод хронологического lst записеи конкретного месяца & конкретного года
+                        #наследник
+                            View
+                            DateMixin
+                            MonthMixin
+                            YearMixin
+                            BaseDateListView
+                            TemplateResponseMixin
+                            MultipleObjectMixin
+                            MultipleObjectTemplateResponseMixin
+                        #создает в контексте шаблона v
+                            date_list
+                            #lst дат для которых набор ⊂ записи, урезанных до числа, в порядке возрастания
+                            
+                            month:<date>
+                            #представляет заданныи месяц
+                            
+                            previous_month:<date>
+                            #представляет месяц перед заданным
+                            
+                            next_month:<date>
+                            #представляет месяц после заданного
+                        #набор записеи за месяц будет ⊂ v контекста шаблона ⊂ имя by def object_list
+                        #к авто-сгенерированному пути к шаблону by def добавляется суффикс _archive_month
+                        #examples
+                            urlpatterns = [
+                                #пример uri:/2018/06/
+                                path('<int:year>/<int:month>/', BbMonthArchiveView.as_view()),
+                            ]
+                            ...
+                            class BbMonthArchiveView(МonthArchiveView):
+                                model = Bb
+                                date_field = "published"
+                                month_format = '%m'
+                    
+                    
+                    
+                    ВЫВОД ЗАПИСЕИ ПО НЕДЕЛЯМ
+                    #записи за неделю ⊂ заданныи порядковыи номер
+                    
+                        WeekMixin
+                        #примесь
+                        #извлечение номера недели из [url|get]-param week, для фильтрации записеи
+                            .week_format:<str>="%U"
+                            #указывает формат номера недели поддерживаемыи python strftime() для преобразования после извлечения
+                                "%U"
+                                #номер недели начинающеися с вс
+                                
+                                "%W"
+                                #номер недели начинающеися с пн
+                            
+                            .get_week_format() -> <str>
+                            #должен >> формат недели
+                            #в исходнои реализации >> val ⊂ .week_format
+                            
+                            .week:<str>=None
+                            #задает неделю
+                                None
+                                #извлечение из uri
+                                
+                            .get_week() -> <str>
+                            #должен >> неделю
+                            #в исходнои реализации пытается >> ∃ val .week | url-param week|get-param week|>> exept Http404 ⊂ django.http
+                            
+                            .get_previous_week(<date>)
+                            #>> дату ⊃ первыи день недели перед заданнои даты
+                            #в зависимости от vals .allow_empty & .allow_future может >> Http404
+                            
+                            .get_next_week(<date>)
+                            #>> дату ⊃ первыи день недели после заданнои даты
+                            #в зависимости от vals .allow_empty & .allow_future может >> Http404
+                        
+                        
+                        
+                        WeekArchiveView
+                        #вывод хронологического списка записеи указаннои недели & года
+                        #наследник
+                            View
+                            DateMixin
+                            WeekMixin
+                            YearMixin
+                            BaseDateListView
+                            TemplateResponseMixin
+                            MultipleObjectMixin
+                            MultipleObjectTemplateResponseMixin
+                        #создает в контексте шаблона v:
+                            week:<date>
+                            #заданная неделя
+                            
+                            previous_week:<date>
+                            #предыдущая неделя
+                            
+                            next_week:<date>
+                            #следующая неделя
+                        #набор записеи за указанную неделю будет ⊂ v контекста шаблона ⊂ имя by def object_list
+                        #к авто-сгенерированному пути к шаблону by def добавляется суффикс _archive_week
+                        #examples
+                            urlpatterns = [
+                                #пример uri: /2018/week/24
+                                path('<int:year>/week/<int:week>/', WeekArchiveView.as_view(model=Bb, date_field="published"))
+                            ]
+                        
+                    ВЫВОД ЗАПИСЕИ ПО ДНЯМ
+                    #вывод списка записеи за определенныи день конкретного года
+                    #реализуется 2 классами
+                    
+                        DayMixin
+                        #извлечение заданного числа из [url|get]-param ⊃ имя day, для фильтрации записеи
+                            .day_format:<str>="%d"
+                            #указывает формат числа поддерживаемыи python strftime() для форматирования после извлечения
+                                "%d"
+                                #число с начальмым нулем
+                            
+                            .get_day_format() -> <str>
+                            #должен >> формат числа
+                            #в исходнои реализации >> val .day_format
+                            
+                            .day:<str>=None
+                            #задает число
+                                None
+                                #извлекается из uri
+                            
+                            .get_day() -> <str>
+                            #должен >> число
+                            #в исходнои реализации пытается >> ∃ val .day|url-param day|get-param day|>> Http404 ⊃ django.http
+                        
+                        
+                        DayArchiveView
+                        #вывод хронологического lst записеи за заданныи день конкретного месяца & года
+                        #наследник
+                            View
+                            DateMixin
+                            DayMixin
+                            MonthMixin
+                            YearMixin
+                            BaseDateListView
+                            TemplateResponseMixin
+                            MultipleObjectMixin
+                            MultipleObjectTemplateResponseMixin
+                        #создает в контексте шаблона v:
+                            day:<date>
+                            #представляет заданныи день
+                            
+                            previous_day:<date>
+                            #представляет предыдущии день
+                            
+                            next_day
+                            #предыдущии следующии день
+                        #набор записеи за заданныи день будет ⊂ v контекста шаблона с именем by def object_list
+                        #к авто-сгенерированному пути к шаблону by def добавляется суффикс _archive_day
+                        #examples
+                            urlpatterns = [
+                                #пример uri: /2018/06/24/
+                                path('<int:year>/<int:month>/<int:day>/',
+                                      DayArchiveView.as_view(model=Bb, date_field="published", month_format='%m')),
+                            ]
+                        
+                        
+                        TodayArchiveView
+                        #вывод хронологического lst записеи за текущее число
+                        #наследник
+                            View
+                            DateMixin
+                            DayMixin
+                            MonthMixin
+                            YearMixin
+                            BaseDateListView
+                            DayArchiveView
+                            TemplateResponseMixin
+                            MultipleObjectMixin
+                            MultipleObjectTemplateResponseMixin
+                        #создает в контексте шаблона v:
+                            day:<date>
+                            #представляет текущее число
+                            
+                            previous_day:<date>
+                            #предыдущии день
+                            
+                            next_day
+                            #представляет следующии день
+                        #набор записеи за текущее число будет ⊂ v контекста шаблона ⊂ имя by def object_list
+                        #к авто-сгенерированному пути к шаблону by def добавляется суффикс _archive_today
+                        
+                        
+                        DateDetailView
+                        #вывод однои записи за указанное число
+                        #может быть полезен if поле даты по которому ищется запись ⊃ уникальные vals
+                        #наследник
+                            View
+                            DateMixin
+                            DayMixin
+                            MonthMixin
+                            YearMixin
+                            DetailView
+                            TemplateResponseMixin
+                            SingleObjectMixin
+                            SingleObjectTemplateResponseMixin
+                        #запись за текущее число будет ⊂ v контекста шаблона ⊂ имя by def object
+                        #к авто-сгенерированному пути к шаблону by def добавляется суффикс _detail
+                        #examples
+                            .../views.py
+                                from django.views.generic.dates import DateDetailView
+                                from .models import Bb, Rubric
+                                
+                                class BbDetailView(DateDetailView):
+                                    model = Bb
+                                    date_field = 'published'
+                                    month_format = '%m'
+                                    
+                                    def get_context_data(self, *args, **kwargs):
+                                        context = super().get_context_data(*args, **kwargs)
+                                        context['rubrics'] = Rubric.object.all()
+                                        return context
+                            #к сожалению в route на DateDetailView|производные классы требуется указывать url-param ключа(pk)|слага(slug), тк наследник SingleObjectMixin требующего один из них
+                                #-> сильно ограничен областью применения(?как)
+                            .../urls.py
+                                ...
+                                    path('detail/<int:year>/<int:month>/<int:day>/<int:pk>', BbDetailView.as_view(), name='detail'),
+                        
+            СМЕШИВАНИЕ ПРИМЕСЕИ            
+                КОНТРОЛЛЕРЫ-КЛАССЫ СМЕШАННОИ FX
+                #большая часть fx контроллеров-классов наследуется от примесеи
+                #дронов избегает контроллеров смешаннои fx - удобнее создать класс ⊃ ∀ нужную логику
+                    ВЫВОД СВЕДЕНИИ О ЗАПИСИ И НАБОРА СВЯЗАННЫХ С НЕИ ЗАПИСЕИ
+                        #вывод сведении о записи наследуем от SingleObjectMixin, вывод набора записеи связанных с текущеи наследуем от ListView
+                        from django.views.generic.detail import SingleObjectMixin
+                        from django.views.generic.list import ListView
+                        from .models import Bb, Rubric
+                        
+                        class BbByRubricView(SingleObjectMixin, ListView):
+                            template_name = 'bboard/by_rubric.html'             
+                            #имя url-param через которыи передается ключ рубрики
+                            pk_url_kwarg = 'rubric_id'
+                            
+                            #переопределяем
+                            def get(self, request, *args, **kwargs):
+                                #вызываем .get_object() унаследованныи от SingleObjectMixin для извлечения рубрики с заданным ключем
+                                self.object = self.get_object(queryset=Rubric.objects.all())
+                                return super().get(request, *args, **kwargs)
+                            
+                            def get_context_data(self, **kwargs):
+                                context = super().get_context_data(**kwargs)
+                                #заносим наиденную в .get() рубрику в v контекста шаблона
+                                context['current_rubric'] = self.object
+                                #добавляем ∀ рубрики
+                                context['rubrics'] = Rubric.objects.all()
+                                context['bbs'] = context['object_list']
+                                return context
+                            
+                            def get_queryset(self):
+                                return self.object.bb_set.all()
+                            #PS здесь мы сталкиваемся с проблемои шаблон за набором v обращается к v контекста шаблона bbs
+                                #в пред версии контроллера (см ListView) мы указали имя для этои v записав ее в .context_object_name, но здесь это не сработает - указав новое имя для v в .context_object_name мы зададим новое имя v в которои будет ⊃ рубрика, а не набор объяв(ввиду особенностеи работы множественного наследования python)
+                                    #-> в результате получим трудно диагностируемую err
+                                        #-> делаем иначе в .get_context_data() создаем v bbs контекста шаблона, присваиваем еи val object_list by def ⊃ набор записеи выводимых ListView
+                                            #и в переопределенном .get_queryset() >> набор объяв(полученныи через диспетчер обратнои связи) связанных с наиденнои рубрикои
+
+
+по идее GET-param != url-param
+#один передается в GET-запросе, а второи через парсинг routes                            
+
+orphan:eng:сирота, висящая str
+
+
 
         ЗАДАНИЕ VAL ПАРАМЕТРОВ КОНТРОЛЛЕРОВ КЛАССОВ
             .as_view()
@@ -2778,7 +3865,10 @@ manage.py startapp bboard
 #см контроллеры-классы
 
 ПАГИНАТОР
-#может исп для разбиения на части при извлечении набора записеи из модели посредством MultipleObjectMixin
+#может исп для разбиения на части при извлечении набора записеи из модели посредством MultipleObjectMixin ⊃ django.views.generic.list
+    django.core.paginator
+        .Paginator
+        #by def указывается MultipleObjectMixin.paginator_class ⊃ django.views.generic.list
 
 МАРШРУТЫ И МАРШРУТИЗАТОР
 	связываем(объявляем связь) url определенного формата(шаблонного url) с контроллером
@@ -2939,10 +4029,10 @@ django.urls
         #if маршрут исп для формирования uri - параметризованныи
             #исп для указания val URL-параметров для вставки в этот uri
         #первыи элт <seq_val_url_params> задает val первого url-параметра, второй - второго, etc
-        #при исп с kwargs -> exept
+        #при исп с kwargs >> exept
         kwargs:{'URL_param_name':<val>,...}
         #~ args
-        #при исп с kwargs -> exept
+        #при исп с kwargs >> exept
         urlconf
         #путь к модулю ⊃ список маршрутов
         #if !∃ исп модуль ⊃ список маршрутов уровня проекта указанныи в ROOT_URLCONF
@@ -3204,9 +4294,9 @@ attr класса ~ св-ва класса|статические св-ва в o
 			[r.name for r in Rubric.objects.all()]
 		
 		.last()	->	<model_instance>
-		#return последнюю запись набора | if набор пуст -> None
+		#return последнюю запись набора | if набор пуст >> None
 			b = Bb.objects.last()
-			b.title -> 'Дача'
+			b.title >> 'Дача'
 		#учитывает сортировку заданную вызовом .order_by() | параметром модели ordering
 		#противоположен first
 		
@@ -3337,8 +4427,8 @@ bulk:eng:наваливать
 		.exists()
 		#0 args
 		#быстр, рекомендуем
-		#if набор ⊃ записи -> True
-		#else	-> False
+		#if набор ⊃ записи >> True
+		#else	>> False
 			r = Rubric.objects.get(name='Сантехника')
 			Bb.objects.filter(rubric=r).exists()	>> False
 		
@@ -4528,6 +5618,8 @@ ftps
         
 
 ИСКЛЮЧЕНИЯ
+    NotImplementedError
+    #бросается исходнои реализациеи BaseDateListView.get_dated_items()
     django.http
         Http404
         #запрашиваемая страница не наидена
@@ -4577,7 +5669,7 @@ ftps
                 resp = StreamHttpResponse(resp_content, content_type='text/plain; charset=utf-8')
                 resp['keywords'] = 'Python, Django'
                 return resp
-            #?-> dict
+            #?>> dict
             
         #if нужно отправить клиенту данные != html/text | if V слишком большои
         #потоковыи ответ, формируется & отправляется небольшими частями
@@ -5515,7 +6607,7 @@ manage.py makemigrations bboard
 					
 			АГРЕГАТНЫЕ FX
 			#экз классов ⊃ django.db.models
-			#необязательные параметры конструкторов классов допустимы лишь при задании именованных параметров в вызовах aggregate|annotate (иначе -> exept)
+			#необязательные параметры конструкторов классов допустимы лишь при задании именованных параметров в вызовах aggregate|annotate (иначе >> exept)
 				Count(<field_name>[, distinct=False][, filter:<class 'Q'>=None])
 				#число записей ⊃ указанное поле
 					#подсчет объявлений с ценой > 100 000 по рубрикам
@@ -5674,7 +6766,7 @@ eng:coalesce:объединяться
 					.Length(<val>) -> число char
 						<val>
 						#строковое имя поля|экз F|экз Value ⊃ строковый|текстовый тип|Null
-						#if val = Null -> return None
+						#if val = Null >> None
 						
 						
 						
@@ -5682,7 +6774,7 @@ eng:coalesce:объединяться
 					#номер вхождения указаннои <substr> в строковое <val>
 					#(wtf?)нумерация chars в str начинается с 1
 						<substr>
-						#if ⊄ <val> -> return 0
+						#if ⊄ <val> >> 0
 						<val>
 						#строковое имя поля|экз F|экз Value ⊃ строковый|текстовый тип
 						
@@ -5699,55 +6791,55 @@ eng:coalesce:объединяться
 						
 						
 					.Left(<val>, <length>) -> str
-					#-> подстроку начинающуюся с заданного <val> ⊂ <length>
+					#>> подстроку начинающуюся с заданного <val> ⊂ <length>
 					
 					
 					
 					.Right(<val>, <length>) -> str
-					#-> подстроку заканчивающуюся в конце <val> ⊂ <length>
+					#>> подстроку заканчивающуюся в конце <val> ⊂ <length>
 					
 					
 					
 					.Replace(<val>, <substr>[, <newsubstr> = '']) -> str
-					#-> str ⊃ замененные substr
+					#>> str ⊃ замененные substr
 					#учитывает регистр
 					
 					
 					
 					.Repeat(<val>, <n>)
-					#-> <val> повторенное <n> раз
+					#>> <val> повторенное <n> раз
 					
 					
 					
 					.LPad(<val>, <length>[, <char-заполнитель>=' ')
-					#-> <val> дополненное до <length>
+					#>> <val> дополненное до <length>
 					
 					
 					
 					.Trim(<val>)
-					#-> <val> с удаленными начальными & конечными пробелами(?|пробельными символами)
+					#>> <val> с удаленными начальными & конечными пробелами(?|пробельными символами)
 					
 					
 					
 					.LTrim(<val>)
-					#-> <val> с удаленными начальными пробелами(?|пробельными символами)
+					#>> <val> с удаленными начальными пробелами(?|пробельными символами)
 					
 					
 					
 					.RTrim(<val>)
-					#-> <val> с удаленными конечными пробелами(?|пробельными символами)
+					#>> <val> с удаленными конечными пробелами(?|пробельными символами)
 					
 					
 					
 					.Chr(<char_code>)
 					#~ python chr()
-					#-> char с указанным кодом
+					#>> char с указанным кодом
 					
 					
 					
 					.Ord(<val>)
 					#~ python ord()
-					#-> int код первого char указанного <val>
+					#>> int код первого char указанного <val>
 					
 					
 					
@@ -6003,7 +7095,7 @@ eng:coalesce:объединяться
 					#класс исп для записи условного выражения
 					#∀ <усл> - экз When ⊃ django.db.models
 					#<усв> проверяются в порядке записи, if усл exe -> возвращается val ⊂ then ⊂ .When(), осталяные усл отбрасываются
-					#if ∀ val !exe -> return default
+					#if ∀ val !exe -> >> default
 						output_field
 						#тип возвращаемого val в виде экз класса поля нузного типа
 						#лучше указывать несмотря на неомязателяность
@@ -6101,14 +7193,15 @@ eng:coalesce:объединяться
 						Земельный участок
 						Пылесос
 						Стиральная машина
+						
 				
 				
 				intersection(<набор_записеи_0>,<набор_записеи1>,...)
-				#-> набор ⊃ записи ⊂ ∀ наборах
+				#>> набор ⊃ записи ⊂ ∀ наборах
 				
 				
 				difference(<набор_записеи_0>,<набор_записеи1>, ...)
-				#-> набор ⊃ записи ⊂ только одному из переданных наборов, а не нескольким сразу
+				#>> набор ⊃ записи ⊂ только одному из переданных наборов, а не нескольким сразу
 				#?symmetric difference
 		
 		ИЗВЛЕЧЕНИЕ VAL ТОЛЬКО ИЗ ЗАДАННЫХ ПОЛЕИ
@@ -6116,7 +7209,7 @@ eng:coalesce:объединяться
 		
 			values([<field0>, <field1>, ...])
 			#извлекает из модели val указанных полеи
-			#-> <QuerySet_instance> ⊃ {'<field0>':<val>,'<field1>':<val>,...}
+			#>> <QuerySet_instance> ⊃ {'<field0>':<val>,'<field1>':<val>,...}
 			#if ∀ val хранятся в одном dict -> нафига неск dict?
 			#поле мб задано
 				positional_arg
@@ -6141,7 +7234,7 @@ eng:coalesce:объединяться
 						{},
 						
 					]>
-			#при вызове без параметров -> возвращает набор dicts ⊃ ∀ поля таблицы бд обрабатываемои этои моделью
+			#при вызове без параметров >> набор dicts ⊃ ∀ поля таблицы бд обрабатываемои этои моделью
 				#обрати внимание на имена полеи -> это имена полеи таблицы бд, а не модели
 				Bb.objects.values()
 				>>
@@ -6236,7 +7329,7 @@ eng:coalesce:объединяться
 			
 			in_bulk(<val_seq> [, field_name='pk'])
 			#ищет в модели записи, чье поле field_name ⊃ val ⊂ <val_seq>
-			#-> dict(<val_⊃<val_seq>>: <obj_модели_представляюшие_наиденные_записи>
+			#>> dict(<val_⊃<val_seq>>: <obj_модели_представляюшие_наиденные_записи>
 			#заданное поле(видимо field_name) должно ⊃ уникальные val(конструктору поля модели передано unique=True)
 			#examples
 			    Rubric.objects.in_bulk([1, 2, 3])
@@ -6269,19 +7362,91 @@ eng:coalesce:объединяться
 	
 ШАБЛОНИЗАТОР
 #подсис-ма dj
-#загружает шаблон, объединяет его с данными(излеченными из моделей|полученными от клиента|сгенерированными при работе) и возвращает клиенту
-#поддерживает мн-во директив/тегов/фильтров(max часто используемые - встроенны в программное ядро шаблонизатора) остальные реализованы в загружаемых модулях расширения
-	#предварительная загрузка модуля расширения exe тегом
-		load <module_name>
-		#
-			{% static 'link_to_static_relative_from_static' %}
-			#походу генерирует ссылки на static
-				{% load static %}
-				...
-				<head>
-					...
-					<link rel="stylesheet" type="text/css" href="{% static 'bboard/style.css' %}">
-					...
+#загружает шаблон, объединяет его с данными(излеченными из моделей|полученными от клиента|сгенерированными при работе)(template context >> контроллером) и возвращает клиенту
+#по умолчанию ищет шаблоны в <app>/templates/
+	#можно Δ в настройках
+#очевидно что шаблоны веб-страниц должны быть в *.html(т.к. затем отсылаются клиенту(браузеру))
+
+#поддерживает мн-во директив/тегов/фильтров(max часто используемые - встроенны в программное ядро шаблонизатора)(встроенная библиотека) остальные реализованы в загружаемых модулях расширения
+	
+
+#почти ∀ одновременно исп only один шаблонизатор
+    #исп < 1 шаблонизатора - специфическая ситуация не рассматриваемая дроновым
+#∀ настроики шаблонов ⊂<list_of_dicts> ⊂ TEMPLATES ⊂ settings.py
+    #∀ dict ⊂ list задает params одного из доступных шаблонизаторов
+        BACKEND:<str>
+        #путь к шаблонизатору
+        #dj ⊃ 2:
+
+            СТАНДАРТНЫИ ШАБЛОНИЗАТОР DJANGO
+                django.template.backends.django.DjangoTemplates
+                #def, исп в большинстве случаев
+                #не поддерживает вызов методов ⊅ args в шаблонах
+            django.template.backends.jinja2.Jinja2
+            #шаблонизатор Jinja2
+        
+        NAME
+        #псевдоним шаблонизатора для обращения
+        #if !∃ ->исп последняя часть пути к его модулю
+        
+        
+        DIRS:<list>=[]
+        #список путеи к dirs где шаблонизатор будет искать шаблоны
+        
+        APP_DIRS:<bool>=False
+        #при создании проекта устанавливается в True
+            True
+            #шаблонизатор дополнительно ищет шаблоны в app dirs
+            False
+            #поиск only in путях ⊂ DIRS
+        
+        OPTIONS:<dict>
+        #доп params конкретного шаблонизатора
+        #∀ элт задает отдельные params
+            django.template.backends.django.DjangoTemplates
+            #поддерживает params
+                autoescape:<bool>=True
+                    True
+                    #∀ недопустимые HTML chars
+                        "
+                        <
+                        >
+                        #при выводе преобразуются в ~ спец символы(по идее &...)
+                    False
+                    #без преобразования
+                
+                string_if_invalid:<str>=""
+                #выводится при неудаче доступа к v шаблона|вычисления expr
+                
+                file_charset:<str>
+                #кодировка фаилов шаблонов
+                #if !∃ -> исп val параметра проекта FILE_CHARSET
+                
+                context_processors
+                #lst ⊃ str ⊃ имена модулеи реализуюших обработчики контекста, используещихся с шаблонизатором
+                #val:см обработчики контекста
+                
+                debug:<bool>
+                #if !∃ -> исп project param DEBUG
+                    True
+                    #вывод развернутых msg об err в шаблоне
+                    False
+                    #вывод кратких msg об err в шаблоне
+                
+                loaders
+                #lst ⊃ имена модулеи загружающих шаблоны
+                #dj сам выбирает загрузчики шаблонов для исп в зависимости от vals DIRS & APP_DIRS
+                    #-> обычно не нужно указывать
+                #vals: https://docs.djangoproject.com/en/2.1/ref/templates/api/#template-loaders
+                
+                builtins
+                #lst ⊃ str ⊃ пути к СТОРОННИХ(only) встраиваемым lib's тегов шаблонизатора
+                
+                libraries:<dict>={}
+                #перечень СТОРОННИХ(only) загружаемых lib шаблонов вида {<alias_библиотеки_тегов>:<str_⊃_пути_к_их_модулям>
+                
+                    
+        
 #формирование ответа на основе шаблона - высокоуровневое средство формирования ответа контроллером
     #для загрузки нужного шаблона dj предоставляет fx .get_template() & .select_template() ⊃ django.template.loader
         django.template
@@ -6329,7 +7494,7 @@ eng:coalesce:объединяться
                     #dict ⊃ val которые должны быть доступны в шаблоне
                     request
                     #if ∃ -> добавляется в context
-                #-> str ⊃ html страницы
+                #>> str ⊃ html страницы
                 #examples
                     from django.http. import HttpResponse
                     from django.template.loader import get_template
@@ -6355,54 +7520,431 @@ eng:coalesce:объединяться
             django.template.loader
             
                 .get_template(<template_path>)
-                #загружает шаблон & -> представляющии его экз Template ⊃ django.template
-                #if шаблон не удалось загрузить -> exept TemplateDoesNotExist
-                #if шаблон ⊃ err -> exept TemplateSyntaxError
+                #загружает шаблон & >> представляющии его экз Template ⊃ django.template
+                #if шаблон не удалось загрузить >> exept TemplateDoesNotExist
+                #if шаблон ⊃ err >> exept TemplateSyntaxError
                     <template_path>
                     #пути указываются относительно dir ⊃ templates
                 
                 
                 .select_template(<seq_of_temlates_path>) -> <django.template.Template>
-                #перебирает пути пытаясь загрузить шаблон и -> первыи загруженныи
-                #if шаблон не удалось загрузить -> exept TemplateDoesNotExist
-                #if шаблон ⊃ err -> exept TemplateSyntaxError
+                #перебирает пути пытаясь загрузить шаблон и >> первыи загруженныи
+                #if шаблон не удалось загрузить >> exept TemplateDoesNotExist
+                #if шаблон ⊃ err >> exept TemplateSyntaxError
                     <seq_of_temlates_path>
                     #пути указываются относительно dir ⊃ templates
+
+
+                
+    ВЫВОД ДАННЫХ
+                    
+        ДИРЕКТИВЫ
+        #исп для вывода данных
+        #~include c++
+        #поддерживает
+            исп литералов
+            извлечение val и помещение в это место
+                {{ <context_var> }}
+            обращение к
+                    элту коллекции по
+                        индексу
+                        ключу
+                    attr класса|экземпляра
+                    вызывать fx ⊅ args
+                исп одинаковую dot notation
+                    #элт list
+                    {{ rubrics.0 }}
+                    #элт dict/attr класса|экземпляра
+                    {{ current_bb.kind }}
+                    #вызов метода
+                    {{ rubric.get_absolute_url }}
+        #не поддерживает
+            вызов методов с args
+            #см СТАНДАРТНЫИ ШАБЛОНИЗАТОР DJANGO
+            expr
+
+        ТЕГИ ШАБЛОНИЗАТОРА DJ
+        #поддерживают исп литералов
+        #obj ⊃ в состав контекста шаблона(формируется программистом)
+        #syntax
+            {% <tag> [<params>] %}[<СОДЕРЖИМОЕ>][{% end<tag> %}]
+        #управляют генерированием содержимого результирующего документа
+            ОДИНАРНЫЕ ТЕГИ ШАБЛОНИЗАТОРА    
+            #обычно вставляет val вычисленное dj
+            
+                {% csrf_token %}
+                #тег шаблонизатора
+                #создает в форме скрытое поле, хранящее токен, получение которого контроллером - гарантия того что данные получены с текущего сайта и им "можно доверять"
+                #часть подсис-мы безопасности dj/исп еи
+                
+            
+            {% url <[ns:]route_name> <val_параметров_через_пробел> [as <v>] %}
+            #формирует uri обратным разрешением в шаблонах
+                <val_параметров_через_пробел>
+                #позиционные|именованные
+                as <v>
+                #сохранение uri в v вместо втыкания в шаблон
+            #examples
+                <a href="{% url 'bboard:detail' bb.pk %}">{{ bb.title }}</a>
+                <a href="{% url 'bboard:by_rubric' rubric_id=bb.rubric.pk %}">{{ bb.rubric.name }}</a>
+                #сохранение uri в v вместо втыкания в шаблон
+                    {% url 'bboard:detail' bb.pk as detail_url %}
+                    <a href="{{ detail_url }}">{{ bb.title }}</a>
+            
+            
+            {% cycle <space_separated_vals> [as <v>]%}
+            #ₓ помещает в шаблон vals
+            #вроде исп в циклах 
+            #inf -> при достижении конца начинает сначала
+            #число vals неограниченно
+            #examples
+                #на ∀ итерации for, cycle вставляет 'bb1'-'bb3' в 'div class=' 
+                {% for bb in bbs %}
+                <div class="{% cycle 'bb1' 'bb2' 'bb3' %}">
+                    <h2>{{ bb.title }}</h2>
+                    <p>{{ bb.content }}</p>
+                    <p>{{ bb.published|date:"d.m.Y H:i:s" }}</p>
+                </div>
+                {% endfor %}
+                #текущее val можно помещать в v шаблона для исп в ∀ его месте
+                {% for bb in bbs %}
+                {% cycle 'bb1' 'bb2' 'bb3' as currentclass %}
+                <div class="{{ currentclass }}">
+                    <h2>{{ bb.title }}</h2>
+                    <p>{{ bb.content }}</p>
+                    <p class="{{ currentclass }}">{{ bb.published|date:"d.m.Y H:i:s"}}</p>
+                </div>
+                {% endfor %}
                 
                 
+                {% resetcycle [<v>] %}
+                #сбрасывает {% cycle ...%} (by def последнии записанныи в шаблоне) и начинает перебирать его vals с начала
+                #для сброса конкретного тега нужно указать v записанную в нужном {% cycle %}
+                
+            {% firtsof <space_separated_vals> %} 
+            #помещает в шаблон первое "не пустое" val(!= False)
+            #examples
+                {% firstof bb.phone bb.email 'cat' %} 
+            
+            
+            {% regroup <seq> by <key|attr> as <v> %}
+            #группировка seq ⊃ dicts|obj по val элта с заданным ключом|attr и помещает созданныи list в v
+            #∀ элт list - namedtuple ⊃ элты
+                grouper
+                #val элта/attr по которому выполнена группировка
+                list
+                #list ⊃ dict|obj группы
+            #examples
+                #группировка объяв по рубрике
+                {% regroup bbs by rubric.name as groupsd_bbs %} 
+                {% for rubric_name, gbbs in groupsd_bbs %}
+                    <h2>{{ rubric_name }}</h3>
+                    {% for bb in gbbs %}
+                    <div>
+                        <h7>{{ bb.title }}</h2>
+                        <p>{{ bb.content }}</p|
+                        <p>{{ bb.published|date:"d.mY H:i:s" }}</p>
+                    </div>
+                    {% endfor %}
+                {% endfor %}
+                
+                
+            {% now <format> %}
+            #вставляет в шаблон текущие время & дату
+                <format>
+                #~ фильтру date(см ФИЛЬТРЫ)
+            #examples
+                {% now 'SHORT_DATETIME_FORMAT' %}
+            
+            
+            {% csrf_token %}
+                #вставляет токен используемыи под-сисмои безопасности dj
+                #исп only in <form>
+            
+            
+            {% templatetag <обозначение_ₓ_chars> %}
+            #вставка в шаблон ₓ chars которые иначе вставить нельзя
+             <обозначение_ₓ_chars>
+                openblock:      {%
+                closeblock:     %}
+                openvariable:   {{
+                closevariable:  }}
+                openbrace:      {
+                closebrace:     }
+                opencomment:    {#
+                closecomment:   #}
+            
+            
+            
+<псевдонимы библиотек тегов> ~ псевдонимы через пробел
+            
+            
+            
+		    {% load <псевдонимы библиотек тегов> %}
+            #предварительная загрузка модуля расширения в шаблон
+		    #может исп напр для загрузки загружаемых libs тегов  
+		    #examples
+				{% load static %}
+				...
+				<head>
+					...
+					<link rel="stylesheet" type="text/css" href="{% static 'bboard/style.css' %}">
+					...
+			
+			
+			{% widthratio <current_val> <max_val>  <max_width> %}
+			#исп для создания диаграмм
+			#(<current_val> / <max_val>) * <max_width> -> вставляется в шаблон
+			#examples
+			    <img src="bar.png" style="height:10px;width:{% widthratioc current_value 200 100 %}px">
+			
+			
+		    КОММЕНТАРИИ
+		        
+		        {% comment [<header>] %}<content>{% endcomment %}
+		        #вставляет в шаблонизатор многострочныи комментарии игнорируемыи шаблонизатором 
+		        #examples
+                    {% comment 'доделать' %}
+                    <p>Здесь будет список объяв</p>
+                    {% endcomment %}
+                
+                
+                {# <comment> #}
+                #однострочныи комментарии
+                #examples
+                    {# <p>{{ bb.published /date:"d.m.Y H:i:s"}}</p> #}
+                    
+        	    
+			
+			
+			{% debug %}
+			#вывод отладочнои информации ⊃
+			    контекст шаблона
+			    список отладочных модулеи
+			#не очень удобен на практике
+			
+			
+			
+            {% static 'link_to_static_relative_from_static' %}
+			#походу генерирует ссылки на static
+			#examples
+				{% load static %}
+				...
+				<head>
+					...
+					<link rel="stylesheet" type="text/css" href="{% static 'bboard/style.css' %}">
+					...
+
+        
+            ПАРНЫЕ ТЕГИ ШАБЛОНИЗАТОРА
+            #охватывают фрагмент шаблона
+            #исп для обработки шаблона
+                
+                {% for <v> in <obj> %}[<CONTENT>][{% empty %}<content_if_empty>]{% endfor %}
+                #
+                    <content_if_empty>
+                    #помещатся в шаблон if <obj> ⊅ элтов
+                    <CONTENT>
+                    #допускает исп v создаваемых самим тегом
+                        forloop.counter
+                        #текущая итерация цикла начиная с 1
+                        
+                        forloop.counter0
+                        #текущая итерация цикла начиная с 0
+                        
+                        forloop.revcounter
+                        #число оставшихся итерации(нумерация с 1)
+                        
+                        forloop.revcounter0
+                        #число оставшихся итерации(нумерация с 0)
+                        
+                        forloop.first
+                            True
+                            #это первая итерация
+                        
+                        forloop.last
+                            True
+                            #это последняя итерация
+                        
+                        forloop.parentloop
+                        #у вложенного указывает на внешнии цикл
+                        #examples
+                            #номер итерации внешнего цикла
+                            ...
+                            forloop.parentloop.counter
+                            ...
+                #~ python for
+                    перебирает элты коллекции(iterable?)
+                    заносит их val в v
+                    помещает в шаблон 
+                #examples
+                    #0
+                    {% for bb in bbs %}
+                    <div>
+                        <h2>{{ bb.title }}</h2>
+                        <p>{{ bb.content }}</p>
+                        <p>{{ bb.published|date:"d.m.Y H:i:s"}}</p>
+                    </div>
+                    {% endfor %}
+                    #1
+                    {% for bb in bbs %}
+                    <div>
+                        <p>{{ bb.title }} №{{ forloop.counter }}</p>
+                        ...
+                    </div>
+                    {% endfor %}
+                    
+                
+                {% if <cond> %}[<content>]{% elif <cond> %}[<content>]...{% else %}[<content>]{% endif %}
+                #~ python if
+                    <cond>
+                    #допускает исп
+                        ==
+                        !=
+                        <
+                        >
+                        <=
+                        >=
+                        in
+                        not
+                        in
+                        is
+                        is not
+                        and
+                        or
+                        not
+                #examples
+                    {% if bbs %}
+                    <h2>Список объявлении</h2>
+                    {% else %}
+                    <p>Обьявлении нет</p>
+                    {% endif %}
+                
+                {% ifchanged %}<content>{% endifchanged %}
+                or
+                {% ifchanged <space_separated_vals>%}<content>{% endifchanged %}
+                #исп в циклах
+                #выводит <content> only if оно Δ с предыдущеи итерации
+                #вывод <content> if Δ одно из val ⊂ <space_separated_vals>
+                #examples
+                    #вывод название рубрики ⊃ текущую рубрику, только if название Δ(те if текущая рубрика вложена в другую рубрику нежели предыдущая
+                    {% for rubric in rubrics %}
+                    {% ifchanged %}{{ rubric.parent.name }}{% endifchanged %}
+                    ...
+                    {% endfor %}
+                    #второи формат
+                    {% for rubric in rubrics %}
+                    {% ifchanged rubric.parent %}
+                    {{% endifchanged %}}
+                    ...
+                    {% endfor %}
+            
+                
+                {% with <присваивания_разделенные_пробелами> %}<content>{% endwidth %}
+                #может исп для временного хранения вычисленого val(напр обращение к attr класса) в v, чтобы не считать его снова
+                #присваивания записываются ~ python
+                #examples
+                    {% with bb_count = bbs.count %}
+                    {% if bb_count > 0 %}
+                    <p>Всего {{ bb_count }} объявлении.</p>
+                    {% endwith %}
+                      
+                
+                
+                
+                {% block <block_name> %}...{% endblock %}
+                #реализует наследование шаблонов
+                #начало объявляемого блока
+                #может быть пустым|⊃ содержимое - которое
+                    #будет использовано if производный шаблон не задаст для него содержимое
+                    #будет заменено if производный шаблон задаст для него содержимое
+                
+                
+                {% filter <filters> %}<content>{% endfilter %}
+                #фильтрация <content>
+                #?не очень понял синтаксис
+                #examples
+                    #?что делает
+                    {% filter force_escape|upper %}
+                    <p>Текст тега filter</p>
+                    {% endfilter %}
+                
+                
+                
+                {% autoescape on|off %}<content>{% endautoescape %}
+                #управляет авто-преобразованием недопустимых HTML chars("><) в ~ спец символы при выводе
+                
+                
+                {% spaceless %}<content>{% endspaceless %}
+                #удаление пробельных символов(space,tab,\b,\n)
+                #examples
+                    {% spaceless %}
+                    <h3>
+                        <em>Последние объявы</em>
+                    </h3>
+                    {% endspaceless %}
+                
+                {% verbatim %}<content>{% endverbatim %}
+                #вставка <content> как есть, без обработки:
+                    директив
+                    тегов
+                    фильтров
+                #examples
+                    {% verbatim %}
+                    <p>Текущие время & дата помещаются на страницу тегом {% now %}.</p>
+                    {% endverbatim %}
+                    
+
+
+
+verbatim:eng:?
+
+        ФИЛЬТРЫ
+        #поддерживают исп литералов
+        #записывается в директивах после v ⊃ val для обработки, с отделением |
+        #можно {Xₙ} исп неск фильтров
+            {{<v>|<filter>:<val>[|<filter>:<val>[...]]}}
+        #преобразуют val из obj в формат указанный после ":" перед выводом
+        
+            date:<format>
+            #форматирование даты & времени ~ <format>
+                <format>
+                    j       число ⊅ начальныи 0
+                    d       число ⊃ начальныи 0
+                    n       месяц ⊅ начальныи 0
+                    m       месяц ⊃ начальныи 0
+                    F|N     полное название месяца в именительном с большои буквы
+                    E       полное название месяца в родительном lowercase
+                    M       сокращение месяца с большои буквы
+                    b       сокращение месяца lowercase
+                    Y|o      
+            #examples
+                #<число>.<номер_месяца>.<год из 4х цифр> <часы в 24ч формате>:<минуты>:<секунды>
+                {{ bb.published|date:"d.m.Y H:i:s" }}
+            
+            
+            force_escape
+            
+            
+            upper
+        
+            lower
+            #examples
+                {{ bb.content|lower|default:'--описания нет'}}
+            
+            
+            default
+            #examples
+                {{ bb.content|lower|default:'--описания нет'}}
+            
+
 ШАБЛОН
+#образец для формирования страницы (напр веб отправляемои посетителю в ответ на его запрос|текстовых документов для отправки по email
 #⊃команды шаблонизатора
 
-	директивы
-	#~include c++
-	#указывают поместить в заданное место val
-		{{ <var> }}
-		#извлечь val из var и вставить в это место
-		
-		
-	теги
-	#управляют генерированием содержимого результирующего документа
-		{% for <elt> in <obj> %}
-			...
-		{% endfor %}
-		#~ for in в Python
-		#obj ⊃ в состав контекста шаблона(формируется программистом)
-		
-		
-		{url}
-		#исп для формирования uri в шаблонах
-		
-		
-	фильтры
-	#преобразуют val перед выводом
-		#фильтр date преобразует val из obj в формат указанный после ":"
-		#<число>.<номер_месяца>.<год из 4х цифр> <часы в 24ч формате>:<минуты>:<секунды>
-		{{<obj>|date:"d.m.Y H:i:s" }}
 
-#по умолчанию ищет шаблоны в <app>/templates/
-	#можно Δ в настройках
-#очевидно что шаблоны веб-страниц должны быть в *.html(т.к. затем отсылаются клиенту(браузеру))
-
+		
+	
 
 РЕНДЕРИНГ ШАБЛОНОВ
 #объединение шаблонов & данных
@@ -6426,7 +7968,50 @@ django.template.loader('path_to_template_from_templates_dir')
 #см .render() ⊂ django.shortcuts
 
 
+ОБРАБОТЧИКИ КОНТЕКСТА
+#программныи модуль добавляющии в контекст шаблона v после его формирования контроллером
+#указываются в settings.py TEMPLATES OPTIONS['context_processors']
+#обработчики контекста доступные в dj
+    django.template.context_processors.request
+    #add to context v request ⊃ obj текущего запроса(экз Request)
+    
+    django.template.context_processors.csrf
+    #add to context v csrf_token ⊃ электронныи жетон использующиися тегом шаблонизатора csrf_token
+    
+    django.contrib.auth.context_processors.auth
+    #add to context v user ⊃ текущии user & perms ⊃ права текущего user'а
+    
+    django.template.context_processors.static
+    #add to context v MEDIA_URL ⊃ val одноименного параметра project
+    
+    django.contrib.messages.context_processors.messages
+    #add to context v messages ⊃ lst всплывающих msg & DEFAULT_MESSAGES_LEVELS ⊃ dict сопоставляющии str обозначения уровнеи msgs с их числовыми кодами
+    
+    django.template.context_processors.tz
+    #add to context v TIME_ZONE ⊃ обозначение текущеи tz
+    
+    django.template.context_processors.debug
+    #add to context v
+    #исп при отладке
+        debug
+        #⊃ val project param DEBUG
+        
+        sql_queries
+        #⊃ данные о запросах к бд выполненных ПРИ ОБРАБОТКЕ ЗАПРОСА
+        #lst ⊃ dicts - ∀ dict - представляет один запрос, {'sql':<код_запроса>,'time':<execution_time>} 
 
+
+context ~ контекст ~ контекст шаблона
+
+БИБЛИОТЕКА ТЕГОВ
+#модуль python расширяющая набор доступных тегов шаблонизатора
+    ВСТРАИВАЕМАЯ БИБЛИОТЕКА ТЕГОВ
+    #загружается в mem при запуске проекта -> ее теги доступны ∀
+    #⊂ ядру dj
+    
+    ЗАГРУЖАЕМАЯ БИБЛИОТЕКА ТЕГОВ
+    #в Δ от встраиваемои перед исп должна быть явно загружена с исп тега:
+        load <lib_alias>
 СОКРАЩЕНИЯ
 #сокращение(~fx-сокращения ~ shortcuts) - fx exe неск деиствии
 #предназначена для exe типичных задач
@@ -6471,17 +8056,17 @@ django.template.loader('path_to_template_from_templates_dir')
                 #тип перенавравления
                 <val_url_params>
                 #мб указаны как именованные|позиционные args
-            #-> полностью сформированный экз HttpResponseRedirect(а могло быть иначе?)
+            #>> полностью сформированный экз HttpResponseRedirect(а могло быть иначе?)
             #examples
                 ...
                     return redirect('bboard:by_rubric', rubric_id=bbf.cleaned_data['rubric'].pk)
             
             
             .get_object_or_404(<source> [,<условия_поиска>])
-            #-> запись|бросает Http404 ⊃ django.http
+            #>> запись|бросает Http404 ⊃ django.http
                 <source>
                     <Model_obj>
-                    #видимо -> uri будет получен от <Model>.get_absolute_url()
+                    #видимо >> uri будет получен от <Model>.get_absolute_url()
                     экз <Manager>
                     #диспетчер записеи
                     экз <QuerySet>
@@ -6494,10 +8079,10 @@ django.template.loader('path_to_template_from_templates_dir')
             
             
             .get_list_or_404(<source>, <условия_фильтрации>)
-            #-> экз <QuerySet>
+            #>> экз <QuerySet>
             #if ни одна запись не подходит -> бросает Http404 ⊂ django.http
                     <Model_obj>
-                    #видимо -> uri будет получен от <Model>.get_absolute_url()
+                    #видимо >> uri будет получен от <Model>.get_absolute_url()
                     экз <Manager>
                     #диспетчер записеи
                     экз <QuerySet>
@@ -6516,7 +8101,7 @@ django.template.loader('path_to_template_from_templates_dir')
     django.views.decorators
         
         ДЕКОРАТОРЫ УСТАНАВЛИВАЮЩИЕ НАБОР ДОПУСТИМЫХ HTTP-МЕТОДОВ
-        #при попытке доступа с исп запрещенного метода -> декоратор -> экз HttpResponseNotAllowed
+        #при попытке доступа с исп запрещенного метода -> декоратор >> экз HttpResponseNotAllowed
             .http
                 
                 .require_http_methods(<SEQ_METHODS_NOTATIONS>)
@@ -6668,11 +8253,11 @@ django.http
         #raw content запроса
     #методы
         .get_host()
-        #-> str ⊃ [ip|домен(if удается получить)] & tcp-port сервера
+        #>> str ⊃ [ip|домен(if удается получить)] & tcp-port сервера
         .get_port()
-        #-> str ⊃ tcp-port сервера
+        #>> str ⊃ tcp-port сервера
         .get_full_path()
-        #-> full path to curr page
+        #>> full path to curr page
         .build_absolute_uri(<path>)
         #строит полныи uri на основе домена|ip и <path>
         #examples
@@ -6680,11 +8265,11 @@ django.http
             >>
                 http://localhost:8000/test/uri/
         .is_secure()
-        #-> True if обращение исп HTTPS
-        #-> False if обращение исп HTTP
+        #>> True if обращение исп HTTPS
+        #>> False if обращение исп HTTP
         .is_ajax()
-        #-> True if это AJAX-запрос
-        #-> False if это обычныи запрос
+        #>> True if это AJAX-запрос
+        #>> False if это обычныи запрос
         #AJAX-запросы выявляются dj по ⊂ запросу заголовка HTTP_X_REQUESTED_WITH:"XMLHttpRequest"
     
     
@@ -6738,7 +8323,7 @@ django.http
             flush()
             #?принудительно переносит содержимое буфера записи(?) в ответ
             has_header(<header>)
-            #-> True if <header> ⊂ ответу else -> False
+            #>> True if <header> ⊂ ответу else >> False
             setdefault(<header>, <val>)
             #создает в ответе <header> ⊃ <val> if таковой ⊄ ответу
     #поддерживает fx dicts которую можно исп для указания/получения val заголовков
@@ -7159,66 +8744,55 @@ binding:eng:связующий
 СТРОКОВОЕ ПРЕДСТАВЛЕНИЕ МОДЕЛИ
 ...
 
+ФОРМЫ
 
-ФОРМЫ СВЯЗАННЫЕ С МОДЕЛЯМИ
-#по идее можно добавлять префикс к именам полеи моделеи чтобы можно было просто связать ∀ поля с формои
-	
-	class Post:
-		user_form_title = ...
-		user_form_post = ...
-		...
-	
-django.views.generic.edit
-
-	.CreateView
-		.template_name
-		#путь к шаблону используемому для вывода страницы с формой
-		
-		.form_class
-		#класс формы связанной с моделью
-		
-		.success_url
-		#url по кот. будет выполнен переход после успешного сохранения данных
-		
-		.get_context_data()
-		#формурует контекст шаблона
-		
-		
-django.forms
-
-	.ModelForm.as_p()
-	#вывод формы с эл-тами управления на отдельных абзацах(элементах <p>)
-	#генерирует только код создающий эл-ты управления => теги
-		<form>
-		<input>
-		#придется писать вручную
-	#пример структуры
-		#код шаблона
-			<form method="post">{% csrf_token %}
-				{{ form.as_p }}
-			</form>
-		#результат
-			<form method="post">
-				<input type="hidden" name="csrfmiddlewaretoken"
-				value="<token">
-				<p>
-					<label for="id_<field_name>"><titled_field_name>:</label>
-					<select id="id_<field_name>" name="fk">
-					...
-	
-				
 <form>
 #создание формы
+
+    ОБЫЧНЫЕ ФОРМЫ
+    #
+    
+    
+    ФОРМЫ СВЯЗАННЫЕ С МОДЕЛЯМИ
+    #по идее можно добавлять префикс к именам полеи моделеи чтобы можно было просто связать ∀ поля с формои
+        
+        class Post:
+            user_form_title = ...
+            user_form_post = ...
+            ...
+        
+            
+            
+    django.forms
+    
+        .ModelForm.as_p()
+        #вывод формы с эл-тами управления на отдельных абзацах(элементах <p>)
+        #генерирует только код создающий эл-ты управления => теги
+            <form>
+            <input>
+            #придется писать вручную
+        #пример структуры
+            #код шаблона
+                <form method="post">{% csrf_token %}
+                    {{ form.as_p }}
+                </form>
+            #результат
+                <form method="post">
+                    <input type="hidden" name="csrfmiddlewaretoken"
+                    value="<token">
+                    <p>
+                        <label for="id_<field_name>"><titled_field_name>:</label>
+                        <select id="id_<field_name>" name="fk">
+                        ...
+	
+				
+
 
 
 <input>
 #кнопка отправки данных
 
 
-{% csrf_token %}
-#тег шаблонизатора
-#создает в форме скрытое поле, хранящее токен, получение которого контроллером - гарантия того что данные получены с текущего сайта и им "можно доверять"
-#часть подсис-мы безопасности dj
 
 "цифровой жетон"= токен
 
@@ -7233,16 +8807,10 @@ django.forms
 #базовый шаблон объявляет в себе блоки
 	#блоки определяют место в шаблоне для вставки содержимого из производных(по отношению к базовому) шаблонов
 	#∀ блок ⊃ уникальное в пределах шаблона имя
+#реализуется {% block %}(см ТЕГИ ШАБЛОНИЗАТОРА)
+	
+	
 
-{% block <block_name> %}
-#начало объявляемого блока
-#может быть пустым|⊃ содержимое - которое
-	#будет использовано if производный шаблон не задаст для него содержимое
-	#будет заменено if производный шаблон задаст для него содержимое
-	
-	
-{% endblock %}
-#закрывающий тег блока
 
 
 СТАТИЧЕСКИЕ ФАЙЛЫ
@@ -7339,4 +8907,4 @@ django.forms
 
 APPS
 #приложения реализуют отдельные части fx проекта
-#∀ проект должен ⊃ min одно app
+#∀ проект должен ⊃ min одно apps
