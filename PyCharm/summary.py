@@ -17,3 +17,13 @@ editor
             file headers
             imports
 colorsheme -> diff & merge отвечает за цвета рядом со scrollbars
+
+^c
+#copy line
+
+paste line selection always below
+
+^enter
+вставить строку после без перехода на нее
+
+hippie completion -> корректно исправляет язык даже с кастомными раскладками!
