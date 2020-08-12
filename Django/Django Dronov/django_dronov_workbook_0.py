@@ -416,7 +416,45 @@ django-admin
 						
 						
 					STATIC_URL = ''
-					#путь до static
+					#префикс добавляемыи к uri static, по его наличию dj определяет statics & педедает их подсис-ме статических фаилов
+					#val by def якобы None, но при создании нового проекта якобы устанавливается в '/static/'
+					
+					
+					[STATIC_ROOT= None]
+					#путь к основнои dir ⊃ ∀ static
+					
+					[STATICFILES_DIRS]
+					#список путеи к дополнительным dirs ⊃ static
+					#∀ путь можно задать как:
+					    #str ⊃ path
+					    STATICFILES_DIRS = [
+					        'c:/site/static',
+					        'c:/work/others/images'
+					    ]
+					    #(prefix, path)
+					    STATICFILES_DIRS = [
+					        ('main', 'c:/site/static'),
+					        ('images', 'c:/work/others/imgs')
+					    ]
+					        #для ссылки на c:/work/others/imgs/img.png исп:
+					            {% static 'images/img.png' %}
+					
+					
+					[STATICFILES_FINDERS]
+					#list имен классов реализующих подсисмы поиска static
+					#by def ⊃
+					    FileSystemFinder ⊃ django.contrib.staticfiles.finders
+					    #ищет static в dirs заданных
+					        STATIC_ROOT
+					        STATICFILES_FINDERS
+					        
+					    AppDirectoriesFinder ⊃ django.contrib.staticfiles.finders
+					    #ищет static в <apps>/static
+					#if static ⊂ только в одном месте - можно указать только один класс - что уменьшит нагрузку
+					
+					
+					[STATICFILES_STORAGE=StaticFilesStorage ⊃ django.contrib.staticfiles.storage]
+					#имя класса реализующего хранилище static
 					
 					
 					FILE_CHARSET
@@ -2905,6 +2943,7 @@ manage.py startapp bboard
                         записывает его в .object_list
                         #для успешнои работы наследуемых примесеи
                         выводит страницу ⊃ список записеи
+                    #неявно исп пагинатор
                     #examples
                         #вывод страницы ⊃ список объявлении ⊂ выбраннои посетителем рубрике
                         from django.views.generic.list import ListView
@@ -3865,10 +3904,132 @@ orphan:eng:сирота, висящая str
 #см контроллеры-классы
 
 ПАГИНАТОР
+#программныи механизм разбиения списка на части для вывода на странице и добавления ссылок на следующую, предыдущую, и конкретные
+#примеры
+    страницы списка товаров на маркете 
+#неявно исп в высокоуровневых контроллерах-классах - не требует указания
+    ListView
+    ...
+#явно исп только в:
+    контроллерах-fx
+    низкоуровневых контроллерах-классах
 #может исп для разбиения на части при извлечении набора записеи из модели посредством MultipleObjectMixin ⊃ django.views.generic.list
+#по идее после пагинации ⊃ ∀ записи набора
     django.core.paginator
-        .Paginator
-        #by def указывается MultipleObjectMixin.paginator_class ⊃ django.views.generic.list
+        
+        ПАГИНАТОР, СОЗДАНИЕ ПАГИНАТОРА
+        #для реализации пагинации требуется создать экз .Paginator ⊃ django.core.paginator
+
+            .Paginator(<набор_записеи>, <число_записеи_в_части> [, orphans=0][, allow_empty_first_page=True])
+            #представляет сам пагинатор
+                orphans=0
+                #min число записеи в последнеи части пагинатора
+                #if число записеи в последнеи части пагинатора < -> они выводятся в составе предыдущеи части
+                    0
+                    #последняя часть может ⊃ ∀ число записеи
+                
+                allow_empty_first_page:<bool>=True
+                #указывает будет ли создаваться "пустая" часть if набор пуст
+                    False
+                    #при попытке извлечения >> except EmptyPage ⊃ django.core.paginator
+            #by def указывается MultipleObjectMixin.paginator_class ⊃ django.views.generic.list
+            #attrs
+                count
+                #общее число записеи ⊂ ∀ частям пагинатора
+                
+                num_pages
+                #число частеи
+                
+                page_range
+                #итератор, возвращающии номера частеи пагинатора начиная с 1(логично ибо страницы начинаются не с 0)
+                
+                .get_page(<номер_части>)
+                #>> экз Page представляющии часть пагинатора
+                    <номер_части>
+                    #if не число >> первую часть(страницу)
+                    #if < 0 | > длинны пагинатора >> last часть
+                    #if !int >> PageNotAnInteger ⊃ django.core.paginator
+                #if полученная часть пуста, а пагинатор создан с исп allow_empty_first_page=False >> exept  EmptyPage ⊃ django.core.paginator
+                
+                .page(<номер_части>)
+                #~ .get_page(), но >> InvalidPage ⊂ django.core.paginator if <номер_части> не int|< 0|> длинны пагинатора
+                #оставлен для совместимости со старыми версиями dj
+            #examples
+                #вывод списка объяв с разбиением на части
+                #номер части передается в GET-param page
+                from django.shortcuts import render
+                from django.core.paginator import Paginator
+                from .models import Bb, Rubric
+                
+                def index(request):
+                    rubrics = Rubric.objects.all()
+                    bbs = Bb.objects.all()
+                    #разбить на части по два объявления
+                    paginator = Paginator(bbs, 2)
+                    #if request ⊃ get-param page
+                    if 'page' in request.GET:
+                        page_num = request.GET('page')
+                    else:
+                        page_num = 1
+                    #получаем эту часть
+                    page = paginator.get_page(page_num)
+                    #создаем v bbs ⊃ записи запрошеннои части
+                    context = {'rubrics': rubrics, 'page':page, 'bbs': page.object_list}
+                    return render(request, 'bboard/index.html', context)
+            
+            
+            .Page()
+            #экземпляры - представляют часть пагинатора
+            #возвращается .Paginator.get_page() & .page()
+                .object_list
+                #⊃ список записеи части
+                .number
+                #номер части начиная с 1
+                
+                .paginator
+                #экз .Paginator ⊂ django.core.paginator создавшии эту часть
+                
+                .has_next() -> <bool>
+                #>> True If ∃ след части Else False
+                
+                .has_previous()
+                #>> True If ∃ пред части Else False
+                
+                .has_other_pages()
+                #>> True If ∃ другие(предыдущие|следуюшие части) Else False
+                
+                .next_page_number()
+                #>> номер след части If она ∃ Else except InvalidPage ⊂ django.core.paginator
+                
+                .previous_page_number()
+                #>> номер пред части If она ∃ Else except InvalidPage ⊂ django.core.paginator
+                
+                .stat_index()
+                #>> номер первои записи ⊂ текущеи части
+                #нумерация с 1
+                
+                .end_index()
+                #>> номер последнеи записи ⊂ текущеи части
+                #нумерация с 1
+            #examples
+                #шаблон вывода гиперссылок для перехода между частями пагинатора
+                <div>
+                    {% if page.has_previous %}
+                    <a href="?page={{ page.previous_page_number }}">&lt;</a>
+                    &nbsp;&nbsp;|&nbsp;&nbsp;
+                    {% endif %}
+                    Часть №{{ page.number }} из {{ page.paginator.num_pages }}
+                    {% if page.has_next %}
+                    &nbsp;&nbsp;|&nbsp;&nbsp;
+                    <a href="?page={{ page.next_page_number }}">&gt;</a>
+                    {% endif %}
+                </div>
+                    
+
+        
+        ИСКЛЮЧЕНИЯ
+            .EmptyPage
+            #вызывается при попытке создании пагинатора для пустого набора записеи
 
 МАРШРУТЫ И МАРШРУТИЗАТОР
 	связываем(объявляем связь) url определенного формата(шаблонного url) с контроллером
@@ -4527,17 +4688,18 @@ bulk:eng:наваливать
 	#при исп в шаблоне -> подсвечиваются красным при вводе некорректных данных
 	
 		CharField(max_length:int)
+		#соотв полю формы CharField, if указать в консрукторе поля модели null=True -> консруктор поля формы получит empty_value=None
 		#строковое поле ограниченной длинны
 		#при привышении max_length -> текст просто уезжает за границу поля
 		#занимает в бд V необходимый для ⊃ числа символов указанных в max_length
 			#=> предпочтительно
 		#название в админке почему-то жирное
-		#в формах представляется <input type="text" ...>
 			default
 			#вроде принимает val ∀ типа
 		
 			
 		TextField([max_length:int])
+		#соотв полю формы CharField с областью редактирования в качестве элта управления ( CharField(..., widget=Textarea,...) )
 		#неограниченное текстовое поле(memo-поле)(выглядит как уязвимость)
 			TextField(null=True, blank=True)
 			#поле которое можно не заполнять
@@ -4550,6 +4712,7 @@ bulk:eng:наваливать
 		
 		
 		EmailField([max_length:int=254])
+		#соотв полю формы EmailField
 		#str⊃ корректный email
 		#вроде простая проверка на соотв шаблону <ascii>@<ascii>.<domain>
 		#ящики в зоне .рф вроде не поддерживаются
@@ -4561,6 +4724,7 @@ bulk:eng:наваливать
 		
 		
 		URLField([max_length:int=200])
+		#соотв полю формы URLField
 		#str⊃ корректный url
 		#работают ∀ url которые принял бы браузер
 		#при указании протокола и ctrl-enter над формой появляется ссылка "Сейчас: <a><url></a>", и "Изменить" перед формой
@@ -4576,6 +4740,7 @@ bulk:eng:наваливать
 		
 		SlugField([max_length:int=50[, allow_unicode=<bool>:False]])
 		#слаг - str однозначно идетифицирующая запись
+		#соотв полю формы SlugField
 		#исп как часть url
 		#allow_unicode=True - может ⊃ ∀ символы Unicode; False=> ascii only
 		#для ∀ SlugField автоматом создается индекс => db_index=True не требуется
@@ -4590,6 +4755,7 @@ bulk:eng:наваливать
 		
 		BooleanField([null=<bool>:False])
 		#null=True : поле получает возможность хранить null
+		#соотв полю формы BooleanField
 		#val по умолч: None, а не False, что конечно логично
 		#выпадающий список
 			Да
@@ -4603,6 +4769,7 @@ bulk:eng:наваливать
 		
 		NullBooleanField
 		#~BooleanField(null=True)
+		#соотв полю формы NullBooleanField
 		#deprecated, оставлен для совместимости со старыми dj
 		#в формах представляется <select>		
 		#миграции
@@ -4620,7 +4787,6 @@ bulk:eng:наваливать
 		#при вводе float с дробью, орет что нужно int
 		#exp не поддерживаются
 		#при вводе числа > 32 бита и добавлении 1 часть разрядов сбрасывает в 0, но число принимается хотя контроль стрелками ломается -> хз как это пашет
-		#в формах представляется <input type="number"...>
 		#миграции
 			#SQLite
 				"<field_name>" integer ...
@@ -4638,17 +4804,17 @@ bulk:eng:наваливать
 		BigIntegerField()
 		#signed 64bit int(double)
 		#название в админке почему-то жирное
-		#IntegerField() поле в 2 раза длинее
-		#в формах представляется <input type="number" min="-9223372036854775808" max="9223372036854775807"...>
+		#в формах представляется IntegerField
+		#~ IntegerField() полю, но в 2 раза длинее
 		#миграции
 			#SQLite
 				"<field_name>" bigint ...
 
 
 		PositiveIntegerField()
+		#в формах предтавляется IntegerField
 		#unsigned 32bit int(usual)
 		#название в админке почему-то жирное
-		#в формах представляется <input type="number" min="0"...>
 		#миграции
 			#SQLite
 				"<field_name>" integer unsigned NOT NULL CHECK ("<field_name>" >= 0)
@@ -4672,7 +4838,6 @@ bulk:eng:наваливать
 		#val ⊃ . преобразуется в ,
 		#⊃ стрелки Δ 1 сбрасывающие дробь
 		#при передаче больше одной , сбрасывает ввод при отправке ~ не цифрам
-		#в формах представляется <input type="number" step="any" ...>
 		#миграции
 			#SQLite
 				"<field_name>" real ...
@@ -4687,10 +4852,7 @@ bulk:eng:наваливать
 			#max знаков ⊂ дробной части
 		#пример
 			price = models.DecimalField(max_digits=8, decimal_places=2)
-		#название в админке почему-то жирное	
 		#⊃ стрелки с Δ min возможной для указанного decimal_places(0,01 by def) сбрасывающие часть меньше		
-		#при вводе большего числа цифр ругается сохраняя ввод в поле
-		#в формах представляется <input type="number" step="<10^-(<decimal_places>)>" ...>
 		#миграции
 			#SQLite
 				"<field_name>" decimal ...
@@ -4708,10 +4870,6 @@ bulk:eng:наваливать
 			auto_now_add
 			#~auto_now, ! текущая дата заносится только при создании записи, ! при послед сохранении
 			#исп для ⊃ даты создания записи
-		#название в админке почему-то жирное
-		#⊃ рядом кнопки "Сегодня"|<значек календаря> ⊃ удобный календарь ⊃ "вчера"|"сегодны"|"завтра" и "отмена"
-		#в обычном шаблоне простое текстовое поле !⊃ доп кнопки
-		#в формах представляется <input type="text"...>
 		#миграции
 			#SQLite
 				"<field_name>" date ...
@@ -4725,8 +4883,6 @@ bulk:eng:наваливать
 			DateTimeField(db_index=True)
 			#создавать для поля индекс(напр для послед сортировки по дате)(т.е. поле походу становится индексом)
 		#по идее форматы принимаемых val берутся из соотв параметров
-		#что-то не смог отобразить в админке dj
-		#в формах представляется <input type="text"...>
 		#миграции
 			#SQLite
 				"<field_name>" datetime ...
@@ -4742,18 +4898,12 @@ bulk:eng:наваливать
 			#~DateField
 			auto_now_add
 			#~DateField
-		#название в админке почему-то жирное	
-		#⊃ кнопки "Сейчас"|<значек_часов> ⊃	"Выберите время": "Сейчас" "Полночь" "6 утра" "Полдень" "6 вечера" "Отмена"
 		#с auto_now_add=True|auto_now=True -> не может быть добавлено в форму(тк поле становится non-editable)
-		#в формах представляется <input type="text"...>
 		
 		
 		DurationField()
 		#промежуток времени
 		#datetime.timedelta
-		#название в админке почему-то жирное
-		#вроде принимает float -> не удивительно -> это простое текстовое поле
-		#в формах представляется <input type="text"...>
 		#миграции
 			#SQLite
 				"<field_name>" bigint ...
@@ -4762,7 +4912,7 @@ bulk:eng:наваливать
 		BinaryField([editable=False])
 		#bytes(bytearray?memoryview?) произвольной длинны
 		#что-то не отобразилось в админке
-		#в формах представляется <input type="text"...>
+		#в форме на странице представляется <input type="text"...>
 		#миграции
 			#SQLite
 				"<field_name>" BLOB ...		
@@ -4774,8 +4924,6 @@ bulk:eng:наваливать
 			inpack_ipv4
 			#True=> преобразование IPv4 адресов записанных в формате IPv6 в формат IPv4
 			#требует protocol='both'
-		#название в админке почему-то жирное
-		#в формах представляется <input type="text"...>
 		#миграции
 			#SQLite
 			#длинна видимо зависит от протокола(39 )
@@ -4790,6 +4938,7 @@ bulk:eng:наваливать
 			#
 			serialize
 			#
+		#by def не представляется в формах
 		#автоинкрементное поле ⊃ уникальные инкрементирующиеся 32bit int
 		#почти ∀ используется как ключевое, и не требует явного объявления(создается dj автоматом при отсутствии в модели)
 		#при попытке создания второго начал ругаться
@@ -4799,6 +4948,7 @@ bulk:eng:наваливать
 		
 		BigAutoField
 		#64bit ~ AutoField
+		#by def не представляется в формах
 		#миграции
 			...
 		
@@ -4807,7 +4957,6 @@ bulk:eng:наваливать
 		#уникальные, универсальный(?) id
 		#представлен UUID from uuid, в виде str
 		#мб Δ(например в форме(при указанном editable=True))
-		#в форме представляется обычным текстовым полем
 		#может исп как ключевое вместо AutoField/BigAutoField
 		#требует ручной генерации id для записей
 			import uuid
@@ -7723,10 +7872,15 @@ eng:coalesce:объединяться
 			    список отладочных модулеи
 			#не очень удобен на практике
 			
+	
 			
-			
-            {% static 'link_to_static_relative_from_static' %}
-			#походу генерирует ссылки на static
+            {% static <link_to_static_relative_from_static> [as <v>] %}
+			#походу генерирует ссылки на static(видимо абсолютные)
+			    <link_to_static_relative_from_static>:<str>
+			    #относительно dirs ⊂ STATIC_ROOT & STATICFILES_DIRS | <app>/static
+			    as <v>
+			    #сохранение ссылки в v вместо втыкания в шаблон
+			#реализован в библиотеке тегов ⊃ alias static -> дб загружен с исп {% load %}
 			#examples
 				{% load static %}
 				...
@@ -7734,6 +7888,10 @@ eng:coalesce:объединяться
 					...
 					<link rel="stylesheet" type="text/css" href="{% static 'bboard/style.css' %}">
 					...
+				#исп v
+				    {% load static %}
+				    <link ... href="{% get_static_prefix %}bboard/style.css">
+				
 
         
             ПАРНЫЕ ТЕГИ ШАБЛОНИЗАТОРА
@@ -7850,15 +8008,60 @@ eng:coalesce:объединяться
                     {% endwith %}
                       
                 
-                
-                
-                {% block <block_name> %}...{% endblock %}
-                #реализует наследование шаблонов
-                #начало объявляемого блока
-                #может быть пустым|⊃ содержимое - которое
-                    #будет использовано if производный шаблон не задаст для него содержимое
-                    #будет заменено if производный шаблон задаст для него содержимое
-                
+                НАСЛЕДОВАНИЕ ШАБЛОНОВ
+                #~ наследованию Python, базовыи класс определяет ∀ элты которые должны быть общими для ∀ производных
+                #базовыи шаблон определяет набор блоков - место куда производныи шаблон поместит свое уникальное содержимое
+                #число блоков не ограничено
+                #в коде производного шаблона требуется указать базовыи(см {% extends %} 
+                #if в производном шаблоне не указать блок базового шаблона - он будет выведен с содержимым базового
+                #можно создавать в производном блоки ⊄ базовому, и наследовать его другими шаблонами
+    
+                    {% block <block_name> %}...{% endblock [<block_name>] %}
+                    #реализует наследование шаблонов
+                    #начало объявляемого блока
+                        <block_name>
+                        #дб уникальным в пределах базового шаблона
+                        #запись в {% endblock %} повышает читаемость (а может и нужна при вложенности)
+                    #может быть пустым|⊃ содержимое - которое
+                        #будет использовано if производный шаблон не задаст для него содержимое
+                        #будет заменено if производный шаблон задаст для него содержимое
+                    #attrs
+                        super
+                        #~ python super
+                        #вывод val базового шаблона в составе заданного производным шаблоном содержимого
+                        #v контекста создаваемая dj
+                    #examples
+                        <title>{% block title %}Main Page{% endblock %} - Доска объявлении</title>
+                        ...
+                        {% block content %}
+                            <p>Содержимое базового шаблона</p>
+                        {% endblock content %}
+                        #исп super
+                            {% block content %}
+                                <p>Содержимое производного шаблона 1</p>
+                                {{ block.super }}
+                                <p>Содержимое производного шаблона 2</p>
+                            {% endblock content %}
+                            >>
+                                Содержимое производного шаблона 1
+                                Содержимое базового шаблона
+                                Содержимое производного шаблона 1
+                                
+
+                    
+                    
+                    {% extends <path_to_base_template>  %}
+                    #должен быть в начале шаблона, на отдельнои str
+                        <path_to_base_template>
+                        
+                    #examples
+                        {% extends "layout/basic.html" %}
+                        #тк {% block title %} не указан -> будет взят из базового
+                        ...
+                        {% block content %}
+                            <p>Содержимое производного шаблона</p>
+                        {% endblock content %}
+                    
                 
                 {% filter <filters> %}<content>{% endfilter %}
                 #фильтрация <content>
@@ -7908,7 +8111,7 @@ verbatim:eng:?
         
             date:<format>
             #форматирование даты & времени ~ <format>
-                <format>
+                <format>:<str>
                     j       число ⊅ начальныи 0
                     d       число ⊃ начальныи 0
                     n       месяц ⊅ начальныи 0
@@ -7917,25 +8120,331 @@ verbatim:eng:?
                     E       полное название месяца в родительном lowercase
                     M       сокращение месяца с большои буквы
                     b       сокращение месяца lowercase
-                    Y|o      
+                    Y|o     год 4 цифры
+                    y       год 2 цифры
+                    L       високосныи if True Else False
+                    w       номер дня недели 0(вс)...9(сб)
+                    l       сокращенное название дня недели с большои буквы
+                    D       полное название дня недели в именительном с большои буквы
+                    G       часы в 24 ⊅ начальныи 0
+                    H       часы в 24 ⊃ начальныи 0
+                    g       часы в 12 ⊅ начальныи 0
+                    h       часы в 12 ⊃ начальныи 0
+                    i       минуты
+                    s       секунды ⊃ начальныи 0
+                    u       микросекунды
+                    a       локализованное обозначение половины суток lowercase ("д.п."|"п.п.")
+                    А       локализованное обозначение половины суток uppercase("ДП"|"ПП")
+                    I       1 If летнее время Else 0
+                    P       часы в 12 & минуты if (минуты ∃) 
+                    t       число днеи в месяце
+                    z       порядковыи номер недели(начинается с пн)
+                    e       временная зона
+                    O       Δ часов текущим и гринвичевским временем
+                    Z       Δ секунд текущим и гринвичевским временем
+                    c       дата & время в формате ISO 8601
+                    r       дата & время в формате RFC 5322
+                    U       время в UNIX формате(секунды с 01.01.1970)
+                    T       временная зона ⊂ настроикам пк
+                #также можно исп обозначения встроенных в dj форматов
+                    DATE_FORMAT
+                    #развернутыи формат даты
+                    DATETIME_FORMAT
+                    #развернутыи формат даты & времени
+                    SHORT_DATE_FORMAT
+                    #сокращенныи формат даты
+                    SHORT_DATETIME_FORMAT
+                    #сокращенныи формат даты & времени
             #examples
                 #<число>.<номер_месяца>.<год из 4х цифр> <часы в 24ч формате>:<минуты>:<секунды>
                 {{ bb.published|date:"d.m.Y H:i:s" }}
+                #
+                {{ bb.published|date:'DATETIME_FORMAT'}}
             
             
-            force_escape
+            time[:<time_format>]
+                <time_format>:<str>
+                #~date
+                #обозначения встроенных в dj форматов
+                    TIME_FORMAT
+                    #формат by def
+            #examples
+                {{ bb.published|time:'H:i' }}
+                #для вывода с в default формате
+                {{ bb.published|time:'TIME_FORMAT'}}
+                    #или вообще не указывать формат
+                    {{ bb.published|time }}
             
+            
+            timesince[:<val_для_сравнения>]
+            #вывод промежутка времени разделяющии выводимое val даты & времени и заданное <val_для_сравнения> вида:
+                "3 недели, 6 днеи"
+                "6 днеи 23 часа"
+                ...
+            #предполагается что <val_для_сравнения> > выводимого val Else >> "0 минут"
+            
+            
+            timeuntil[:<val_для_сравнения>]
+            #~timesince, но предполагается что <val_для_сравнения> < выводимого val
+            
+            yesno[:<строка_образцов>]
+            #преобразует <bool> & None в str "да", "нет", "может быть" | указанные
+                <строка_образцов>:<str_for_True>, <str_for_False> [, <str_for_None>]
+                #⊃ str для преобразования
+                #if <str_for_None> !∃ используется str для False(тк None неявно приводится к False)
+            #выбирает одно val из str
+            #examples
+                {{ True|yesno }}, {{ False|yesno }}, {{ None|yesno}}
+                >>
+                    да, нет, может быть
+                {{ True|yesno:'так точно,никак нет,дело темное' }}
+                {{ False|yesno:'так точно,никак нет,дело темное' }}
+                {{ None|yesno:'так точно,никак нет,дело темное' }}
+                >>
+                    так точно,никак нет,дело темное
+            
+            
+            default:<val>
+            #if выводимое val ~ False >> <val>
+            #examples
+                #if bb.price = 0|!∃
+                {{ bb.price|default:'У товара нет цены'}}
+                {{ bb.content|lower|default:'--описания нет' }}
+
+
+            default_if_none:<val>
+            #if выводимое val=None >> <val>
             
             upper
-        
+            #перевод val to uppercase
+            
             lower
+            #перевод val to lowercase
             #examples
-                {{ bb.content|lower|default:'--описания нет'}}
+                {{ bb.content|lower|default:'--описания нет' }}
+            
+            capfirst
+            #перевод первои буквы val to uppercase
+            
+            title
+            #перевод первых букв ∀ слов ⊂ val to uppercase
+            
+            truncatechars:<length>
+            #обрезает val до <length> и добавляет в конец один символ многоточия(...) 
             
             
-            default
+            truncatechars_html:<length>
+            #~truncatechars, но сохраняет ∀ html теги в выводимом val
+            
+            
+            wordwrap:<val>
+            #добавляет \n слов в строке так чтобы длинна каждои получившеися str была ≤ <val>
+            
+            cut:<удаляемая_подстрока>
+            #удаление ∀ вхождения подстроки
             #examples
-                {{ bb.content|lower|default:'--описания нет'}}
+                {{ 'Python|cut:'t}}     >> 'Pyhon'
+            
+            
+            slugify
+            #преобразование выводимого val в слаг
+            
+            stringformat:<format>
+            #<format> исп спец символы исп оператора % python
+            
+            
+            floatformat[:<знаков_после_запятои>=-1]
+            #формат выводимого val как вещественного числа, округляя его до заданного <знаков_после_запятои>
+                <знаков_после_запятои>
+                #if положительное -> ∀ знаки выводятся всегда, Else только значащие
+            #examples
+                {{ 34.23234|floatformat }}
+                    >>  34.2
+                    
+                {{ 34.00000|floatformat }}
+                    >>  34
+                    
+                {{ 34.26000|floatformat }}
+                    >>  34.3
+                
+                {{ 34.00000|floatformat:3 }}
+                    >>  34.000
+                
+                {{ 34.26000|floatformat:3 }}
+                    >>  34.260
+                
+                {{ 34.23234|floatformat:-3 }}
+                    >>  34.232
+                
+                {{ 34.00000|floatformat:-3 }}
+                    >> 34
+            
+            filesizeformat
+            #вывод числовои величины как размер фаила
+            #examples
+                "100 байт"
+                "8,8 КБ"
+                "47,7 МБ"
+            
+            
+            add:<val>
+            #прибавить val
+            #поддерживаются ∀ {Xₙ} & числа
+            
+            
+            divisibleby:<делитель>
+            #>> True If выводимое val кратно(делится без остатка) на <делитель> Else False
+            
+            
+            wordcount
+            #>> число слов ⊂ выводимому str val
+            
+            length
+            #>> длинну {Xₙ}
+            
+            length_is:<val>
+            #>> True If length({Xₙ}) == <val> Else False
+            
+            first
+            #>> первыи элт выводимои {Xₙ}
+            
+            last
+            #>> последнии элт выводимои {Xₙ}
+            
+            random
+            #>> случаиныи элт выводимои {Xₙ}
+            
+            slice:"slice"
+            #python slice
+            #examples
+                {{ rubric_names|slice:'1:3' }}
+            
+            join:<sep>
+            #~ .join python, >> str ⊃ элты {Xₙ} разделенные <sep>
+            
+            make_list
+            #преобразования выводимого val в list
+            #~ list(), элементами списка станут символы val
+            
+            dictsort:<key|index_элемента>
+            #if выводимое val - {Xₙ} dicts,lists,tuples -> сортирует список по val элтов с указанным ключем по возрастанию
+            #examples
+                #вывод списка объяв отсортированных по цене
+                {% for bb in bbs|dictsort:'price' %}
+                    ...
+                #сортировка списка списков
+                    {% for el in list_of_lists|dictsort:1 %} 
+                        ...
+            
+            dictsortreversed:<key|index_элемента>
+            #~dictsort по убыванию
+            
+            unordered_list
+            #исп if выводимое val - (список/кортеж)⊃(списки/кортежи)
+            #>> HTML-код создающии набор вложенных неупорядоченных списков ⊅ внешних тегов (<ul></ul>)
+            #examples
+                ulist = [
+                    'PHP',
+                    ['Python', 'Django'],
+                    ['JavaScript', 'Node.js', 'Express']
+                ]
+                ...
+                <ul>
+                    {{ ulist:unordered_list }}
+                </ul>
+                >>
+                    <ul>
+                        <li>PHP
+                            <ul>
+                                <li>Python</li>
+                                <li>Django</li>
+                            </ul>
+                            <ul>
+                                <li>JavaScript</li>
+                                <li>Node.js</li>
+                                <li>Express</li>
+                            </ul>
+                        </li>
+                    </ul>
+            
+            linebreaksbr
+            #замена в выводимой str ∀ переводы строк на <br>
+            
+            linebreaks
+            #замена в выводимой str ∀ одинарные переводы строк на <br>, при встрече двоиных - разделяемые ими части заключаются в <p>
+            
+            urlize
+            #преобразование ∀ uri(⊃ гиперссылки & emails) в выводимом val
+            #адреса создаются тегом <a>, в тег создающии обычную гиперссылку добавляется attr rel=nofollow  
+            #нормально работает только с текстом - при обработке HTML-кода - результат непредсказуем
+            
+            urlizetrunc:<length>
+            #~ urlize, дополнительно обрезает текст ссылок до <length> & добавляет в конец ...
+            
+            safe
+            #подавление авто-преобразования недопустимых HTML-символов("><) в ~ спец символы
+            
+            safeseq
+            #~ safe, но для ∀ элтов {Xₙ}
+            #обычно исп с другими фильтрами
+                {{ rubric_names|safeseq|join:", " }}
+            
+            
+            escape
+            #преобразование недопустимых HTML-chars("><) в ~ спец символы
+            #обычно исп в содежимом autoescape с отключенным авто преобразованием недопустимых знаков
+                {% autoescape off %}
+                    {{ blog.content|escape }}
+                {% endautoescape %}
+
+            force_escape
+            #~ escape, но принудительно, мб полезен для преобразования результата другого фильтра
+            
+            escapejs
+            #преобразует val так, чтобы его мб исп как str в js
+            
+            striptags
+            #удаление ∀ HTML-тегов
+            
+            urlencode
+            #кодирует val чтобы его мб исп в uri(напр передать в GET-param)
+            
+            iriencode
+            #кодирует интернационализированныи id ресурса чтобы его мб исп в uri
+            #см протоколы
+            
+            addslashes
+            #экранирует " и '
+            
+            ljust:<length>
+            #~python ljust
+                {{ 'Python'|ljust:20 }}
+                >>
+                    "Python              "
+            
+            center:<length>
+            #~python center
+                {{ 'Python'|center:20 }}
+                >>
+                    "       Python       "
+            
+            rjust:<length>
+            #~python rjust
+                {{ 'Python|rjust:20' }}
+                >>
+                    "              Python"
+            
+            get_digit:<digit_position>
+            #>> цифру на указаннои позиции if (∃ цифра на указаннои позиции) Else If (на позиции не цифра|позиция < 1|позиция > длинны val) >> позицию
+                {{ 123456789|get_digit:4 }}
+            
+            linenumbers
+            #>> str разбитое на строки(исп \n) с номерами строк слева
+            
+            
+            
+
+        
             
 
 ШАБЛОН
@@ -7982,7 +8491,13 @@ django.template.loader('path_to_template_from_templates_dir')
     #add to context v user ⊃ текущии user & perms ⊃ права текущего user'а
     
     django.template.context_processors.static
-    #add to context v MEDIA_URL ⊃ val одноименного параметра project
+    #add to context v:
+        MEDIA_URL ⊃ val одноименного параметра project
+        STATIC_URL ⊃ префикс ⊂ одноименного параметра project
+    #by def ⊄ TEMPLATES[0]['OPTIONS'] -> требуется добавить
+        #затем можно исп добавляемыми им v в контексте
+        ...
+        <link ... href="{{ STATIC_URL }}bboard/style.css">
     
     django.contrib.messages.context_processors.messages
     #add to context v messages ⊃ lst всплывающих msg & DEFAULT_MESSAGES_LEVELS ⊃ dict сопоставляющии str обозначения уровнеи msgs с их числовыми кодами
@@ -8012,6 +8527,10 @@ context ~ контекст ~ контекст шаблона
     ЗАГРУЖАЕМАЯ БИБЛИОТЕКА ТЕГОВ
     #в Δ от встраиваемои перед исп должна быть явно загружена с исп тега:
         load <lib_alias>
+    #
+        static
+        #⊃ {% static %}
+        #?static - лишь alias - я хз как называется сама библиотека 
 СОКРАЩЕНИЯ
 #сокращение(~fx-сокращения ~ shortcuts) - fx exe неск деиствии
 #предназначена для exe типичных задач
@@ -8412,6 +8931,7 @@ django.contrib.auth
 			db_constraint:<bool>=True][,
 			...]
 		)
+		#соотв полю модели ModelChoiceField
 		#поле внешнего ключа
 		#создание связи "один-со-многими"
 		#связывание одну запись первичной модели с ∀ числом записей вторичной
@@ -8542,6 +9062,7 @@ django.contrib.auth
 			through][,
 			through_fields][,
 		...])
+		#соотв классу поля формы ModelMultipleChoiceField
 		#связь "многие-со-многими"
 		#обе модели равноправны(нет primary/secondary)
 			модель ⊃ объявление	- вещущая
@@ -8745,48 +9266,650 @@ binding:eng:связующий
 ...
 
 ФОРМЫ
+#сущность для получения данных от посетителя и и их валидации
+#определяет
+    поля для ввода vals
+    типы vals
+    элты управления для ввода данных
+    правила валидации
+#в большинстве случаев исп для занесения в бд новых записеи|Δ ∃
+
 
 <form>
 #создание формы
-
+        class Post:
+            user_form_title = ...
+            user_form_post = ...
+            ...
+                
     ОБЫЧНЫЕ ФОРМЫ
     #
     
     
     ФОРМЫ СВЯЗАННЫЕ С МОДЕЛЯМИ
     #по идее можно добавлять префикс к именам полеи моделеи чтобы можно было просто связать ∀ поля с формои
+    #в отличие от обычных форм - представляет некоторую запись модели(уже ∃|!∃)
+    #в частности ее поля соотв одноименным полям модели
+    #attrs
+        .save()
+        #сохранение данных формы в бд
         
-        class Post:
-            user_form_title = ...
-            user_form_post = ...
-            ...
-        
+        СОЗДАНИЕ ФОРМ СВЯЗАННЫХ С МОДЕЛЯМИ
+        #3 способа
             
-            
-    django.forms
-    
-        .ModelForm.as_p()
-        #вывод формы с эл-тами управления на отдельных абзацах(элементах <p>)
-        #генерирует только код создающий эл-ты управления => теги
-            <form>
-            <input>
-            #придется писать вручную
-        #пример структуры
-            #код шаблона
-                <form method="post">{% csrf_token %}
-                    {{ form.as_p }}
-                </form>
-            #результат
-                <form method="post">
-                    <input type="hidden" name="csrfmiddlewaretoken"
-                    value="<token">
-                    <p>
-                        <label for="id_<field_name>"><titled_field_name>:</label>
-                        <select id="id_<field_name>" name="fk">
+            django.forms
+                
+                СОЗДАНИЕ ФОРМ ПОСРЕДСТВОМ ФАБРИКИ КЛАССОВ
+                #в Δ от полного объявления позволяет задать для полеи формы ограниченныи param lst
+                
+                
+                    .modelform_factory(<model> [, fields=None] [, exclude=None] [, labels=None][, help_texts=None] [, error_messages=None][, field_classes=None][, widgets=None][, form=<форма_связанная_с_моделью>])
+                    #fx(фабрика классов)
+                    #удобен для создания редко исп форм
+                        #тк создается при необходимости & уничтожается при удалении v ⊃ его
+                    #attrs
+                        #if attr !∃ -> его val берется из модели|исп def val
+                        <model>
+                        #ссылка на класс модели для создания формы
+                        fields=None
+                        #задает {Xₙ} имен полеи модели для включения в форму
+                        #∀ поля ⊄ в эту {Xₙ} - не попадут в форму
+                            "__all__"
+                            #⊃ ∀ поля формы
+                        #противоположен exclude и не мб указан с ним
+                        
+                        exclude
+                        #задает {Xₙ} имен по
+                        #противоположен fields и не мб указан с ним
+                        #∀ поля ⊄ в эту {Xₙ} - будут добавлены в форму
+                        
+                        labels:<dict>
+                        #{<имя_поля_формы>:<label>,...}
+                        #задает надписи для полеи формы
+                        #if ∄ -> используется название сущности ⊂ verbose_name конструктора поля модели
+                        
+                        help_texts:{"form_field_name":"help_text",...}
+                        #указывает доп поясняющии текст для полеи формы
+                        #выводится рядом с элтами управления
+                        
+                        error_messages:<dict>
+                        #указывает str err msgs
+                        #{"form_field_name":{'err_code':'err_msg',...},...}
+                        #коды ошибок см ВЫВОД СВОИХ СООБЩЕНИЙ ОБ ОШИБКАХ
+                        
+                        field_classes:{"form_field_name":<ссылка_на_класс_поля_формы>,...}
+                        #указывает тип поля создаваемого в форме для соотв ему поля модели
+                        
+                        widgets:<dict>
+                        #задает элемент управления которым будет представлено поле модели
+                        #{"form_field_name":<экз_класса_представляющего_элт_управления>|<ссылка_на_класс_представляющии_элт_управления>}
+                            #см django.forms.widgets
+                        #if ∄ -> исп default элт управления для поля этого типа
+                        
+                        
+                        
+                        form=<форма?
+                        #указывает форму для создания модели
+                        #может указывать на общие для группы params
+                    #простеишии способ создания формы связаннои с моделью
+                    #examples
+                        #>> класс формы связаннои с моделью
+                        from django.forms import modelform_factory, DecimalFields
+                        from django.froms.widgets import Select
+                        
+                        BbForm = modelform_factory(Bb,
+                                 fields=('title', 'content', 'price', 'rubric'),
+                                 #Δ название товара для примера
+                                 labels={'title': 'Название товара'},
+                                 help_texts={'rubric': 'Не забудьте выбрать рубрику'},
+                                 #Δ тип поля цены
+                                 field_classes={'price': DecimalField},
+                                 #поля рубрики в виде обычного списка высотои 8px
+                                 widgets={'rubric': Select(attrs={'size': 8})})
+                        
+                        #исп созданныи фабрикои класс для создания формы в высокоуровневом контроллере-классе
+                
+                СОЗДАНИЕ ФОРМ ОБЪЯВЛЕНИЕМ
+                #в Δ от фабричных форм исп if форма нужна на долго
+                    #dj не будет тратить время на его пересоздание    
+                #в Δ от полного объявления позволяет задать для полеи формы ограниченныи param lst
+                    СОЗДАНИЕ ФОРМ БЫСТРЫМ ОБЪЯВЛЕНИЕМ
+                    #суть
+                        class <class_name>(ModelForm):
+                            class Meta:
+                                <model_form_factor_params>
+                    #examples
+                        from django.forms import ModelForm, DecimalField
+                        from django.forms.widgets import Select
+                        from .models import Bb
                         ...
-	
-				
+                        class BbForms(ModelForm):
+                            class Meta:
+                                model=Bb
+                                fields=('title', 'content', 'price', 'rubric')
+                                labels={'title': 'Название товара'}
+                                help_texts={'rubric': 'Не забудьте задать рубрику!'}
+                                field_classes={'price': DecimalField},
+                                widgets={'rubric': Select(attrs={'size'})}}
+        
+                    СОЗДАНИЕ ФОРМ ПОЛНЫМ ОБЪЯВЛЕНИЕМ
+                    #в Δ от фабричных|быстрообъявленных форм позволяет задать для полеи неограниченныи набор params
+                    #сложнеишии способ(относительно быстрого объявления/фабричных форм)
+                    #позволяет добавить в форму поля ⊄ связаннои модели
+                    
+                        #добавляем в форму регистрации поля password1, password2 ⊄ модели User
+                        ...
+                        class RegisterUserForm(forms.ModelForm):
+                            password1 = forms.CharField(label='Пароль')
+                            password2 = forms.CharField(label='Пароль (повторно)')
+                            
+                            class Meta:
+                                model = User
+                                #такие поля не обязательно приводить в lst включаемых, но -> такие поля окажутся в конце при выводе
+                                fields = ('username', 'email', 'first_name', 'last_name')
+                                #для вывода в нужном порядке их нужно указать
+                                    fields = ('username', 'email', 'password1', 'password2', 'first_name', 'last_name')
+                    #похоже на объявление модели
+                        #записываем attrs представляющие поля в классе формы, присваиваем им экземпляры классов полеи нужных типов
+                        #объяляем Meta ⊃ связываемую модель & и список ⊃|⊅ полеи(вручную пишем ∀ model params ⊃ набор полеи) -> полное объявление класса
+                    #examples
+                        #полное объявление ∀ полеи формы на основе модели Bb
+                        from django import forms
+                        from .models import Bb, Rubric
+                        
+                        class BbForm(forms.ModelForm):
+                            title = forms.CharField(label='Название топара')
+                            content = forms.CharField(label='Описание', widget=forms.widgets.Textarea())
+                            price = forms.DecimalField(label='Цена', decimal_places=2)
+                            rubric = forms.ModelChoiceField(queryset=Rubric.objects.all(), label='Рубрика', help_text='Не забудьте задать рубрику', widget=forms.widgets.Select(attrs={'size': 8}))
+                            
+                            class Meta:
+                                model = Bb
+                                fields = ('title', 'content', 'price', 'rubric')
+                    
+                      
+                    
+                        ПОЛНОЕ ОБЪЯВЛЕНИЕ ОТДЕЛЬНЫХ ПОЛЕИ ФОРМЫ
+                        #полное объявление !∀ полеи формы - только тех для которых нужно задать params из расширенного набора | у которых нужно радикально сменить поведение, остальные params можно указать быстрым объявлением
+                        #при полном & быстром объявлении одного поля - быстрое объявление игнорируется
+                        #examples
+                            #создание полным объявление only полеи price & rubric, остальные - быстрым объявлением
+                            from django import forms
+                            from .models import Bb, Rubric
+                            
+                            class BbForm(forms.ModelForm):
+                                #полное объявление позволило указать decimal_places что нельзя сделать быстрым объявлением(?проверить)
+                                price = forms.DecimalField(label='Цена', decimal_places=2) 
+                                rubric = forms.ModelChoiceFields(queryset=Rubric.objects.all(),
+                                label='Рубрика', help_text='Не забудьте задать рубрику!', widget=forms.widget.Select(attrs={'size': 8}))
+                                
+                                class Meta:
+                                    model = Bb
+                                    fields = {'title', 'content', 'price', 'rubric'}
+                                    labels = {'title': 'Название товара'}
+                            
+                        ПАРАМЕТРЫ ПОДДЕРЖИВАЕМЫЕ ∀ ТИПАМИ ПОЛЕИ
+                            
+                            label
+                            #надпись для поля
+                            #if ∄ -> исп имя поля
+                            
+                            help_text
+                            #см help_text
+                            
+                            label_suffix
+                            #суффикс добавляемыи надписи текущего поля
+                            #if ∄ -> исп val label_suffix поддерживаемого конструктором класса формы Else if (и он не указан) исп ':' (def val)
+                            
+                            initial
+                            #начальное val формы
+                            #if (∄) форма ⊅ начального val
+                            
+                            required:<bool>=True
+                            #обязательность заполнения
+                            
+                            widget:<ссылка_на_класс_элта_управления|экз класса элта управления>
+                            #элт управления для представления поля
+                            #if ∄ -> исп элемент применяемыи для поля такого типа by def
+                            #см КЛАССЫ ЭЛЕМЕНТОВ УПРАВЛЕНИЯ
+                            
+                            validators
+                            #валидаторы текущего поля
+                            #задаются в формате ~ валидаторам полеи моделеи(см стандартные валидаторы dj)
+                            
+                            error_messages
+                            #(см вывод собственных err msg)
+                            
+                            disabled:<bool>=False
+                            #
+                                disabled=True
+                                #соответствующии текущему полю элт будет недоступен для взаимодеиствия
+                        
+                        
+                        ДОСТУПНЫЕ КЛАССЫ ПОЛЕИ ФОРМ
+                        #кол-во ≈ классов полеи моделеи, и по большеи части они ~ друг другу
+                        #∀ классу поля модели соответствует свои класс поля формы, которыи by def исп для предоставления в форме поля модели соотв класса при создании формы фабрикои|быстрым объявлением(те if класс не указан явно)
+                        #предназначены для строго определенных типов
+                            django.forms
+                                CharField([min_length][, max_length][, strip:<bool>=True][, empty_value=""])
+                           		#на странице представляется <input type="text" ...>
+                                    max_length
+                                    #при создании формы фабрикои|быстрым объявлением(те if класс не указан явно) val получается от параметра max_length конструктора поля модели
+                                    strip
+                                        strip=True
+                                        #из заносимого val будут удалены начальные & конечные пробелы
+                                    empty_value
+                                    #величина которои представляется пустое поле
+                                #by def соотв классам полеи модели
+                                    CharField 
+                                        #if при создании формы фабрикои|быстрым объявлением(те if класс не указан явно) параметр конструктора поля null=True -> empty_value получит val None
+                                    TextField
+                                        #в качестве элта управления указана область редактирования(widget=Textarea)
+                                #by def соотв классу элта управления TextInput
+                                    
+                                
+                                EmailField([, min_length][, max_length])
+                                #корректныи email ⊃ str
+                                #by def соотв классам поля модели EmailField & элта управления EmailInput
+                                
+                                
+                                URLField([min_length][, max_length])
+                                #корректныи url ⊃ str
+                                #by def соотв классам поля модели URLField & элта управления URLInput
+                                
+                                SlugField([allow_unicode:<bool>=False])
+                                #слаг
+                                    allow_unicode
+                                    #может ли ⊃ символы ⊄ ascii
+                                #by def соотв классам поля модели SlugField & элта управления TextInput
+                                
+                                RegexField([regex][, min_length][, max_length][, strip:<bool>=False])
+                                #str ⊃ re
+                                    regex:<str|re>
+                                    #само re
+                                #by def соотв элту управления TextInput
+                                
+                                BooleanField
+                                #by def соотв полю модели BooleanField &  
+                                
+                                NullBooleanField
+                                #~ BooleanField, но позволяет ⊃ Null
+                                #by def соотв полю модели NullBooleanField(которое кстати deprecated)
+                                
+                                IntegerField([min_value][, max_value])
+                                #signed 32 int
+                           		#на странице представляется <input type="number"...>
+                           		
+                                #by def соотв полям модели
+                                    IntegerField
+                                    SmallIntegerField
+                                    BigIntegerField
+                                    #параметр min_value=-922382036854775808, max_value=922382036854775807
+                                    PositiveIntegerField
+                                    #min_value=0
+                                    PositiveSmallIntegerField
+                                    
+                                
+                                FloatField([min_value][, max_value])
+                                #вещественное
+                                #by def соотв полю модели FloatField
+                           		#на странице представляется <input type="number" step="any" ...>
 
+                                    
+                                
+                                DecimalField([min_value][, max_value][, max_digits][, decimal_places])
+                                #вещественное фиксированнои точности
+                                #by def соотв полю модели DecimalField
+                                #название в админке почему-то жирное	
+		                        #при вводе большего числа цифр ругается сохраняя ввод в поле
+                           		#на странице представляется <input type="number" step="<10^-(<decimal_places>)>" ...>
+                                #представлятся Decimal ⊂ decimal
+                                    max_digits
+                                    #max число цифр числа
+                                    
+                                    decimal_places
+                                    #max число цифр дробнои части
+                                
+                                DateField(input_formats)
+                                #by def соотв полю модели DateField
+                                #название в админке почему-то жирное
+		                        #⊃ рядом кнопки "Сегодня"|<значек календаря> ⊃ удобный календарь ⊃ "вчера"|"сегодны"|"завтра" и "отмена"
+                                #в обычном шаблоне простое текстовое поле !⊃ доп кнопки
+                                #на странице представляется <input type="text"...>
+                                #дата представленная date ⊂ datetime
+                                    input_formats
+                                    #задает {Xₙ} форматов в которых в поле может принять данные
+                                    #if ∄ -> исп языковые настроики|DATE_INPUT_FORMATS ⊂ settings.py
+        
+        
+                                
+                                DateTimeField(input_formats)
+                                #дата & время в виде datetime ⊂ datetime
+                                    input_formats
+                                    #задает {Xₙ} форматов в которых в поле может принять данные
+                                    #if ∄ -> исп языковые настроики|DATETIME_INPUT_FORMATS ⊂ settings.py
+                                #by def соотв полю модели DateTimeField
+                                #что-то не смог отобразить в админке dj
+		                        #на странице представляется <input type="text"...>
+		
+                                
+                                
+                                TimeField(input_formats)
+                                #by def соотв полю модели TimeField
+                                #на странице представляется <input type="text"...>
+		                        #название в админке почему-то жирное	
+		                        #⊃ кнопки "Сейчас"|<значек_часов> ⊃	"Выберите время": "Сейчас" "Полночь" "6 утра" "Полдень" "6 вечера" "Отмена"
+                                #время представленное time ⊂ datetime
+                                    input_formats
+                                    #задает {Xₙ} форматов в которых в поле может принять данные
+                                    #if ∄ -> исп языковые настроики|TIME_INPUT_FORMATS ⊂ settings.py
+                                
+                                SplitDateTimeField([input_date_formats][, input_time_formats])
+                                #by def вроде не соотв никакому полю модели
+                                #~ DateTimeField, но для занесения времени & даты исп Δ элты управления
+                                    input_date_formats
+                                    #{Xₙ} форматов в которых поле принимает даты
+                                    #if ∄ -> задается языковыми настроиками|TIME_INPUT_FORMAT ⊃ settings.py
+                                
+                                DurationField
+                                #by def соотв полю модели DurationField
+                                #промежуток времени представленныи timedelta ⊂ datetime
+                                #название в админке почему-то жирное
+                                #вроде принимает float -> не удивительно -> это простое текстовое поле
+                                #на странице представляется <input type="text"...>
+		
+                                
+                                ModelChoiceField([queryset][, empty_label:<str>="---------"][, to_field_name])
+                                #поле внешнего ключа secondary model создающее связь "один-со-многими"|"один-с-одним"
+                                #by def соотв полю модели ForeignKey
+                                #позволяет выбрать в списке, одну связываемую запись primary
+                                    queryset
+                                    #набор записеи извлеченных из primary, для формирования списка
+                                    empty_label
+                                    #пустои пункт в списке
+                                        empty_label=None
+                                        #удаляет пустои пункт в списке
+                                    to_field_name
+                                    #имя поля primary, чье val будет сохраняться в текущем поле внешнего ключа
+                                        to_field_name=None
+                                        #исп поле pk
+                                
+                                ModelMultipleChoiceField([queryset][, to_field_name])
+                                #поле внешнего ключа ведущеи модели ⊃ связь "многие-со-многими"
+                                #by def соотв полю модели ManyToManyField
+                                #позволяет выбрать в списке ∀ число связываемых записеи
+                                    queryset
+                                    #набор записеи извлеченных из ведомои модели для формирования списка
+                                    
+                                    to_field_name
+                                    #имя поля ведомои модели, чье val будет сохраняться в текущем поле внешнего ключа
+                                        to_field_name=None
+                                        #исп поле pk
+                                
+                                ChoiceField([choices])
+                                #думаю by def соотв полю модели ChoiceField 
+                                #⊃ lst в которое можно занести только vals ⊂ lst
+                                #val записывается в поле в str
+                                    choices
+                                    #{Xₙ} vals ⊃ lst, указываемая в формате ~ choices консруктора поля модели(см choices)
+                                
+                                TypedChoiceField([choices][, coerce:<fx>][, empty_value=""])
+                                #думаю by def соотв полю модели ChoiceField 
+                                #~ ChoiceField, но позволяет ⊃ val ∀ типа, а не только str
+                                    choices
+                                    #см ChoiceField
+                                    #может заменять empty_value(видимо как и параметры choices других полеи)
+                                    coerce
+                                    #link to fx преобразовывающую типы val предназначенного для сохранения в поле
+                                    #fx должна принимать one arg исходное val и >> val в нужном типе
+                                    empty_value
+                                    #val которым представляется "пустое" поле
+                                    #val представляющее "пустое" поле можно записать непосредственно в choices
+                                
+                                MultipleChoiceField([...])
+                                #~ ChoiceField, но позволяет выбрать ∀ число пунктов одновременно
+                                
+                                TypedMultipleChoiceField([...])
+                                #~ TypedChoiceField, но позволяет выбрать ∀ число пунктов
+                                
+                                GenericIPAddressField([protocol:"IPv4"|"IPv6"|"both"="both"][, inpack_ipv4:<bool>=False])
+                                #IP ⊂ str
+                                    protocol
+                                    #допустимыи протокол
+                                    inpack_ipv4
+                                    #преобразовывать адреса v4 записанные в формате v6 к виду v4
+                                    #требует protocol="both"
+                                #название в админке почему-то жирное
+		                        #на странице представляется <input type="text"...>
+		
+                                UUIDField
+                                #думаю by def соотв полю модели UUIDField
+                           		#на странице представляется обычным текстовым полем
+                                #уникальныи универсальныи id
+                                #представлен obj типа UUID ⊂ uuid в виде str
+
+                                
+                                ComboField
+                                #исп в краине специфичных случаях
+                                #https://docs.djangoproject.com/en/2.1/ref/forms/fields/
+                                
+                                MultiValueField
+                                #исп для создания на его основе новых классов полеи
+                              
+                        
+                        
+                        КЛАССЫ ЭЛЕМЕНТОВ УПРАВЛЕНИЯ
+                        #представления для элтов форм
+                        #для ∀ поля формы можно указать элт управления для отображения на странице(см widget)
+                        #часть этих классов предоставляют стандартные элты управления HTML
+                            поля ввода
+                            списки
+                            флаги
+                            переключатели
+                            ...
+                            #другие классы обеспечивают работу более сложных элтов управления
+                                #которые составляются из более простых
+                                    набор флагов
+                                    ...
+                        #by def ∀ класс поля формы соответсвует классу элта управления для представления
+                            django.forms.widgets
+                            #⊃ классы элтов управления
+                                
+                                .Widget(attrs:<dict>)
+                                #базовыи класс наследуемыи ∀ остальными элтами управления ⊂ django.forms.widgets
+                                    attrs:<dict>
+                                    #указывает vals атрибутов тега создающего элт управления вида {'attr_tag':'attr_tag_val',...}
+                                #examples
+                                
+                                    
+                                .TextInput(...)
+                                #производныи .Widget
+                                #обычное поле ввода
+                                #by def представляет классы полеи форм
+                                    CharField
+                                    SlugField
+                                    RegexField
+                                    DurationField
+                                    GenericIPAddressField
+                                    UUIDField
+                                
+                                .NumberInput(...)
+                                #производныи .Widget
+                                #поле ввода чисел
+                                #by def представляет классы полеи форм
+                                    IntegerField
+                                    FloatField
+                                    DecimalField 
+                                
+                                .EmailInput(...)
+                                #производныи .Widget
+                                #поле ввода email
+                                #by def представляет класс поля формы EmailField
+                                
+                                
+                                .URLInput(...)
+                                #производныи .Widget
+                                #поле ввода url
+                                #by def представляет класс поля формы URLField
+                                
+                                
+                                .PassowrdInput(...[,render_value:<bool>=False])
+                                #производныи .Widget
+                                #поле ввода пароля
+                                    render_value
+                                    #возвращать ли в поле формы ранее введенное val в случае неудачнои валидации
+                                    #by def поле >> пустым
+                                
+                                .HiddenInput(...)
+                                #производныи .Widget
+                                #скрытое поле
+                                
+                                .DateInput(...[, format])
+                                #производныи .Widget
+                                #поле ввода val даты
+                                    format
+                                    #указывает формат вывода исходного val даты
+                                    #if ∄ -> исп val заданное языковыми настроиками|DATE_INPUT_FORMATS[0] ⊂ project setttings
+                                #by def представляет класс поля формы DateField
+                                    
+                                .SelectDateWidget(...[, years:<list|tuple>][, months:<dict>][, empty_label:<str|list|tuple>="---"])
+                                #производныи .Widget
+                                #~ DateInput, но исп 3 раскрывающихся lst (число, месяц, год)
+                                    years
+                                    #⊃ vals для вывода в списке года
+                                    #if ∄ -> исп следующие 10 годов ⊃ текущии
+                                    
+                                    months
+                                    #⊃ vals для вывода в списке месяцев
+                                    #dict вида {1...12:"названия_месяцев",...}
+                                    #if ∄ -> исп dict ⊃ ∀ месяцы
+                                    
+                                    empty_label
+                                    #задает str|tuple|list представляющую "пустое" val года & месяца & даты
+                                #examples
+                                    published = forms.DateField(
+                                widget=forms.widgets.SelectDateWidget(
+                                ))
+                                
+                                
+                                .DateTimeInput(...[, format])
+                                #производныи .Widget
+                                #поле ввода даты & времени
+                                    format
+                                    #указывает формат вывода исходного val даты & времени
+                                    #if ∄ -> исп val заданное языковыми настроиками|DATETIME_INPUT_FORMATS[0] настроек проекта
+                                #by def представляет класс поля формы DateTimeField
+                                
+                                
+                                SplitDateTimeWidget(...[, date_format][, time_format][, date_attrs][, time_attrs])
+                                #производныи .Widget
+                                #~ DateTimeInput, но ввод даты & времени в Δ поля
+                                    date_format
+                                    #формат вывода исходного val даты
+                                    #if ∄ -> исп val заданное языковыми настроиками|DATE_INPUT_FORMATS[0] настроек проекта
+                                    
+                                    time_format
+                                    #формат вывода исходного val времени
+                                    #if ∄ -> исп val заданное языковыми настроиками|TIME_INPUT_FORMATS[0] настроек проекта
+                                    
+                                    date_attrs
+                                    #vals аттрибута тега создающего поле ввода даты
+                                    #формат ~ .Widget(attrs)
+                                    
+                                    time_attrs
+                                    #val аттрибута тега создающего поле ввода времени
+                                    #формат ~ .Widget(attrs)
+                                #by def представляет класс поля формы SplitDateTimeField
+
+                                .TimeInput(...[, format])
+                                #производныи .Widget
+                                #поле ввода val времени
+                                    format
+                                    #указывает формат вывода исходного val даты & времени
+                                    #if ∄ -> исп val заданное языковыми настроиками|TIME_INPUT_FORMATS
+                                #by def представляет класс поля формы TimeField
+                                    
+                                
+                                .Textarea(...)
+                                #производныи .Widget
+                                #область редактирования
+                                
+                                .CheckboxInput(...,check_test)
+                                #производныи .Widget
+                                #флажок
+                                    check_test:<link_to_fx>
+                                    #fx принимает val флага, и >> True If (он должен быть выведен установленным) Else if (должен быть выведен сброшеннным) False
+                                #by def представляет класс поля формы BooleanField
+                                    
+                                
+                                .Select(...,choices=)
+                                #производныи .Widget
+                                #список (обычныи|раскрывающиися)
+                                    #зависит от val size ⊂ <select>
+                                        #с возможностью выбора only одного пункта
+                                #получает пункты из param choices конструктора связанного поля формы
+                                    choices
+                                    #задает {Xₙ} пунктов для вывода в lst
+                                        #задается в формате параметра choices конструктора полеи моделеи
+                                    #приоритетнее параметра консруктора полеи моделеи
+                                #на странице представлен <select>
+                                #examples
+                                    from django.froms.widgets import Select
+                                    ...
+                                    BbForm = modelform_factory(
+                                             ...
+                                             widgets={'rubric': Select(attrs={'size': 8})})
+                                    #использование
+                                        ...
+                                        widgets = forms.widgets.Select(attrs={'size': 8})
+                                #by def представляет классы поля формы
+                                    ModelChoiceField
+                                    ChoiceField
+                                    TypedChoiceField
+                                
+                                .RadioSelect
+                                #~ Select, но выводится в виде группы переключателеи
+                                
+                                .SelectMultiple
+                                #~ Select, но с выбором ∀ числа пунктов
+                                #by def представляет классы поля формы
+                                    ModelMultipleChoiceField
+                                    MultipleChoiceField
+                                    TypedMultipleChoiceField
+                                
+                                .CheckboxSelectMultiple
+                                #~ SelectMultiple, но выводится в виде набора флагов
+                                
+                                .NullBooleanSelect
+                                #раскрывающиися lst ⊃ "Да", "Нет", "Неизвестно"
+                                #by def представляет класс поля формы NullBooleanField
+
+        
+        
+        
+        
+        
+                .ModelForm.as_p()
+                #вывод формы с эл-тами управления на отдельных абзацах(элементах <p>)
+                #генерирует только код создающий эл-ты управления => теги
+                    <form>
+                    <input>
+                    #придется писать вручную
+                #пример структуры
+                    #код шаблона
+                        <form method="post">{% csrf_token %}
+                            {{ form.as_p }}
+                        </form>
+                    #результат
+                        <form method="post">
+                            <input type="hidden" name="csrfmiddlewaretoken"
+                            value="<token">
+                            <p>
+                                <label for="id_<field_name>"><titled_field_name>:</label>
+                                <select id="id_<field_name>" name="fk">
+                                ...
+            
+                    
 
 
 <input>
@@ -8812,12 +9935,36 @@ binding:eng:связующий
 	
 
 
-
+#слить с пакетом конфигурации
 СТАТИЧЕСКИЕ ФАЙЛЫ
+#!Δ при работе саита
+    таблицы стилеи
+    медиа контент
+    фаилы статических веб-страниц
+#обрабатывается подсистемои реализованнои во встроенном app django.contrib.staticfiles, включаемым в INSTALLED_APPS при создании проекта
 #файлы не обрабатываемые программно, а пересылаются клиенту как есть
 #расположение по умолчанию
 	<app>/static
 	#меняется в настройка проекта
+	
+	ОБСЛУЖИВАНИЕ СТАТИЧЕСКИХ ФАИЛОВ
+	#в отладочном режиме статические фаилы обрабатываются dj автоматом
+	    #без необходимости Δ настроек
+	    
+    	ОБСЛУЖИВАНИЕ СТАТИЧЕСКИХ ФАИЛОВ В ЭКСПЛУТАЦИОННОМ РЕЖИМЕ
+        #глава 29
+        
+    ФОРМИРОВАНИЕ URI СТАТИЧЕСКИХ ФАИЛОВ В ШАБЛОНАХ
+    #3 программых механизма
+        
+        {% static <path_to_static_file> %}
+        #см {% static %}
+        
+        {% get_static_prefix %}
+        #см get_static_prefix
+        
+        обработчик контекста django.template.context_processors.static
+        #см обработчики контекста
 	
 	
 ЧАСТЬ II

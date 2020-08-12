@@ -27,3 +27,6 @@ paste line selection always below
 вставить строку после без перехода на нее
 
 hippie completion -> корректно исправляет язык даже с кастомными раскладками!
+
+^+f
+#find text
