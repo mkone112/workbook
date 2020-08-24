@@ -1,0 +1,1 @@
+прямое произведение [x + y for x in A for y in B]

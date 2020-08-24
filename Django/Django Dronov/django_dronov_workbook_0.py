@@ -3315,18 +3315,19 @@ manage.py startapp bboard
                     #examples
                         #удаляет объявы
                         .../views.py
-                        from django.views.generic.edit import DeleteView
-                        from .models import Bb, Rubric
-                        ...
-                        class BbDeleteView(DeleteView):
-                            model = Bb
-                            success_url = '/'
-                            
-                            def get_context_data(self, *args, **kwargs):
-                                context = super().get_context_data(*args, **kwargs)
-                                context['rubrics'] = Rubric.objects.all()
-                                return context
+                            from django.views.generic.edit import DeleteView
+                            from .models import Bb, Rubric
+                            ...
+                            class BbDeleteView(DeleteView):
+                                model = Bb
+                                success_url = '/'
+                                
+                                def get_context_data(self, *args, **kwargs):
+                                    context = super().get_context_data(*args, **kwargs)
+                                    context['rubrics'] = Rubric.objects.all()
+                                    return context
                         #шаблон страницы подтверждения удаления формы
+                        bboard\bb_confirm_delete.html
                             {% extends "layout/basic.html" %}
                             
                             {% block title %}Удаление объявления{% endblock %}
@@ -5500,6 +5501,7 @@ URL МОДЕЛИ
 	#exe валидацию val ⊂ отдельным полям
 	#реализуются классами|fx
 	#тк у меня backend очевидно что валидация происходит после отправки данных из формы -> по сути это реально тупо callable
+	    #формы тоже exe валидацию, но не знаю, делают ли они это прямо на странице|в контроллере
 	
 		СТАНДАРТНЫЕ ВАЛИДАТОРЫ DJ
 		#реализующие их классы ⊃ django.core.validators
@@ -9273,14 +9275,8 @@ binding:eng:связующий
     элты управления для ввода данных
     правила валидации
 #в большинстве случаев исп для занесения в бд новых записеи|Δ ∃
+#см Конспект HTML
 
-
-<form>
-#создание формы
-        class Post:
-            user_form_title = ...
-            user_form_post = ...
-            ...
                 
     ОБЫЧНЫЕ ФОРМЫ
     #
@@ -9517,6 +9513,7 @@ binding:eng:связующий
                                 #корректныи url ⊃ str
                                 #by def соотв классам поля модели URLField & элта управления URLInput
                                 
+                                
                                 SlugField([allow_unicode:<bool>=False])
                                 #слаг
                                     allow_unicode
@@ -9527,20 +9524,19 @@ binding:eng:связующий
                                 #str ⊃ re
                                     regex:<str|re>
                                     #само re
-                                #by def соотв элту управления TextInput
+                                #by def соотв классу элта управления TextInput
                                 
                                 BooleanField
-                                #by def соотв полю модели BooleanField &  
+                                #by def соотв классам поля модели BooleanField & элта управления CheckboxInput  
                                 
                                 NullBooleanField
                                 #~ BooleanField, но позволяет ⊃ Null
-                                #by def соотв полю модели NullBooleanField(которое кстати deprecated)
+                                #by def соотв классам поля модели NullBooleanField(которое кстати deprecated) & элта управления NullBooleanSelect 
                                 
                                 IntegerField([min_value][, max_value])
                                 #signed 32 int
                            		#на странице представляется <input type="number"...>
-                           		
-                                #by def соотв полям модели
+                                #by def соотв классам полеи модели
                                     IntegerField
                                     SmallIntegerField
                                     BigIntegerField
@@ -9548,18 +9544,18 @@ binding:eng:связующий
                                     PositiveIntegerField
                                     #min_value=0
                                     PositiveSmallIntegerField
-                                    
+                                #by def соотв классу элта управления NumberInput
                                 
                                 FloatField([min_value][, max_value])
                                 #вещественное
-                                #by def соотв полю модели FloatField
+                                #by def соотв классам поля модели FloatField & элта управления NumberInput
                            		#на странице представляется <input type="number" step="any" ...>
 
                                     
                                 
                                 DecimalField([min_value][, max_value][, max_digits][, decimal_places])
                                 #вещественное фиксированнои точности
-                                #by def соотв полю модели DecimalField
+                                #by def соотв классам поля модели DecimalField & элта управления NumberInput
                                 #название в админке почему-то жирное	
 		                        #при вводе большего числа цифр ругается сохраняя ввод в поле
                            		#на странице представляется <input type="number" step="<10^-(<decimal_places>)>" ...>
@@ -9571,7 +9567,7 @@ binding:eng:связующий
                                     #max число цифр дробнои части
                                 
                                 DateField(input_formats)
-                                #by def соотв полю модели DateField
+                                #by def соотв классам поля модели DateField & элта управления DateInput
                                 #название в админке почему-то жирное
 		                        #⊃ рядом кнопки "Сегодня"|<значек календаря> ⊃ удобный календарь ⊃ "вчера"|"сегодны"|"завтра" и "отмена"
                                 #в обычном шаблоне простое текстовое поле !⊃ доп кнопки
@@ -9588,14 +9584,14 @@ binding:eng:связующий
                                     input_formats
                                     #задает {Xₙ} форматов в которых в поле может принять данные
                                     #if ∄ -> исп языковые настроики|DATETIME_INPUT_FORMATS ⊂ settings.py
-                                #by def соотв полю модели DateTimeField
+                                #by def соотв классам поля модели DateTimeField & элта управления DateTimeInput
                                 #что-то не смог отобразить в админке dj
 		                        #на странице представляется <input type="text"...>
 		
                                 
                                 
                                 TimeField(input_formats)
-                                #by def соотв полю модели TimeField
+                                #by def соотв классам поля модели TimeField & элта управления TimeInput
                                 #на странице представляется <input type="text"...>
 		                        #название в админке почему-то жирное	
 		                        #⊃ кнопки "Сейчас"|<значек_часов> ⊃	"Выберите время": "Сейчас" "Полночь" "6 утра" "Полдень" "6 вечера" "Отмена"
@@ -9605,14 +9601,14 @@ binding:eng:связующий
                                     #if ∄ -> исп языковые настроики|TIME_INPUT_FORMATS ⊂ settings.py
                                 
                                 SplitDateTimeField([input_date_formats][, input_time_formats])
-                                #by def вроде не соотв никакому полю модели
+                                #by def вроде не соотв никакому классу поля модели, но соотв классу элта управления SplitDateTimeWidget
                                 #~ DateTimeField, но для занесения времени & даты исп Δ элты управления
                                     input_date_formats
                                     #{Xₙ} форматов в которых поле принимает даты
                                     #if ∄ -> задается языковыми настроиками|TIME_INPUT_FORMAT ⊃ settings.py
                                 
                                 DurationField
-                                #by def соотв полю модели DurationField
+                                #by def соотв классам поля модели DurationField & элта управления TextInput 
                                 #промежуток времени представленныи timedelta ⊂ datetime
                                 #название в админке почему-то жирное
                                 #вроде принимает float -> не удивительно -> это простое текстовое поле
@@ -9621,7 +9617,7 @@ binding:eng:связующий
                                 
                                 ModelChoiceField([queryset][, empty_label:<str>="---------"][, to_field_name])
                                 #поле внешнего ключа secondary model создающее связь "один-со-многими"|"один-с-одним"
-                                #by def соотв полю модели ForeignKey
+                                #by def соотв классам поля модели ForeignKey & элта управления Select 
                                 #позволяет выбрать в списке, одну связываемую запись primary
                                     queryset
                                     #набор записеи извлеченных из primary, для формирования списка
@@ -9636,7 +9632,7 @@ binding:eng:связующий
                                 
                                 ModelMultipleChoiceField([queryset][, to_field_name])
                                 #поле внешнего ключа ведущеи модели ⊃ связь "многие-со-многими"
-                                #by def соотв полю модели ManyToManyField
+                                #by def соотв классам поля модели ManyToManyField & элта управления SelectMultiple
                                 #позволяет выбрать в списке ∀ число связываемых записеи
                                     queryset
                                     #набор записеи извлеченных из ведомои модели для формирования списка
@@ -9647,14 +9643,14 @@ binding:eng:связующий
                                         #исп поле pk
                                 
                                 ChoiceField([choices])
-                                #думаю by def соотв полю модели ChoiceField 
+                                #думаю by def соотв классам поля модели ChoiceField & элта управления Select
                                 #⊃ lst в которое можно занести только vals ⊂ lst
                                 #val записывается в поле в str
                                     choices
                                     #{Xₙ} vals ⊃ lst, указываемая в формате ~ choices консруктора поля модели(см choices)
                                 
                                 TypedChoiceField([choices][, coerce:<fx>][, empty_value=""])
-                                #думаю by def соотв полю модели ChoiceField 
+                                #думаю by def соотв классам поля модели ChoiceField & элта управления Select 
                                 #~ ChoiceField, но позволяет ⊃ val ∀ типа, а не только str
                                     choices
                                     #см ChoiceField
@@ -9671,6 +9667,8 @@ binding:eng:связующий
                                 
                                 TypedMultipleChoiceField([...])
                                 #~ TypedChoiceField, но позволяет выбрать ∀ число пунктов
+                                #by def соотв классу элта управления SelectMultiple
+                                
                                 
                                 GenericIPAddressField([protocol:"IPv4"|"IPv6"|"both"="both"][, inpack_ipv4:<bool>=False])
                                 #IP ⊂ str
@@ -9883,33 +9881,483 @@ binding:eng:связующий
                                 .NullBooleanSelect
                                 #раскрывающиися lst ⊃ "Да", "Нет", "Неизвестно"
                                 #by def представляет класс поля формы NullBooleanField
+                                
+                                
+                                ПОЛЯ ХРАНЕНИЯ ФАИЛОВ
+                                #требуют указания <form enctype="multipart/form-data"...
 
         
+ВЫВОД ФОРМ НА ЭКРАН
+        #формы связанные с моделями ⊃ мощные & простые в использовании механизмы вывода
         
-        
-        
-        
-                .ModelForm.as_p()
-                #вывод формы с эл-тами управления на отдельных абзацах(элементах <p>)
-                #генерирует только код создающий эл-ты управления => теги
-                    <form>
-                    <input>
-                    #придется писать вручную
-                #пример структуры
-                    #код шаблона
-                        <form method="post">{% csrf_token %}
-                            {{ form.as_p }}
-                        </form>
-                    #результат
-                        <form method="post">
-                            <input type="hidden" name="csrfmiddlewaretoken"
-                            value="<token">
-                            <p>
-                                <label for="id_<field_name>"><titled_field_name>:</label>
-                                <select id="id_<field_name>" name="fk">
-                                ...
+            БЫСТРЫИ ВЫВОД ФОРМ
+            #см .ModelForm -> МЕТОДЫ
             
+            
+            РАСШИРЕННЫИ ВЫВОД ФОРМ
+            #позволяет контролировать форматирование формы
+            #см ModelForm & BoundField
+            #examples
+                #создание формы объявления
+                    #err msgs
+                        выводятся курсивом
+                    #надписи(<labels>), элты управления & help_text
+                        разделяются разрывом строки(<br>)
+                    #?невидимые поля(if ∃) выводятся отдельно от видимых
+                    <form method="post">
+                        {% csrf_token %} 
+                        {% for hidden in form.hidden_fields %}
+                            {{ hidden }}
+                        {% endfor %}
+                        #без этои проверки на страницу добавится лишнии тег <ul></ul>
+                        {% if form.non_field_errors %}
+                        #выводим ошибки не полеи
+                        <ul>
+                            {% for error in form.non_field_errors %}
+                            #хз что мб в error -> исп escape
+                            <li><em>{{ error|escape }}</em><|li>
+                            {% endfor %}
+                        </ul>
+                        {% endif %}
+                        #выводим элты управления
+                        {% for field in form.visible_fields %}
+                            #для ∀ поля выводим ∀ errs if ∃
+                            {% if field.errors %}
+                            <ul>
+                                {% for error in field.errors %}
+                                #хз что мб в error -> исп escape
+                                <li><em>{{ error|escape }}</em></li>
+                                {% endfor %}
+                            </ul>
+                            {% endfor %}
+                            #field label\nfield\nhelptext
+                            <p>{{ field.label_tag }}<br>{{ field }}<br>
+                            {{ field.help_text }}</p>
+                        {% endfor %}
+                        <p><input type="submit" value="Добавить"></p>
+                    </form>
+                        
+                
+                
+                
+                
+                
+                BoundField
+                #класс чьи экземпляры представляют поля формы в .ModelForm[field_name] в виде доступном для помещения в шаблон
+                #экз можно поместить в шаблон напрямую
+                    #ps в шаблоне доступ по ключу производится через '.'
+                    {{ form.content }}
+                    >>  <textarea name="content" cols="40" rows="10" id="id_content"></textarea>
+                #attrs
+                    label_tag
+                    #html-код надписи для элта(⊃ <label>)
+                        #пример кода создающего надпись для textarea
+                            {{ form.content.label_tag }}
+                            >>
+                                <label for="id_title">Название товара:</label>
                     
+                    help_text
+                    #?доп текст
+                    
+                    errors
+                    #lst err msgs текущего поля
+                    #можно вывести непосредственно
+                        {{ form.content.errors }}
+                        >>
+                            #формирует маркированныи lst с классом "errorlist"
+                            <ul class="errorlist">
+                                <li>Укажите описание продаваемого товара</li>
+                            </ul>
+                    #можно вывысти его элты с исп ∀ тегов перебрав их цикле в шаблоне
+                    #вывод err msgs всеи модели см .ModelForm -> non_field_errors()
+                    
+                    is_hidden
+                    #⊃ True If (поле скрыто) Else If (поле - элт управления) False
+                    
+
+глянуть что генерируют obj помещаемые в шаблон
+#подозреваю что это raw html, но возможно это obj из которого hmtl генерит шаблонизатор
+        
+        
+                .ModelForm
+                #вроде базовыи класс форм
+                #экземпляр представляет связанную с моделью форму
+                #поддерживает функциональность dict {field_name:<BoundField_instance>, ...}
+                    МЕТОДЫ
+                        
+                        .clean()
+                        #переопределяется для валидации форм
+                        #при вызове заполняет данными .cleaned_data
+                        
+                        
+                        
+                        БЫСТРЫИ ВЫВОД ФОРМ
+                        #реализуются 3мя методами
+                        #теги <form <params>>(создающии форму) <input type="submit" value...>(создающии кнопку отправки) нужно в шаблоне писать вручную(не создаются автоматом)
+                            .as_p()
+                            #реализует быстрыи вывод форм
+                            #вывод надписи(<label>) для элта управления & элта управления представляющего поле формы, на отдельных абзацах(<p>) разделенных пробелом
+                            #выглядит хреново 
+                            #разумеется вызов методов в шаблонах производится без ()
+                            #генерирует только код создающий эл-ты управления => теги
+                                <form>
+                                <input>
+                                #придется писать вручную
+                            #пример структуры
+                                #код шаблона
+                                    <form method="post">{% csrf_token %}
+                                        {{ form.as_p }}
+                                    </form>
+                                #результат
+                                    <form method="post">
+                                        <input type="hidden" name="csrfmiddlewaretoken"
+                                        value="<token">
+                                        <p>
+                                            <label for="id_<field_name>"><titled_field_name>:</label>
+                                            <select id="id_<field_name>" name="fk">
+                                            ...
+                            #examples
+                                <form method="post">
+                                    {% csrf_token %}
+                                    {{ form.as_p }}
+                                    <input type="submit" value="Добавить">
+                                </form>
+                                
+                            
+                            
+                            .as_ul()
+                            #быстрыи вывод форм маркированным lst
+                            #разумеется вызов методов в шаблонах производится без ()
+                            #вывод надписи(<label>) для элта управления & элта управления представляющего поле формы в отдельном пункте списка, с разделением пробелом
+                            #выглядит хреново
+                            #!не формирует <ul></ul> создающие сам список
+                            #examples
+                                <form method="post">
+                                    {% csrf_token %}
+                                    <ul>
+                                        {{ form.as_ul }}
+                                    </ul>
+                                    <input type="submit" value="Добавить">
+                                </form>
+                            
+                            
+                            .as_table()
+                            #вызывается автоматом при указании формы без метода
+                            #быстрыи вывод форм таблицеи
+                            #таблица ⊃ 2 столбца [надписи для элтов|элты управления представляющие поля формы]
+                            #разумеется вызов методов в шаблонах производится без ()
+                            #не создает теги <table></table>
+                            #examples
+                                <form method="post">
+                                    {% csrf_token %}
+                                    <table>
+                                        {{ form.as_table }}
+                                    </table>
+                                    <input type="submit" value="Добавить">
+                                </form>
+                                #автоматическии вызов
+                                <form method="post">
+                                    {% csrf_token %}
+                                    <table>
+                                        {{ form }}
+                                    </table>
+                                    <input type="submit" value="Добавить">
+                                </form>
+                        
+                        .is_multipart() -> <bool>
+                        #помогает выяснить какои метод кодирования нужно указать в теге <form>
+                        #>> True If (форма ⊃ поля хранения фаилов) Else False
+                        #If форма ⊃ поля хранения фаилов -> нужно указать в неи метод multipart/form-data(см ПРОТОКОЛЫ)
+                        #examples
+                            {% if form.is_multipart %}
+                                <form enctype="multipart/form-data" method="post">
+                            {% else %}
+                                <form method="post">
+                            {% endif %}
+                                
+                        
+                                        
+                        .is_bound() -> <bool>
+                        #проверка были ли занесены данные запроса в форму при ее создании те было exe повторное создание формы(см ПОВТОРНОЕ СОЗДАНИЕ ФОРМЫ)
+                        #>> True If (при создании форма получила данные POST-запроса) Else If (форма создана впервые) False
+                        
+                        
+                        .non_fields_errors()
+                        #>> lst err msgs относящеися ко всеи форме
+                        #вывод err msgs отдельных полеи см BoundField -> errors
+                        #examples
+                            {{ form.non_fields_errors }}
+                            #см пример расширенныи вывод форм
+                        
+                        .visible_fields()
+                        #>> lst видимых полеи(представляющихся обычными элтами управления)
+                        #см пример расширенныи вывод форм
+
+                        
+                        .hidden_fields()
+                        #>> lst скрытых полеи(представляющихся скрытыми полями HTML)
+                        #см пример расщиренныи вывод форм
+        
+        
+        ВАЛИДАЦИЯ ДАННЫХ ФОРМ
+        #для exe валидации достаточно exe одно из двух деиствии
+            вызвать .is_valid() (см .is_valid())
+                        
+                        .is_valid()
+                        #>>True If данные валидны Else False
+                        #examples
+                            if bbf.is_valid():
+                                # Код сохраняющии данные
+                            else:
+                                # Данные не корректны
+
+
+            обратиться к attr формы .errors()(см .errors())
+        
+            
+            ВАЛИДАЦИЯ В ФОРМАХ
+            #валидация на уровне форм
+            #использует инструменты ~ используемым для валидации на уровне модели/отдельных полеи модели(использование встроенных валидаторов dj, кастомных валидаторов, переопределение методов модели)
+                
+                ВАЛИДАЦИЯ ПОЛЕИ ФОРМЫ
+                #2 способа
+                    
+                    ВАЛИДАЦИЯ ПОЛЕИ ФОРМЫ С ИСПОЛЬЗОВАНИЕМ ВАЛИДАТОРОВ
+                    #~ валидации полеи модели
+                    #использует теже валидаторы ⊂ django.core.validators
+                    #examples
+                        #проверка, название товара ?⊃ больше 4х символов с выводом кастомного err msg
+                        form django.core import validators
+                        
+                        class BbForm(forms.ModelForm):
+                            #не уверен что значит ',' , но if он наидет слово из 4х символов(.{4}) то вернет True
+                            title = forms.CharField(label='Название товара',
+                                    validators=[validators.RegexValidator(regex='^.{4,}$')],
+                                    error_messages={'invalid':'Неправильное название товара'})
+                                    
+                    
+                    ВАЛИДАЦИЯ ПОЛЕИ ФОРМЫ ПЕРЕОПРЕДЕЛЕНИЕМ МЕТОДОВ ФОРМ
+                    #исп для более сложных случаев
+                    #реализутся методах
+                        .clean_<field_name>()
+                        #в классе форм
+        
+                        .clean_<field_name>()
+                        #должен zero args
+                        #валидирует <field_name>
+                        #должен получать val поля указанного в его имени, из dict ⊂ .cleaned_data
+                        #должен >> val проверяемого поля If (val валидно) Else бросать ValidationError ⊂ django.core.exceptions
+                        #examples
+                            from django.core.exceptions import ValidationError
+                            
+                            class BbForm(forms.ModelForm):
+                                ...
+                                def clean_title(self):
+                                    val = self.cleaned_data['title']
+                                    if val == 'Прошлогоднии снег':
+                                        raise ValidationError('Прошлогоднии снег продавать не допускается')
+                                    return val
+                    
+                    ВАЛИДАЦИЯ ФОРМЫ
+                    #[исп для проверок сложнее чем могут обработать стандартные валидаторы|которую можно реализовать переопределением метода(слабо представляю) ] | для валидации нескольких полеи формы
+                    #реализуется переопределение .clean() формы (~валидации модели)
+                        #не должен принимать args & >> результат
+                        #должен >> ValidationError
+                        #в отличие от валидации моделеи должен предварительно вызывать одноименныи метод базового класса для заполнения dict ⊂ cleaned_data(иначе не выидет получить данные формы)
+                    #examples
+                        #проверка что описание товара ∃ , цена ≥ 0
+                        from django.cor.exceptions import ValidationError
+                        
+                        class BbForm(forms.ModelForm):
+                            ...
+                            def clean(self):
+                                super().clean()
+                                errors = {}
+                                if not self.cleaned_data['content']:
+                                    errors['content'] = ValidationError('Укажите описание продаваемого товара')
+                                if self.cleaned_data['price'] < 0:
+                                    errors['price'] = ValidationError('Укажите неотрицательное значение цены')
+                                if errors:
+                                    raise ValidationError(errors)
+                        
+        
+        
+        СОХРАНЕНИЕ ДАННЫХ ЗАНЕСЕННЫХ В ФОРМУ
+        #exe посредством вызова .save()
+                        
+                        .save([commit])
+                        #на самом деле не уверен что .save() ⊂ именно .ModelForm
+                        #сохраняет данные связаннои формы в модель
+                            commit
+                            #записывать ли Δ
+                                False
+                                #>> obj записи без ее сохранения
+                                #позволяет получить только созданную, но еще не сохраненную запись модели для внесения в нее Δ
+                        #автоматом валидирует данные перед сохранением и в случае неудачи >> ValueError ->
+                            необходимо валидировать данные до передачи save, тк обрабатывать val >> save() проще обработки except (это упростит логику)
+                        #>> obj созданнои|исправленнои записи модели связаннои с текущеи формои
+                        #examples
+                            #получение записи без сохраниния для Δ
+                            bb = bbf.save(commit=False)
+                            if not bb.kind:
+                                bb.kind = 's'
+                            bb.save()
+                                #но,
+                                    #при сохранении записи модели связаннои с другои связью "многие-со-многими", для успешного создания связи - связываемая запись должна ⊃ ключ(тк именно ключ связываемои записи записывается в связующеи таблице)
+                                        #однако, пока запись не сохранена -> ⊅ ключ -> ее нужно сохранить, а затем создать связь
+                                        mf = MachineForm(request.POST)
+                                        if mf.is_valid():
+                                            machine = mf.save(commit=False)
+                                            #выполняем какие-либо дополнительные деиствия с записью
+                                            #исп только в этом случае(см .save_m2m())
+                                            mf.save_m2m()
+                            #при сохранении без исп commit=False форма сама сохраняет запись & создает связь
+                            mf = MachineForm(request.POST)
+                            if mf.is_valid():
+                                mf.save()
+                        
+                        .save_m2m()
+                        #сохранение со связью many_to_many(см manytomany & .save())
+                        #исп only if запись сохранялась путем .save(commit=False) & последующим вызовом .save() модели
+                                    
+                        .has_changed() -> <bool>
+                        #>> True if (данные в форме были Δ посетителем)(напр при редактировании записи|чтобы проверить были ли Δ стандартные val)
+                                
+                                
+                    ATTRS
+                        .errors:<dict>
+                        #⊃ перечень err msgs пользователя при вводе данных в форму вида {'field_name':'список_текстовых_err_msgs',...}
+                        #ключ совпадающии с val v NON_FIELD_ERRORS ⊂ django.core.exeptions ⊃ err msgs относящиеся ко ∀ форме, а не конкретному полю
+                        #if данные валидны <-> {} ⊂ .errors
+                        #examples
+                            if bbf.errors
+                                #Данные невалидны
+                                #Получаем lst err msgs, допущенных пользователем при вводе названия товара
+                                title_errors = bbf.errors['title']
+                                #Получаем lst err msgs, относящихся ко ∀ форме
+                                form_errors = bbf.errors[NON_FIELDS_ERRORS]
+                                #повторно выводим форму, рядом с ее элтом управления выведем ∀ err msgs
+                            else:
+                                #сохраняем данные
+                                #обычно перенаправляем на страницу со списком записеи|сведениями о добавленнои записи
+                        
+                        
+                        .cleaned_data:<dict>
+                        #⊃ {'field_name':'field_val',...}
+                        #позволяет извлечь данные формы приведенные к нужному типу
+                        #examples
+                            #использования ключа рубрики указаннои в только что созданном объявлении для формирования url перенаправления
+                            #подробнее см НАПИСАНИЕ КОНТРОЛЛЕРОВ (fx add_save)
+                            #форма получает request if данные валидны передаем в контекст 'rubric_id' bbf.<rubric>.pk
+                            return HttpResponseRedirect(reverse('bboard:by_rubric', kwargs={'rubric_id': bbf.cleaned_data['rubric'].pk}))
+                        
+                        
+                        .changed_data
+                        #⊃ lst имен полеи формы чьи val были Δ пользователем 
+                        
+                        
+    ОБРАБОТКА & СОХРАНЕНИЕ ПОЛУЧЕННЫХ ОТ ПОСЕТИТЕЛЯ ДАННЫХ ПОСРЕДСТВОМ ФОРМ
+    #~обработка форм
+    #реализуется из коробки в высокоуровневых контроллерах-классах
+    #требуется реализовать вручную при исп низкоуровневых инструментов(контроллеры-fx/низкоуровневые контролеры-классы)
+        
+        ДОБАВЛЕНИЕ ЗАПИСИ ПОСРЕДСТВОМ ФОРМЫ
+            ДОБАВЛЕНИЕ ЗАПИСИ В МОДЕЛЬ ПОСРЕДСТВОМ СВЯЗАННОИ ФОРМЫ
+            #подразумевается что класс формы ∃
+                СОЗДАНИЕ ФОРМЫ ДОБАВЛЕНИЯ ЗАПИСИ
+                #алг
+                    при GET-запросе клиента
+                        создать экз формы
+                        #можно создать экземпляр вызовом без args
+                            bbf = BbForm()
+                            #|поместить в форму начальные данные
+                                bbf = BbForm(initial={kind='b'})
+                        поместить его в контекст шаблона
+                        отрендерить шаблон
+                #examples
+                    см НАПИСАНИЕ КОНТРОЛЛЕРОВ FX
+                ПОВТОРНОЕ СОЗДАНИЕ ФОРМЫ
+                #после ввода данных и нажатия "отправить" браузер exe POST-запрос ⊃ данные
+                    #контроллер получит данные контроллер валиднет их и запишет в новои записи модели
+                #алг
+                    снова создать экз формы и поместить в него данные из запроса
+                        #.POST ⊃ dict
+                        bbf = BbForm(request.POST)
+                        #форма обработает данные и "подготовится" к валидации
+                        можно проверить были ли помещены данные запроса в форму при ее создании(см .is_bound())
+                            
+        ДОСТУП К ДАННЫМ ФОРМЫ
+        #например для формирования uri перенаправления
+        
+        
+        ПРАВКА ЗАПИСИ ПОСРЕДСТВОМ ФОРМЫ
+        #алг
+            *при получении GET запроса создать форму правки записи, указав Δ запись в instance param
+                bb = Bb.objects.get(pk=pk) 
+                bbf = BbForm(instance=bb)
+            *вывести форму пользователю
+            *при получении POST-запроса ⊃ новые данные снова создать форму указав первым позиционным arg полученные данные извлеченные из request.POST, а в arg instance исправляемую запись
+                #видимо так
+                bbf = BbForm(request.POST, instance=Bb.objects.get(pk=<pk>))
+            *валиднуть форму: сохранить запись(& обычно exe redirect) If (данные валидны) Else повторно вывести страницу с формои
+        #examples
+            #контроллер прявящии запись с ключем полученным из url-param pk
+            #ps исп шаблон bboard/bb_form.html
+                #получает запрос и pk записи от роутера
+                def edit(request, pk):
+                    bb = Bb.objects.get(pk=pk)
+                    if request.method == 'POST':
+                        bbf = BbForm(request.POST, instance=bb)
+                        if bbf.is_valid():
+                            bbf.save()
+                            return HttpResponseRedirect(reverse('bboard:by_rubric', kwargs={'rubric_id': bbf.cleared_data['rubric'].pk}))
+                        else:
+                            context = {'form': bbf}
+                            return render(request, 'bboard/bb_form.html', context)
+                    else:
+                        #пользователь ничего не передал -> запросил(GET) запись для правки
+                        bbf = BbForm(instance=bb)
+                        context = {'form': bbf}
+                        return render(request, 'bboard/bb_form.html', context)
+                            
+                
+        УДАЛЕНИЕ ЗАПИСИ
+        #для удаления записи не нужна форма связанная с моделью, и даже не нужно обрабатывать формы в контроллере
+        #ps это конечно-же можно делать встроенными(высокоуровнемыми?) контроллерами
+        #алг
+            извлечь запись для удаления
+            вывести страницу с предупреждение об удалении записи ⊃ кнопку отправки данных
+            #после нажатия на нее браузер отправит POST-запрос
+            при получении запроса(как сигнала) контроллер удалит запись
+        #examples
+            #контроллер удаляющии запись с ключем ⊂ url-param pk
+            #ps исп шаблон bboard\bb_confirm_delete.html
+            def delete(request, pk):
+                bb = Bb.objects.get(pk=pk)
+                if request.method == 'POST'
+                    bb.delete()
+                    return HttpResponseRedirect(reverse('bboard:by_rubric', kwargs={'rubric_id': bb.rubric.pk}))
+                else:
+                    context = {'bb': bb}
+                    return render(request, 'bboard/bb_confirm_delete.html', context)
+        
+        
+            
+по идее модель что-то вроде интерфеиса к бд
+
+
+    НАБОРЫ ФОРМ СВЯЗАННЫЕ С МОДЕЛЯМИ
+    #в Δ от обычных связанных с моделями форм позволяющих работать only с однои записью, позволяют работать сразу с неколькими
+    #внешне представляют собои {Xₙ} выведенную группу форм ⊃ содержимое отдельных записеи
+    #позволяют выводить "пустые" формы для добавления записеи, & спец средства переупорядочивания & удаления записеи 
+    #заменяет несколько страниц(lst записеи, добавления записеи, правки & удаления записеи)
+    #удобен лишь для отображения малого числа записеи
+        
+        СОЗДАНИЕ НАБОРОВ ФОРМ СВЯЗАННЫХ С МОДЕЛЯМИ
+        #реализуется быстрым объявление фабрикои классов .modelformset_factory() ⊂ django.forms
+            
+            django.forms
+                .modelformset_factory(<model> [, form=<форма_связанная_с_моделью>][, fields=None][, exclude=None][, labels=None][, help_texts=None][, exclude=None][, labels=None][, help_texts=None][, error_messages=None][, field_classes=None][, widgets=None][, extra=1][, can_order=False][, can_delete=False][, min_num=None][, validate_min=False][, max_num=None][, validate_max=False][, formset=<набор форм, связанных с моделью>])
 
 
 <input>
