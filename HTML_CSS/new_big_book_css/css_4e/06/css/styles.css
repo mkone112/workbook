@@ -1,3 +1,35 @@
+@font-face {
+	font-family: 'PTSans';
+	src: url('fonts/PTSansRegular.woff2') format('woff2'),
+	     url('fonts/PTSansRegular.woff') format('woff');
+	font-weight: normal;
+	font-style: normal;
+}
+
+@font-face {
+	font-family: 'PTSans';
+	src: url('fonts/PTSansBold.woff2') format('woff2'),
+	     url('fonts/PTSansBold.woff') format('woff');
+	font-weight: bold;
+	font-style: normal;
+}
+
+@font-face {
+	font-family: 'PTSans';
+	src: url('fonts/PTSansItalic.woff2') format('woff2'),
+	     url('fonts/PTSansItalic.woff') format('woff');
+	font-weight: normal;
+	font-style: italic;
+}
+
+@font-face {
+	font-family: 'PTSans';
+	src: url('fonts/PTSansBoldItalic.woff') format('woff'),
+	     url('fonts/PTSansBoldItalic.woff2') format('woff2');
+	font-weight: bold;
+	font-style: italic;
+}
+
 /* сброс стилей браузера */
 html, body, div, span, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, a, abbr, acronym, address, big, cite, code, del, dfn, em, img, ins, kbd, q, s, samp,small, strike, strong, sub, sup, tt, var, b, u, i, center, dl, dt, dd, ol, ul, li, fieldset, form, label, legend,
 table, caption, tbody, tfoot, thead, tr, th, td, article, aside, canvas, details, embed, 
@@ -28,3 +60,29 @@ table {
 	border-spacing: 0;
 } 
 /* конец кода сброса стилей браузера */
+
+html {
+	font: 62.5% PTSans, Arial, sans-serif;
+}
+
+.main h1 {
+	color: rgb(249, 212, 120);
+	font: 4em "Arial Black", Arial, Helvetica, sans-serif;
+	text-shadow: 4px 4px 6px rgba(0, 0, 0, .75);
+}
+
+.main h2 {
+	font: 3.5em "Slabo 27px", Garamond, Times, serif;
+	color: rgb(37,76,143);
+	border-bottom: 1px solid rgb(200, 200, 200);
+	margin-top: 25px;
+}
+
+.main h3 {
+	color: rgb(241,47,6);
+	font-size: 1.9em;
+	font-weight: bold;
+	text-transformation: uppercase;
+	margin-top: 25px;
+	margin-bottom: 10px;
+}

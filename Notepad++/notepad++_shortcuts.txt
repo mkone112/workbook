@@ -1,0 +1,2 @@
+F8::switch area
++tab::вернуться на tab назад

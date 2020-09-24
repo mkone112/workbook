@@ -29,3 +29,15 @@
 
 при Δ полей содержимое таблицы не меняется
 	перестрой отображение в pycharm(он не обновляет его автоматом)
+	
+Δ модели -> makemigration -> You are trying to add a non-nullable field <field_name> to <model_name> without a default...
+	1) Provide a one-off default... -> ввод def val для уже ∃ полеи
+	#допускаются валидные python exp ⊃ django.utils.timezone & datetime модули
+	2) Quit & let me add a defaut in models.py -> самому добавить null=True|default=<default_val> в модель
+
+в бд не создаются служебные таблицы dj -> py manage.py migrate
+
+при посылке запроса, например с паролем в админку dj, dj может отвечать 30X и ложиться
+#решения	
+	downgrade to dj 2.X.X
+	upgrade to py 3.8+

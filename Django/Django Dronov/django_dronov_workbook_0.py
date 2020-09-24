@@ -1,58 +1,189 @@
-django 1.0 появился в 2005
-frame-work - готовый каркас
-framework - ∀-объемлющая библиотека 
-для dj остается только писать код генерирующий страницы на основе данных из базы
-проект написанный на Python(весьма сомнительно что дело в этом) загружает ∀ модули в ram при запуске => при Δ кода требуется перезапуск
-dj следует современным стандартам веб-разработки
-	архитектура "модель-контроллер-шаблон"
-	использование миграций для внесения изменений в бд
-	"написанное однажды применяется везде"
-dj - полно-fx framefork
-#для разработки среднестатического сайта достаточно только его ∃
-dj - высокоуровневый framework
-	самостоятельно выполняет типовые задачи
-		соединение с бд
-		обработка данных полученных от пользователя
-		сохранение выгруженных пользователем данных
-	предоставляет
-		полно-fx подсис-му разграничения доступа
-		исключительно мощную, удобно настраиваемую админку(в отличие от ∀ других фреймворков)
-dj - удобен - содержит:
-	легкий и быстрый отладочный сервер
-	развитый механизм миграций
-	дополнительные lib
-		вывод граф миниатюр
-		аутентификация через соцсети
-		поддержка CAPTCHA
-	основан на Python
-	...
-source готового сайта электронной доски объявлений: ftp://ftp.bhv.ru/9485977540582.zip | bhv.ru/<page_of_this_book>
-используемое по
-	Win 10 x64
-	Django 2.1.3
-	#dj 2.1 требует python 3.5+
-	Django Simple Captcha 0.5.9
-	django-precise-bbcode 1.2.9
-	django-bootstrap4 		0.0.6(разработка) 0.0.7(проверка)
-	Pillow					5.2.0
-	django-cleanup			2.1.0
-	easy-thumbnails			2.5
-	Python Social Auth		2.1.0
-	Django REST framework	3.8.2
-	django-cors-headers		2.4.0
-	mod-wsgi				4.6.4
-	Angular					6.1.7
-pip ⊂ в стандартную поставку Python 3.4+ 
-pypi(python package index) реестр пакетов
-pip требуется запускать с повышенными правами только if он установленн в директорию требующую соотв прав(напр Program Files)
-django тянет за собой pytx
-pytz
-#библиотека 
-#выполняет обработку val даты и времени с учетом временных зон
+ENG
+    frame-work - готовый каркас
+    verbose:eng:подробно?
+    pretend:eng:предваряет?
+    exclusion:eng:?
+    dense:eng:?
+    presence:eng:?
+    Werkzeug:eng(а это вообще eng?):(?)
+    whenever:eng:(?)
+
+
+
+STATRELOADER
+    проект написанный на Python(весьма сомнительно что дело в этом) загружает ∀ модули в ram при запуске => при Δ кода требуется перезапуск
+    #судя по сообщениям консоли этим занимается StatReloader
+
+
+COMMON
+    framework - ∀-объемлющая библиотека
+    django
+    #1.0 появился в 2005
+    #для него остается только писать код генерирующий страницы на основе данных из базы
+    #следует современным стандартам веб-разработки
+        архитектура "модель-контроллер-шаблон"
+        использование миграций для внесения изменений в бд
+        "написанное однажды применяется везде"
+    #полно-fx высокоуровневый framefork
+        самостоятельно выполняет типовые задачи
+            соединение с бд
+            обработка данных полученных от пользователя
+            сохранение выгруженных пользователем данных
+        предоставляет
+            полно-fx подсис-му разграничения доступа
+            исключительно мощную, удобно настраиваемую админку(в отличие от ∀ других фреймворков)
+    #для разработки среднестатического сайта достаточно только его ∃
+    #удобен - содержит:
+        легкий и быстрый отладочный сервер
+        развитый механизм миграций
+        дополнительные lib
+            вывод граф миниатюр
+            аутентификация через соцсети
+            поддержка CAPTCHA
+        ...
+    #можно подвесить добавив ∀ сложное exp вроде a**b(что довольно очевидно)
+    #тянет за собой pytz и sqlparse
+
+
+
+    UTC
+    #всемирное координированное время
+
+
+
+    ACL
+    #?что-то с сетями?
+
+
+
+    DSN
+    #
+
+
+
+    FQDN
+    #Fully Qualified Domain Name
+
+
+
+DRONOV
+    source готового сайта электронной доски объявлений: ftp://ftp.bhv.ru/9485977540582.zip | bhv.ru/<page_of_this_book>
+    используемое по
+        Win 10 x64
+        Django 2.1.3
+        #dj 2.1 требует python 3.5+
+        Django Simple Captcha 0.5.9
+        django-precise-bbcode 1.2.9
+        django-bootstrap4 		0.0.6(разработка) 0.0.7(проверка)
+        Pillow					5.2.0
+        django-cleanup			2.1.0
+        easy-thumbnails			2.5
+        Python Social Auth		2.1.0
+        Django REST framework	3.8.2
+        django-cors-headers		2.4.0
+        #видимо что-то с заголовками для организации межсайтового взаимодействия
+        mod-wsgi				4.6.4
+        Angular					6.1.7
+
+
+	
+THIRD PARTY SOFTWARE
+    Trac
+    #баг-трекер, вики, управление проектами
+    #совместим с wsgi
+    
+    Bottle
+    #совместим с wsgi
+    
+    CherryPy
+    #совместим с wsgi
+    
+    Flask
+    #совместим с wsgi
+    
+    Pylons
+    #совместим с wsgi
+    
+    Pyramid
+    #совместим с wsgi
+    
+    Rack
+    #Ruby ~ wsgi
+    
+    JSGI
+    #JS ~ wsgi
+    
+    
+    PSGI
+    #Perl ~ wsgi
+
+
+    pip
+    #⊂ в стандартную поставку Python 3.4+
+        pip show <packet>
+        #просмотр данных пакета ⊃ зависимости
+    # требуется запускать с повышенными правами только if он установленн в директорию требующую соотв прав(напр Program Files)
+
+    
+    pypi
+    #python package index
+    #реестр пакетов
+
+
+    pytz
+    #библиотека
+    #выполняет обработку val даты и времени с учетом временных зон
+
+
+    Werkzeug
+    #пакет
+        pip install Werkzeug
+        
+        
+    boto
+    #lib
+    #требуется py manage.py sync_s3 ⊂ django_extensions
+
+
+
+WSGI
+    #web server gateway interface
+    #вроде чисто python термин
+    #стандарт взаимодействия серверной Python-программы и самим веб-сервером(вроде Apache)
+        #определяет middleware-компоненты предоставляющие интерфейсы app & серверу ->
+            для сервера middleware является app
+            для app middleware явл сервером
+            ->
+                позволяет составлять цепи WSGI-совместимых middleware
+            #простая обертка над obj приложения
+            #мб реализован замыканием
+    #python ⊃ мно-во библиотек, тулкитов, ... неумеющих взаимодействовать друг с другом
+    #wsgi предоставляет простой, универсальный интерфейс между большинством веб-серверов и веб-app|фреймвоками
+    #спеки(должно удовлетворять)
+        #callable obj
+        #принимать environ, start_response(что-то такое я делал)
+            environ
+            #словарь v окружения
+            start_response
+            #запрос при старте|~?
+            #обработчик запроса
+        #вызывать обработчик с кодом HTTP-ответа и HTTP-заголовками
+        #возвращать iterable ⊃ тело ответа
+    #простейший пример
+        def simplest_wsgi_app(environ, start_response):
+            start_response('200 OK', [('Content-Type', 'text/plain')])
+            yield 'Hello, world!'
+
+
+
+
 django-admin
 #утилита exe административные задачи
 	startproject
 	#команда создания проекта
+
+
+
 РАЗРАБОТКА ПРОЕКТА
 	django-admin startproject samplesite
 		samplesite
@@ -99,7 +230,7 @@ django-admin
 						#вывод страницы отладки при ∀ err
 						False(по умолчанию)
 						#эксплутационный
-						#при ∀ err выводит стандартное сообщение сервера(not found(404?)/internal server error(500?))
+						#при ∀ err выводит стандартное сообщение сервера(not found(404)/internal server error(500))
 						#более строгие настройки безопасности
 						
 					ALLOWED_HOSTS = []
@@ -176,7 +307,9 @@ django-admin
 						{
 							'BACKEND': 'django.template.backends.django.DjangoTemplates',
 							'DIRS': [],
+							#доп папки с шаблонами?
 							'APP_DIRS': True,
+							#видимо использовать ли dir ⊃ apps с шаблонами?
 							'OPTIONS': {
 								'context_processors': [
 									'django.template.context_processors.debug',
@@ -191,9 +324,7 @@ django-admin
 					
 					WSGI_APPLICATION = '<project_dir>.wsgi.application'
 					
-					DATABASES = <dict>
-					#val по умолчанию
-					{}
+					DATABASES = <dict>:{}
 					#val при создании проекта
 						#указывает единственную бд в формате SQLite ⊂ в файле <project>/db.sqlite3
 						{
@@ -234,7 +365,7 @@ django-admin
 								'OPTIONS':<dict>:{}
 								#используется only for серверных СУБД
 								#доп параметры специфичные для СУБД
-								#∀ елт - отдельный параметр
+								#∀ елт - отдельный параметр(что как-то очевидно)
 							}
 						}
 					#хранит ∀ бд используемые проектом
@@ -254,17 +385,13 @@ django-admin
 					
 					TIME_ZONE = <str>:
 					#val по умолч:'America/Chicago', при создании проекта:UTC
-					
-					
-UTC
-#всемирное координированное время
 					#список доступных зон:en.wikipedia.org/wiki/List_of_tz_database_time_zones
 					#возм val
 						'Europe/Moscow'
 						
 						
 					USE_I18N = <bool>:True
-					#состояние ⊂ dj сис-мы автоперевода на язык указанных в LANGUAGE_CODE
+					#состояние ⊂ dj сис-мы автоперевода на язык указанный в LANGUAGE_CODE
 						USE_I18N = True
 						#∀ сообщения админки выводятся локализованными
 						#понижает perf
@@ -278,8 +405,9 @@ UTC
 					#val по умолч:False, при создании проекта True
 						USE_L10N = True
 						#числа, даты, время при выводе форматируются по правилам языка указанного в LANGUAGE_CODE
+						#переопределяет настройки проекта
 						USE_L10N = False
-						#числа, даты, время - при выводе форматируются согласно настройкам проекта(?)
+						#числа, даты, время - при выводе форматируются согласно настройкам проекта
 
 
 					USE_TZ=<bool>
@@ -307,12 +435,12 @@ UTC
 					
 					
 					DECIMAL_SEPARATOR=<str>:'.'
-					#требует USE_L18N = False, иначе игнорируется
+					#требует USE_L18N = False, иначе игнорируется(очевидно тк параметр переопределяется)
 					#символ используемый для разделения целой.дробной части вещественных чисел
 					
 					
 					NUMBER_GROUPING=<int>:0
-					#требует USE_L18N = False, иначе игнорируется
+					#требует USE_L18N = False, иначе игнорируется(очевидно тк параметр переопределяется)
 					#число цифр в числе составляющих группу
 						NUMBER_GROUPING=0
 						#группировка не используется
@@ -339,7 +467,7 @@ UTC
 					SHORT_DATETIME_FORMAT=<str>:'m/d/Y P'
 					#требует USE_L18N = False, иначе игнорируется
 					#формат по умолч для вывода даты и времени в коротком виде
-					#val по умолч: 'm/d/Y P' : <месяц>/<число>/<год_из_4х_цифр>/<часы в 12-ти часовом формате>
+					#val по умолч: 'm/d/Y P' : <месяц>/<число>/<год_из_4х_цифр> <часы в 12-ти часовом формате>
 					#примеры
 						'j.m.Y H:i:s'
 						#<число>.<месяц>.<год_из_4х_цифр> <часы_в_24х_часовом_формате>:<минуты>:<секунды>
@@ -399,7 +527,17 @@ UTC
 						0 : вс
 						6 : сб
 						
-						
+					
+					MANAGERS
+					#не уверен в ∃
+					#вроде исп manage.py sendtestemail
+					
+					
+					ADMINS
+					#не уверен в ∃
+					#вроде исп manage.py sendtestemail
+					
+					
 				urls.py
 				#модуль маршрутизации уровня проекта
 				
@@ -412,7 +550,14 @@ UTC
 #middleware
 #программные модули exe предварительную обработку клиентского запроса перед передачей контроллеру и окончательную обработку ответа контроллера
 #∀ посредники должны быть указаны в соотв списке в settings.py
-
+#см wsgi
+#могут исп для
+	обработки сессий
+	аутентификации
+	маршрутизации запросов(управления url)
+	балансировки нагрузки
+	Δ заголовков
+	...
 
 ОТЛАДОЧНЫЙ ВЕБ-СЕРВЕР DJ
 #написан на Python
@@ -427,109 +572,1651 @@ UTC
 
 manage.py
 #по ∀ видимости можно использовать и без "префикса" python т.к. .py ассоциирован с интерпритатором
+#основные параметры
+	[-h|--help]
+	#py manage.py <command> -h ~ py manage.py help <command>
+	[--version]
+	#по ∀ видимости версия ∀ отдельнои утилиты
+	[--noinput|--no-input]
+	#без вывода
+	[-v|--verbosity {0,1,2,3}]
+	#output verbosity level
+	#выводит неожиданно много информации о внутреннеи структуре dj
+		0: minimal
+		1: normal
+		2: verbose
+		3: very verbose
+	[--traceback]
+	#raise on CommandError except
+	[--no-color] [--force-color]
+#команды
+	[auth]
+	
+		changepassword
+		#change user pass for django.contrib.auth
+		#Δ возможно в realtime на работающем сервере
+		#min 8 char ⊃ цифры, буквы в разных регистрах
+		#optional args(вероятно могут стоять в ∀ порядке)
+			[-h|--help] [--database <database_to_use>]
+			[--version]
+			[-v {0,1,2,3}] [--settings <python_path_to_settings_module>] [--traceback] [--no-color] [--force-color]
+		#positional arg(вероятно должен стоять в конце)
+			[username] = <current_username>
+			#current_username - имя профиля в ос
+			
 
 
-	runserver [[<adress>][:][<port>]] [--noreload] [--nothreading] [--ipv6] [-6]
-	#запускает отладочный(только?) сервер
-		--noreload
-		#отключение автоперезапуска при Δ кода
-		--nothreading
-		#force one thread
-		--ipv6|-6
-		#использовать IPv6
-		#адрес по умолч	::1
-	#порт по умолчанию TCP 8000, адресс 127.0.0.1, режим многопоточный
-		python manage.py runserver 1.2.3.4
-		python manage.py runserver 4000
+		createsuperuser
+		#создание зарегистрированного пользователя с max правами
+		#очевидно нуждается в ∃ бд
+		#email - opt
+		#optional args(вероятно могут стоять в ∀ порядке)
+			[-h|--help] [--username <username>]
+			[--noinput|--no-input]
+			#not prompt the user for any kinds
+			#требует --username, и val остальных обязательных полеи
+			#тк передать pass в параметре нельзя(по очевидным причинам) созданныи superuser не сможет логиниться до получения пароля
+			[--database <database_to_use>] = "default"
+			#
+			[--email <superuser_email>]
+			[--version]
+			#по ∀ видимости версия утилиты createsuperuser
+			[-v|--verbosity {0,1,2,3}]
+			[--settings <python_path_to_settings_module>] = DJANGO_SETTINGS_MODULE
+			#пример
+				--settings "myproject.settings.main"
+			[--pythonpath <python_path>]
+			#dir to add to the Python path
+				--pythonpath "/home/django_projects/myproject"
+			[--traceback] [--no-color] [--force-color]
+		#ругается при указании pass не удовлетв min 8 char ⊃ цифры, буквы в разных регистрах
+		#можно создать мн-во superusers
+		#при ∃ пользователя с таким именем -> предлагает ввести другое
+
+
+	[contenttypes]
+		remove_stale_contenttypes
+		#?
+		#optional args(вероятно могут стоять в ∀ порядке)
+			[-h|--help] [--noinput|--no-input] [--database <db_name>] [--version] [-v {0,1,2,3}] [--settings <setting>] [--pythonpath <python_path>] [--traceback] [--no-color] [--force-color]
+		
+		
+		
+		
+	[django]
+		check
+		#проверяет ∀ dj проект на потенциальные проблемы
+			manage.py check >> System check identified no issues (0 silenced)
+			#?silenced(?~warning)
+		#запускается автоматом при старте dj? исп подсисмами(напр для вывода err msg на страницах) dj?
+		#optional args(вероятно могут стоять в ∀ порядке)
+			[-h|--help]
+			[-t|--tag <tags>]
+			#run only check labeled with given tag
+			[--list-tags]
+			#list available tags
+				manage.py check --list-tags
+				>>
+					admin
+					caches
+					database
+					models
+					staticfiles
+					templates
+					translation
+					urls
+			[--deploy]
+			#check deployment settings
+			#вывел мне кучу warnings
+			[--fail-level {CRITICAL,ERROR,WARNING,INFO,DEBUG}] = ERROR
+			#message level that will cause the command to exit with a non-zero status
+			[--version] [-v|--verbosity {0,1,2,3}] [--settings <python_path_to_settings_module>]
+			[--pythonpath <python_path>] [--traceback] [--no-color] [--force-color]
+		#positional arg(вероятно должен стоять в конце)
+			[app_label [app_label ...]]
+			
+		
+		
+		compilemessages
+		#компилит .po фаилы в .mo используя встроенную поддержку gettext
+		#optional args(вероятно могут стоять в ∀ порядке)
+			[-h|--help]
+			[-l|--locale LOCALE]
+			#Locale(s) to process (e.g. de_AT). Default is to process all. Can be used multiple times.
+			[-x|--exclude EXCLUDE] = none
+			#исключенные локали, мб исп мн-во раз
+			[--use-fuzzy] [--version] [-v|--verbosity {0,1,2,3}] [--settings <python_path_to_settings_module>]
+			[--pythonpath <python_path>] [--traceback] [--no-color] [--force-color]
 
 		
-	startapp <app_name> [<path_to_dir_of_app_packet]
-	#создание нового пустого приложения
-	#if путь к папке app не указан - пакет с указаным именем будет создан в текущей папке
-	#else if папка app указана - она будет преобразована в пакет приложения
+		
+		createcachetable
+		#create the tables needed to use the SQL cache backend
+		#optional args(вероятно могут стоять в ∀ порядке)
+			[-h|--help]
+			[--database <db_name>] = "default"
+			#дб для создания таблиц
+			[--dry-run]
+			#вывод SQL для запуска без его запуска
+			[--version] [--settings <python_path_to_settings_module>]
+			[--pythonpath <python_path>] [--traceback] [--no-color] [--force-color]
+		#positional arg(вероятно должен стоять в конце)
+			[table_name [table_name ...]]
+			#opt table names. Otherwise, settings.CACHES is used to find cache tables.
+			
+			
+			
+		dbshell
+		#runs the command-line for specifisd db
+		#требует наличия соотв по
+			manage.py dbshell
+			>> CommandError: You appear not to have the 'sqlite3' program installed | on your path
+		#optional args(вероятно могут стоять в ∀ порядке)
+			[-h|--help]
+			[--database <db_name>] = "default"
+			[--version] [-v {0,1,2,3}] [--settings <setting>] [--pythonpath <python_path>] [--traceback] [--no-color] [--force-color]
 
 
-	makemigrations [<apps_aliases_через_пробел>] [--name|-n <migration_name>] [--noinput|--no-input] [--dry-run] [--check] [--merge] [--empty]
-	#запускает генерацию одного файла миграции для ∀ моделей в app не Δ с момента пред генерации миграции
-	#миграции сохраняются в пакете <app>/migrations
-		<apps_alises_через_пробел>
-		#if не указан -> обрабатываются модели объявленные во ∀ apps проекта
-		--name|-n
-		#имя формируемой миграции добавляемое к порядковому номеру
-		#if !∃ => default имя:
-			initial
-			#для начальной миграции(создающей первые версии ∀ необходимых структур)
-			auto_<date_time_stamp>
-			#созданные после initial Δ созданные ранее структуры
-		--noinput|--no-input
-		#скрыть вывод сведений о формируемой миграции
-		--dry-run
-		#вывод сведений о формируемой миграции без ее формирования
-		--check
-		#вывод сведений о Δ моделей с последней миграции без формирования миграции
-		--merge
-		#исп для устранения конфликтов миграций
-		--empty
-		#создание "пустой" миграции для ручного формирования
-		
-		
-	migrate [<app_alias> [<migration_name>|<номер>]] [--fake_initial] [--noinput|--no-input] [--fake]
-	#выполнение миграции
-	migrate <app_alias> zero
-	#отмена ∀ миграций ⊂ app с удалением ∀ созданных ими структур из бд
-		НЕЛЬЗЯ ОТМЕНИТЬ ОТДЕЛЬНУЮ МИГРАЦИЮ
-	#без указания <app_alias> [<migration_name>] => exe ∀ не exe миграции ⊂ ∀ apps
-	#без указания <migration_name> => ∀ миграции ⊂ <app>
-		--fake-initial
-		#пропуск exe начальной миграции
-		#исп if бд ⊃ ∀ необх структуры для модификации
-		--noinput|--no-input
-		#отключить вывод сведений о применеии
-		--fake
-		#помечает ∀ миграции как exe без Δ бд
-		#исп if ∀ Δ были внесены в бд вручную
-		
-		
-	sqlmigrate <app> <number_part_of_migration_file_name>
-	#выводит sql генерируемого миграцией
-		#bboard/0001_initial.py
-		make migrations bboard 0001
-		
-		
-	shell
-	#запускает консоль dj
-	
-	
-	createsuperuser
-	#создание зарегистрированного пользователя с max правами
-	#pass: min 8 char ⊃ цифры, буквы в разных регистрах
 
+		diffsettings
+		#отображает Δ settings.py от его default вида(вида key = <new_val>)
+		#для DEBUG default val = False
+		#optional args(вероятно могут стоять в ∀ порядке)
+			[-h|--help]
+			[--all]
+			#display all settings, regardless of their val. In "hash" mode(hash - видимо имеется в виду предварение '###' !Δ val
+			#default val are prefexed  by "###"
+			[--default MODULE]
+			#settings module to compare the curr settings against
+			#leave empty to compare against dj defaut settings
+			[--output {hash, unified}]
+			#формат вывода
+			#def val вроде hash
+				'hash'
+				#вывод ∀ Δ настроек, with the settings that don't appear in the defaults followed by ###
+				#!~ --all
+				'unified'
+				#prefixes the default settings with a '-', followed by the changed setting with a '+' 
+			[--version] [-v {0,1,2,3}] [--settings <setting>] [--pythonpath <python_path>] [--traceback] [--no-color] [--force-color]
+
+		
+		
+		dumpdata
+		#output the content of the database as a  fixture(?) of the given format(using ∀ model's default manager unless --all is specified)
+		#optional args(вероятно могут стоять в ∀ порядке)
+			[-h|--help]
+			[--format <format>]
+			#specifies the outpet serialization format for fixtures
+			#какие val доступны?
+			[--indent <indent>]
+			#specifies the indent level to use when pretty-printing output
+			#какие val доступны?
+			[--database <db_name>] = "default"
+			#db to dump fixtures from
+			[-e|--exclude <app_label|<app_label.ModelName>]
+			#можно исп неск раз
+			[--natural-foreign]
+			#(?)исп natural foreign keys if доступны
+			[--natural-primary]
+			#(?) исп natural primary keys if доступны
+			[-a|--all]
+			#use dj base manager to dump all models stored in the database ⊃ those that would otherwise be filtered|modified by a custom manager
+			[--pks <primary_key0, primary_key1,...]
+			#only dump obj with given primary keys.
+			#работает only if указана ОДНА модель
+			[-o|--output <file_for_output>]
+			[--version] [-v {0,1,2,3}] [--settings <setting>] [--pythonpath <python_path>] [--traceback] [--no-color] [--force-color]
+		#positional arg(вероятно должны стоять в конце)
+			[app_label0[.ModelName] [app_label1[.ModelName]] ...]
+			#restricts dumped data to the specified app_label|app_label.ModelName
+
+fixtures:eng:арматура
+
+fixtures
+#фаилы предварительнои настроики ⊃ набор данных для загрузки в бд
+			
+
+		flush
+		#УДАЛЯЕТ ∀ ДАННЫЕ ⊂ ∀ бд, ⊂ добавленные миграциями
+			manage.py flush
+			>>
+				You have requested a flush of the db
+				This will IRREVERSIBLY DESROY ∀ data currently in the <abs_path_to_db> db & return each table to an empty state
+				Are you sure you want to do this
+					Type 'yes' to continue,| 'no' to cancel:
+				#ответ регистрозависим
+		#does not achive a "fresh install" state
+		#судя по выводу dumpdata - в бд остается дохрена данных
+			[-h|--help] [--noinput|--no-input] [--database <db_name>] [--version] [-v {0,1,2,3}] [--settings <setting>]
+			[--pythonpath <python_path>] [--traceback] [--no-color] [--force-color]
+		
+
+		
+		inspectdb
+		#(sic!) introspects the db tables & outputs a dj model module
+		#вроде выводет описание ∀ содержимого бд в виде моделеи
+		#optional args(вероятно могут стоять в ∀ порядке)
+			[-h|--help]
+			[database <db_name>] = "default"
+			[--include-partitions]
+			#также выводить модели для partition tables
+			[--include-views]
+			#также выводить модели для views
+			[--version] [-v {0,1,2,3}] [--settings <setting>] [--pythonpath <python_path>] [--traceback] [--no-color] [--force-color]
+		#positional arg(вероятно должны стоять в конце)
+			[table [table ...]]
+			#tables|views for introspection
+			
+
+
+		loaddata
+		#install the name fixture(s) in the db
+		#optional args(вероятно могут стоять в ∀ порядке)
+			[-h|--help] [--database <db_name>] = "default"
+			[--app <app_label>]
+			#only look for fixtures in the specified app
+			[-i|--ignorenonexistent]
+			#ignores entries in the serialized data for fields that do not currently exist on the model
+			[-e|--exclude <app_label|<app_label.ModelName>]
+			#можно исп неск раз
+			[--format <format>]
+			#format of serialized data when reading from stdin
+			[--version] [-v {0,1,2,3}] [--settings <setting>] [--pythonpath <python_path>] [--traceback] [--no-color] [--force-color]
+		#positional arg(вероятно должен стоять в конце)
+			fixture0 [fixture1 ...]
+			#fixture labels
+
+
+
+		makemessages
+		#runs over the entire source tree of the current directory and pulls out all strings marked for translation
+			#it creates|updates a msg file in the conf/locale(in dj tree) | locale (for projects&apps) dir
+		#должна быть запущенна с --locale|--exclude|-all
+		#вроде исп GNU gettext
+			py manage.py makemessages -l pt_BR
+			>> CommandError: Cant find msguniq. Make sure you have GNU gettext tools 0.15+
+		#optional args(вероятно могут стоять в ∀ порядке)
+			[-h|--help]
+			[-l|--locale <locale>]
+			#создание|обновление msg files для заданных локалеи
+			#локали
+				pt_BR
+			#мб исп неск раз
+			[-x|--exclude <locales_to_exclude>] = none
+			#мб исп неск раз
+			[-d|--domain <domain>] = "django"
+			#the domain of the msg files
+			[-a|--all]
+			#обновить msg фаилы для ∀ ∃ локалеи
+			[-e|--extensions <comma_separated_extensions>] = "js" if (domain is "djangojs") else "html,txt,py"
+			#расширения фаилов для проверки
+			#мб исп неск раз
+			[-s|--symlinks]
+			#следовать по симлинкам
+			[-i|--ignore <glob_style_pattern>]
+			#мб исп неск раз
+			#ignore files|dirs
+			[--no-default-ignore]
+			#don't ignore common glob-style patterns 'CSV', '.*', '*~', '*.pyc'
+			[--no-wrap]
+			#don't break long msg lines into several lines
+			[--no-location]
+			#don't write '#: filename:line' lines
+			#~ --add-location 'never'
+			[--add-location [{full, file, never}]] = 'full'
+			#control '#: filename:line' lines
+				'full'
+				#the lines ⊃ file name&line number
+				'file'
+				#line number is omitted(опущены?)
+				'never'
+				#the lines are supressed
+				#~ --no-location
+			#requires gettext 0.19+
+			[--no-obsolete]
+			#remove obsolete msg strs
+			[--keep-pot]
+			#keep .pot file after making msgs(for debugging)
+			[--version] [-v {0,1,2,3}] [--settings <setting>] [--pythonpath <python_path>] [--traceback] [--no-color] [--force-color]
+			
+ommited:eng:опущен?
+obsolete:eng:?
+
+
+gettext
+#(?) вероятно модуль получения текста
+#используется manage.py makemessages
+			
+obsolete:eng:?
+		
+		makemigrations
+		#запускает генерацию одного файла миграции для ∀ моделей в app не Δ с момента пред генерации миграции
+		#миграции сохраняются в пакете <app>/migrations
+		#optional args(вероятно могут стоять в ∀ порядке)
+			[-h|--help]
+			[--dry-run]
+			#вывод сведений о формируемой миграции без ее формирования
+			#тупо выводит в консоль тоже что и при миграции
+				py manage.py makemigrations --dry-run
+					Migrations for '<app>':
+						<app>\migrations\<migration_name>
+							- Create model <model_name>
+							...
+			#думаю подходит для тестов моделеи
+			[--merge]
+			#исп для устранения конфликтов миграций
+			[--empty]
+			#создание "пустой" миграции для ручного формирования
+			[--noinput|--no-input]
+			#скрыть вывод сведений о формируемой миграции
+			[-n|--name <migration_name>]
+			#имя формируемой миграции добавляемое к порядковому номеру
+			#if !∃ => default имя:
+				initial
+				#для начальной миграции(создающей первые версии ∀ необходимых структур)
+				auto_<date_time_stamp>
+				#созданные после initial Δ созданные ранее структуры
+			[--no-header]
+			#не добавлять заголовок ⊃ комментариями
+			#initial ⊃ only "# Generated by Django ... <datetime>"
+			[--check]
+			#exit with !0 status if model changes are missing migrations
+			#вывод сведений о Δ моделей с последней миграции без формирования миграции
+			#else >> "No changes detected"
+			[--version] [-v {0,1,2,3}] [--settings <setting>] [--pythonpath <python_path>] [--traceback] [--no-color] [--force-color]
+		#positional arg(вероятно должен стоять в конце)
+			[<apps_labels(aliases)_через_пробел>]
+			#if не указан -> обрабатываются модели объявленные во ∀ apps проекта			
+
+
+
+		migrate
+		#выполнение миграции
+		#optional args(вероятно могут стоять в ∀ порядке)
+			[-h|--help]
+			[--noinput|--no-input]
+			#отключить вывод сведений о применеии
+			[--database <db_name>]
+			[--fake]
+			#помечает ∀ миграции как exe без Δ бд
+			#исп if ∀ Δ были внесены в бд вручную
+			[--fake_initial]
+			#пропуск exe начальной миграции
+			#исп if бд ⊃ ∀ необх структуры для модификации
+			[--plan]
+			#show a list of the migration action that will be performed
+			[--run-syncdb]
+			#?создает таблицы для apps без миграций
+			[--version] [-v {0,1,2,3}] [--settings <setting>] [--pythonpath <python_path>] [--traceback] [--no-color] [--force-color]
+		#positional arg(вероятно должен стоять в конце)
+			[<app_alias> [<migration_name>|<номер>]]
+			#без указания -> exe ∀ не exe миграции ⊂ ∀ apps
+			#без указания <migration_name> => ∀ миграции ⊂ <app>
+		migrate <app_alias> zero
+		#отмена ∀ миграций ⊂ app с удалением ∀ созданных ими структур из бд
+			#НЕЛЬЗЯ ОТМЕНИТЬ ОТДЕЛЬНУЮ МИГРАЦИЮ
+		#?~ manage.py flush
+
+			
+			
+		sendtestemail
+		#отправка testemail
+			[-h|--help]
+			[--managers]
+			#исп адреса указанные в settings.MANAGERS(⊄ settings by def)
+			[--admins]
+			#исп адреса указанные в settings.ADMINS(⊄ settings by def)
+			[--version] [-v {0,1,2,3}] [--settings <setting>] [--pythonpath <python_path>] [--traceback] [--no-color] [--force-color]
+		#возм умеет принимать emails в args
+			py manage.py sendtestemail >> err: You must specify some email recipients| pass the --managers|--admin opt
+
+
+		shell
+		#запускает консоль dj
+		#пытается исп IPython|bpython при наличии
+		#optional args(вероятно могут стоять в ∀ порядке)
+			[-h|--help]
+			[--no-startup]
+			#if using plain python -> ignore env v PYTHONSTARTUP(?) & ~/.pythonrc.py(?)
+			[-i|--interface {ipython, bpython,python}]
+			#разумеется соотв интерфеис должен ∃
+			[-c|--command <command>]
+			#exe <command> & exit
+			[--version] [-v {0,1,2,3}] [--settings <setting>] [--pythonpath <python_path>] [--traceback] [--no-color] [--force-color]
+
+
+
+		showmigrations
+		#просмотр списка миграций отсортированных по алфавиту
+		#[x] - exe миграция
+		#optional args(вероятно могут стоять в ∀ порядке)
+		#-p/-l почти не отличаются
+			[-h|--help]
+			[--database <db_name>] = "default"
+			[-l|--list]
+			#show a list of all migrations and which are applied
+			#исключает [--plan|-p]
+			[--plan|-p]
+			#вывод плана миграций(отсортированный в порядке очереди) вместо миграций
+			#verbosity level 2+ -> ⊂ all direct migrations dependencies & reverse dependencies(run_before)
+			#исключает [-l|--list]
+			[--version] [-v {0,1,2,3}] [--settings <setting>] [--pythonpath <python_path>] [--traceback] [--no-color] [--force-color]
+		#positional arg(вероятно должен стоять в конце)
+			[<app_label> [<app_label> ...]]
+			#при !∃ -> вывод ∀ с разбиениям по apps
+
+
+		sqlflush
+		#возвращает sql необходимыи для возвращения ∀ таблиц бд к состоянию fresh install
+			[-h|--help]
+			[--database <db_name>] = "default"
+			[--version] [-v {0,1,2,3}] [--settings <setting>] [--pythonpath <python_path>] [--traceback] [--no-color] [--force-color]
+		#пример
+			py manage.py sqlflush
+				BEGIN;
+				DELETE FROM "auth_group_permissions";
+				DELETE FROM <table>;
+				...
+				COMMIT;
+			
+
+
+		sqlmigrate
+		#выводит sql генерируемого миграцией
+			#bboard/0001_initial.py
+			make migrations bboard 0001
+		#optional args(вероятно могут стоять в ∀ порядке)
+			[-h|--help]
+			[--database <db_name>] = "default"
+			[--backwards]
+			#creates sql to UNAPPLY the migration, rather(?) than to apply it
+				py manage.py sqlmigrate --backwards app 0001
+				>>
+					BEGIN;
+					--
+					-- Create model <model_name>
+					--
+					DROP TABLE "<app_name>_<model_name>"
+					COMMIT;
+			[--version] [-v {0,1,2,3}] [--settings <setting>] [--pythonpath <python_path>] [--traceback] [--no-color] [--force-color]
+		#positional arg(вероятно должен стоять в конце)
+			<app_label> <migration_name>
+			#app ⊃ миграции <number_part_of_migration_file_name>
+
+rather:eng:тоже?
+
+
+		sqlsequencereset
+		#?prints the sql for resetting {xn} for the given apps
+		#хз зачем - мне ен вывел ничего
+		#optional args(вероятно могут стоять в ∀ порядке)
+			[-h|--help]
+			[--database <db_name>] = "default"
+			[--version] [-v {0,1,2,3}] [--settings <setting>] [--pythonpath <python_path>] [--traceback] [--no-color] [--force-color]
+		#positional arg(вероятно должен стоять в конце)
+			<app_label> [<app_label> ...]
+
+
+
+		squashmigrations
+		#слияние миграций в одну для уменьшения их числа что ускоряет их применение к свежей бд
+		#исп if модель многократно Δ с последующей генерацией миграций => миграций м.б. много
+		#optional args(вероятно могут стоять в ∀ порядке)
+			[-h|--help]
+			[--no-optimize]
+			#исп при неудачном слиянии|неработоспособности результирующей миграции
+			#видимо тупое объединение фаилов
+			[--noinput|--no-input]
+			#не выводить сведения о слиянии
+			[--squashed_name <имя_результирующей_миграции>]
+			#if отсутствует
+				<имя_первой_слитой_миграции>_squashed_<имя_последней_слитой_миграции>.py
+			[--no-header]
+			#не добавлять заголовочныи коммент к результату
+			[--version] [-v {0,1,2,3}] [--settings <setting>] [--pythonpath <python_path>] [--traceback] [--no-color] [--force-color]
+		#positional arg(вероятно должен стоять в конце)
+			<app_alias> [<first_migration_name>] <last_migration_name>
+			#указанные миграции ⊂ диапазону
+		#~слияние патчей
+			#слияние с initial по указанную
+				squashmigrations bboard 0004
+			#слияние с указанной по указанную
+				squashmigrations bboard 0002 0004
+		
+
+
+		startapp
+		#создание нового пустого приложения(структуры директорий dj app)
+		#optional args(вероятно могут стоять в ∀ порядке)
+			[-h|--help]
+			[--template <template>]
+			#путь|url для загрузки шаблонов
+			[-е|--extension <extension0>[, <extension1> ...] ] = "py"
+			#file extension for render
+			#мб исп неск раз
+			[-n|--name <file_name0> [,<file_name1> ...]]
+			#file name(s) to render
+			[--version] [-v {0,1,2,3}] [--settings <setting>] [--pythonpath <python_path>] [--traceback] [--no-color] [--force-color]
+		#positional arg(вероятно должен стоять в конце)
+			<app_name>
+			#app|project name
+			[<path_to_dir_of_app_packet]
+			#if путь к папке app не указан - пакет с указаным именем будет создан в текущей папке
+			#else if папка app указана - она будет преобразована в пакет приложения
+
+		
+		
+		startproject
+		#вероятно = startproject ⊂ django-admin
+		#создание структуры директории проeкта
+		#args ~ startapp
+
+
+
+		test
+		#discover & run tests ⊂ specified modules|current dir
+		#optional args(вероятно могут стоять в ∀ порядке)
+			[-h|--help]
+			[--noinput|--no-input]
+			[--failfast]
+			#break test suite after first fail
+			[--testrunner <testrunner>]
+			#use specified test runner class instead of the one specified by the TEST_RUNNER setting(видимо ⊂ settings.py ⊂ project)
+			[-t|--top-level-directory <top_level>]
+			#top level of project for unitest discovery
+			[-p|--pattern <pattern>] = test*.py
+			#the test matching pattern
+			[-k|-keepdb]
+			#preserves the test db between runs
+			[-r|--reverse]
+			#reverse test cases order
+			[--debug-mode]
+			#sets settings.DEBUG = True
+			[-d|--debug-sql]
+			#prints logged SQL queries on failure
+			[--parallel [N]]
+			#use up to N processes
+			[--tag <tags>]
+			#run only tests ⊃ <tags>
+			#мб исп неск раз
+			[--exclude-tag <tags>]
+			#искл тесты ⊃ <tags>
+			#мб исп неск раз
+			[--version] [-v {0,1,2,3}] [--settings <setting>] [--pythonpath <python_path>] [--traceback] [--no-color] [--force-color]
+		#positional arg(вероятно должен стоять в конце)
+			[test_label0 [test_label1 ...]]
+			#module paths to test(module name|TestCase|TestCase.test_method)
+
+preserves:eng:предохраняет?
+
+		testserver
+		#(?)runs a development server ⊃ data from given fixtures
+		#optional args(вероятно могут стоять в ∀ порядке)
+			[-h|--help] [--noinput|--no-input]
+			[--addrport <addrport>]
+			#port|ip:port to run server
+			[--ipv6]
+			#use ipv6 address
+			[--version] [-v {0,1,2,3}] [--settings <setting>] [--pythonpath <python_path>] [--traceback] [--no-color] [--force-color]
+		#positional arg(вероятно должен стоять в конце)
+			[fixture0 [fixture0 ...]]
+			#path to fixtures to load before server running
 	
-	squashmigrations <app_alias> [<first_migration_name>] <last_migration_name> [--squashed_name <имя_результирующей_миграции>] [--no-optimize] [--noinput|--no-input]
-	#слияние миграций в одну для уменьшения их числа что ускоряет их применение к свежей бд
-	#исп if модель многократно Δ с последующей генерацией миграций => миграций м.б. много
-		--squashed_name
-		#if отсутствует
-			<имя_первой_слитой_миграции>_squashed_<имя_последней_слитой_миграции>.py
-		--no-optimize
-		#исп при неудачном слиянии|неработоспособности результирующей миграции
-		--noinput|--no-input
-		#не выводить сведения о слиянии
-	#~слияние патчей
-		#слияние с initial по указанную
-			squashmigrations bboard 0004
-		#слияние с указанной по указанную
-			squashmigrations bboard 0002 0004
-	
-	
-	showmigrations [<apps_aliases_через_пробел>] [--plan|-p]
-	#просмотр списка миграций отсортированных по алфавиту
-		<apps_aliases_через_пробел>
-		#при !∃ -> вывод ∀ с разбиениям по apps
-		--plan|-p
-		#вывод плана миграций(отсортированный в порядке очереди) вместо миграций
-	#[x] exe миграция
-	
+	[django_extensions]
+		admin_generator
+		#generate a 'admin.py' for given app(models)
+		#optional args(вероятно могут стоять в ∀ порядке)
+			[-h|--help]
+			[-s|--search-field <search_field>] = ('name', 'slug')
+			#fields named like this will be added to 'search_fields'
+			#?может это для admin.site.register(<field>)
+			[-d|--date-hierarchy <date_hierarchy>] = ('joined_at', 'updated_at', 'created_at')
+			#a field named like this will be set as 'date_hierarchy'
+			[-p|--prepopulated-fields <prepopulated_fields>] = ('slug=name',)
+			#(?)these fields will be prepopulated by the other field
+			#the field names can be specified like	
+				'spam=eggA,eggB,eggC'
+			[-l|--list-filter-threshold <list_filter_threshold>] = 100
+			#if foreign key ⊂ < LIST_FILTER_THRESHOLD items it will be added to 'list_filter'
+			[--version] [-v {0,1,2,3}] [--settings <setting>] [--pythonpath <python_path>] [--traceback] [--no-color] [--force-color]
+		#positional arg(вероятно должен стоять в конце)
+			app_name [model_name [model_name ...]]
+
+
+prepopulated:eng:?
+
+by def pycharm игнорит .pyc и не дает сождавать их в file tree
+
+
+		clean_pyc
+		#remove ∀ py bytecode compiled files ⊂ project(-> противоположна compile_pyc)
+		#работает вполне ожидаемым образом
+		#optional args(вероятно могут стоять в ∀ порядке)
+			[-h|--help]
+			[-o|-O|--optimize]
+			#remove ∀ optimized py bytecode files
+			#а без него? -> не заметил Δ
+			[-p|--path]
+			#specify path to recurse into
+			[--version] [-v {0,1,2,3}] [--settings <setting>] [--pythonpath <python_path>] [--traceback] [--no-color] [--force-color]
+		
+
+какова логика порядка альтернативных args в справке утилит manage.py?
+#пример: py manage.py help clear cache >> ... [--all, -a ...] ... [-v, --verbosity ...]
+#подозреваю - сортировка по читабельности -> на примере sqlcreate так и не скажешь
+	#возможно по времени появления
+
+		clear_cache
+		#fully clear site-wide cache
+		#optional args(вероятно могут стоять в ∀ порядке)
+			[-h|--help]
+			[--cache <cache>]
+			#name of cache to clear
+			[-a|--all]
+			#clear ∀ configured caches
+			[--version] [-v {0,1,2,3}] [--settings <setting>] [--pythonpath <python_path>] [--traceback] [--no-color] [--force-color]
+		
+		
+		
+		compile_pyc
+		#compile py bytecode files for project(-> противоположна clean_pyc)
+		#ничего не выводит
+		#разумеется хранит ∀ в __pycache__
+		#optional args(вероятно могут стоять в ∀ порядке)
+			[-h|--help]
+			[-p|--path]
+			#specify path to recurse into
+			[--version] [-v {0,1,2,3}] [--settings <setting>] [--pythonpath <python_path>] [--traceback] [--no-color] [--force-color]
+		
+		
+		create_command
+		#creates a dj management dir structure(py packet) for given app name in the app dir
+			app/management/
+				__init__.py
+				commands/
+					__init__.py
+					sample.py
+						from django.core.management.base import BaseCommand
+						class Command(BaseCommand):
+							help = "My shiny new management command."
+							def add_arguments(self, parser):
+								parser.add_argument('sample', nargs='+')
+							def handle(self, *args, **options):
+								raise NotImplementedError()
+		#ничего не выводит(по краинеи мере при успехе)
+		#optional args(вероятно могут стоять в ∀ порядке)
+			[-h|--help]
+			[-n|--name <command_name>]
+			#name to use for the management command
+			[-b|--base <base_command>]
+			#the base class used for implementation of this command
+				Base
+				App
+				Label
+				NoArgs
+			[--dry-run]
+			#don't actually create ∀ files
+			#разумеется у меня нихрена не вывел
+			[--version] [-v {0,1,2,3}] [--settings <setting>] [--pythonpath <python_path>] [--traceback] [--no-color] [--force-color]
+		#positional arg(вероятно должен стоять в конце)
+			app_label [app_label ...]
+		
+		
+		
+		create_jobs
+		#creates a dj jobs command dir structure for the given app name in curr dir
+			app/jobs/
+				daily/
+					__init__.py
+				hourly/
+					__init__.py
+				monthly/
+					__init__.py
+				weekly/
+					__init__.py
+				yearly/
+					__init__.py
+				__init__.py
+				sample.py
+					from django_extensions.management.jobs import BaseJob
+					class Job(BaseJob):
+						help = "My sample job."
+						def execute(self):
+							# executing empty sample job
+							pass
+		#optional args(вероятно могут стоять в ∀ порядке)
+			[-h|--help] [--version] [-v {0,1,2,3}] [--settings <setting>] [--pythonpath <python_path>] [--traceback] [--no-color] [--force-color]
+		#positional arg(вероятно должен стоять в конце)
+			<app_label> [<app_label> ...]
+
+
+
+		create_template_tags
+		#creates a dj template tags dir structure for the given app in the app's dir
+			py manage.py create_template_tags app
+				app/templatetags
+					__init__.py
+					app_tags.py
+						from django import template
+						register = template.Library()
+		#optional args(вероятно могут стоять в ∀ порядке)
+			[-h|--help]
+			[-n|--name <tag_library_name>] = `appname`_tags	(да - это grave accents)
+			#the name to use for the template tag base name
+			[--version] [-v {0,1,2,3}] [--settings <setting>] [--pythonpath <python_path>] [--traceback] [--no-color] [--force-color]
+		#positional arg(вероятно должен стоять в конце)
+			<app_label> [<app_label> ...]
+		
+		
+		delete_squashed_migrations
+		#deletes left over migrations that have been replaced by a
+		#optional args(вероятно могут стоять в ∀ порядке)
+			[-h|--help]
+			[--noinput|--no-input]
+			[--dry-run]
+			#don't actually delete|change ∀ files
+			[--version] [-v {0,1,2,3}] [--settings <setting>] [--pythonpath <python_path>] [--traceback] [--no-color] [--force-color]
+		#positional arg(вероятно должен стоять в конце)
+			app_label
+			[squashed_migration_name] = <first_found_migration>
+			#the squashed migration to replace
+		
+
+
+		describe_form
+		#outputs the specified model as a form definition to shell
+		#adding labels(titled) & Form to form field name!
+			py manage.py describe_form app.FieldsTest
+				from django import forms
+				from app.models import FieldsTest
+				class FieldsTestForm(forms.Form):
+					cf = forms.CharField(label='Cf')
+					t0 = forms.DateTimeField(label='T0')
+					t0 = forms.DateTimeField(label='T1')
+		#optional args(вероятно могут стоять в ∀ порядке)
+			[-h|--help]
+			[--fields <fields>]
+			#describe form with these fields only
+				py manage.py describe_form app.FieldsTest --fields cf
+					...
+					class FieldsTestForm(forms.Form):
+						cf = forms.CharField(label='Cf')
+			#мб исп неск раз, но я не понял как передавать неск val в один --fields
+				... --fields cf t0	>> err
+				... --fields "cf" "t0"	>> err
+				... --fields 'cf' 't0'	>> err
+				... --fields cf, t0	>> err
+			[--version] [-v {0,1,2,3}] [--settings <setting>] [--pythonpath <python_path>] [--traceback] [--no-color] [--force-color]
+		#positional arg(вероятно должен стоять в конце)
+			<label>.<model>
+			#app & model names
+
+
+describe:eng:?
+
+
+		
+		drop_test_database
+		#drops test db for this project
+		#кладет db?
+			py manage.py drop_test_database
+			>>
+				You have requsted to drop the test database.
+				This will IRREVERSIBLY DESTROY
+				∀ data in the db "<path>"
+				Are you sure you want to do this?
+				>> yes
+					>> Reset successful
+					#но что-то !Δ
+		#optional args(вероятно могут стоять в ∀ порядке)
+			[-h|--help]
+			[--noinput]
+			#вроде !⊃ --no-input
+			[-U|--user <user>]
+			#use another user for the db then defined in settings.py
+			[-P <password>]
+			#use another password for the db then defined in settings.py
+			[-D|--dbname <db_name>]
+			#use another db name for the db then defined in settings.py
+			[-R|--router <router>]
+			#use another router-db for the db then defined in settings.py
+			[--version] [-v {0,1,2,3}] [--settings <setting>] [--pythonpath <python_path>] [--traceback] [--no-color] [--force-color]
+
+		
+		
+		dumpscript
+		#dumps the data as a customised python script
+		#генерит простои скрипт(?не знаю с каким назначением) и выводит его в консоль
+		#optional args(вероятно могут стоять в ∀ порядке)
+			[-h|--help]
+			[--autofield]
+			#include Autofields (like pk fields)
+			[--version] [-v {0,1,2,3}] [--settings <setting>] [--pythonpath <python_path>] [--traceback] [--no-color] [--force-color]
+		#positional arg(вероятно должен стоять в конце)
+			appname [appname ...]
+		
+		
+		
+		export_emails
+		#export user email list in one of a number of formats
+		#optional args(вероятно могут стоять в ∀ порядке)
+			[-h|--help]
+			[-g|--group <group>]
+			#limit to users which are part of the supplied group name
+			[-f|--format <format>]
+			#output format
+				adress
+				emails
+				google
+				outlook
+				linkedin
+				vcard
+			[--version] [-v {0,1,2,3}] [--settings <setting>] [--pythonpath <python_path>] [--traceback] [--no-color] [--force-color]
+		
+		
+		
+		find_template
+		#finds the location of the given template by resolving its path
+		#optional args(вероятно могут стоять в ∀ порядке)
+			[-h|--help] [--version] [-v {0,1,2,3}] [--settings <setting>] [--pythonpath <python_path>] [--traceback] [--no-color] [--force-color]
+		#positional arg(вероятно должен стоять в конце)
+			<template0> <path0> [<template1> <path1>]
+
+		
+		
+		generate_password
+		#generates a new pass that can be used for a user password
+			py manage.py generate_password --length >> BAPCtgaWXx
+		#uses dj core's default parrword generator
+			`BaseUserManager.make_random_password()`
+		#optional args(вероятно могут стоять в ∀ порядке)
+			[-h|--help]
+			[--length [<length>]]
+			#password length
+			#может в справке err? - как val мб optional?(реально opt - видимо для упрощения генерации запросов к manage.py)
+			[--version] [-v {0,1,2,3}] [--settings <setting>] [--pythonpath <python_path>] [--traceback] [--no-color] [--force-color]
+		
+		
+		generate_secret_key
+		#generates a new SECRET_KEY that can be used in a project settings file
+			py manage.py generate_secret_key >> <new_secret_key>
+		#optional args(вероятно могут стоять в ∀ порядке)
+			[-h|--help] [--version] [-v {0,1,2,3}] [--settings <setting>] [--pythonpath <python_path>] [--traceback] [--no-color] [--force-color]
+		
+		
+		
+		graph_models
+		#creates a GraphViz dot file for the specified app names
+		#multiple app names will all be combined into a single model
+		#output is usually directed to a dot file
+		#optional args(вероятно могут стоять в ∀ порядке)
+			[-h|--help]
+			[--pygraphviz] [--pydot][--dot][--json]
+			#output graph data as [image using PyGraphViz|image uring PyDot(Plus)|raw DOT(graph description lang) text data|JSON]
+			[-d|--disable-fields]
+			#don't show the class member fields
+			[--disable-abstract-fields]
+			#don't show the class member fields that were inderited
+			[-g|--group-models]
+			#group models together respective to their app
+			[-a|--all-applications]
+			#auto include ∀ apps from INSTALLED_APPS
+			[-o|--output <file>]
+			#render output file
+			#type of output dependend on file extensions
+				png|jpg
+				#render graph to image
+			[-l|--layout <layout>]
+			#layout to be used by GraphViz for visualization
+				circo
+				dot
+				fdp
+				neato
+				nop
+				nop1
+				top2
+				twopi
+			[-t|--theme <theme>]
+			#supplied are
+				'original
+				'django2018'
+			#i can create my own by creating dot templates ⊂
+				'django_extentions/graph_models/themename/'
+			[-n|--verbose-names]
+			#use verbose_name of models&fields
+			[-L|--language <language>]
+			#for verbose_name localization
+			[-x|--exclude-columns <columns>]
+			#exclude columns from the graph
+			#can also loadexclude list from file
+			[-X|--exclude-models <models>]
+			#exclude models from the graph
+			#can also load exclude list from file
+			#wildcards (*) are allowed
+			[-I|--include-models <models>]
+			#restrict the graph to specified models
+			#wildcards (*) are allowed
+			[-e|--inderitance]
+			#include inderitance arrows(default)
+			[-E|--no-inderitance]
+			#do not include inderitance arrows
+			[-R|--hide-relations-from-fields]
+			#don't show relations as fields in the graph
+			[-S|--disable-sort-fields]
+			#don't sort fields
+			[--hide-edge-labels]
+			#don't show relations labels in the graph
+			[--arrow-shape {box, crow, curve, icurve, diamond, dot, inv, none, normal, tee, vee}] = dot
+			#arrow shape to use for relations
+			[--version] [-v {0,1,2,3}] [--settings <setting>] [--pythonpath <python_path>] [--traceback] [--no-color] [--force-color]
+		#positional arg(вероятно должен стоять в конце)
+			[<app_label0> [<app_label1> ...]]
+		
+		
+		
+		mail_debug
+		#starts a test mail server for development
+			py manage.py mail_debug >> Now accepting mail at 127.0.4.8:1025
+		#optional args(вероятно могут стоять в ∀ порядке)
+			[-h|--help]
+			[--output <file>]
+			#file to send a copy of ∀ msgs(not flush immediately)
+			[--use-settings]
+			#use EMAIL_HOST & HOST_PORT ⊂ dj settings
+			[--version] [-v {0,1,2,3}] [--settings <setting>] [--pythonpath <python_path>] [--traceback] [--no-color] [--force-color]
+		
+		
+		
+		merge_model_instances
+		#removes duplicate model instances(val самих моделеи?) based on a specified model & fields names
+		#make sure that any OneToOne|ForeignKey|ManyToMany relationships attached to a deleted model(s) get reattached to the remaining model
+		#based on the following:
+			https://djangosnippets.org/snippets/2283/
+			https://stackoverflow.com/a/41291137/2532070
+			https://gist.github.com/edelvalle/01886b6f79ba0c2dce66
+		#optional args(вероятно могут стоять в ∀ порядке)
+			[-h|--help] [--version] [-v {0,1,2,3}] [--settings <setting>] [--pythonpath <python_path>] [--traceback] [--no-color] [--force-color]
+		
+		
+		
+		notes
+		#show ∀ annotation ~ TODO | FIXME | BUG | HACK | WARNING | NOTE | XXX ⊂ .py & .html
+		#optional args(вероятно могут стоять в ∀ порядке)
+			[-h|--help]
+			[--tag <tag>]
+			#search for specific tags only
+			[--version] [-v {0,1,2,3}] [--settings <setting>] [--pythonpath <python_path>] [--traceback] [--no-color] [--force-color]
+		
+		
+		
+		passwd
+		#clone of the UNIX `passwd` for django.contrib.auth
+		#Δ пароля
+		#deprecated!
+			py manage.py passwd
+			>>
+				`django_extensions.management.commands.passwd` is deprecated. You shiuld use built-in `changepassword` django command instead
+				#но все-же пашет и предлагает сменить pass
+		#optional args(вероятно могут стоять в ∀ порядке)
+			[-h|--help] [--version] [-v {0,1,2,3}] [--settings <setting>] [--pythonpath <python_path>] [--traceback]
+			[--no-color] [--force-color]
+		#positional arg(вероятно должен стоять в конце)
+			[username]
+
+
+
+		pipchecker
+		#scan pip requirement files for out-of-date packages
+		#⊅ args что-то вылетел в except
+		#optional args(вероятно могут стоять в ∀ порядке)
+			[-h|--help]
+			[-t|--github-api-token <token>]
+			[-r|--requirement <filename>]
+			#check ∀ the packages ⊂ requirements file
+			#мб исп неск раз
+			#а if без него?
+			[-n|--never]
+			#also show when newer version then available is installed
+			[--version] [-v {0,1,2,3}] [--settings <setting>] [--pythonpath <python_path>] [--traceback] [--no-color] [--force-color]
+		
+		
+		
+		print_settings
+		#print active dj settings
+		#название говорит само за себя
+		#optional args(вероятно могут стоять в ∀ порядке)
+			[-h|--help]
+			[--format <format>]
+			#output format
+			[--indent <indent>]
+			#indent level for JSON & YAML
+			[--version] [-v {0,1,2,3}] [--settings <setting>] [--pythonpath <python_path>] [--traceback] [--no-color] [--force-color]
+		#positional arg(вероятно должен стоять в конце)
+			[<setting> [<setting> ...]]
+			#specifies setting to be printed
+		
+		
+		print_user_for_session
+		#print the user info for provided session key
+		#very helpful when trying to track down the person who experienced a site crash
+		#optional args(вероятно могут стоять в ∀ порядке)
+			[-h|--help] [--version] [-v {0,1,2,3}] [--settings <setting>] [--pythonpath <python_path>] [--traceback] [--no-color] [--force-color]
+		#positional arg(вероятно должен стоять в конце)
+			<session_id> [<session_id> ...]
+			#user session id
+		
+
+
+		reset_db
+		#resets the db for this project
+			py manage.py reset_db
+			>>
+				You have requested a db reset.
+				This will IRREVERSIBLY DESTROY
+				∀ data in the db "<abs_path_to_db>"
+				Are you sure you wat to do this? yes|no
+		#сносит ∀ кроме служебнои инфы бд
+		#optional args(вероятно могут стоять в ∀ порядке)
+			[-h|--help]
+			[--noinput]
+			#вроде !⊃ --no-input
+			[--no-utf8]
+			#tells dj to not create a UTF-8 db
+			[-U|--user <user>]
+			#use another user for the db than ⊂ settings.py
+			[-O|--owner <owner>]
+			#use anther owner for creating the db than the user dfined in settings| --user
+			[-P|--password <password>]
+			#use another password for the db than ⊂ settings.py
+			[-D|--dbname <db_name>]
+			#use another db_name than ⊂ settings.py
+			[-R|--router <router>]
+			#use another router-db than ⊂ settings.py
+			[-c|--close-sessions]
+			#close db connections before dropping db
+			#PostgreSQL only
+			[--version] [-v {0,1,2,3}] [--settings <setting>] [--pythonpath <python_path>] [--traceback] [--no-color] [--force-color]
+		
+		
+		
+		reset_schema
+		#recreates the public schema for this project
+		#optional args(вероятно могут стоять в ∀ порядке)
+			[-h|--help]
+			[--noinput]
+			#вроде !⊃ --no-input
+			[-R|--router <router>]
+			#router-db instead of the one ⊂ settings.py
+			[-S|--schema <schema>]
+			#drop this scheam instead of "public"
+			[--version] [-v {0,1,2,3}] [--settings <setting>] [--pythonpath <python_path>] [--traceback] [--no-color] [--force-color]
+		
+		
+		
+		runjob
+		#run a single maintenance job
+		#optional args(вероятно могут стоять в ∀ порядке)
+			[-h|--help]
+			[-l|--list]
+			#∀ jobs with thier description
+			[--version] [-v {0,1,2,3}] [--settings <setting>] [--pythonpath <python_path>] [--traceback] [--no-color] [--force-color]
+		#positional arg(вероятно должен стоять в конце)
+			[<app_name>] [<job_name>]
+
+
+
+		runjobs
+		#runs scheduled maintenance jobs
+		#optional args(вероятно могут стоять в ∀ порядке)
+			[-h|--help]
+			[-l|--list]
+			#∀ jobs with thier description
+			[--version] [-v {0,1,2,3}] [--settings <setting>] [--pythonpath <python_path>] [--traceback] [--no-color] [--force-color]
+		#positional arg(вероятно должен стоять в конце)
+			[<when>]
+			#opts
+				minutely
+				quarter_hourly
+				hourly
+				daily
+				weekly
+				monthly
+				yearly
+		
+		
+		
+		runprofileserver
+		#starts a lightweight Web server ⊃ profiling
+		#у меня что-то вывалилось в except
+		#optional args(вероятно могут стоять в ∀ порядке)
+			[-h|--help]
+			[--noreload]
+			#no auto-reloader
+			[--nothreading]
+			[--prof-path <prof_path>]
+			#specifies the dir which to save profile information in
+			[--prof-file <prof_file>] = "{path}.{duration:06d}ms.{time}"
+			#set filename format
+			[--nomedia]
+			#don't protile MEDIA_URL
+			[--use-cprofile]
+			#use cProfile if available
+			#disabled per default because of incompatibilities
+			[--kcachegrind]
+			#create kcachegrind compatible lsprof files
+			#requires & auto enables cProfile
+			[--nostatic]
+			#tells dj to not auto serve static files at STATIC_URL
+			[--insecure]
+			#allows serving static files even if DEBUG = False
+			[--version] [-v {0,1,2,3}] [--settings <setting>] [--pythonpath <python_path>] [--traceback] [--no-color] [--force-color]
+		#positional arg(вероятно должен стоять в конце)
+			[addport]
+			#port|addr:port]
+		
+		
+		runscript
+		#runs a script in dj context
+		#optional args(вероятно могут стоять в ∀ порядке)
+			[-h|--help]
+			[--email-notifications]
+			#send email notification for command
+			#не очень понял откуда берутся email's
+			[--email-exception]
+			#send email notification for command exeptions
+			[--fixtures]
+			#(?)also look in app.fixtures subdir
+			[--noscripts]
+			#don't look in app.scripts subdir
+			[-s|--silent]
+			#don't show errs/tracebacks
+			[--no-traceback]
+			#don't show traceback
+			[--script-args [SCRIPT_ARGS [SCRIPT_ARGS ...]]]
+			#space separated args list to be passed to the script
+			#note that the same args will be passed to ∀ named scripts
+			[--dir-policy {none, each, root}]
+			#policy of selecting scripts execution dir(for ∀ scripts)
+				none
+				#curr dir
+				each
+				#start ∀ scripts in thir dirs
+				root
+				#in BASE_DIR
+			[--chdir <chdir>]
+			#if ∃ --dir-policy -> determines execution dir
+			[--version] [-v {0,1,2,3}] [--settings <setting>] [--pythonpath <python_path>] [--traceback] [--no-color] [--force-color]
+		#positional arg(вероятно должен стоять в конце)
+			<path_to_script> [<path_to_script> ...]
+		
+		
+		
+		runserver_plus
+		#starts a lightweight web server for dev
+		#Werkzeug required
+			pip install Werkzeug
+		#optional args(вероятно могут стоять в ∀ порядке)
+			[-h|--help]
+			[-6|--ipv6]
+			[--noreload]
+			#not use auto-reloader
+			[--browser]
+			#open a browser
+			[--nothreading]
+			#что будет if указать с --threaded? -> не вывел ничего не необычного
+			[--threaded]
+			#что будет if указать с --nothreading? -> не вывел ничего не необычного
+			[--output <file>]
+			#file to send a copy ∀ msgs(not flushed immediately)
+			[--print-sql]
+			#(?)print sql queries as they're executed
+			#вывел only запросы что по идее отражено в описании
+			[--print-sql-location]
+			#(SIC!!!)show location in code where SQL query generated from
+			#вернул тонну except, может они ⊃ информацию о источнике, может баг, а может не хватает ∀ модуля
+			[--cert <path_to_certificate_file>]
+			#deprecated alias for --cert-file
+			[--cert-file <path_to_SSL_.crt_certificate_file>]
+			#if not provided -> path from --key-file will be selected
+			#Either --cert-file|--key-file must be provided to use SSL
+			[--key-file <key_SSL_.key_file_path>]
+			#if not provided -> path from --cert-file will be selected
+			#Either --cert-file|--key-file must be provided to use SSL
+			[--extra-file <extra_files>]
+			#(?)auto-reload whenever the given file changes too
+			#мб исп неск раз
+			[--reloader-interval <interval>] = 1
+			#secs
+			#after how many secs auto-reload should scan for updates in pooler-mode
+			[--reloader-type <reloader_type>] = auto
+			#werkzeug reloader type
+				auto
+				watchdog
+				stat
+			[--pdb]
+			#drop into pdb shell at the strt of ∀ view
+			[--ipdb]
+			#drop into ipdb shell at the strt of ∀ view
+			[--pm]
+			#drop into (i)pdb shell if an exception is raised in a view
+			[--startup-messages <startup_msgs>] = reload
+			#when to show startut msgs
+				reload
+				once
+				always
+				never
+			[--keep-meta-shutdown]
+			#keep request.META['werkzeug.server.shutdown'] fx which is auto removed because dj debug pages tries to call the fx and unintentionally shuts down the Werkzeug server
+			[--nopin]
+			#disable the PIN in werkzeug
+			#USE IT WISELY!
+			[--nostatic]
+			#tells dj to not auto serve static files at STATIC_URL
+			[--insecure]
+			#allow serving static files even if DEBUG is False
+			[--version] [-v {0,1,2,3}] [--settings <setting>] [--pythonpath <python_path>] [--traceback] [--no-color] [--force-color]
+		#positional arg(вероятно должен стоять в конце)
+			[<[addr:]port>]
+
+
+		
+		set_default_site
+		#set params of the default django.contrib.sites Site
+		#optional args(вероятно могут стоять в ∀ порядке)
+			[-h|--help]
+			[--name <site_name>]
+			[--domain <site_domain>]
+			[--system-fqdn]
+			#use systems FQDN as name & domain as name & domain
+			#can be combination with --name
+			[--version] [-v {0,1,2,3}] [--settings <setting>] [--pythonpath <python_path>] [--traceback] [--no-color] [--force-color]
+
+
+
+		set_fake_emails
+		#DEBUG only
+		#give ∀ users a new email based on their account data
+		#("%(username)s@example.com") by default
+		#possible params:
+			username
+			first_name
+			last_name
+		#optional args(вероятно могут стоять в ∀ порядке)
+			[-h|--help]
+			[--email <default_email>]
+			#new email format
+			[-a, --no-admin]
+			#don't change admin acc
+			#либо я что-то не понимаю|названия параметров слегка не логично
+				#нихера - ∀ логично -> (минус)a(dmin)
+			[-s]
+			#don't change staff acc's
+			[--include <regexp>]
+			#⊃ user ⊃ matching usernames
+			[--exclude <regexp>]
+			#!⊃ user ⊃ matching usernames
+			[--include-groups <comma_separated_groups>]
+			#⊃ user ⊂ matching groups
+			[--exclude-group <exclude_groups>]
+			#!⊃ user ⊂ matching groups
+			[--version] [-v {0,1,2,3}] [--settings <setting>] [--pythonpath <python_path>] [--traceback] [--no-color] [--force-color]
+
+
+		
+		set_fake_passwords
+		#DEBUG ONLY
+		#sets ∀ user passwords to a common val
+		#optional args(вероятно могут стоять в ∀ порядке)
+			[-h|--help]
+			[--prompt]
+			#prompts for the new password
+			[--password <default_password>] = "password"
+			#use this as default password
+			[--version] [-v {0,1,2,3}] [--settings <setting>] [--pythonpath <python_path>] [--traceback] [--no-color] [--force-color]
+		
+		
+		
+		shell_plus
+		#~ manage.py shell, but autoloads the models of ∀ instaled dj apps
+		#optional args(вероятно могут стоять в ∀ порядке)
+			[-h|--help]
+			[--plain]
+			#use plain python
+			[--idle]
+			#use idle
+			[--bpython]
+			#use bpython
+			[--ptpython]
+			#use ptpython
+			[--ptipython]
+			#use ptipython
+			[--ipython]
+			#use ipython|jupyter
+			#в чем отличие от ipython notebook?
+			[--notebook]
+			#use ipython notebook
+			#∃ отличие от --ipython?
+			[--kernel]
+			#start IPython kernel
+			[--connection-file <connection_file>]
+			#specifies the connection file to use if uring the --kernel opt
+			[--no-startup]
+			#if using plain Python -> ignore PYTHONSTARTUP env v & ~/.pythonrc.py
+			[--use-pythonrc]
+			#(?)=--no-startup
+			[--print-sql]
+			#print SQL queries as they're exe
+			#что-то не сработало
+			[--print-sql-location]
+			#show location in code wher SQL query generated from
+			#что-то не сработало
+			[--dont-load DONT_LOAD]
+			#ignore autoloading of some apps/models
+			#мб исп неск раз
+			[--quiet-load]
+			#dont display loaded models messages
+			[--vi]
+			#load vi key bindings for --ptpython & --ptipython
+			[--no-browser]
+			#don't open notebook in browser after startup
+			[-c|--command <command>]
+			#instead of opening an interactive shell, run a command & exit
+			
+			[--version] [-v {0,1,2,3}] [--settings <setting>] [--pythonpath <python_path>] [--traceback] [--no-color] [--force-color]
+		
+		
+		show_templatetags
+		#deprecated in favour of "show_template_tags"
+		#displays template tags & filters availabel in the current project
+		#optional args(вероятно могут стоять в ∀ порядке)
+			[-h|--help] [--version] [-v {0,1,2,3}] [--settings <setting>] [--pythonpath <python_path>] [--traceback] [--no-color] [--force-color]
+
+
+
+		show_urls
+		#displays ∀ of the url matching routes for the project
+		#optional args(вероятно могут стоять в ∀ порядке)
+			[-h|--help]
+			[-u|--unsorted]
+			#show urls unsorted but same order as found in url patterns
+			[-l|--language <language>]
+			#(?)only show this language code
+			#(?)useful for i18n_patterns
+			#видимо что-то с unicode urls
+			[-d|--decorator <decorator>]
+			#(?)show the presence of given decorator on views
+			[-f|--format <format_style>]
+			#output style
+			#choices:
+				dict_keys([
+					'dense',
+					'table',
+					'aligned',
+					'verbose',
+					'json',
+					'pretty-json'
+				])
+			[--urlconf <urlconf>]
+			#set the settings URL conf v to use
+			[--version] [-v {0,1,2,3}] [--settings <setting>] [--pythonpath <python_path>] [--traceback] [--no-color] [--force-color]
+
+
+
+
+
+
+		sqlcreate
+		#(?)generates the SQL to create your db for you, as specified in settings.py
+			py manage.py sqlcreate >> -- manage.py syncdb will automatically create a sqlite3 db file
+				py manage.py syncdb >> Unknown command: 'syncdb'. Did you mean syncdata?
+		#the envisioned use case is something like this
+			./manage.py sqlcreate [--router=<routername>] | mysql -u <db_administrator> -p ./manage.py sqlcreate [--router=<routername>] | psql -U <db_administrator> -W
+		#optional args(вероятно могут стоять в ∀ порядке)
+			[-h|--help]
+			[-R|--router <router>]
+			#router-db than ⊂ settings.py
+			[-D|--drop]
+			#includes commands to drop ∀ ∃ user & db
+			[--version] [-v {0,1,2,3}] [--settings <setting>] [--pythonpath <python_path>] [--traceback] [--no-color] [--force-color]
+		
+		
+		
+		sqldiff
+		#prints the (approximated) diff befween models & fields in the db for the given apps
+		#(?)indicates how columns ⊂ db are different from the sql that would be generated by dj
+		#(?)is NOT a db migration tool (Th[ugh it can certainly help])
+		#(?) purpose is to show the curr diff as a way to check/debug ur models compared to the real db tables/columns
+		#примеры
+			py manage.py sqldiff app
+				BEGIN;
+				-- Application: <app>
+				-- Model: <model>
+				-- Table missing: <app>_<model>
+				COMMIT;
+			py manage.py sqldiff otherapp
+				--no differences
+		#optional args(вероятно могут стоять в ∀ порядке)
+			[-h|--help]
+			[-a|--all-applications]
+			#auto include ∀ app ⊂ INSTALLED_APPS
+			[-e|--not-only-existing]
+			#check ∀ tables that ∃ in db, not only tables that should ∃ based on models
+			[-d|--dense-output]
+			#(?)output in dense format
+			#normally output is spreaded over multiple lines
+			[-t|--output_text]
+			#outputs the diffs as descriptive text instead of SQL
+			[--include-proxy-models]
+			#(?) include proxy models in the graph
+			[--include-defaults]
+			#include default vals in SQL output
+			#beta feature(2.2.13)
+			[--version] [-v {0,1,2,3}] [--settings <setting>] [--pythonpath <python_path>] [--traceback] [--no-color] [--force-color]
+		#positional arg(вероятно должен стоять в конце)
+			<app_label0> [<app_label1> ...]
+
+
+
+		sqldsn
+		#prints DSN on stdout, as specified in settings.py
+			./manage.py sqldsn [--router=<routername>] [--style=pgpass]
+		#exaples
+			py manage.py sqldsn
+			>>
+				DSN for router 'default' with engine 'sqlite3':
+					<path_to_db_file>
+		#optional args(вероятно могут стоять в ∀ порядке)
+			[-h|--help]
+			[-R|--router <router>]
+			#specified router
+			[-s|--style <style>]
+			#DSN format style
+				keyvalue
+				uri
+				pgpass
+				all
+			[-a|--all]
+			#show DSN for ∀ db routes
+			[-q|--quiet]
+			#only show DSN
+			[--version] [-v {0,1,2,3}] [--settings <setting>] [--pythonpath <python_path>] [--traceback] [--no-color] [--force-color]
+
+
+		
+		sync_s3
+		#(?)syncs the complete MEDIA_ROOT structure & files to S3 into the given bucket name
+			py manage.py sync_s3
+			>>
+				CommandError: Please instll the 'boto' Python library
+		#optional args(вероятно могут стоять в ∀ порядке)
+			[-h|--help]
+			[-p|--prefix <prefix>]
+			#prefix to pretend to the path on S3
+			[-d|--dir <dir>]
+			#custom static root dir to use
+			[--s3host <s3host>]
+			#enables connecting to other providers/regions
+			[--acl <acl>]
+            #enables to override default acl(public-read)
+			[--gzip]
+            #enables gzipping CSS & JS files
+			[--renamegzip]
+            #enables renaiming of gzipped assets to have '.gz' appended to the filename
+			[--expires]
+            #enables setting a far future expires header
+			[--force]
+            #skip the file mtime check to force upload of ∀ files
+			[--filter-list <filter_list>]
+            #?override default dir & file exclusion filters
+			#comma separated lst
+			[--invalidate]
+			#invalidates the associated obj in CloudFront
+			[--media-only]
+			#only MEDIA_ROOT files will be uploaded to S3
+			[--static-only]
+			#only STATIC_ROOT files will be uploaded to S3
+			[--version] [-v {0,1,2,3}] [--settings <setting>] [--pythonpath <python_path>] [--traceback] [--no-color] [--force-color]
+		
+
+
+		syncdata
+		#makes the curr db have the same data as the fixture(s)(!>/!<)
+		#у меня ничего не вывело
+		#optional args(вероятно могут стоять в ∀ порядке)
+			[-h|--help]
+			[--skip-remove]
+			#avoid remove ∀ obj from db
+			[--database <db_name>]
+			[--version] [-v {0,1,2,3}] [--settings <setting>] [--pythonpath <python_path>] [--traceback] [--no-color] [--force-color]
+		#positional arg(вероятно должен стоять в конце)
+			[<fixture_labels0> [, <fixture_label1>]]
+			#specify the fixture label
+			
+			
+		
+		unreferenced_files
+		#print a lst of ∀ files ⊂ MEDIA_ROOT that are not referencds in the db
+		#optional args(вероятно могут стоять в ∀ порядке)
+			[-h|--help] [--version] [-v {0,1,2,3}] [--settings <setting>] [--pythonpath <python_path>] [--traceback] [--no-color] [--force-color]
+		
+		
+		
+		update_permissions
+		#reloads perm's for specified app|∀ apps if no args are specified
+		#требует ∃ бд, у меня ничего не вывело
+		#optional args(вероятно могут стоять в ∀ порядке)
+			[-h|--help]
+			[--apps <app0> [, <app1> ...]]
+			[--create-only]
+			#only create missing perm's
+			[--version] [-v {0,1,2,3}] [--settings <setting>] [--pythonpath <python_path>] [--traceback] [--no-color] [--force-color]
+		
+		
+		
+		validate_templates
+		#validate templates on syntax & compile err's
+		#examples
+			py manage.py validate_templates >> 0 errors found
+		#optional args(вероятно могут стоять в ∀ порядке)
+			[-h|--help]
+			[--no-apps]
+			#don't auto include apps
+			[-b|--break]
+			#break on first err
+			[-i|--include <paths_to_template_dirs>]
+			#append these paths to TEMPLATE DIRS
+			[--ignore-app <ignore_apps>]
+			[--version] [-v {0,1,2,3}] [--settings <setting>] [--pythonpath <python_path>] [--traceback] [--no-color] [--force-color]
+		
+		
+		
+	[sessions]
+		clearsessions
+		#can be run as a cronjob|directly to clead out expired sessions
+		#у меня ничего не вывело
+		#only with the db backend at the moment
+		#optional args(вероятно могут стоять в ∀ порядке)
+			[-h|--help] [--version] [-v {0,1,2,3}] [--settings <setting>] [--pythonpath <python_path>] [--traceback] [--no-color] [--force-color]
+		
+		
+		
+		
+	[staticfiles]
+		collectstatic
+		#collect static in a single location
+			py manage.py collectstatic
+			>>
+				<num> static files copied to '<...>\static'
+		#optional args(вероятно могут стоять в ∀ порядке)
+			[-h|--help] [--noinput|--no-input]
+			[--no-post-process]
+			#don't post process collected files
+			[-i <glob_pattern>]
+			#ignore matching files|dirs
+			#can use multiple times
+			[-n|--dry-run]
+			#do everything except modify fs
+			[-c|--clear]
+			#?clear ∃ files usind the storage before trying to copy|link the original file
+			[-l]
+			#create a symbolic link to each file instead of copying
+			[--no-defalt-ignore] = ('CVS', '.*' and '*~')
+			#don't ignore the common private glob-style patterns
+			 [--version] [-v {0,1,2,3}] [--settings <setting>] [--pythonpath <python_path>] [--traceback] [--no-color] [--force-color]
+		
+		
+		
+		findstatic
+		#finds the absolute path for the given static
+		#optional args(вероятно могут стоять в ∀ порядке)
+			[-h|--help]
+			[--first]
+			#only return the first match for each static
+			[--version] [-v {0,1,2,3}] [--settings <setting>] [--pythonpath <python_path>] [--traceback] [--no-color] [--force-color]
+		#positional arg(вероятно должен стоять в конце)
+			<staticfile0> [<staticfile1> ...]
+		
+		
+		
+		runserver
+		#запускает отладочный сервер & also serves static files
+		#optional args(вероятно могут стоять в ∀ порядке)
+			[-h|--help]
+			[--ipv6|-6]
+			#использовать IPv6
+			#адрес по умолч	::1
+			[--nothreading]
+			#force one thread
+			#по умолчанию режим многопоточный
+			[--noreload]
+			#отключение автоперезапуска при Δ кода(don't use auto-reloader)
+			[--nostatic]
+			#dont auto serve static ad STATIC_URL
+			[--insecure]
+			#allows serving static even if DEBUG=False
+			[--version] [-v {0,1,2,3}] [--settings <setting>] [--pythonpath <python_path>] [--traceback] [--no-color] [--force-color]
+		#positional arg(вероятно должен стоять в конце)
+			[[<adress>][:][<port>]] = 127.0.0.1:8000(TCP)
+		#examples
+			python manage.py runserver 1.2.3.4
+			python manage.py runserver 4000
+			
+
+		
+		
+		
+		
+
+DJANGO ENVIRONEMENT
+		ENVIRONEMENT VARIABLES
+			#их явно можно менять
+				os.environ["DJANGO_ALLOW_ASYNC_UNSAFE"] = "true"
+
+			DJANGO_SETTINGS_MODULE
+			#⊃ python путь к <project>.settings.main
+			
+			
+			
 app в терминологии dj - отдельный фрагмент функциональности сайта более-менее независимый от других
 #может реализовывать работу ∀ сайта|раздела| внутренней подсис-мы используемой другими app
 #пакет Python ⊃ модули
@@ -549,7 +2236,7 @@ manage.py startapp bboard
 
 
 			admin.py
-			#модуль административных настроек и классов редакторов
+			#модуль административных настроек и классов редакторов(?)(возм admin.site.registers() создает что-то ~ класса позволяющих редактировать бд?)
 
 
 			apps.py
@@ -590,34 +2277,518 @@ manage.py startapp bboard
 			#модуль с контроллерами
 
 
-контроллер dj
-#view, вьюха, представление(автор считает неудачным)
+КОНТРОЛЛЕР
 #контроллер - устоявшийся термин для таких программных модулей
 #код запускаемый в ответ на поступление клиентского запроса содержащего url в опред формате
-#выполняют ∀ действия по подготовке данных для вывода и обработку данных от пользователя
-		контроллер-fx 
+#dj не предъявляет к организации кода контроллеров никаких спец требований => можно помещать их в ∀ место ⊃ автоматически создаваемый views.py
+#основная часть логики саита
+#выполняют ∀ действия по
+    выборка из бд
+    подготовке данных для вывода
+    обработке данных от пользователя
+	сохранение в бд
+	рендерингу страниц
+		
+		
+		КОНТРОЛЛЕР-FX
+		#python fx
 		#более универсальны, но трудоемки в разработке
-		контроллер-класс
-		#позволяют выполнить типовые задачи(вроде вывода списка каких-либо позиций) минимумом кода
-dj не предъявляет к организации кода контроллеров никаких спец требований => можно помещать их в ∀ место ⊃ автоматически создаваемый views.py
-∀ контроллер-fx в качетве единственного обязательного аргумента принимает экземпляр HttpResponse
-django.http.HttpResponse
-#при передаче контроллеру по традиции называется request
-#при получении контроллером хранит различные сведения о полученном запросе
-	запрашиваемый url
-	данные полученные от пользователя
-	служебная информация от браузера
+        #view, вьюха, представление(автор считает неудачным)
+        #∀ контроллер-fx в качетве единственного обязательного аргумента принимает экземпляр HttpResponse
+        #обязана
+            #принимать
+                экземпляр HttpRequest
+                набор именованных параметров одноименных url-параметрам объявленных в связанном маршруте
+            #возвращать
+                экземпляр HttpResponse|его производных
+                
+                НАПИСАНИЕ КОНТРОЛЛЕРОВ FX
+                #] нужно вывести страницу ⊃ объявления ⊃ выбраннои user'ом рубрике
+                #на практике для таких задач исп многозадачные контроллеры контроллер
+                
+                    ОДНОЗАДАЧНЫЕ КОНТРОЛЛЕРЫ
+                        #if требуется вывод страницы создания объявления & его сохранение в бд -> требуется два контроллера
+                        app/views.py
+                            #создание формы & вывод страницы создания объявления
+                            def add(request):
+                                bbf = BbForm()
+                                context = {'form': bbf}
+                                return render(request, 'bboard/create.html', context)
+                            #сохранение объявления
+                            def add_save(request):
+                                bbf = BbForm(request.POST)
+                                if bbf.is_valid():
+                                    bbf.save()
+                                    return HttpResponseRedirect(reverse('by_rubric',
+                                           kwargs={'rubric_id': bbf.cleaned_data['rubric'].pk}))
+                                else:
+                                    context = {'form': bbf}
+                                    return render(request, 'bboard/create.html', context)
+                        #объявим маршруты на контроллеры
+		                app/urls.py
+		                    from .views import add, add_save
+		                    ...
+		                    urlpatterns = [
+		                        path('add/save/', add_save, name='add'),
+		                        path('add/', add, name='add'),
+		                        ...
+		                    ]
+		                #исправим <form> ⊂ bboard/create.html создающий форму добавив целевои uri
+		                bboard/create.html
+		                    <form action="{% url 'add_save' %}" method="post">
+		            
+		            
+		            МНОГОЗАДАЧНЫЕ КОНТРОЛЛЕРЫ
+		            #чаще исп на практике
+		                bboard/views.py
+		                    ...
+		                    def add_and_save(request):
+		                        #if post -> нужно принять данные
+		                        if request.method == 'POST':
+		                            bbf = BbForm(requst.POST)
+		                            #валидация
+		                            if bbf.is_valid():
+		                                bbf.save()
+		                                
+		                                return HttpResponseRedirect(reverse('bboard:by_rubric',
+		                                       kwargs={'rubric_id': bbf.cleaned_data['rubric'].pk}))
+		                            #иначе -> повторныи вывод страницы с формои ~? оставить содержимое поля? (проверить)
+                                    else:
+                                        context = {'form': bbf}
+                                        return render(request, 'bboard/create.html', context)
+                                #иначе -> вывод страницы с пустои формои
+                                else:
+                                    bbf = BbForm()
+                                    context = ('form': bbf)
+                                    return render(request, 'bboard/create.html', context)
+                        #одна view -> один маршрут
+                        bboard/urls.py
+                            from .views import add_and_save
+                            ...
+                            urlpatterns = [
+                                path('add/', add_and_save, anme='add'),
+                                ...
+                            ]
+                        #в шаблоне больше не нужно указывать uri по которому отправятся данные - будет исп тот-же uri с которого была загружена текущая страница
+                        bboard/create.html
+                            ...
+                            <form method="post">
 
+
+
+
+
+		КОНТРОЛЛЕР-КЛАСС
+		#позволяют выполнить типовые задачи(вроде вывода списка каких-либо позиций) минимумом кода(следуя ⊂ им соглашениям)
+        #в path() ⊂ urls.urlpatterns в случае контроллера-класса передается ссылка на результат возвращаемый .as_view() ⊃ контроллеру класса вместо самого контроллера-класса
+        #более высокоуровневый чем контроллер-fx -> сам exe ряд типичных действий
+            
+            .as_view(<параметры_контроллера_класса>)
+            #поддержевается ∀ контроллерами-классами
+            #examples
+                ...
+                path('add/', CreateView.as_view())
+                ...
+                #указание модели(model) & пути к шаблону(template_name
+                path('add/', CreateView.as_view(model=Bb, template_name='bboard/create.html'))
+            
+            
+            БАЗОВЫЕ КОНТРОЛЛЕРЫ-КЛАССЫ
+            #самые простые & низкоуровневые
+                
+                django.views.generic.base
+                #⊃ ∀ базовые контроллеры-классы
+                
+                    .View
+                    #диспетчеризация по HTTP-методу
+                    #max простой
+                    #определяет HTTP-метод посредством которого был exe запрос & exe код соотв этому методу
+                    #attrs
+                        
+                        .http_method_names=['get', 'post', 'put', 'patch', 'delete', 'head', 'options', 'trace']
+                        #⊃ список имен допустимых методов
+                        #by def ⊃ ∀ методы поддерживаемые HTTP
+                        
+                        .request
+                        #⊃ запрос
+                        #экз Request
+                        
+                        
+                        .kwargs
+                        #dict ⊃ полученные из uri параметры
+                        
+                        .as_view()
+                        #см .as_view()
+                        
+                        
+                        .dispatch(<запрос> [, <val_url_parameters>])
+                        #должен(напр при реализации пользовательских классов) exe обработку полученного запроса & val url-параметров извлеченных из uri
+                            <запрос>
+                            #экземпляр HttpRequest
+                            
+                            <val_url_parameters>
+                            #передаются через именованные параметры метода ~ контроллерам-fx
+                        #должен(напр при реализации пользовательских классов) возвращать ответ представленный экз HttpResponse | его подклассом
+                        #в изначальнои реализации
+                            извлекает обозначение HTTP-метода
+                            вызывает метод класса с именем = извлеченному обозначению
+                            передает этому методу <запрос> & <val_url_parameters>
+                            -> результат возвращенный методом
+                            #if запрос получен с исп GET -> вызывает .get(), if с исп POST -> вызывает .post()
+                            #if !∃ метода класса одноименного с HTTP-методом с исп которого был получен запрос(кроме HEAD) -> ничего не делает
+                                #при отсутствии .head() вызывается .get()
+                        
+                        
+                        .http_method_not_allowed(<request> [,<val_url_parameters>])
+                        #вызывается if запрос был exe с исп неподдерживаемого HTTP-метода
+                        #в изначальной реализации
+                            -> ответ типа HttpResponseNotAllowed ⊃ список допустимых методов
+                        
+                        
+                        .options(<request> [, <val_url_parameters>])
+                        #должен(напр при реализации пользовательских классов) обрабатывать запрос с исп HTTP-метода OPTIONS
+                        #в изначальнои реализации
+                            -> ответ ⊃ заголовок Allow ⊃ ∀ поддерживаемые HTTP-методы
+                    #краине редко исп как есть - обычно исп производные от него классы(как примесь?)
+                    
+                    
+                    .ContextMixin()
+                    #примесь
+                    #создание контекста шаблона
+                    #добавляет контроллеру-классу средства формирования контекста шаблона(attrs):
+                        .extra_context:<dict>
+                        #задает содержимое контекста шаблона
+                        #создается при первом обращении к контроллеру классу, и в дальнейшем остается const(⊃ собственные копии, а не ссылки на сами элты
+                            #if один из элтов - набор записеи -> он также !Δ даже if в исходный добавляются записи
+                            -> добавлять в контекст шаблона элты ⊃ наборы записеи следует только через .get_context_data()
+                        
+                        .get_context_data([<элты_контекста_шаблона>])
+                        #должен(напр при реализации пользовательских классов) создавать & возвращать контекст данных
+                        #в изначальнои реализации
+                            создает пустои контекст
+                            добавляет в него
+                                элт view ⊃ ссылку на текущии экз контроллера класса(?self)
+                                элты контекста шаблона полученные через именованные параметры
+                                элты .extra_context
+                            #-> при исп вместо .extra_context для добавления контекста, будет получать актуальный набор данных, даже if контекст ⊃ набор с изменившимися с последнего вызова записями
+                    
+                    
+                    .TemplateResponseMixin() -> <TemplateResponse>
+                    #примесь
+                    #добавляет наследнику средства рендеринга шаблонов
+                    #attrs
+                        .template_name:<str>
+                        #template path
+                        
+                        
+                        .get_template_names()
+                        #должен(напр при реализации пользовательских классов) -> список путеи к шаблонам заданных в виде строк
+                        #в изначальнои реализации -> список ⊃ один элт ⊂ .template_name
+                        
+                        
+                        .content_type
+                        #задает MIME-type ответа и его кодировку
+                            .content_type=None
+                            #исп default MIME-type & encoding (видимо заданные в settings)
+                        
+                        
+                        .render_to_response(<template_context>) -> <TemplateResponse>
+                        #рендерит шаблон
+                        #нужно вызывать явно
+                    
+                    
+                    
+                    .TemplateView
+                    #наследник View, ContextMixin & TemplateResponseMixin
+                    #при получинии GET-запроса -> рендерит шаблон исп контекст ⊃ ∀ url-параметры ⊂ маршруту и отправляет ответ
+                    #может исп в практическои работе
+                        #вывод главной страницы ⊃ объявления
+                        from django.views.generic.base import TemplateView
+                        from .models import Bb, Rubric
+                        ...
+                        class BbIndexView(TemplateView):
+                            template_name = 'bboard/index.html'
+                            ...
+                            #переопределяем формирование контекста
+                            def get_context_data(self, *args, **kwargs):
+                                context = super().get_context_data(*args, **kwargs):
+                                context['bbs'] = Bb.objects.all()
+                                context['rubrics'] = Rubric.objects.all()
+                                return context
+            КЛАССЫ ВЫВОДЯЩИЕ СВЕДЕНИЯ О ВЫБРАННОЙ ЗАПИСИ
+            #обобщенные классы
+            #exe типовые задачи и мб исп в разных ситуациях
+            #пример просмотр сведений о товаре
+            
+                django.views.generic.detail
+                #⊃ более высокоуровневые классы чем базовые контроллеры
+                
+                    SingleObjectMixin
+                    #примесь
+                    #наследник ContextMixin
+                    #получает val ключа|слага модели из url-params & извлекает по нему запись модели & помещает ее в контекст шаблона
+                    #attrs
+                        .model
+                        #задает модель для извлечения записи
+                        
+                        .queryset
+                        #указывает диспетчер записеи|<QuerySet>(набор записей) в которых ищутся записи
+                        
+                        .get_queryset()
+                        #должен(напр при реализации пользовательских классов) -> <QuerySet> в котором ищутся записи
+                        #в исходной реализации -> val attr queryset if оно не задано, | набор записей извлеченных из модели извлеченной из attr model
+                        
+                        .pk_url_kwarg="pk"
+                        #задает имя url-параметра, через который контроллер получит val ключа записи
+                        
+                        .slug_field="slug"
+                        #задает имя поля модели ⊃ слаг
+                        
+                        .get_slug_field()
+                        #должен(напр при реализации пользовательских классов) -> str ⊃ имя поля модели ⊃ слаг
+                        #в исходнои реализации -> val ⊂ slug_field
+                        
+                        .slug_url_kwarg="slug"
+                        #задает имя url-param через который контроллер-класс получит val слага
+                        
+                        .query_pk_ang_slug=False
+                        #
+                            query_pk_ang_slug=False
+                            #поиск записи only by key
+                            query_pk_ang_slug=False
+                            #поиск записи по ключу и слагу
+                        
+                        
+                        .context_object_name
+                        #задает имя v контекста шаблона для сохранения наиденнои записи
+                        
+                        
+                        .get_context_object_name(<record>)
+                        #должен(напр при реализации пользовательских классов) -> имя v контекста шаблона для сохранения наиденнои записи в виде str
+                        #в исходнои реализации -> имя ⊂ context_object_name else if context_object_name=None -> lowercase имя модели
+                            #пример
+                            #if model=Rubric & context_object_name=None -> v контекста получит имя rubric
+                            
+                        
+                        .get_object([queryset=None]) -> <наиденная_запись>
+                        #ищет записи по указанным критериям
+                            queryset
+                            #набор записей где будет exe поиск
+                                queryset=None
+                                #поиск в наборе возвращаемом .get_queryset()
+                        #val ключа & слага можно получить из dict ⊃ ∀ полученные контроллером url-params и сохраненного в атрибуте экземпляра kwargs, имена нужных параметров можно получить из attrs pk_url_kwarg & slug_url_kwarg
+                        #if запись не наидена -> exept Http404 ⊂ django.http
+                        
+                        
+                        .get_context_data([<дополнительные_элты_контекста_шаблона>])
+                        #переопределенный метод, создающий и возвращающии контекст данных
+                        #в исходнои реализации требует чтобы в экз текущего контроллера-класса ∃ attr object ⊃ наиденную запись|None (if она не была наидена|контроллер используется для создания новой записи). В контексте шаблона создаются v object и v с именем возвращаемым .get_context_object_name(), которые ⊃ наиденную запись
+                    
+                    
+                    SingleObjectTemplateResponseMixin
+                    #примесь
+                    #рендерит шаблон на основе наиденнои в модели записи
+                    #наследник TemplateResponseMixin
+                    #требует ∃ в контроллере-классе attr object ⊃ наиденная запись(в виде model obj)|None(if запись не была наидена|контроллер исп для создания новой записи)
+                    #attrs
+                        .template_name_field=None
+                        #⊃ имя поля модели ⊃ путь к шаблону
+                            template_name_field=None
+                            #путь к шаблону не будет извлекаться из записи
+                        
+                        .template_name_suffix="_detail"
+                        #⊃ str ⊃ суффикс добавляемыи к автоматом сгенерированному пути к шаблону
+                        
+                        .get_template_names()
+                        #переопределенный метод
+                        #-> список путеи к шаблонам в виде str
+                    #в исходнои реализации -> список:
+                            пути извлеченного из унаследованного attr template_name(if указан)
+                        or
+                            пути извлеченного из поля модели с именем ⊂ attr template_name_field
+                                #if ∀ нужные данные указаны
+                                   имя поля
+                                   запись модели
+                                   путь в поле этои записи
+                            пути вида
+                                <app_alias>\<model_name><suffix>.html
+                                #пример
+                                    #для модели bboard будет сформирован путь bboard\bb_detail.html
+                    
+                    
+                    DetailView
+                    #примесь
+                        автоматом ищет запись по val ключа/слага
+                        заносит наиденную запись в attr object
+                        #чтобы успешно работали наследуемые им примеси
+                        выводит страницу ⊃ сведения о записи
+                    #наследует
+                        View
+                        TemplateResponseMixin
+                        SingleObjectMixin
+                        SingleObjectTemplateResponseMixin
+                    #examples
+                        #вывод сведении о выбранном посетителем объявлении
+                        .../views.py
+                            #путь к шаблону не указан -> класс ищет шаблон со сформированны by def путем bboard\bb_detail.html
+                            from django.views.generic.detail import DetailView
+                            from .models import Bb, Rubric
+                            ...
+                            class BbDetailView(DetailView):
+                                model = Bb
+                                
+                                def get_context_data(self, *args, **kwargs):
+                                    context = super().get_context_data(*args, **kwargs)
+                                    context['rubrics'] = Rubric.object.all()
+                                    return context
+                        .../urls.py
+                            #следуя соглашениям указав для url-param ключа записи имя pk исп классом DetailView by def
+                            from .views import BbDetailView
+                            urlpatterns = [
+                                ...
+                                path('detail/<int:pk>/', BbDetailView.as_view(), name='detail'),
+                                ...
+                            ]
+                        bboard/bb_detail.html
+                            #by def класс BbDetailView создает в контексте шаблона v bb ⊃ наиденную запись(этот fx унаследован от DetailView) -> исп эту v
+                            {% extends "layout/basic.html" %}
+                            
+                            {% block title %}{{ bb.title }}{% endblock %}
+                            
+                            {% block content %}
+                            <p>Рубрика: {{ bb.rubric.name }}</p>
+                            <h2>{{ bb.title }}</h2>
+                            <p>{{ bb.content }}</p>
+                            <p>Цена: {{ bb.price }}</p>
+                            {% endblock %}
+                        #добавим код создающии ссылки на страницы выбранных объяв
+                        bboard/index.html
+                            ...
+                            <h2><a href="{% url 'detail' pk=bb.pk %}">{{ bb.title }}</a></h2>
+                            ...
+                        bboard/by_rubric.html
+                            ...
+                            <h2><a href="{% url 'detail' pk=bb.pk %}">{{ bb.title }}</a></h2>
+                            ...
+                
+                
+            КЛАССЫ ВЫВОДЯЩИЕ НАБОРЫ ЗАПИСЕИ
+                
+                django.views.generic.list
+                
+                    MultipleObjectMixin
+                    #извлечение набора записей из модели и помещает результат в контекст шаблона
+                    #номер части которую нужно извлечь - int 1+|"last" else -> exept Http404 ⊂ django.http
+                        "last"
+                        #обозначает последнюю часть
+                    #может исп
+                        фильтрацию
+                        сортировку
+                        разбиение на части посредством пагинатора
+                    #наследует ContextMixin
+                    #attrs
+                        .model
+                        #задает модель для извлечения записей
+                        
+                        .queryset
+                        #указывает диспетчер записей|исходныи <QuerySet> из которого будут извлечены записи
+                        
+                        .get_queryset()
+                        #должен возвращать <QuerySet> в котором ищутся записи
+                        #в исходной реализации -> val attr queryset if оно не задано, | набор записей извлеченных из модели извлеченной из attr model
+                        
+                        
+                        .ordering
+                        #задает параметры сортировки записеи
+                        #val
+                            str ⊃ field_name
+                            #сортирока только по этому полю (by def по возрастанию)
+                            #для сортировки по убыванию нужно предварять имя поля "-"
+                            seq ⊃ str имена полеи
+                            #сортировка по нескольким полям
+                        #if !∃ exe сортировка заданная в параметрах модели
+                            #else if модель ⊅ указания сортировки -> сортировка !exe
+                        
+                        
+                        .get_ordering()
+                        #должен -> параметры сортировки записеи
+                        #в исходной реализации -> val attr .ordering
+                        
+                        
+                        .paginate_by
+                        #задает int кол-во записеи в однои части пагинатора
+                        #if !∃|=None => набор записеи не разбивается на части
+                        
+                        
+                        .get_paginate_by(<QuerySet>)
+                        #должен -> кол-во записеи полученного набора, помещающихся в однои части пагинатора
+                        #в исходной реализации -> val attr paginate_by
+                        
+                        
+                        
+                        .page_kwarg:<str>="page"
+                        #указывает имя URL|GET-параметра через который будет передаваться номер выводимои части пагинатора
+                        
+                        
+                        
+                        .paginate_orphans=0
+                        #задает int min число записеи которые могут ⊂ последнеи части пагинатора
+                        #if последняя часть пагинатора ⊃ меньше записеи -> оставшиеся записи будут выведены в предыдущеи части
+                            .paginate_orphans=0
+                            #последняя часть может ⊃ ∀ число записеи
+                    
+
+        ЗАДАНИЕ VAL ПАРАМЕТРОВ КОНТРОЛЛЕРОВ КЛАССОВ
+            .as_view()
+            #см as_view()
+            #менее мощен чем создание производного класса -> исп реже
+            
+            
+            создание производного класса с указанием val в соотв attr класса
+            #позволяет более радикально Δ поведение переопределением методов -> исп чаще .as_view()
+                class BbCreateView(CreateView):
+                    template_name = 'bboard/create.html'
+                    model = Bb
+                ...
+                path('add/', BbCreateView.as_view()),
+            
+
+
+        ФОРМИРОВАНИЕ ОТВЕТА КОНТРОЛЛЕРОМ
+        #основная задача контроллера, отправляется user'у
+        #обычно ⊃ web-page
+            
+            НИЗКОУРОВНЕВЫЕ СРЕДСТВА ФОРМИРОВАНИЯ ОТВЕТА КОНТРОЛЛЕРОМ
+            #см HttpResponse
+            #исп краине редко
+            
+            ВЫСОКОУРОВНЕВЫЕ СРЕДСТВА ФОРМИРОВАНИЯ ОТВЕТА КОНТРОЛЛЕРОМ
+                ФОРМИРОВАНИЕ ОТВЕТА НА ОСНОВЕ ШАБЛОНА
+                #исп гораздо чаще низкоуровневых средств формирования ответа
+                #см шаблонизатор
+        
+        ПОЛУЧЕНИЕ СВЕДЕНИЙ О ЗАПРОСЕ
+        #см HttpRequest
+
+ПРИМЕСИ
+#mixin's
+#реализует большую часть функционала контроллеров-классов
+#базовые для контроллеров-классов
+#класс только для расширения fx других классов
+#см контроллеры-классы
+
+ПАГИНАТОР
+#может исп для разбиения на части при извлечении набора записеи из модели посредством MultipleObjectMixin
 
 МАРШРУТЫ И МАРШРУТИЗАТОР
 	связываем(объявляем связь) url определенного формата(шаблонного url) с контроллером
 	#объявляем маршрут
 	#шаблонный url должен ⊃ только относительный путь без
 		названия протокола
-		адреса хоста
-		порта
+		адреса хоста|доменного имени
+		порта(tcp)
 		набора GET-параметров
-		имени якоря(?)
+		имени якоря(#id?)
 	#шаблонный url обязан:
 		завершаться "/"
 		не начинаться на "/"
@@ -628,43 +2799,298 @@ django.http.HttpResponse
 #извлекают запрошенный пользователем url, удаляют из него ∀ кроме пути который передается маршрутизатору
 маршрутизатор ищет совпадение в списке urls и передает управление соотв. контроллеру
 ∀ эл-т списка маршрутов должен представляться результатом возвращаемым django.urls.path()
-path(template, view)
+
+
+
+path(<template_url>:str, <view>|<вложенныи_список_маршрутов> [,...][, name=<route_name>])
 #в качестве второго параметра может принимать список маршрутов уровня приложения	
-	#связывает "admin" со списком маршрутов возвращаемый св-вом urls экземпляра(?а выглядит как класс) AdminSite который хранится в var(?а я думал это модуль) site и представляет текущую административный веб-сайт dj => при переходе по <host>:port/admin/ загружается админка 
+	#связывает "admin/" со списком маршрутов возвращаемый св-вом urls экземпляра(?а выглядит как класс) AdminSite который хранится в var(?а я думал это модуль) site и представляет текущую административный веб-сайт dj => при переходе по <host>:port/admin/ загружается админка 
 	path('admin/',admin.site.urls)
+#
+    <template_url>
+    #начинается не с '/', но заканчивается '/'
+    #формат обьявления в шаблоне url-параметров(параметризованныи маршрут)
+        < [<format>:]<param_name> >
+            <format>
+            #очевидно что при несовпадении с url -> маршрут считается не совпавшим
+                str
+                #∀ непустая ⊅ слеши
+                int
+                #positive int ⊃ 0
+                slug
+                #строковыи слаг ⊃ latin chars,nums, '-', '_'
+                #короче слово
+                uuid
+                #уникальныи универсальныи id
+                #дб правильно форматирован ⊃ '-', ∀ буквы lowercase
+                path
+                #∀ непустая str ⊃ слеши
+                #обычно исп для сравнения с целым фрагментом полученного url
+            <param_name>
+            #задает имя параметра view через которое он может получить val
+            #должно удовлетворять правилам именования python v
+    <view>
+    #ссылка на fx|результата .as_view() ⊃ контроллера-класса
+    name
+    #создание именованного маршрута
+    #исп для обратного разрешения uri
+        ulrpatterns = [
+            path('<int:rubric_id>/', by_rubric, name='by_rubric'),
+        ]
+        #теперь можно исп обратное разрешение uri указав имя маршрута & ⊃ val url-параметров(if это параметризованныи маршрут)
+        #в контроллере
+            from django.urls import reverse
+            ...
+            url = reverse('by_rubryc', kwargs={'rubric_id': 2})
+        #в шаблоне
+            <a href="{% url 'by_rubric' rubric_id=2 %">...</a>
+        
+        
+
+#example
+    #исп контроллера-класса
+    from django.urls import path
+    from .views import index, by_rubric, BbCreateView
+    urlpatterns = [
+        path('add/', BbCreateView.as_view()),
+        path('<int:rubric_id>/', by_rubric),
+        path('', index),
+    ]
+
+
+
 создатели dj настоятельно не рекомендуют использовать для формирования списка маршрутов тупое добавление шаблонов и контроллеров в /<project>/urls.urlpatterns
 #т.к. при большом числе маршрутов его будет сложно поддерживать(вообще делать что-либо вручную это очевидно хреново) =>
 	вместо этого
-		маршрутизатор dj при просмотре списка маршрутов не требует полного совпадения url из клиентского запроса и шаблона, достаточно лишь совпадения с началом реального(?полученный от клиента?существующий - просто полученный адрес!) тогда шаблонизатор удаляет из реального(?) адреса его начальную часть(префикс) совпавшую с шаблоном и запускает указанный в маршруте контроллер
+		маршрутизатор dj при просмотре списка маршрутов не требует полного совпадения url из клиентского запроса и шаблона, достаточно лишь совпадения с началом реального(?полученный от клиента?существующий - просто полученный адрес!) тогда шаблонизатор удаляет из реального адреса его начальную часть(префикс) совпавшую с шаблоном и запускает указанный в маршруте контроллер
 			,но path() позволяет указать вторым параметром другой список маршрутов вместо view => можно указать для ∀ маршрута другой вложенный в него список маршрутов
 				тогда маршрутизатор выполнит просмотр маршрутов ⊃ вложенному списку используя для сравнения адрес с уже удаленным префиксом
 					=> можно создать иерархию списков маршрутов, 
 						в списке маршрутов уровня проекта укажем маршруты указывающие на вложенные списки записанные в отдельных app(списки маршрутов уровня app)
 							в списках маршрутов уровня app запишем контроллеры ⊂ логику сайта
-вложенный список маршрутов передаваемый path() должен представлять собой результат django.urls.include()							
+вложенный список маршрутов передаваемый path() должен представлять собой результат django.urls.include()
+if полученныи url не совпал ни с одним шаблоном -> клиенту отправляется стандартная страница 404
+#маршрутизатор считает url совпавшим с шаблоном if шаблон находится в начале url
+    #может привести к коллизии
+        ] ∃
+        urlpatterns = [
+            path('create/', views.wrong),
+            path('create/comment/', views.right)
+        ]
+        #url /create/comment/ будет отправлен во views.wrong
+        РЕШЕНИЕ - распологать маршруты в обратном порядке
+        #более вложенныи -> менее вложенныи(верхнего уровня)
+            urlpatterns = [
+                path('create/comment'), views.wrong),
+                path('create/', views.right)
+            ]
+через запрашиваемыи url во входящем в его состав пути мб передано val
+    для его получения нужно поместить в нужное место шаблона в соотв маршруте обозначение url-параметра
+    #маршрутизатор извлечет val и передаст его в контроллер|вложенныи список маршрутов(-> val будет доступно контроллерам объявленным во вложенном списке
+по возможности маршруты должны ⊃ уникальные шаблонные url
+#иное бессмысленно тк ∀ кроме первого будут отброшены
+
 django.urls
 
-
-	.include()
-	#one arg?
+	.include(<module_path>|<список_маршрутов> [, namespace:<префикс_uri>=None)
+	#two arg
+	#исп для указания вложенного списка маршрутов ⊃ urlpatterns
 	#принимает строку с путем к модулю ⊃ список маршрутов
+	#examples
+	    from djanog.contrib import admin
+	    from django.urls import path, include
+	    ...
+	    urlpatterns = [
+	        #вложенный список в виде пути к модулю
+	        path('bboard/', include('bboard.urls')),
+	        #вложенныи список в виде списка маршрутов ⊃ свву urls ⊂ экземпляра AdminSite ⊂ site v ⊂ django.contrib.admin
+	        path('admin/', admin.site.urls),
+	    ]
 	
 	
 	.reverse_lazy("<route_name>"[,<val_of_url_param>]) -> готовый url
-	#
+	#возм синтаксис ~ .reverse ⊂ django.urls
+	#генерация url путем обратного разрешения
+	#examples
 		from django.urls import reverse_lazy
-		
+		...
 		class BbCreateView(CreateView):
 			...
 			success_url = reverse_lazy('index')
 			...
+    #other examples(см path)
+    #в отличие от .reverse() ⊂ django.urls , соотв названию не требует полнои загрузки и обработки списка маршрутов -> можно исп не only in контроллерах
+
+
+
+ОБРАТНОЕ РАЗРЕШЕНИЕ URLS
+#механизм
+#требует именованных маршрутов
+#авто формирование готового uri по имени маршрута & набору параметров
+#реализуется .reverse() ⊂ django.urls
+
+django.urls
+    .reverse([<ns>:]<route_name>:<str> [[, args=None]|[, kwargs=None]] [, urlconf=None])
+    #см обратное разрешение urls
+        <route_name>
+        #if ∃ неск app для которых указаны ns исп вид
+            <ns>:<route_name>
+        args:<seq_val_url_params>
+        #if маршрут исп для формирования uri - параметризованныи
+            #исп для указания val URL-параметров для вставки в этот uri
+        #первыи элт <seq_val_url_params> задает val первого url-параметра, второй - второго, etc
+        #при исп с kwargs -> exept
+        kwargs:{'URL_param_name':<val>,...}
+        #~ args
+        #при исп с kwargs -> exept
+        urlconf
+        #путь к модулю ⊃ список маршрутов
+        #if !∃ исп модуль ⊃ список маршрутов уровня проекта указанныи в ROOT_URLCONF
+        #if указан модуль ⊃ список маршрутов уровня app -> указывать ns в <route_name> не нужно
+            url1 = reverse('index', urlconf='bboard.urls')
+            url2 = reverse('bboard:by_rubric', args=(current_rubric.pk,))
+            url3 = reverse('bboard:by_rubric', kwargs={'rubric_id': current_rubric.pk})
+    #главныи недостаток - работает only после загрузки и обработки списка маршрутов -> ее можно исп only in контроллерах
+        #if нужно записать uri не в контроллерах
+            attr контроллера-класса
+            ...
+            #нужно исп reverse_lazy() ⊂ django.urls
+
+    #examples
+        .reverse('bboard:by_rubric', kwargs={'rubric_id': 2})
+        #формирует uri '/bboard/2/'
+    
+    
+    
 			
-			
+МАРШРУТИЗАЦИЯ
+#процесс выяснения какои контроллер exe при получении в клиентском запросе url определенного формата
+
+МАРШРУТИЗАТОР
+#работает основываясь на списке маршрутов
+#∀ элт(маршрут) устанавливает связь шаблонныи url <> view
+
+
+
+СПОСОБЫ ПЕРЕДАЧИ ДАННЫХ В КОНТРОЛЛЕРЫ
+    0. через одноименные url-параметры
+        #by_rubric() получает val url-параметра rubric_id через параметр rubric_id
+        urls.py
+            ...
+            urlpatterns = [
+                path('<int:rubric_id>/', by_rubric),
+            ]
+            ...
+        views.py
+            ...
+def by_rubric(request, rubric_id):
+...
+
+
+    1. {<val_name0>:<val1>,...} в третьем параметре path()
+    #val контроллер получит через одноименные параметры
+    #if маршрут ⊃ url-параметр именем = имени доп val передаваемому через dict -> контроллеру будет передано val ⊂ dict. Извлечь val url-параметра в данном случае не выидет
+        urls.py
+            ...
+            #передача контроллеру val mode
+            vals = {'mode': 'index'}
+            urlpatterns = [
+                path('<int:rubric_id>/', by_rubric, vals),
+            ]
+            ...
+        views.py
+            ...
+            def by_rubric(request, rubric_id, mode):
+            ...
+
+СПИСКИ МАРШРУТОВ УРОВНЯ PROJECT/APP
+#маршрутизатор поддерживает объявление вложенных списков маршрутов
+    маршруты на отдельные app(разделы саита) объявляются на уровне проекта
+    #маршруты уровня project
+    #в модуле конфигурации
+    #в качестве шаблонных адресов должны ⊃ префиксы с которых начинаются url разных apps
+    
+    маршруты на views одного app объявляются на его уровне
+    #маршруты уровня app
+    #могут ⊂ модулю пакета app ⊃ ∀ имя(модуль не создается manage.py startapp автоматом)
+    #обычно ⊅ вложенных списков, а указывают на views
+
+
+
+ОБЪЯВЛЕНИЕ МАРШРУТОВ
+#список маршрутов - python list присваиваемыи v urlpatterns(где их ищет router)
+#∀ элт res path() ⊃ django.urls
+
+
+
+NS
+#if project ⊃ неск app ⊃ = шаблонные uri(напр index/ ⊂ bboard, testapp) -> можно дать понять dj какои uri нужно сформировать обратным разрешением задав ns ∀ app
+#ns - область ⊃ свои список маршрутов
+#указывается в v app_name ⊂ модулю ⊃ список маршрутов app
+#а разве и так не очевидно к какому app это относится?
+    bboard/urls.py
+        ...
+        app_name = 'bboard'
+        urlpatterns = [
+            ...
+        ]
+#требуется задать для ∀ app(?что-то сомневаюсь - раньше же работало)
+#для доступа к ns - маршрут предваряется '<ns>:'
+    url = reverse('bboard:index')
+    ...
+    <a href="{% url 'bboard:index' %}">...</a>
+#задает префикс uri формируемого обратным разрешением
+    url = reverse('bboard:by_rubric', kwargs={'rubric_id': 2})
+    #сформирует uri '/bboard/2/'
+    
+    
+    
+ROOT APP
+#чтобы ∀ app было доступно по uri ⊅ префикс(/2 вместо /bboard/2/)(связано с корнем проекта(корневое app))
+    указать '' шаблонным uri в соотв маршруте проекта
+    задать для маршрута уровня проекта новыи пустои префикс
+        urlpatterns = [
+            #∀ uri ⊃ bboard ns будут начинаться с корня
+            #можно попасть на index.html ⊂ app по uri вида http://localhost:8000/
+            path('', include('bboard.urls', namespace='')),
+            ...
+        ]
+
+
+PATTTERNS AS RE
+#исп if путь очень сложен|при переносе кода dj 1.11-
+#исп re_path() ⊂ django.urls
+#дает полныи контроль над exe сравнения
+    r'^...'
+    #default
+    #шаблон должен ⊂ началу uri
+    r'...$'
+    #шаблон должен ⊂ концу uri
+
+
+    django.urls
+        re_path(<re>:str, <view>|<вложенныи_список_маршрутов> [, ...][, name=<route_name>])
+        #исп if путь очень сложен|при переносе кода dj 1.11-
+            <re>
+            #передается python re -> должна ⊃ соотв формат
+        #other args ~ path ~ django.urls
+        #examples
+            from django.urls import re_path
+            from .views import index, by_rubric, BbCreateView
+            ...
+            urlpatterns = [
+                re_path(r'^add/$', BbCreateView.as_view(), name='add'),
+                re_path(r'^(?P<rubric_id>[0-9]*)/$', by_rubric, name='by_rubric'),
+                re_path(r'^$', index, name='index'),
+            ]
+
+
 attr класса ~ св-ва класса|статические св-ва в other pl
 
 
 МОДЕЛИ
 #упрощает работу с бд
+#ORM
 #класс Python, объявляемый на уровне отдельного app
 #однозначное и исчерпывающее определение сущности в бд
 #описывает таблицу бд в которой будет храниться набор сущностей
@@ -702,7 +3128,7 @@ attr класса ~ св-ва класса|статические св-ва в o
 #м.б. создана для представления ∃ в бд таблицы, для чего требуется указать
 	имя таблицы
 	имена ∀ ⊂ ей полей
-#при создании модели для !∃ таблицы требуется генерация и и применение миграции
+#при создании модели для !∃ таблицы требуется генерация и и примерынение миграции
 #большинство таблиц бд ⊃ ключевое поле(для хранения pk), обычно int и автоинкрементное=> уникальные val в него заносит сама СУБД
 	#что не требует явного объявления в dj -> dj самостоятельно создает такое поле
 		#if создать запись с pk = 2, затем с pk=3, удалить pk=2 и создать новую запись -> pk новой записи будет 4(возможно на больших наборах данных это работает иначе)
@@ -716,7 +3142,8 @@ attr класса ~ св-ва класса|статические св-ва в o
 	b1.pk			>> 1
 	b1.title		>> ...
 #∀ классы моделей ⊃ .objects
-#.objects ⊃ диспетчер записей
+#.objects ⊃ диспетчер записей, видимо реализует ∀ магию генерации запросов
+#совершенно очевидно что .objecs наследуется от models.Model
 	БАЗОВЫЕ ИНСТРУМЕНТЫ
 	#создание моделей следует за созданием и настройкой проекта и apps
 	#большинство сайтов хранит данные бд
@@ -749,29 +3176,41 @@ attr класса ~ св-ва класса|статические св-ва в o
 #по идее поддерживается и производными от Manager вроде RelatedManager
 	<model>.objects
 	
-	
-		.create(<field0>=<val0>, ...)
+		.__eq__()
+		#метод перегрузки =
+		
+		.__format__()
+		.__ge__()
+		.__gt__()
+		.__hash__()
+		#он таки hashable
+		.__le__()
+		.__lt__()
+		.__ne__()
+		.__reduce__()
+		
+		
+		.create(<field0>=<val0>, ...)	-> <model_instance>
 		#создает новую запись модели, сохраняет ее и возвращает как результат
-		#вроде не требует .save()
+		#не требует .save()
 			r = Rubric.objects.create(name='Мебель')
 			#проверим создана ли запись
 			r.pk		>> 5
 		
 		
-		.all()
+		.all()	->	django.db.models.query.QuerySet
 		#возвращает "набор ∀ записей" модели(экземпляр QuerySet)(iterable)
 		#отдельные записи- экземпляры соответствующего класса модели
-			for r in Rubric.objects.all():
-				print(r.name)
+			[r.name for r in Rubric.objects.all()]
 		
-		.last()
+		.last()	->	<model_instance>
 		#return последнюю запись набора | if набор пуст -> None
-			b = Bb.objects.first()
+			b = Bb.objects.last()
 			b.title -> 'Дача'
 		#учитывает сортировку заданную вызовом .order_by() | параметром модели ordering
+		#противоположен first
 		
-		
-		.filter(<field0>=<val>, ...)
+		.filter([<field0>=<val>, ...])	-> django.db.models.query.QuerySet
 		#фильтрация записей по заданным критериям
 		#см НАПИСАНИЕ УСЛОВИЙ ФИЛЬТРАЦИИ
 		#противоположен .exclude(...)
@@ -786,10 +3225,10 @@ attr класса ~ св-ва класса|статические св-ва в o
 			#хотя конечно можно обойтись и filter
 				for b in Bb.objects.filter(rubric=r, price__lt=1000000):
 					print(b.title)
+		#без параметров ~ all()
 					
-					
-		.exclude(<field0>=<val>, ...)
-		#противоположен exclude(...)
+		.exclude(<field0>=<val>, ...)	-> django.db.models.query.QuerySet
+		#противоположен filter(...)
 		#возвращает записи НЕ удовлетворяющие условиям
 		#см НАПИСАНИЕ УСЛОВИЙ ФИЛЬТРАЦИИ
 			#∀ объявления кроме тех чья цена не менее 10000
@@ -799,7 +3238,7 @@ attr класса ~ св-ва класса|статические св-ва в o
 			#хотя можно обойтись и .exclude() (см .filter)
 			
 			
-		.get(<field>=<val>)
+		.get(<field>=<val> [, <field>=...])	-> <app>.models.<Model>
 		#возвращает одну запись подходящую под критерий
 		#быстрее filter()
 		#if записей не нашлось -> бросает DoesNotExist чей класс вложен в класс модели чья запись не была найдена
@@ -810,29 +3249,8 @@ attr класса ~ св-ва класса|статические св-ва в o
 			r = Rubric.objects.get(pk=5, name='Сантехника') 
 			>> bboard.models.DoesNotExist: Rubric matching query does not exist
 		
-		
-		.get_next_by_<field_name>([<field>=<val>])
-		#доступен if модель ⊃ min одно поле DateField|DateTimeField
-		#return запись чье поле с указанным именем ⊃ следующее в порядке увеличения val даты
-		#if указаны условия поиска - они также учитываются
-			b = Bb.objects.get(pk=1)
-			b.title					>> 'Дача'
-			#след хронологически запись
-			b2 = b.get_next_by_published()
-			b2.title				>> 'Дом'
-			#след хронологически запись с ценой < 1000
-			b3 = b.get_next_by_published(price__lt=1000)
-			b3.title				>> 'Мотоцикл'
-			
-			
-		.get_previous_by_<field_name>([<field>=<val>])
-		#доступен if модель ⊃ min одно поле DateField|DateTimeField
-		#return запись чье поле с указанным именем ⊃ пред в порядке увеличение val даты
-		#if указаны условия поиска - они также учитываются
-		#~.get_next_by_<field_name>
-		
-		
-		<secondary>.get_next_in_order()
+				
+		<secondary>.get_next_in_order()	->	<primary>
 		#доступен if secondary ⊃ задание произвольного переупорядочивания записей связанных с одной записью primary(указан параметр order_with_respect_to)
 		#возвращает след в установленном порядке запись
 			r = Rubric.objects.get(name='Мебель')
@@ -841,7 +3259,7 @@ attr класса ~ св-ва класса|статические св-ва в o
 			bb3 = bb2.get_next_in_order()
 			bb3.pk						>> 33
 		
-		<secondary>.get_previous_in_order()
+		<secondary>.get_previous_in_order() -> <primary>
 		#доступен if secondary ⊃ задание произвольного переупорядочивания записей связанных с одной записью primary(указан параметр order_with_respect_to)
 		#возвращает предыдущую в установленном порядке запись
 			r = Rubric.objects.get(name='Мебель')
@@ -849,7 +3267,7 @@ attr класса ~ св-ва класса|статические св-ва в o
 			bb1 = bb2.get_previous_in_order()
 			bb1.pk						>> 37
 		
-		.get_or_create(<kwargs_для_фильтрации> [, defaults=None]) -> (найденая|созданная запись, False (if была найдена)|True(if была создана))
+		.get_or_create(<kwargs_для_фильтрации> [, defaults=None]) -> (найденая|созданная запись, False (if была найдена)|True(if была создана)) -> (<model_instance>, <bool>)
 		#возвращает одну запись по фильтрам, при отсутсвии записи => создает ее на основе фильтров и сохранит и возвратит
 			defaults:<dict_с_val_для_остальных_полей_создаваемой_записи>
 			#при условии что модель !⊃ поля defaults;
@@ -861,14 +3279,15 @@ attr класса ~ св-ва класса|статические св-ва в o
 		#if записей найдется > одной => бросает MultipleObjectsReturned ⊃ django.core.exceptions
 		
 		
-		.update_or_create(<kwargs_для_фильтров>[, defaults=None])
+		.update_or_create(<kwargs_для_фильтров>[, defaults=None])	-> (<model_instance>, <bool>)
 		#~.get_or_create, но при нахождении записи обновляет поля в соотв с ⊂ defaults
 			Rubric.objects.update_or_create(name='Цветы')	>> (<Rubric: Цветы>, True)
 			Rubric.objects.update_or_create(name='Цветы', defaults={'name': 'Растения'})
 			>> (<Rubric: Растения>, False)
 
+bulk:eng:наваливать
 		
-		.bulk_create(<{xn} добавляемых записей> [, batch_size=None])
+		.bulk_create(<{xn} добавляемых записей> [, batch_size=None]) -> [<model_instance0>,...]
 		#добавление записей в модель
 			batch_size
 			#число записей в одной SQL-команде
@@ -884,16 +3303,19 @@ attr класса ~ св-ва класса|статические св-ва в o
 			#-> if модель ⊃ переопред .save() ⊃ доп действия при сохранении - они !exe
 
 		
-		.latest(['<field_name0>',<'field_name1'>, ... ])
+		.latest(['[-]<field_name0>',<'[-]field_name1'>, ... ])	->	<model_instance> | raise <app>.models.Empty.DoesNotExists
 		#получение последней записи модели(⊃ max val в полях даты/времени)
 		#if модель ⊃ get_latest_by = '-...' => получение самой ранней записи
 		#~.earliest, наоборот
 			b = Bb.objects.latest('published')
 			b.title			>> 'Стиральная машина'
+		#вроде просто исп сортировку по алфавиту
+			Bb.objects.create(title='latest', content='test')
+			Bb.objects.latest('title')		>> <Bb: Трактор>
 			
 			
-		.earliest(['<field_name0>',<'field_name1'>, ... ])
-		#возвращает запись ⊃ min val в полях даты/времени(самую раннюю)
+		.earliest(['<field_name0>',<'field_name1'>, ... ])	->	<model_instance> | raise <app>.models.Empty.DoesNotExists
+		#возвращает запись ⊃ min val в полях даты/времени(самую раннюю)(посути исп простую сортировку по алфавиту)
 		#предварительно exe временную сортировку по возрастанию val полей даты/времени(по умолч - по возрастанию)
 		#проверка начинается с первого указанного поля, if val одинаково у неск записей -> проверяется след поле, etc
 		#if модель ⊃ get_latest_by = '-...' => получение самой поздней записи
@@ -911,7 +3333,9 @@ attr класса ~ св-ва класса|статические св-ва в o
 			#первое объявление с ценой не менее 10000
 			b = Bb.objects.filter(price__gte=10000).first()
 			
+			
 		.exists()
+		#0 args
 		#быстр, рекомендуем
 		#if набор ⊃ записи -> True
 		#else	-> False
@@ -919,18 +3343,57 @@ attr класса ~ св-ва класса|статические св-ва в o
 			Bb.objects.filter(rubric=r).exists()	>> False
 		
 		.count()	-> число_записей_набора
+		#0 args
 		#быстр, рекомендуем
 			Bb.objects.count()	>> 12
+
+		.update()
+		#по идее наследуется <QuerySet>
+		#см <Query_set>
+<instance_of_model>
+
+		.get_next_by_<field_name>([<field>=<val>])
+		#доступен if модель ⊃ min одно поле DateField|DateTimeField
+		#return запись чье поле с указанным именем ⊃ следующее в порядке увеличения val даты
+		#if указаны условия поиска - они также учитываются
+			b = Bb.objects.get(pk=1)
+			b.title									>> 'Дача'
+			#след хронологически запись
+			b2 = b.get_next_by_published()
+			b2.title								>> 'Дом'
+			#след хронологически запись с ценой < 1000
+			b3 = b.get_next_by_published(price__lt=1000)
+			b3.title								>> 'Мотоцикл'
+			
+			
+		.get_previous_by_<field_name>([<field>=<val>])
+		#доступен if модель ⊃ min одно поле DateField|DateTimeField
+		#return запись чье поле с указанным именем ⊃ пред в порядке увеличение val даты
+		#if указаны условия поиска - они также учитываются
+		#~.get_next_by_<field_name>			
+		
+		
+		.delete()
+		#удаляет текущую запись и возвращает сведения о кол-ве удаленных записей
+			#сама запись ⊂ v остается
+			Bb.objets.all()					>> <QuerySet [..., <Bb: post>, ...]
+			b = Bb.objets.get(title='post')
+			b.delete()
+			Bb.objets.filter(title='post')	>> <QuerySet []>
+			b								>> <Bb: post>
 <Query_set>
-#вроде производный Manager -> поддерживает его методы
+#вроде производный Manager -> поддерживает его методы(solid же)
 #поддерживает .latest(), .earliest(), .last(), .first()
-		<Query_set?>.update(<field_name=new_value>) -> count_changed_fields
+		
+		
+		.update(<field_name=new_value>) -> count_changed_fields:int
 		#исправляет ∀ записи в наборе
 			Bb.objects.filter(price=None).update(price=10)
 		#не вызывает .save() -> !exe доп действия ⊃ при его переопределении
 
 		
-		<Query_set?>.delete()
+		.delete() -> (<total_deleted>:int, {<models>:<deleted_count>}
+		#0 args
 		#удаляет ∀ записи набора
 			Bb.objects.filter(content=None).delete()	>> (2, {'bboard.Bb': 2})
 		#возвращает dict ~ возвращаемому <запись?>.delete() (?проверить)
@@ -951,15 +3414,19 @@ attr класса ~ св-ва класса|статические св-ва в o
 			#мб медленна
 				for r in Rubric.objects.order_by('?'):
 					...
+		#вызов без параметров -> сбрасывает параметры сортировки
+			#?проверить
+			
+			
+			
 		.reverse()
 		#разворачивает набор записей
 			for r in Rubric.objects.order_by('name').reverse():
 				print(r.name)
 				
 				
-		<запись>.delete()
-		#удаляет текущую запись и возвращает сведения о кол-ве удаленных записей
-	
+
+судя по консоли там ∀ dj на except
 	
 КЛАССЫ ПОЛЕЙ МОДЕЛЕЙ
 #default:∀ поле обязательно для заполнения
@@ -967,67 +3434,158 @@ attr класса ~ св-ва класса|статические св-ва в o
 	django.db.models
 	#вроде ⊃ ∀ модели
 	#поля также могут принимать args поддерживаемые полями ∀ типов не указанные здесь
-	
+	#при исп в шаблоне -> подсвечиваются красным при вводе некорректных данных
 	
 		CharField(max_length:int)
 		#строковое поле ограниченной длинны
+		#при привышении max_length -> текст просто уезжает за границу поля
 		#занимает в бд V необходимый для ⊃ числа символов указанных в max_length
 			#=> предпочтительно
-			
+		#название в админке почему-то жирное
+		#в формах представляется <input type="text" ...>
+			default
+			#вроде принимает val ∀ типа
+		
 			
 		TextField([max_length:int])
-		#неограниченное текстовое поле(memo-поле)
+		#неограниченное текстовое поле(memo-поле)(выглядит как уязвимость)
 			TextField(null=True, blank=True)
 			#поле которое можно не заполнять
-			
-			
+		#⊃ ярлык для перетаскивания границ(Δ размера поля)
+		#при привышении лимита по размерам при вводе, появляется полоса прокрутки, автоматически прокручивающаяся к строке ввода
+		#в формах представляется <textarea>
+		#миграции
+			#SQLite
+				"<field_name>"  text NOT NULL
+		
+		
 		EmailField([max_length:int=254])
 		#str⊃ корректный email
+		#вроде простая проверка на соотв шаблону <ascii>@<ascii>.<domain>
+		#ящики в зоне .рф вроде не поддерживаются
+		#название в админке почему-то жирное
+		#в формах представляется <input type="email" ...>
+		#миграции
+			#SQLite
+				"<field_name>" varchar(<max_length_val>) ...
 		
 		
 		URLField([max_length:int=200])
 		#str⊃ корректный url
-		
+		#работают ∀ url которые принял бы браузер
+		#при указании протокола и ctrl-enter над формой появляется ссылка "Сейчас: <a><url></a>", и "Изменить" перед формой
+		#название в админке почему-то жирное
+		#примеры
+			art.com			-> bad
+			http:art.com	-> ok
+		#в формах представляется <input type="url" ...>
+		#миграции
+			#SQLite
+				"<field_name>" varchar(<max_length_val>) ...
+				
 		
 		SlugField([max_length:int=50[, allow_unicode=<bool>:False]])
 		#слаг - str однозначно идетифицирующая запись
 		#исп как часть url
 		#allow_unicode=True - может ⊃ ∀ символы Unicode; False=> ascii only
 		#для ∀ SlugField автоматом создается индекс => db_index=True не требуется
-		
+		#может ⊃ только буквы, цифры, подчеркиваний и дефисов
+		#название в админке почему-то жирное
+		#вроде принимает ∀ строку ни на что не возмущаясь -> не знаю зачем
+		#в формах представляется <input type="text">
+		#миграции
+			#SQLite
+				"<field_name>" varchar(<max_length_val>) ...
+				
 		
 		BooleanField([null=<bool>:False])
 		#null=True : поле получает возможность хранить null
 		#val по умолч: None, а не False, что конечно логично
-		
+		#выпадающий список
+			Да
+			Нет
+			Неизвестно
+			#а на eng?
+		#в формах представляется <select>
+		#миграции
+			#SQLite
+				"<field_name>" bool ...
 		
 		NullBooleanField
 		#~BooleanField(null=True)
 		#deprecated, оставлен для совместимости со старыми dj
-		
+		#в формах представляется <select>		
+		#миграции
+			#SQLite
+				"<field_name>" bool ...
+				
 		
 		IntegerField()
 		#signed 32bit int(обычная длинна)
+		#название в админке почему-то жирное
+		#по умолч не заполнено
+		#⊃ кнопки ⏶⏷ при нажатии Δ число +-1
+		#при вводе не числа ввод сбрасывается при отправке
+		#при вводе float с нулевой дробной частью -> преобразуется в int
+		#при вводе float с дробью, орет что нужно int
+		#exp не поддерживаются
+		#при вводе числа > 32 бита и добавлении 1 часть разрядов сбрасывает в 0, но число принимается хотя контроль стрелками ломается -> хз как это пашет
+		#в формах представляется <input type="number"...>
+		#миграции
+			#SQLite
+				"<field_name>" integer ...
 		
 		
-		SmallIntegerField
+		SmallIntegerField()
 		#signed 16bit int(half length)
+		#название в админке почему-то жирное
+		#~IntegerField()
+		#миграции
+			#SQLite
+				"<field_name>" smallint ...
 		
 		
-		BigIntegerField
+		BigIntegerField()
 		#signed 64bit int(double)
-		
-		
+		#название в админке почему-то жирное
+		#IntegerField() поле в 2 раза длинее
+		#в формах представляется <input type="number" min="-9223372036854775808" max="9223372036854775807"...>
+		#миграции
+			#SQLite
+				"<field_name>" bigint ...
+
+
 		PositiveIntegerField()
 		#unsigned 32bit int(usual)
+		#название в админке почему-то жирное
+		#в формах представляется <input type="number" min="0"...>
+		#миграции
+			#SQLite
+				"<field_name>" integer unsigned NOT NULL CHECK ("<field_name>" >= 0)
+				
 		
-		
-		PositiveSmallInteger
+		PositiveSmallIntegerField()
 		#unsigned 16bit int(half)
+		#название в админке почему-то жирное
+		#ругается на отрицательные
+		#принимает -0
+		#в формах ~PositiveIntegerField
+		#миграции
+			#SQLite
+				"<field_name>" smallint unsigned NOT NULL CHECK ("field_name>" >= 0)
 		
 		
-		FloatField
+		FloatField()
 		#поле для хранения вещественных чисел
+		#слегка длинее BigInteger()
+		#название не выделяется жирным в админке в отл от многих других полей
+		#val ⊃ . преобразуется в ,
+		#⊃ стрелки Δ 1 сбрасывающие дробь
+		#при передаче больше одной , сбрасывает ввод при отправке ~ не цифрам
+		#в формах представляется <input type="number" step="any" ...>
+		#миграции
+			#SQLite
+				"<field_name>" real ...
 		
 		
 		DecimalField(max_digits, decimal_places)
@@ -1039,11 +3597,20 @@ attr класса ~ св-ва класса|статические св-ва в o
 			#max знаков ⊂ дробной части
 		#пример
 			price = models.DecimalField(max_digits=8, decimal_places=2)
-			
-			
+		#название в админке почему-то жирное	
+		#⊃ стрелки с Δ min возможной для указанного decimal_places(0,01 by def) сбрасывающие часть меньше		
+		#при вводе большего числа цифр ругается сохраняя ввод в поле
+		#в формах представляется <input type="number" step="<10^-(<decimal_places>)>" ...>
+		#миграции
+			#SQLite
+				"<field_name>" decimal ...
+				
+		
 		DateField([auto_now:<bool>=False],[auto_now_add=<bool>])
-		#date ⊂ datetime
-		#True для ∀ аргумента => делает поле невидимым(видимо для пользователя) и необязательным для занесения на уровне dj(editable=False, blank=True)
+		#date ⊂ datetime -> ⊃ теже лимиты
+		#по идее форматы принимаемых val берутся из соотв параметров
+		#True для auto_now|auto_now_add => делает поле невидимым(видимо для пользователя) и необязательным для занесения на уровне dj(editable=False, blank=True)
+		#auto_now и auto_now_add взаимоисключающие
 			auto_now
 			#True: при ∀ сохранении записи => в поле заносится текущая дата
 			#может исп для хранения даты посл Δ записи
@@ -1051,33 +3618,64 @@ attr класса ~ св-ва класса|статические св-ва в o
 			auto_now_add
 			#~auto_now, ! текущая дата заносится только при создании записи, ! при послед сохранении
 			#исп для ⊃ даты создания записи
-			
-			
-		DateTimeField
+		#название в админке почему-то жирное
+		#⊃ рядом кнопки "Сегодня"|<значек календаря> ⊃ удобный календарь ⊃ "вчера"|"сегодны"|"завтра" и "отмена"
+		#в обычном шаблоне простое текстовое поле !⊃ доп кнопки
+		#в формах представляется <input type="text"...>
+		#миграции
+			#SQLite
+				"<field_name>" date ...
+		
+		
+		DateTimeField([default=<datetime>, blank=<bool>, null=<bool>)
 		#поле для хранения даты&времени
 		#~DateField, ! val ⊂ datetime.datetime
 			DateTimeField(auto_now_add=True)
 			#при создании записи(экземпляра модели) заполнять его текущими датой и временем
 			DateTimeField(db_index=True)
 			#создавать для поля индекс(напр для послед сортировки по дате)(т.е. поле походу становится индексом)
-			
-			
+		#по идее форматы принимаемых val берутся из соотв параметров
+		#что-то не смог отобразить в админке dj
+		#в формах представляется <input type="text"...>
+		#миграции
+			#SQLite
+				"<field_name>" datetime ...
+
+		
 		TimeField([auto_now:<bool>=False],[auto_now_add=<bool>])
-		#поле ⊃ время
+		#поле ⊃ время 24 формат
+		#pm|am вроде не жрет
+		#по идее форматы принимаемых val берутся из соотв параметров
+			h:m:[s[.ms]]
 		#datetime.time
 			auto_now
 			#~DateField
 			auto_now_add
 			#~DateField
-			
-			
-		DurationField
+		#название в админке почему-то жирное	
+		#⊃ кнопки "Сейчас"|<значек_часов> ⊃	"Выберите время": "Сейчас" "Полночь" "6 утра" "Полдень" "6 вечера" "Отмена"
+		#с auto_now_add=True|auto_now=True -> не может быть добавлено в форму(тк поле становится non-editable)
+		#в формах представляется <input type="text"...>
+		
+		
+		DurationField()
 		#промежуток времени
 		#datetime.timedelta
+		#название в админке почему-то жирное
+		#вроде принимает float -> не удивительно -> это простое текстовое поле
+		#в формах представляется <input type="text"...>
+		#миграции
+			#SQLite
+				"<field_name>" bigint ...
+				
 		
-		
-		BinaryField
-		#bytes произвольной длинны
+		BinaryField([editable=False])
+		#bytes(bytearray?memoryview?) произвольной длинны
+		#что-то не отобразилось в админке
+		#в формах представляется <input type="text"...>
+		#миграции
+			#SQLite
+				"<field_name>" BLOB ...		
 		
 		
 		GenericIPAdressField(protocol:'IPv4'|'IPv6'|'both'='both',inpack_ipv4:<bool>=False)
@@ -1086,25 +3684,45 @@ attr класса ~ св-ва класса|статические св-ва в o
 			inpack_ipv4
 			#True=> преобразование IPv4 адресов записанных в формате IPv6 в формат IPv4
 			#требует protocol='both'
+		#название в админке почему-то жирное
+		#в формах представляется <input type="text"...>
+		#миграции
+			#SQLite
+			#длинна видимо зависит от протокола(39 )
+				"<field_name>" char(39)
 		
 		
-		AutoField
+		AutoField(auto_created:<bool>=True, primary_key:<bool>=True, serialize:<bool>=False, verbose_name='ID')
+		#неуверен в обязательности и полноте параметров
+			auto_created
+			#
+			primary_key
+			#
+			serialize
+			#
 		#автоинкрементное поле ⊃ уникальные инкрементирующиеся 32bit int
 		#почти ∀ используется как ключевое, и не требует явного объявления(создается dj автоматом при отсутствии в модели)
-		
+		#при попытке создания второго начал ругаться
+		#миграции
+			#SQLite
+				"<field_name>" integer NOT NULL PRIMARY KEY AUTOINCREMENT
 		
 		BigAutoField
 		#64bit ~ AutoField
+		#миграции
+			...
 		
 		
 		UUIDField
 		#уникальные, универсальный(?) id
 		#представлен UUID from uuid, в виде str
+		#мб Δ(например в форме(при указанном editable=True))
+		#в форме представляется обычным текстовым полем
 		#может исп как ключевое вместо AutoField/BigAutoField
 		#требует ручной генерации id для записей
 			import uuid
 			from django.db import models
-			
+			...
 			class Bb(models.Model):
 				id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
 				...
@@ -1119,6 +3737,18 @@ attr класса ~ св-ва класса|статические св-ва в o
 
 
 ПАРАМЕТРЫ ПОЛЕЙ
+
+	ПАРАМЕТРЫ ПОДДЕРЖИВАЕМЫЕ ПОЛЯМИ НЕКОТРЫХ ТИПОВ
+		max_length:int
+		#при вводе <int> символов дальнейший ввод не возможен
+		#при попытке вставить больше сисмволов ввод обрезается
+		#не влияет на размер формы by def
+		#миграции
+			#SQLite
+			#передается параметром
+				"<field_name>" char(39)
+		
+		
 	ПАРАМЕТРЫ ПОДДЕРЖИВАЕМЫЕ ПОЛЯМИ ∀ ТИПОВ
 		
 		
@@ -1126,12 +3756,20 @@ attr класса ~ св-ва класса|статические св-ва в o
 		#имя выводимое в 
 			админке
 			напротив эл-тов управления в веб-формах
-		#if не указано - исп имя поля
+		#для вывода исп <label>
+		#if не указано - исп имя поля(самои v) с большои буквы
+		#при большой длинне переносится по строкам
 		
 		
 		help_text = <str>:''
-		#доп поясняющий текст для вывода
+		#доп поясняющий текст для вывода(следует сразу за полем, напротив verbose_name)
 		#⊃ спец символы HTML не преобразуются в литералы, а выводятся как есть => можно форматировать текст HTML тегами
+		#в формах представлен
+			<span class="helptext">
+				<b>...</b>
+			</span>
+		#в формах при пустом val не добавляется на страницу
+		#миграции -> вроде никак не пишется в бд
 		
 		
 		default
@@ -1145,45 +3783,108 @@ attr класса ~ св-ва класса|статические св-ва в o
 						return not is_all_post_passive
 					...
 					is_active = models.BooleanField(default=is_active_default)
-		
-		
+				#при передачи fx она вызывается автоматом(~ ∀ fx)
+					models.CharField(..., default=lambda x: x)	>> TypeError: lambda() missing arg
+					models.CharField(..., default=lambda: 'val') >> при передаче в форму выведет 'val'
+		#вроде исп val возвращаемое __str__|__repr__ при его отсутствии|но вроде не __call__ по краинеи мере if это не fx(видимо ⊃ проверку на тип и if function -> дергает __call__)
+			CharField
+			TextField
+			EmailField
+			URLField
+			SlugField
+			DurationField
+			BinaryField
+			GenericIPAddressField
+			#дергают __str__ -> __repr__
+			DateField
+			DateTimeField
+			TimeField
+			#дергают __call__ -> __str__ -> __repr__			
+		#при занесении val в форму пользователетем требуется обновление страницы с очисткои кеша(val ⊃ кеша затирает default)
+		#исп в формах для заполнения стандартным val
+		#исп для задания val для уже ∃ полеи при Δ моделеи
+			models
+				.ForeignKey
+				#видимо требует ∃? val своего типа
+
+				.BooleanField
+				#требует bool
+				
+				.CharField
+				#кажется val ∀ типа
+				
+				.<∀_числовые_поля>
+				#int, str ⊃ int, str ⊃ float, float, decimal и возможно ∀ numbers
+				#!⊃ ограничения по размеру
+				#!поддерживают str ⊃ exp
+				#отображают float ⊃ '.'
+				
+				.<∀_временные_поля>
+				#отображают float ⊃ ','
+				#вроде принимает val ∀ типов
+				
+				.DurationField
+				#отображают float ⊃ '.'
+		#кажется для val не exe валидация(неудивительно тк оно никуда не сохраняется, а просто выводится в форме)
+			-> можно написать ∀ приглашение к вводу?
+			#нихрена -> числовые поля не жрут str
+		#миграции -> вроде никак не пишется в бд
+
+
 		unique=<bool>:False
 		#
 			unique=True
 			#уникальное поле, для которого автоматом создается индекс(=> его не нужно указывать явно)
 			#в текущее поле м.б. занесено только уникальное в пределах таблицы val
 			#при попытке занести val ⊂ полю другой записи - вызовет exept IntegrityError ⊂ django.db
-		
-		
+		#миграции
+			#SQLite
+				"<field_name>" UNIQUE ...
+
+
 		unique_for_date=<str>
-		#?при указании имени поля даты|даты и времени(DateField|DateTimeField) => текущее поле может ⊃ только val уникальные в пределах даты ⊂ указанному полю
+		#при указании имени поля даты|даты и времени(DateField|DateTimeField) => текущее поле может ⊃ только val уникальные в пределах даты ⊂ указанному полю
 			title = models.CharField(max_length=50, unique_for_date='published')
 			published = models.DateTimeField()
 			#title позволяет ⊃ только val уникальные в пределах даты ⊂ published
+		#миграции -> не смог проверить(вероятно валидация происходит на уровне dj) -> походу исп валидаторами(возм требуется поддерзка бд)
+		#разумеется при добавлении записеи через консоль валидации не происходит -> можно добавлять ~ записи
+		#в админке dj при попытке создать записи ⊃ ~ даты
+			>> Значение в поле «Title» должно быть уникальным для фрагмента «date» даты в поле Published.
 		
 		
 		unique_for_month=<str>
-		#~unique_for_date, но вместо даты - месяц
+		#~unique_for_date, но вместо даты - конкретный месяц конкретного года
+		#миграции -> не смог проверить(вероятно валидация происходит на уровне dj) -> походу исп валидаторами(возм требуется поддерзка бд)
+ 
 		
 		
 		unique_for_year=<str>
 		#~unique_for_date, но вместо даты - год
+		#миграции -> не смог проверить(вероятно валидация происходит на уровне dj)
+		#не уверен что также принимает date(dj не среагировал)
 		
 		
 		null=<bool>:False
-		#необязательность поля?
+		#позволяет бд оставлять поле пустым
+		#не рекомендуется для текстовых полеи(лучше ''(blank=True)) тк это создает два варианта пустых val
 		#затрагивает только поле модели, но не поведение dj по умолч => dj в ∀ случае не позволит занести в поле пустое val(контролируется blank)
 			null=True
 			#таблица может ⊃ val null => быть необязательным к заполнению
 			null=False
 			#поле обязано содержать val ⊃ пустую строку
+		#миграции
+			#SQLite
+				"<field_name>" NULL|NOT NULL
 		
 		
 		blank=<bool>:False
 		#необязательность поля на уровне dj
+		#в отличие от null настраивает поведение dj-форм
 		#задает поведение dj при выводе форм и валидации введенных в них данных
 			blank=True
 			#позволяет не заносить в поле val(заносить пустое val(напр '')) даже при null=False
+		#очевидно не влияет на бд
 		
 		
 		choices
@@ -1209,25 +3910,44 @@ attr класса ~ св-ва класса|статические св-ва в o
 				(None, '<новый текст пустого пункта>')
 				...
 				#для текстовых полей можно исп '' вместо None
+		#не влияет на бд
+		#вроде превращает поле в список ⊃ val своего типа, в формах представленныи <select>
 		
 		
 		db_index=<bool>:False
 		#True - создать индекс в таблице по текущему полю
-		
+		#разумеется индексов мб неск
+		#миграции
+			#SQLite
+				CREATE INDEX "..." ON "..." ("field_name");
+
 		
 		primary_key=<bool>:False
 		#True - ключевое поле(поле преобразуется в ключевое) =>неявно null=False, unique=True
 		#модель может ⊃ only одно primary_key поле
 		#if не задано явно - создается dj автоматом с именем id
+		#миграции
+			#SQLite
+				"<field_name>" ... PRIMARY KEY ...
+
 		
 		
 		editable=<bool>:True
 		#True - вывод в составе формы
 		#False - запрет на вывод в составе формы(даже при явном создании его в форме)
+		#вроде не во ∀ случаях применим к полю
+		#возможность редактировать поле(в форме)(вкладываться в ModelForm)
 		
 		
 		db_column=<str>
 		#имя поля, if !∃ => по умолч получает имя поля модели(механизм был указан ранее)
+			...
+			cf = models.CharField(max_length=4, db_column='new_name')
+			...
+			>>
+				...
+				"new_name" varchar(4) NOT NULL
+				...
 
 
 ПАРАМЕТРЫ САМОЙ МОДЕЛИ
@@ -1235,12 +3955,17 @@ attr класса ~ св-ва класса|статические св-ва в o
 	
 	
 	verbose_name
-	#имя сущности(ед число) ⊂ модели для вывода
+	#имя сущности(ед число) ⊂ модели для вывода в
+		админке
+	#не влияет на бд
+	#вроде не отображается в orm
 	
-	
-	verbose_name
-	#имя набора сущностей(мн число) ⊂ модели для вывода
-	
+	verbose_name_plural
+	#имя набора сущностей(мн число) ⊂ модели для вывода в
+		админке
+	#не влияет на бд
+	#вроде не отображается в orm
+
 	
 	unique_together
 	#{xn} str ⊃ имена полей ⊃ уникальные(в пределах табл) комбинации val
@@ -1258,8 +3983,13 @@ attr класса ~ св-ва класса|статические св-ва в o
 					('title', 'published'),
 					('title', 'price', 'rubric'),
 				}
-	
-	
+		#при попытке записи одинаковых сочетании -> dj выведет <model_verbose_name> с такими val полеи уже ∃
+	#в бд дополнительно создает индекс из указанных полеи
+		#sqlite
+			...
+			CREATE UNIQUE INDEX "<app_name>_<project_name>_<field0_field1_...>_..._uniq" ON "<app_name>_<project_name>" ("<field0>","<field1>",...)
+			...
+
 	ordering:<{xn}_str_имен_полей_по_кот_должна_exe_sort>
 	#параметры сортировки записей моделей по умолч
 		'-<field_name>'
@@ -1269,10 +3999,13 @@ attr класса ~ св-ва класса|статические св-ва в o
 				...
 				class Meta:
 					ordering = ['-published', 'title']
+	#по всеи видимости не влияет на бд и обрабатывается dj
+	#влияет на порядок вывода в orm -> и в dj
+		
 	
 	
-	get_latest_by
-	#имя поля типа DateField|DateTimeField используемое для получения позднейшей/самой ранней записи с помощью .latest()|.earliest() без параметров
+	get_latest_by:<str|{xn}⊃str>
+	#имя поля типа DateField|DateTimeField используемое для получения позднейшей/самой ранней записи с помощью .latest()|.earliest() без параметров(поэтому например '-' переданные в get_latest_by и .latest() не накладываются друг на друга)
 	#можно задать
 		str
 		#.latest() вернет самую свежую запись(⊃max val в поле published)
@@ -1295,6 +4028,9 @@ attr класса ~ св-ва класса|статические св-ва в o
 		...
 		class Meta:
 			get_latest_by = '-published'
+	#вроде не влияет на порядок вывода в админке|orm
+	#!Δ бд
+	
 	
 	
 	order_with_respect_to:'<name_of_field_of_current_model>'
@@ -1312,6 +4048,14 @@ attr класса ~ св-ва класса|статические св-ва в o
 		#⊃ int порядковый номер текущей записи в {xn}(сохраняя тем самым порядок)
 		и задает его как val параметра ordering
 		#=> записи извлеченные из модели будут отсортированы по этому полю и указать другие параметры будет нельзя
+	#вроде вообще не мб исп с ordering
+		class Bb(models.Model):
+			...
+			class Meta:
+				...
+				ordering = ['-published']
+				
+				
 	
 	
 	indexes
@@ -1427,7 +4171,7 @@ URL МОДЕЛИ
 		#задает force_update=True
 		force_insert
 		#True: принудительное создание записи
-		#может исп if таблица ⊃ не int с автоинкрементацией(напр str), val в которое при сохранении нужно заносить вручную, но т.к. pk будет ⊃ val => dj определит ее как уже сохраненную ранее и выполнит UPDATE что приведет к ошибке
+		#может исп if таблица ⊃ не int с автоинкрементацией(напр str)я val в которое при сохранении нужно заносить вручную, но т.к. pk будет ⊃ val => dj определит ее как уже сохраненную ранее и выполнит UPDATE что приведет к ошибке
 		#при force_insert=True, force_update=True(=> при update_fields) => ValueErr: Cannot force both
 		force_update
 		#True: принудительное обновление записи
@@ -1508,13 +4252,15 @@ URL МОДЕЛИ
 				from django.core.exceptions import NON_FIELDS_ERRORS
 				...
 				errors[NON_FIELDS_ERRORS] = ValidationError('Ошибка в модели!')
-/ВАЛИДАЦИЯ МОДЕЛИ
+
+
 
 
 вызов exept ?= кинуть exept
 	ВАЛИДАТОРЫ
 	#exe валидацию val ⊂ отдельным полям
 	#реализуются классами|fx
+	#тк у меня backend очевидно что валидация происходит после отправки данных из формы -> по сути это реально тупо callable
 	
 		СТАНДАРТНЫЕ ВАЛИДАТОРЫ DJ
 		#реализующие их классы ⊃ django.core.validators
@@ -1717,6 +4463,167 @@ ftps
 #походу ftp с шифрованием
 
 
+ВЫВОД СООБЩЕНИЙ ОБ ОШИБКАХ И ОБРАБОТКА ОСОБЫХ СИТУАЦИИ
+#выдача посетителю
+    404
+    ...
+#уведомление браузера
+    страница !Δ с посл вызова и можно исп кеш
+    ...
+    
+    django.http
+        HttpResponseNotFound([<content>][, content_type=None][, status=404][, reason=None])
+        #производныи HttpResponse
+        #мб исп для самостоятельнои обработки нештатных/специфичных ситуации
+            #dj в большинстве случаев справляется сам
+                #by def отправляет клиенту краткое msg о ошибке(мб Δ)
+        #запрашиваемая страница не наидена
+        #examples
+            def detail(request, bb_id):
+                try:
+                    bb = Bb.objects.get(pk=bb_id)
+                except Bb.DoesNotExist:
+                    return HttpResponseNotFound('Такой страницы нет')
+                return HttpResponse(...)
+        #альтернатива бросить Http404
+            def detail(request, bb_id):
+                try:
+                    bb = Bb.objects.get(pk=bb_id)
+                except Bb.DoesNotExist:
+                    raise Http404('Такой страницы нет')
+                return HttpResponse(...)
+        
+        
+        HttpResponseBadRequest([<content>][, content_type=None][, status=400][, reason=None])
+        #клиентскии запрос сформирован некорректно
+        #исп ~ HttpResponseNotFound
+        
+        
+        HttpResponseForbidden([<content>][, content_type=None][, status=403][, reason=None])
+        #доступ к странице запрещенн
+        #обычно if user не залогинился
+        #исп ~ HttpResponseNotFound
+        #альтернатива - бросить PermissionDenied ⊂ django.core.exceptions
+        
+        
+        HttpResponseNotAllowed(<seq_обозначении_разрешенных_методов>[,content_type=None][, status=405][, reason=None])
+        #клиентскии запрос был exe с исп недопустимого метода
+        #возвращается в том числе декораторами устанавливающими набор разрешенных HTTP-методов
+        #examples
+            return HttpResponseNotAllowed(['GET'])
+        
+        
+        HttpResponseGone([<content>][, content_type=None][, status=410][, reason=None])
+        #запрошенная страница больше !∃
+        
+        
+        HttpResponseServerError([<content>][, content_type=None][, status=500][, reason=None])
+        #ошибка в коде сайта
+        
+        
+        
+        HttpResponseNotModified([<content>][,content_type=None][, status=304][, reason=None])
+        #страница !Δ и мб извлечена из кеша
+        
+        
+
+ИСКЛЮЧЕНИЯ
+    django.http
+        Http404
+        #запрашиваемая страница не наидена
+        #см HttpResponseNotFound
+    django.core.exceptions
+        PermissionDenied
+        #альтернатива HttpResponseForbidden
+        
+        MultipleObjectsReturned
+        #бросается if callable расчитан на возврат одного val а условиям удовл неск
+
+
+СПЕЦИАЛЬНЫЕ ОТВЕТЫ
+#if нужно отправить клиенту данные != html/text -> HttpResponse не подоидет
+    #dj ⊃ 3 класса спец ответов ⊂ django.http
+    
+    
+    
+        StreamHttpResponse(<content> [, content_type=None][, status=200][, reason=None])
+        #в отличие от HttpResponse полностью формирующегося в mem перед отправкой
+            <content>
+            #seq ⊃ str | iterator -> bytes's
+            content_type
+            #MIME-type ответа & кодировку
+                content_type=None
+                #ответ получит MIME-type text/html и кодировку ⊂ DEFAULT_CHARSET
+            status
+            #int code response status
+                200
+                #файл успешно отправлен
+            reason
+            #str обозначение статуса
+        #attr
+            <streaming_content>
+            #iterator выдающий фрагменты <content> в <bytes>
+            status:<int>
+            #status code
+            reason_phrase
+            #str status
+            streaming
+            #всегда True(ответ - потоковыи)
+        #examples
+            from django.http import StreamHttpResponse
+            ...
+            def index(request):
+                resp_content = ('Here', 'will', 'be', 'site', 'main', 'page')
+                resp = StreamHttpResponse(resp_content, content_type='text/plain; charset=utf-8')
+                resp['keywords'] = 'Python, Django'
+                return resp
+            #?-> dict
+            
+        #if нужно отправить клиенту данные != html/text | if V слишком большои
+        #потоковыи ответ, формируется & отправляется небольшими частями
+    
+    
+        .FileResponse(<file_obj> [, as_attachment=False][, filename=''][, content_type=None][, status=200][, reason=None])
+        #отправка фаилов
+        #examples
+            #
+            from django.http import FileResponse
+            filepath = r'c:/images/image.png'
+            ...
+                return FileResponse(open(filepath, 'rb'))
+        #производный StreamHttpResponse
+            as_attachment
+                as_attachment=False
+                #отправленный фаил откроется в браузере
+                as_attachment=True
+                #отправленный фаил будет сохранен на диске
+                #if файл ⊅ имени(напр был сформирован в mem и еще не был записан на диск) -> требует ∃ filename
+            filename
+            #указание имени отправляемого фаила
+            #см as_attachment
+        
+        
+        
+        .JsonResponse(<data> [, safe=True][, encoder=DjangoJSONEncoder])
+        #отправка данных в формате JSON
+            <data>:<dict>
+            #кодируемые данные
+            #if требуется отправить данные ⊄ dict -> safe
+            safe
+            #
+                safe=False
+                #if требуется закодировать & отправить не dict
+            encoder
+            #кодировщик в JSON
+        #examples
+            data = {'title': 'Motorcycle', 'content': 'Old', 'price': 10000.0}
+            return JsonResponse(data)
+        #производный StreamHttpResponse
+    
+
+
+
+
 ВЫВОД СВОИХ СООБЩЕНИЙ ОБ ОШИБКАХ
 #видимо то что видит user при вводе в формы
 #стандартные сообщения обычно понятны
@@ -1806,7 +4713,7 @@ ftps
 НАПИСАНИЕ КАСТОМНЫХ ВАЛИДАТОРОВ
 #разумеется if нужный валидатор не ⊂ dj
 	
-	валидатор-fx
+	CUSTOM ВАЛИДАТОР-FX
 	#должен принимать one arg(wtf?) и вызывать ValidationError ⊃ django.core.exceptions
 		#см ValidationErr
 	#не должна(не обязана?) возвращать результат
@@ -1822,7 +4729,7 @@ ftps
 			price = models.FloatField(validators=[validate_even])	
 	
 	
-	вадидатор-класс
+	CUSTOM ВАДИДАТОР-КЛАСС
 	#исп при необходимости передачи args
 	#валидация exe в .__call__() принимающий проверяемое val и бросающее ValidationError при его невалидности
 	#пример валидатора вхождения в заданный диапазон
@@ -1844,6 +4751,8 @@ ftps
 
 							  
 МИГРАЦИИ
+#вроде нельзя создать миграцию для пустой модели
+#разумеется задает лишь структуру бд -> данные пишутся отдельно
 #Python-модуль созданный dj на основе модели, предназначенный для создания в бд ∀ требуемых моделью структур
 	таблиц
 	полей
@@ -1857,7 +4766,7 @@ ftps
 	#описание программых инструментов для формирования миграций вручную:docs.djangoproject.com/en/2.1/ref/migration-operations/
 #!dj отслеживает ∀ Δ моделей ⊃ напрямую не затрагивающие структуры бд(видимо не Δ их)
 	#напр: при указании в конструкторе поля модели arg verbose_name -> dj все равно создаст в миграции код Δ параметры поля таблицы в бд =>
-		ВСЕГДА ПРОДУМЫВАЙ СТРУКТУРУ МОДЕЛЕЙ ЗАРАНЕЕ И СТАРАЙСЯ НЕ МЕНЯТЬ ЕЕ
+		ВСЕГДА ПРОДУМЫВАЙ СТРУКТУРУ МОДЕЛЕЙ ЗАРАНЕЕ(до первои миграции) И СТАРАЙСЯ НЕ МЕНЯТЬ ЕЕ
 #для отслеживания (не)выполненных миграций dj создает в бд по умолч(?поведение|?бд) таблицу
 	django_migrations
 	#крайне не рекомендуется трогать руками
@@ -1865,8 +4774,72 @@ ftps
 		имена exe миграций
 		app name
 		дата и время выполнения
+#пример миграции
+	from django.conf import settings
+	from django.db import migrations, models
+	import django.db.models.deletion
+	...
+	#порядок полеи немного !~ порядку обЪявления в модели
+	#dependencies - пред "инкрементные" миграции
+	class Migration(migrations.Migration):
+		initial = <bool>
+		dependencies = [
+			migrations.CreateModel(
+				name='<ModelName>',
+				fields=[
+					('id', <полное_обЪявление_поля_из_models>),
+					...
+				]
+			)
+		]
+#миграции не Δ бд, все-равно генерируют sql
+	<app>/models.py
+		...
+		class ExampleModel(models.Model):
+			...
+			class Meta:
+				ordering = ['-created']
+	...
+	py manage.py makemigrations && py manage.py sqlmigrate
+	>>
+		BEGIN;
+		--
+		-- Change Meta options on fieldstest
+		--
+		COMMIT;
+#при Δ моделеи !Δ структуру бд, Δ отражаются на orm и без создания/exe миграции
 		
 		
+СЛОЖНЫЕ СЛУЧАИ ПРИ МИГРАЦИЯХ
+#] нужно связать модели поста и комментария, изначально комментарии ⊃ только текст
+	class Post(models.Model):
+		text = models.TextField()
+		title = models.CharField(blank=True)
+		
+	class Comment(models.Model):
+		text = models.TextField()
+		#добавляем связь с постом
+		post = models.ForeignKey(Post, on_delete=models.CASCADE)
+	py manage.py makemigrations -> You are trying to add a non-nullable field without a default
+	#РЕШЕНИЯ
+		добавить в модель null=True
+		#неправильно, ведь ∀ комментарии должен быть привязан к какому-либо посту
+		добавить в модель default=<default_val>
+		#неправильно, ведь ∀ комментарии должен быть привязан к какому-либо посту
+		удаление ∀ миграции и бд
+		использование дата-миграции
+			создать новую модель ⊃ связь ForeignKey
+				class Comment(models.Model):
+					text = models.TextField()
+				class PostComment(models.Model):
+					text = models.TextField()
+					post = models.ForeignKey(Post, on_delete=models.CASCADE)
+			создать и применить миграцию
+			скопировать данные из Comment в PostComment с помощью дата-миграции
+			удалить модель Comment
+			переименовать PostComment в Comment
+ДАТА-МИГРАЦИЯ
+#специальная миграция которая просто запускает пользовательскии Python-код
 ФАЙЛЫ МИГРАЦИЙ
 #⊃ <app>/migrations/ c именем по умолч 
 	<порядковый_номер_из_4х_цифр>_<migration_name>.py
@@ -1925,6 +4898,43 @@ manage.py makemigrations bboard
 #отличия
 	в path ⊃ путь к папке проекта в котором запущена консоль
 записи модели создаются ~ экземпляру ∀ другого класса - вызовом конструктора, val полей указываются в именованных args
+
+
+ИНТЕГРАЦИЯ С JUPYTER NOTEBOOK
+	pip install ipython jypyter django-extensions
+	settings.py
+		INSTALLED_APPS = [
+			...
+			'django_extensions',			
+		]
+		...
+		# dj 3+?
+		os.environ["DJANGO_ALLOW_ASYNC_UNSAFE"] = "true"
+		
+	~/.jupyter/jupyter_notebook_config.py
+		c.NotebookApp.browser = ".../Firefox52/firefox.exe -new-window %s"
+		...
+		c.NotebookApp.port = 20000
+		...
+		c.NotebookApp.webbrowser_open_new = 1
+	сменить defaut браузер на тот-же firefox(52) в PyCharm
+	py manage.py shell_plus --notebook
+#при Δ проекта(например моделеи) требуется перезапуск kernel
+#ps вывод при запуске idle
+# Shell Plus Model Imports
+	from app.models import FieldsTest
+	from django.contrib.admin.models import LogEntry
+	from django.contrib.auth.models import Group, Permission, User
+	from django.contrib.contenttypes.models import ContentType
+	from django.contrib.sessions.models import Session
+	# Shell Plus Django Imports
+	from django.core.cache import cache
+	from django.conf import settings
+	from django.contrib.auth import get_user_model
+	from django.db import transaction
+	from django.db.models import Avg, Case, Count, F, Max, Min, Prefetch, Q, Sum, When, Exists, OuterRef, Subquery
+	from django.utils import timezone
+	from django.urls import reverse
 
 
 РАБОТА С ДАННЫМИ
@@ -2137,6 +5147,7 @@ manage.py makemigrations bboard
 				
 				.latest()
 				#см .latest()
+
 			
 			ПОДСЧЕТ ЗАПИСЕЙ НАБОРА
 				.exists()
@@ -2144,7 +5155,8 @@ manage.py makemigrations bboard
 				
 				.count()
 				#см .count()
-				
+			
+			
 			ПОИСК ЗАПИСИ
 			#max частая операция
 				
@@ -2163,6 +5175,7 @@ manage.py makemigrations bboard
 				.get_previeus_in_order()
 				#см .get_previeus_in_order()
 			
+			
 			ФИЛЬТРАЦИЯ ЗАПИСЕЙ
 			#в отличие от поиска записей мб ∀ колво(⊃ 0)
 			#∀ возвращенное число записей не приведет к вызову exept
@@ -2173,6 +5186,7 @@ manage.py makemigrations bboard
 				.exclude()
 				#см .exclude()
 			
+			
 			НАПИСАНИЕ УСЛОВИЙ ФИЛЬТРАЦИИ
 			#при записи условий фильтрации в методах вроде filter() и exclude() в формате
 				<field>=<value>
@@ -2181,6 +5195,11 @@ manage.py makemigrations bboard
 					без учета регистра
 					val >|< заданной величины
 					#исп модификаторы
+			#нельзя указывать поля несколько раз
+				Bb.objects.get(title__icontains='Д', title_contains='о')
+					>> SyntaxErr:keyword argument repeated
+					
+					
 			МОДИФИКАТОРЫ
 			#добавляется к имени поля и отделяется от него двойным underscore
 			<field_name>__<modificator>
@@ -2335,8 +5354,17 @@ manage.py makemigrations bboard
 				for b in Bb.objects.all():
 					b.price = f / 2
 					b.save()
-		
-		
+			#исп для создания вычисляемых полей(см annotate)
+			
+			
+			Value(<value_of_const>[, output_field=None])
+			#исп для создания вычисляемых полей(см annotate)
+				output_field:<экз_типа>
+				#задание типа константы
+					None
+					#определеяется автоматом
+			
+			
 		СЛОЖНЫЕ УСЛОВИЯ ФИЛЬТРАЦИИ
 		#возможности .filter()|.exclude() позволяют лишь указать набор условий объедиенных and
 			объединение по правилам ИЛИ
@@ -2418,6 +5446,7 @@ manage.py makemigrations bboard
 			
 			ВЫЧИСЛЕНИЯ ПО ГРУППАМ ЗАПИСЕЙ
 				annotate(<aggregate_fx0>, <aggregate_fx1>, ...) -> <набор_записей>
+				#аннотирование, добавление attr(поля)
 				#агрегатное вычисление по группам записей сформированных по критерию
 					#число объявления ∀ рубрики
 					from django.db.models import Count
@@ -2440,7 +5469,50 @@ manage.py makemigrations bboard
 				#return новый набор записей, ∀ запсь ⊃ attr с именем 
 					<field_name_по_кот_exe_вычисление>_<имя_класс_агрегатной_fx>
 					#⊃ результат exe fx
+				#простейший способ создания ВЫЧИСЛЯЕМОГО ПОЛЯ
+					val поля = экземпляр F|conts(int, float, bool)|для str(видимо не только) -> экземпляр Value ⊃ django.db.models
+					для вычислений исп операторы
+						+
+						-
+						#мб исп для изм знака val экземпляров F и Value
+						*
+						/
+						//
+						#возвращают экз F
+					#примеры
+						#вычисление половины ∀ цены объявления
+						from django.db.models import F
+						for b in Bb.objects.annotate(half_price=F('price')/2):
+							print(b.title, b.half_price)
+						>>
+							Лопата 6067.0
+							...
+						#∀ названия товаров + рубрика
+						from django.db.models.functions import Concat
+						for b in Bb.objects.annotate(full_name=Concat(F('title'),
+							Value(' ('), F('rubric__name'), Value(')'))):
+							print(b.full_name)
+						>>
+							Стиральная машина (Бытовая техника)
+							...
+				#указание тип результата возвращаемого exp в экз F(нельзя указать это непосредственно в конструкторе F) -> нужен ExpressionWrapper ⊃ django.db.models, exp - экз F а тип данных - экз поля нужного типа
+					from django.db.models import ExpressionWrapper, IntegerField
+					for b in Bb.objects.annotate(
+						half_price=ExpressionWrapper(F('price')/2, IntegerField())):
+						print(b.title, b.half_price)
+					>>
+						Стиральная машина 1500
+						...
+						
+						
+			WRAPPERS
 			
+				django.db.models
+					.ExpressionWrapper(<exp>, <тип_возвращаемого_результата>)
+					#может исп для указания типа результата exp(см annotate)
+					
+					
+					
 			АГРЕГАТНЫЕ FX
 			#экз классов ⊃ django.db.models
 			#необязательные параметры конструкторов классов допустимы лишь при задании именованных параметров в вызовах aggregate|annotate (иначе -> exept)
@@ -2502,10 +5574,691 @@ manage.py makemigrations bboard
 					#~Min
 					filter
 					#~Min
+					
+					
+					
 			ВЫЧИСЛЯЕМЫЕ ПОЛЯ
 			#модели могут ⊃ fx-поля чьи val вычисляются на основе других данных, а не берутся из бд
 				#вычисляемые поля позволяют перенести подобные вычисления в СУБД вместо dj
-			#обычно исп для операций не требующих сложных вычислений
+			#обычно исп для операций не требующих сложных вычислений(тк SQL < мощен чем Python)
+				ПРОСТЕЙШИЕ
+					annotate()
+					#см. annotate()
+			
+			
+			FX СУБД
+			#реализуются и exe СУБД а не py|dj, dj при этом предоставляет для них удобный obj-интерфейс
+			#вроде классы определены в отдельных ns?, а .functions ⊃ обертки?
+				from django.db.models.functions import Coalesce
+				Coalesce		
+					>> django.db.models.functions.comparison.Coalesce
+			#представляются классами(-> имена начинаются с прописных) django.db.models.functions
+			django.db.models
+			
+				.functions
+					
+					.Coalesce(<val0>, <val1>, ...) -> <первое_!null_val(⊃ ''|0)>
+					#на мой взгляд название и функционал не похожи -> но я представляю насколько трудно выбрать подходящее название при таком размере кодовой базы
+						<valn>
+						#строковое имя поля|экз F|экз Value
+					#examples
+						Coalesce('content', 'addendum', Value('--пусто--'))
+						#if val ⊂ 'content' field != null -> будет возвращено оно, etc пока не доидет до '--пусто--'
+					#∀ поля должны ⊃ один тип !, иначе err
+						from django.db.models.functions import Coalesce
+						for b in Bb.objects.annotate(first_not_null=Coalesce(F('content'), F('price'))):
+							print(b.first_not_null)
+						>> FieldError: exp contains mixed types. You must set output_field
+						#РЕШЕНИЕ
+							использовать ExpressionWrapper
+							#
+							ExpressionWrapper + output_field
+							использовать output_field для указания типа результата
+								for b in Bb.objects.annotate(first_not_null=Coalesce(F('content'), F('price'), output_field=TextField())):
+									print(b.first_not_null)
+								>> 
+									Хороший мощный
+									...
+									#очевидно что content ⊃ '' а не null
+								
+							
+					
+eng:coalesce:объединяться
+
+
+					
+					.Greatest(<val0>, <val1>, ...) -> max val
+						<valn>
+						#строковое имя поля|экз F|экз Value
+						#∀ поля должны ⊃ один тип, иначе err(см .Coalesce)
+					
+					
+					
+					.Least(<val0>, <val1>, ...) -> min val
+						<valn>
+						#строковое имя поля|экз F|экз Value
+							
+							
+					
+					.Cast(<val>, <type>)
+					#принудительно преобразует <val> -> <type> и возвращает результат
+						<valn>
+						#строковое имя поля|экз F|экз Value
+						#∀ поля должны ∀ один тип, иначе err(см .Coalesce)
+						<type>
+						#instance ⊃ type
+						
+						
+						
+					.Concat(<val0>, <val1>, ...) -> "vals_concatenated_to_str"
+					#объединяет vals в str и возвращает ее
+						<valn>
+						#строковое имя поля|экз F|экз Value ⊃ строковый|текстовый тип
+						
+						
+						
+					.Lower(<val>) -> str
+					#str to lower case
+						<val>
+						#строковое имя поля|экз F|экз Value ⊃ строковый|текстовый тип
+						
+						
+						
+					.Upper(<val>) -> str
+					#str to upper case
+						<val>
+						#строковое имя поля|экз F|экз Value ⊃ строковый|текстовый тип
+					
+					
+					
+					.Length(<val>) -> число char
+						<val>
+						#строковое имя поля|экз F|экз Value ⊃ строковый|текстовый тип|Null
+						#if val = Null -> return None
+						
+						
+						
+					.StrIndex(<val>, <substr>) -> int
+					#номер вхождения указаннои <substr> в строковое <val>
+					#(wtf?)нумерация chars в str начинается с 1
+						<substr>
+						#if ⊄ <val> -> return 0
+						<val>
+						#строковое имя поля|экз F|экз Value ⊃ строковый|текстовый тип
+						
+						
+						
+					.Substr(<val>, <position> [, <length>]) -> substr
+					#извлечение подстроки из <val> с указанной <position>/<length>
+					#(wtf?)нумерация chars в str начинается с 1
+						<length>
+						#if !∃ -> излекается ∀ оставшаяся часть val
+						<val>
+						#строковое имя поля|экз F|экз Value ⊃ строковый|текстовый тип
+						
+						
+						
+					.Left(<val>, <length>) -> str
+					#-> подстроку начинающуюся с заданного <val> ⊂ <length>
+					
+					
+					
+					.Right(<val>, <length>) -> str
+					#-> подстроку заканчивающуюся в конце <val> ⊂ <length>
+					
+					
+					
+					.Replace(<val>, <substr>[, <newsubstr> = '']) -> str
+					#-> str ⊃ замененные substr
+					#учитывает регистр
+					
+					
+					
+					.Repeat(<val>, <n>)
+					#-> <val> повторенное <n> раз
+					
+					
+					
+					.LPad(<val>, <length>[, <char-заполнитель>=' ')
+					#-> <val> дополненное до <length>
+					
+					
+					
+					.Trim(<val>)
+					#-> <val> с удаленными начальными & конечными пробелами(?|пробельными символами)
+					
+					
+					
+					.LTrim(<val>)
+					#-> <val> с удаленными начальными пробелами(?|пробельными символами)
+					
+					
+					
+					.RTrim(<val>)
+					#-> <val> с удаленными конечными пробелами(?|пробельными символами)
+					
+					
+					
+					.Chr(<char_code>)
+					#~ python chr()
+					#-> char с указанным кодом
+					
+					
+					
+					.Ord(<val>)
+					#~ python ord()
+					#-> int код первого char указанного <val>
+					
+					
+					
+					.Now() -> <curr_datetime>
+					#
+					
+					
+					
+					.Extract(<val>, <извлекаемая_часть_val>[, tzinfo=None])
+					#извлекает часть val date|time и возвращает его в виде чисва
+						<val>
+						#представляется экземпляром F и должно принадлежать date|time|datetime
+						<извлекаемая_часть_val>
+						#
+							"year"
+							"quarter"
+							"month"
+							"day"
+							"week"
+							#номер недели
+							"week_day"
+							"hour"
+							"minute"
+							"second"
+						tzinfo
+						#исп крайне редко
+					#examples
+						Extract('published', 'year')
+					
+					
+					.ExtractYear(<val>[, tzinfo=None])
+					#проще .Extract в применении
+						<val>
+						#представляется экземпляром F и должно принадлежать date|time|datetime
+					#examples
+						ExtractYear('published')
+						
+					
+						
+					.ExtractQuarter(<val>[, tzinfo=None])
+					#проще .Extract в применении
+						<val>
+						#представляется экземпляром F и должно принадлежать date|time|datetime
+					#examples
+						ExtractQuarter('published')
+						
+					
+						
+					.ExtractMonth(<val>[, tzinfo=None])
+					#проще .Extract в применении
+						<val>
+						#представляется экземпляром F и должно принадлежать date|time|datetime
+					#examples
+						ExtractMonth('published')
+						
+					
+						
+					.ExtractDay(<val>[, tzinfo=None])
+					#проще .Extract в применении
+						<val>
+						#представляется экземпляром F и должно принадлежать date|time|datetime
+					#examples
+						ExtractDay('published')
+						
+					
+						
+					.ExtractWeek(<val>[, tzinfo=None])
+					#проще .Extract в применении
+						<val>
+						#представляется экземпляром F и должно принадлежать date|time|datetime
+					#examples
+						ExtractWeek('published')
+						
+					
+						
+					.ExtractWeekDay(<val>[, tzinfo=None])
+					#проще .Extract в применении
+						<val>
+						#представляется экземпляром F и должно принадлежать date|time|datetime
+					#examples
+						ExtractWeekDay('published')
+						
+					
+						
+					.ExtractHour(<val>[, tzinfo=None])
+					#проще .Extract в применении
+						<val>
+						#представляется экземпляром F и должно принадлежать date|time|datetime
+					#examples
+						ExtractHour('published')
+						
+					
+						
+					.ExtractMinute(<val>[, tzinfo=None])
+					#проще .Extract в применении
+						<val>
+						#представляется экземпляром F и должно принадлежать date|time|datetime
+					#examples
+						ExtractMinute('published')
+						
+					
+						
+					.ExtractSecond(<val>[, tzinfo=None])
+					#проще .Extract в применении
+						<val>
+						#представляется экземпляром F и должно принадлежать date|time|datetime
+					#examples
+						ExtractSecond('published')
+						
+					
+						
+					
+					.Trunc(<val>, <конечная_часть>[, output_field=None][, tzinfo=None])
+					#сбрасывает в 0 <val> до конечнои части справа
+						<val>
+						#представляется экземпляром F и должно принадлежать date|time|datetime
+						<конечная_часть>:str
+						#
+							"year"
+							"quarter"
+							"month"
+							"week"
+							"day"
+							"hour"
+							"minute"
+							"second"
+						output_field
+						#тип возвращмого val даты&|времени
+						#представляется экземпляром DateField|TimeField|DateTimeField
+						#if !∃ -> тип результата = типу <val>
+						tzinfo
+						#исп краине редко
+					#examples
+						#] published ⊂ datetime(05.06.2018 08:62:28.366947
+						Trunc('published', 'year')			# 01.01.2018 00:00:00
+						Trunc('published', 'quarter')		# 01.04.2018 00:00:00	# второи квартил
+						Trunc('published', 'month')			# 01.06.2018 00:00:00
+						Trunc('published', 'week')			# 04.06.2018 00:00:00
+						Trunc('published', 'day')			# 05.06.2018 00:00:00
+						Trunc('published', 'hour')			# 05.06.2018 08:00:00
+						Trunc('published', 'minute')		# 05.06.2018 08:02:00
+						Trunc('published', 'second')		# 05.06.2018 08:02:28
+					
+					
+					
+					.TruncYear(<val>[, output_field=None][, tzinfo=None])
+					#сбрасывает в 0 <val> кроме year (сбрасывает до года)
+					#проще Trunc в применении
+						<val>
+						#представляется экземпляром F и должно принадлежать date|time?|datetime
+					#examples
+						TruncYear('published')
+					
+					
+					
+					.TruncQuarter(<val>[, output_field=None][, tzinfo=None])
+					#сбрасывает до квартала
+					#проще Trunc в применении
+						<val>
+						#представляется экземпляром F и должно принадлежать date|time?|datetime
+					#examples
+						TruncQuarter('published')
+					
+					
+					
+					.TruncMonth(<val>[, output_field=None][, tzinfo=None])
+					#сбрасывает до месяца
+					#проще Trunc в применении
+						<val>
+						#представляется экземпляром F и должно принадлежать date|time?|datetime
+					#examples
+						TruncMonth('published')
+					
+					
+					
+					.TruncWeek(<val>[, output_field=None][, tzinfo=None])
+					#сбрасывает до полуночи понедельника текущеи недели
+					#проще Trunc в применении
+						<val>
+						#представляется экземпляром F и должно принадлежать date|time?|datetime
+					#examples
+						TruncWeek('published')
+					
+					
+					
+					.TruncDay(<val>[, output_field=None][, tzinfo=None])
+					#сбрасывает до числа
+					#проще Trunc в применении
+						<val>
+						#представляется экземпляром F и должно принадлежать date|time?|datetime
+					#examples
+						TruncDay('published')
+					
+					
+					
+					.TruncHour(<val>[, output_field=None][, tzinfo=None])
+					#сбрасывает до часов
+					#проще Trunc в применении
+						<val>
+						#представляется экземпляром F и должно принадлежать date?|time|datetime
+					#examples
+						TruncHour('published')
+					
+					
+					
+					.TruncMinute(<val>[, output_field=None][, tzinfo=None])
+					#сбрасывает до минут
+					#проще Trunc в применении
+						<val>
+						#представляется экземпляром F и должно принадлежать date?|time|datetime
+					#examples
+						TruncMinute('published')
+					
+					
+					
+					.TruncSecond(<val>[, output_field=None][, tzinfo=None])
+					#сбрасывает до секунд
+					#проще Trunc в применении
+						<val>
+						#представляется экземпляром F и должно принадлежать date?|time|datetime
+					#examples
+						TruncSecond('published')
+					
+					
+					
+					.TruncDate(<val>[, output_field=None][, tzinfo=None])
+					#извлекает дату
+					#проще Trunc в применении
+						<val>
+						#представляется экземпляром F и должно принадлежать date|time?|datetime
+					#examples
+						TruncDate('published')
+					
+					
+					
+					.TruncTime(<val>[, output_field=None][, tzinfo=None])
+					#извлекает время
+					#проще Trunc в применении
+						<val>
+						#представляется экземпляром F и должно принадлежать date|time|datetime
+					#examples
+						TruncTime('published')
+					
+			УСЛОВНЫЕ ВЫРАЖЕНИЯ СУБД
+			#менее мощны чем ⊂ python
+			#exe проверки сообразуясь с переданными условиями
+			#когда очередное усл exe -> он возвращается как результат(по сути or)
+			#для записи условного exp исп класс django.db.models.Case
+				django.db.models
+				
+				
+					.Case(<усл0>, <усл1>, ..., <услN>[, default=None][,output_field=None])
+					#класс исп для записи условного выражения
+					#∀ <усл> - экз When ⊃ django.db.models
+					#<усв> проверяются в порядке записи, if усл exe -> возвращается val ⊂ then ⊂ .When(), осталяные усл отбрасываются
+					#if ∀ val !exe -> return default
+						output_field
+						#тип возвращаемого val в виде экз класса поля нузного типа
+						#лучше указывать несмотря на неомязателяность
+					#выведем список рубрик с пометкои ⊃ ~ число объявлении
+						from django.db.models import Case, When, Value, Count, CharField
+						for r in Rubric.objects.annotate(cnt=Count('bb'),
+						         cnt_s=Case(When(cnt__gte=5, then=Value('Too much')),
+						                    When(cnt__gte=3, then=Value('Middle')),
+						                    When(cnt__gte=1, then=Value('Too few')),
+						                    default=Value('Nothing'),
+						                    output_field=CharField())):
+						    print('%s:\t\t%s' % (r.name, r.cnt_s))
+					    >>
+					        Бытовая техника:    Too few
+					        Мебель:             Nothing
+					        Недвижимость:       Too much
+					        Растения:           Nothing
+					        Сантехника:         Nothing
+					        Сельхозинвентарь:   Nothing
+					        Транспорт:          Too much
+					        
+					        
+					        
+					.When(<усл>, then=None)
+					#мб записано в формате (<field> = val|<field>__<filter>=<val>) | экземпляром Q
+						then
+						#val возвращаемое при exe <усл>
+			ВЛОЖЕННЫЕ ЗАПРОСЫ
+			#могут исп в усл фильтрации|для расчета результов вычисляемых полеи
+			#dj позволяет создавать вложенные запросы двух видов
+			    ПОЛНО-FX ВЛОЖЕННЫЕ ЗАПРОСЫ
+			    #возвращают какои-либо результат
+			    #создаются классом Subquery ⊃ django.db.models
+			        
+			        Subquery(<вложенныи_набор_записеи>[, output_field=None])
+			        #класс
+			        #создает полно-fx вложенные запросы возвращающие какои-либо результат
+			            <вложенные_набор_записеи>
+			            #формируется с исп упоминавшихся ранее инструментов
+			            output_field
+			            #тип возвращаемого val if этот результат представлен единичным val
+			        #example
+			            #список рубрик с датои и временем публикации последнего объявления
+			            from django.db.models import Subquery, OuterRef, DateTimeField
+			            #во вложенном запросе нужно сравнить val поля rubric объявления с val ключевого поля pk рубрики ⊂ "внешнему" запросу(ссылку на которое оформляем как OuterRef)
+			            sq = Subquery(Bb.objects.filter(
+			            rubric=OuterRef('pk')).order_by('-published').values(
+			            'published')[:1])
+			            for r in Rubryc.objects.annotate(last_bb_date=sq):
+			                print(r.name,'\t\t', r.last_bb_date)
+			            >>
+			                Бытовая техника     2018-06-13 11:05:59.421877+00:00
+			                Мебель              None
+			                Недвижимость        2018-06-12 07:41:14.050001+00:00
+			                ...
+			            
+			            
+                    OuterRef(<поле_"внешнего_набора_записеи">)
+                    #if во вложенном наборе записеи нужно ссылаться на поле "внешнего набора записеи -> ссылка на это поле записываемая в условиях фильтрации вложенного набора записеи оформляется как экземпляр OuterRef
+                    #examples(см Subquery)
+				ВЛОЖЕННЫЕ ЗАПРОСЫ ВТОРОГО ВИДА
+				#проверяют ∃ ли в этом запросе записи
+				#создаются классом Exists ⊂ django.db.models
+				
+					Exists(<вложенныи_набор_записеи>)
+					#проверка на ∃ записеи в запросе
+						#выведем рубрики ⊃ объявления ⊂ цену > 100000
+						from django.db.models import Exists
+						from app.models import Bb
+						subquery = Exists(Bb.objects.filter(rubric=OuterRef('pk'),
+						                                    price__gt=100000))
+						for r in Rubric.objects.annotate(is_expensive=subquery).filter(is_expensive=True):
+							print(r.name)
+						>>
+							Недвижимость
+			
+			
+			ОБЪДИНЕНИЕ НАБОРОВ ЗАПИСЕИ
+			
+				union(<набор_записеи_0>,<набор_записеи1>,...[, all=False]) -> <набор_записеи>
+				#объединение наборов записеи в один(объединение ∀ заданных с текущим)
+					all
+					#
+						True
+						#результат ⊃ дубли
+				#у наборов записеи не следует задавать сортировку(можно убрать сортировку вызвав order_by() без параметров)
+					#сформируем набор из объявлении с ценои > 100000 и объявлении о продаже бытовои техники
+					bbs1 = Bb.objects.filter(price__gte=100000).order_by()
+					bbs2 = Bb.objects.filter(rubric__name='Бытовая техника').order_by()
+					for b in bbs1.union(bbs2):
+						print(b.title, sep=' ')
+					>>
+						Дача
+						Дом
+						Земельный участок
+						Пылесос
+						Стиральная машина
+				
+				
+				intersection(<набор_записеи_0>,<набор_записеи1>,...)
+				#-> набор ⊃ записи ⊂ ∀ наборах
+				
+				
+				difference(<набор_записеи_0>,<набор_записеи1>, ...)
+				#-> набор ⊃ записи ⊂ только одному из переданных наборов, а не нескольким сразу
+				#?symmetric difference
+		
+		ИЗВЛЕЧЕНИЕ VAL ТОЛЬКО ИЗ ЗАДАННЫХ ПОЛЕИ
+		#извлечение из модели только val определенного поля/полеи хранящихся там записеи
+		
+			values([<field0>, <field1>, ...])
+			#извлекает из модели val указанных полеи
+			#-> <QuerySet_instance> ⊃ {'<field0>':<val>,'<field1>':<val>,...}
+			#if ∀ val хранятся в одном dict -> нафига неск dict?
+			#поле мб задано
+				positional_arg
+				#str ⊃ field_name
+				named_arg
+				#экз F, имя параметра станет именем поля
+			#при передаче в качестве одного из args поля внешнего ключа -> элт результирующего dict соотв этому полю будет ⊃ val ключа связанной записи, а не саму запись
+			#examples
+				Bb.objects.values('title', 'price', 'rubric')
+				>>
+					<QuerySet [
+						{'title': 'Стиральная машина', 'price': 3000.0, 'rubric': 3},
+						{'title': 'Пылесос', 'price': 1000.0, 'rubric': 3},
+						...
+					]>
+				Bb.objects.values('title', 'price', rubric_id=F('rubric'))
+				>>
+					<QuerySet [
+						{'title': 'Стиральная машина', 'price': 3000.0, 'rubric_id': 3},
+						{'title': 'Пылесос', 'price': 1000.0, 'rubric_id': 3},
+						{},
+						{},
+						
+					]>
+			#при вызове без параметров -> возвращает набор dicts ⊃ ∀ поля таблицы бд обрабатываемои этои моделью
+				#обрати внимание на имена полеи -> это имена полеи таблицы бд, а не модели
+				Bb.objects.values()
+				>>
+					<QuerySet [
+						{'id': 23, 'title': 'Стиральная машина',
+						'content': 'Автоматическая', 'price': 3000.0,
+						'published': datetime.datetime(2018, 6, 13, 11, 5, 59, 421877, tzinfo=<UTC>),
+						'rubric_id': 3},
+						...
+					]>
+			
+			
+			
+			values_list([<field0>, <field1>, ...][, flat=False][, named=False])
+			#~ values, но возвращает набор tuples вместо dict
+			    flat
+			    #имеет смысл исп only if возвращается одного поля
+			        flat=False
+			        #val поля оформляются как кортежи ⊃ один элт
+			            Bb.objects.values_list('id')
+			            >>
+			                <QuerySet [(23,), (22,), (8,), (17,), (16,), (13,), (12,), (10,), (11,), (4,), (3,), (1,)]>
+			        flat=True
+			        #набор ⊃ непосредственно val поля
+			            Bb.objects.values_list('id')
+			            >>
+			                <QuerySet [23, 22, 8, 17, 16, 13, 12, 10, 11, 4, 3, 1]>
+			        named
+			        #
+			            named=True
+			            #исп именованные кортежи вместо обычных
+			#examples
+				Bb.objects.values_list('title', 'price', 'rubric')
+				>>
+					<QuerySet [
+						('Стиральная машина', 3000.0, 3),
+						('Пылесос', 1000.0, 3),
+						...
+					]>
+			
+			
+			
+			dates(<field_name>, <part_of_date> [, order='ASC']) -> <QuerySet [...]>
+			#возвращает набор записеи ⊃ уникальные val даты ⊂ полю и урезаны до заданнои <part_of_date>
+			    <part_of_date>
+			    #
+			        "year"
+			        "month"
+			        "day"
+			        #число те дата не будет урезаться
+			    order
+			    #упорядочивание
+			        'ASC'
+			        #по возрастанию
+			        'DESC'
+			        #по убыванию
+			#examples
+			    Bb.objects.dates('published', 'day')
+			    >>
+			        <QuerySet [datetime.date(2018, 5, 30), datetime.date(2018, 6, 4),
+			        datetime.date(2018, 6, 5), datetime.date(2018, 6, 12),
+			        datetime.date(2018, 6, 13)]>
+			    Bb.objects.dates('published', 'month')
+			    >>
+			        <QuerySet [datetime.date(2018, 5, 1), datedime.date(2018, 6, 1)]>
+			
+			
+			
+			datetimes(<field_name>, <datetime_part> [, order='ASC'][,tzinfo=None])
+			#~dates(), но манипулирует vals date & time
+			    <datetime_part>
+			    #
+			        "year"
+			        "month"
+			        "day"
+			        "hour"
+			        "minute"
+			        "second"
+			        #val вообще не урезается
+			    tzinfo
+			    #timezone
+			    #values
+			        <UTC>
+			#examples
+			    Bb.objects.datetimes('published', 'day')
+			    >>
+			        <QuerySet [datetime.datetime(2018, 5, 30, 0, 0, tzinfo=<UTC>),
+			        datetime.datetime(2018, 6, 4, 0, 0, tzinfo=<UTC>),
+			        ...
+			        ]>
+			
+			
+			in_bulk(<val_seq> [, field_name='pk'])
+			#ищет в модели записи, чье поле field_name ⊃ val ⊂ <val_seq>
+			#-> dict(<val_⊃<val_seq>>: <obj_модели_представляюшие_наиденные_записи>
+			#заданное поле(видимо field_name) должно ⊃ уникальные val(конструктору поля модели передано unique=True)
+			#examples
+			    Rubric.objects.in_bulk([1, 2, 3])
+			    >>
+			        (1: <Rubric: Недвижимость>, 2: <Rubric: Транспорт>, 3: <Rubric: Бытовая техника>)
+			    Rubric.objects.in_bulk(['Транспорт', 'Мебель'], field_name='name')
+			    >>
+			        {'Мебель':<Rubric: Мебель>, 'Транспорт': <Rubric: Транспорт>}
+			
+			
+			ПОЛУЧЕНИЕ VAL ПОЛЕИ СО СПИСКОМ
+			#if обратиться к полю ⊂ список -> val непосредственно ⊂ полю, вместо выводящегося
+			    Bb.objects.get(pk=1).kind   >> 's'
+			#для получения val выводящегося user исп <model>.get_<field_name>_display()
+			    
+			    <model>.get_<field_name>_display()
+			    #возвращает val поля ⊃ список выводимое пользователю
+			        b = Bb.objects.get(pk=1)
+			        b.kind   >> 's'
+			        b.get_kind_display()    >> 'Продам'
+			
+			
 ШАБЛОНЫ
 #образец для формирования документа(который затем можно отдать клиенту)
 	HTML
@@ -2529,8 +6282,94 @@ manage.py makemigrations bboard
 					...
 					<link rel="stylesheet" type="text/css" href="{% static 'bboard/style.css' %}">
 					...
-
-
+#формирование ответа на основе шаблона - высокоуровневое средство формирования ответа контроллером
+    #для загрузки нужного шаблона dj предоставляет fx .get_template() & .select_template() ⊃ django.template.loader
+        django.template
+        #⊃ модули -> по идее lib
+        
+        
+            .response
+            #модуль
+            
+                .TemlateResponse(<request>:<HttpRequest>, <template_path> [,context=None][,content_type=None][,status=200])
+                #формирует ответ пользователю
+                #схож по fx с HttpResponse
+                #осн преимущество - при исп Middlewares добавляющих в context доп данные
+                #examples
+                    from django.template.response import TemlateResponse
+                    ...
+                    def index(request):
+                        bbs = Bb.objects.all()
+                        rubrics = Rubric.objects.all()
+                        context = {'bbs': bbs, 'rubrics': rubrics}
+                        return TemlateResponse(request, 'bboard/index.html', context=context)
+                #поддерживает отложенный рендеринг - exe only после прохождения ∀ цепи зарегистрированных в проекте посредников, непосредственно перед отправкой ответа клиенту - благодаря этому посредники вообше могут добавлять данные в context
+                    <request>
+                    #доступен в контроллере-fx через его первый параметр
+                    <context>
+                    #контекст шаблона
+                    content_type=None
+                    #ответ получит MIME-type text/html и кодировку ⊂ DEFAULT_CHARSET
+                    status
+                    #int status code
+                #attr
+                    .template_name
+                    #⊃ template path
+                    #не очень то ~ названию
+                    .context_data
+                    #⊃ контекст шаблона
+                    
+                    
+            Template
+            #класс представляющий шаблон
+            
+                .render([context:<dict>=<контекст_данных>] [, request=<request>])
+                #рендерит шаблон(объедининяя текущий шаблон и контекст данных
+                    context
+                    #dict ⊃ val которые должны быть доступны в шаблоне
+                    request
+                    #if ∃ -> добавляется в context
+                #-> str ⊃ html страницы
+                #examples
+                    from django.http. import HttpResponse
+                    from django.template.loader import get_template
+                    ...
+                    def index(request):
+                        bbs = Bb.objects.all()
+                        rubrics = Rubric.objects.all()
+                        context = {'bbs': bbs, 'rubrics': rubrics}
+                        template = get_template('bboard/index.html')
+                        return HttpResponse(template.render(context=context, request=request))
+                
+                
+                
+            TemplateDoesNotExist
+            #exept
+            
+            TemplateSyntaxError
+            #exept
+            #см django.template.loader
+            
+            
+            
+            django.template.loader
+            
+                .get_template(<template_path>)
+                #загружает шаблон & -> представляющии его экз Template ⊃ django.template
+                #if шаблон не удалось загрузить -> exept TemplateDoesNotExist
+                #if шаблон ⊃ err -> exept TemplateSyntaxError
+                    <template_path>
+                    #пути указываются относительно dir ⊃ templates
+                
+                
+                .select_template(<seq_of_temlates_path>) -> <django.template.Template>
+                #перебирает пути пытаясь загрузить шаблон и -> первыи загруженныи
+                #if шаблон не удалось загрузить -> exept TemplateDoesNotExist
+                #if шаблон ⊃ err -> exept TemplateSyntaxError
+                    <seq_of_temlates_path>
+                    #пути указываются относительно dir ⊃ templates
+                
+                
 ШАБЛОН
 #⊃команды шаблонизатора
 
@@ -2550,6 +6389,10 @@ manage.py makemigrations bboard
 		#obj ⊃ в состав контекста шаблона(формируется программистом)
 		
 		
+		{url}
+		#исп для формирования uri в шаблонах
+		
+		
 	фильтры
 	#преобразуют val перед выводом
 		#фильтр date преобразует val из obj в формат указанный после ":"
@@ -2562,6 +6405,8 @@ manage.py makemigrations bboard
 
 
 РЕНДЕРИНГ ШАБЛОНОВ
+#объединение шаблонов & данных
+
 django.template.loader('path_to_template_from_templates_dir')
 #загрузка шаблона для последующего рендеринга
 #путь указывается относительно <app>/templates
@@ -2575,30 +6420,367 @@ django.template.loader('path_to_template_from_templates_dir')
 #словарь Python {'var':<value>,...}
 
 
+
 РЕНДЕРИНГ
 #объединение шаблонизатором шаблона и данных из контекста
-	django.shortcuts.render(request)
-	#fx-сокращение(shortcuts) 
-	#рендеринг шаблона в одном exp
-	#args - подготовленный контекст шаблона; 
-	#request - экземпляр HttpRequest
-	#возвращает строку с HTML готовой страницы
-		from django.shortcuts import render
-		from .models import Bb
-		
-		def index(request):
-			bbs = Bb.objects.order_by('-published')
-			return render(request, 'bboard/index.html', {'bbs': bbs})
-			
+#см .render() ⊂ django.shortcuts
 
-HttpRequest
-#предоставляет клиентский запрос
 
 
 СОКРАЩЕНИЯ
-	fx-сокращения(shortcuts)
-	#⊂ django.shortcuts
-	#high-level средства
+#сокращение(~fx-сокращения ~ shortcuts) - fx exe неск деиствии
+#предназначена для exe типичных задач
+#сокращает V работы
+#⊂ django.shortcuts
+#high-level средства
+    
+    django.shortcuts
+    
+            .render(request, <template_path>:<str> [,context=None][, content_type=None][, status=200])
+            #exe рендеринг шаблона & отправку результата клиенту в одном exp
+                request
+                #экз HttpRequest(?|Request)
+                context:<dict>
+                #подготовленный контекст шаблона(данных)
+                content_type
+                #MIME-type ответа & кодировку
+                    content_type=None
+                    #ответ получит MIME-type text/html и кодировку ⊂ DEFAULT_CHARSET
+                status
+                #int code response status
+            #возвращает строку с HTML готовой страницы(?|экз HttpResponse)
+            #examples
+                from django.shortcuts import render
+                from .models import Bb
+                ...
+                def index(request):
+                    bbs = Bb.objects.order_by('-published')
+                    return render(request, 'bboard/index.html', {'bbs': bbs})
+            
+            
+            .redirect(<target>, [, permanent=False][, <val_url_params>])
+            #формирует uri для redirect & exe его
+                <target>
+                #
+                    <Model_obj>
+                    #тогда uri будет получен от <Model>.get_absolute_url()
+                    [ns:]<route_name>
+                    #с <val_url_params> -> uri будет сформирован обратным разрешением
+                    <abs_uri>
+                permanent
+                #тип перенавравления
+                <val_url_params>
+                #мб указаны как именованные|позиционные args
+            #-> полностью сформированный экз HttpResponseRedirect(а могло быть иначе?)
+            #examples
+                ...
+                    return redirect('bboard:by_rubric', rubric_id=bbf.cleaned_data['rubric'].pk)
+            
+            
+            .get_object_or_404(<source> [,<условия_поиска>])
+            #-> запись|бросает Http404 ⊃ django.http
+                <source>
+                    <Model_obj>
+                    #видимо -> uri будет получен от <Model>.get_absolute_url()
+                    экз <Manager>
+                    #диспетчер записеи
+                    экз <QuerySet>
+                    #набор записеи
+            #if условиям удовл неск записеи бросает MultipleObjectsReturned ⊂ django.core.exceptions
+            #examples
+                def detail(request, bb_id):
+                    bb = get_object_or_404(Bb, pk=bb_id)
+                    return HttpResponse(...)
+            
+            
+            .get_list_or_404(<source>, <условия_фильтрации>)
+            #-> экз <QuerySet>
+            #if ни одна запись не подходит -> бросает Http404 ⊂ django.http
+                    <Model_obj>
+                    #видимо -> uri будет получен от <Model>.get_absolute_url()
+                    экз <Manager>
+                    #диспетчер записеи
+                    экз <QuerySet>
+                    #набор записеи
+            #examples
+                def by_rubric(request, rubric_id):
+                    bbs = get_list_or_404(Bb, rubric=rubric_id)
+                    ...
+    
+            
+            
+            
+ДОПОЛНИТЕЛЬНЫЕ НАСТРОИКИ КОНТРОЛЛЕРОВ
+#dj ⊃ декораторы для доп настроики контроллеров
+    
+    django.views.decorators
+        
+        ДЕКОРАТОРЫ УСТАНАВЛИВАЮЩИЕ НАБОР ДОПУСТИМЫХ HTTP-МЕТОДОВ
+        #при попытке доступа с исп запрещенного метода -> декоратор -> экз HttpResponseNotAllowed
+            .http
+                
+                .require_http_methods(<SEQ_METHODS_NOTATIONS>)
+                #запрещает для контроллера остальные методы
+                #examples
+                    from Django.views.decorators.http import require_http_methods
+                    ...
+                    @require_http_methods(('GET', 'POST'))
+                    def add(request):
+                        ...
+                request
+                
+                .require_get()
+                #запрещает ∀ методы кроме GET
+                
+                
+                .require_post()
+                #запрещает ∀ методы кроме POST
+                
+                
+                .require_safe()
+                #запрещает ∀ методы кроме GET и HEAD
+                
+                
+    ДЕКОРАТОРЫ EXE СЖАТИЕ
+        
+        .gzip
+            .gzip_page()
+            #сжимает ответ контроллера исп алг GZIP
+            #требует поддержки соотв алг браузером
+
+
+
+UploadFile
+#класс представляющии фаилы переданные в запросе
+
+
+
+django.http
+    .HttpResponsePermanentRedirect(<target_uri>:<str> [, status=301][, reason=None])
+    #производный HttpResponse
+    #исп для exe постоянного перенаправления
+        #создаем экз HttpResponsePermanentRedirect
+        #возвращаем из контроллера-fx
+    
+        ...
+        return HttpResponsePermanentRedirect('http://www.new_address.com/')
+
+    .HttpResponseRedirect(<target_uri>:<str> [, status=302][, reason=None])
+    #производный HttpResponse
+        <target_uri>
+        #полныи|сокращенныи
+    #исп для exe временного перенаправления
+        #создаем экз HttpResponseRedirect
+        #возвращаем из контроллера-fx
+            ...
+            return HttpResponseRedirect(reverse{'bboard:index'})
+
+
+
+
+    .HttpRequest
+    #предоставляет(⊃ данные) клиентский запрос
+    #традиционно называется request
+    #доступен в контроллере-fx через его первыи параметр
+    #attr
+        .GET
+        #dict ⊃ ∀ GET-параметры ⊂ запросу вида {'GET_param_name':<val>,...}
+        .POST
+        #~ .GET
+        .FILES
+        #dict ⊃ ∀ выгруженные фаилы
+        #ключи = имена POST-параметров посредством которых передается содержимое фаилов
+        #val ключеи - фаилы представленные экземплярами UploadFile
+        .method
+        #обозначение метода отправки данных в виде UPPERCASE str
+            "GET"
+            "POST"
+            ...
+        .scheme
+        #обозначение протокола
+            "http"
+            "https"
+        .path
+        #путь
+        #?Δ .path_info
+        .path_info
+        #путь
+        #?Δ .path
+        .encoding
+        #обозначение кодировки запроса
+            .encoding ⊃ None
+            #запрос закодирован в DEFAULT_CHARSET
+        .content_type
+        #обозначение MIME-типа полученного запроса извлеченное из HTTP-заголовка Content-Type
+        .content_params
+        #dict ⊃ доп параметры MIME-типа полученного запроса извлеченные из HTTP-заголовка Content-Type
+        #keys - имена параметров, val - val параметров
+        .META
+        #dict ⊃ доп параметры в виде элтов:
+            .CONTENT_LENGTH:<str>
+            #длинна тела запроса в chars
+            .CONTENT_TYPE
+            #MIME-тип тела запроса
+                "appication/x-www-form-urlencoded"
+                "multipart/form-data"
+                "text/plain"
+            .HTTP_ACCEPT:<str>
+            #⊃ перечень поддерживаемых браузером MIME-типов данных
+            #comma separated
+            .HTTP_ACCEPT_ENCODINGS:<str>
+            #⊃ перечень поддерживаемых браузером кодировок
+            #comma separated
+            .HTTP_ACCEPT_LANGUAGES:<str>
+            #⊃ перечень поддерживаемых браузером языков
+            #comma separated
+            .HTTP_HOST
+            #(домен|ip) & порт (if он Δ default) сервера отдавшего страницу
+            .HTTP_REFERER
+            #uri страницы с которои был exe переход на текущую
+            #!∃ if текущая - первая открытая в браузере
+            .HTTP_USER_AGENT:<str>
+            #⊃ user agent браузера
+            .QUERY_STRING:<str>
+            #⊃ необработанные GET-параметры
+            .REMOTE_ADDR
+            #ip клиента
+            .REMOTE_HOST:<str>
+            #доменное имя клиентского пк
+            #if не удалось получить -> ""
+            .REMOTE_USER
+            #username пользователя exe вход на сервер
+            #!∃ if вход не был exe|исп другои способ аутентификации
+            .REQEUST_METHOD
+            #обозначение метода отправки данных в виде UPPERCASE str
+                "GET"
+                "POST"
+            .SERVER_NAME
+            #доменное имя сервера
+            .SERVER_PORT:<str>
+            #tcp-port
+        #может ⊃ & другие элты формируюшиеся на основе ∀ нестандартных заголовков ⊂ запросу клиента,
+           его имя uppercase имя заголовка
+           с '-' замененными на '_'
+           с префиксом "HTTP_"
+           #пример
+                UPGRADE_INSECURE_REQUESTS -> HTTP_UPGRADE_INSECURE_REQUESTS
+        .body:<bytes>
+        #raw content запроса
+    #методы
+        .get_host()
+        #-> str ⊃ [ip|домен(if удается получить)] & tcp-port сервера
+        .get_port()
+        #-> str ⊃ tcp-port сервера
+        .get_full_path()
+        #-> full path to curr page
+        .build_absolute_uri(<path>)
+        #строит полныи uri на основе домена|ip и <path>
+        #examples
+            print(request.build_absolute_uri('/test/url/'))
+            >>
+                http://localhost:8000/test/uri/
+        .is_secure()
+        #-> True if обращение исп HTTPS
+        #-> False if обращение исп HTTP
+        .is_ajax()
+        #-> True if это AJAX-запрос
+        #-> False if это обычныи запрос
+        #AJAX-запросы выявляются dj по ⊂ запросу заголовка HTTP_X_REQUESTED_WITH:"XMLHttpRequest"
+    
+    
+    
+    
+    
+    
+    .HttpResponse([<content>:<str>][, content_type=None][, status:<int>=200][,reason:<str>=None("OK")])
+    #класс
+    #в отличие от например StreamHttpResponse полностью формирует ответ в mem перед отправкои
+        #и в отличие от него вроде не подходит для отправки данных в формате != html/text или if V слишком велик(формирование заимет слишком много mem/time)
+    #низкоуровневое средство формирования ответа клиенту(исп в этои роли чаще всего)
+        content_type
+        #MIME-type ответа & кодировку
+            content_type=None
+            #ответ получит MIME-type text/html и кодировку ⊂ DEFAULT_CHARSET
+        status
+        #int code response status
+            200
+            #файл успешно отправлен
+        reason
+        #str обозначение статуса
+    #?класс ответа ⊃
+        Атрибуты:
+            .content:<bytes>
+            #содержимое ответа
+            .charset
+            #обозначение кодировки
+            .status_code:<int>
+            #код ответа
+            .reason_phrase
+            #str обозначение статуса
+            .streaming
+            #потоковость ответа
+            #у HttpResponse всегда возвращает False
+                streaming=True
+                #ответ - потоковый
+                streaming=False
+                #ответ - не потоковый
+            .closed
+            #закрытость ответа
+                closed=True
+                #ответ закрыт
+                closed=False
+                #ответ еще не закрыт
+        Методы:
+            .write(<str>)
+            #добавляет str в ответ
+            writelines(<seq_str>)
+            #добавляет str ⊂ seq без разделителей в ответ
+            flush()
+            #?принудительно переносит содержимое буфера записи(?) в ответ
+            has_header(<header>)
+            #-> True if <header> ⊂ ответу else -> False
+            setdefault(<header>, <val>)
+            #создает в ответе <header> ⊃ <val> if таковой ⊄ ответу
+    #поддерживает fx dicts которую можно исп для указания/получения val заголовков
+        response['pragma'] = 'no-cache'
+        age = response['Age']
+        del response['Age']
+    #examples
+        #простой контроллер исп низкоуровневые средства для создания ответа и выводящего str
+            from django.http import HttpResponse
+            ...
+            def index(request):
+                resp = HttpResponse("Здесь будет", content_type='text/plain; charset=utf-8')
+                resp.write(' главная')
+                resp.writelines((' страница', ' сайта'))
+                resp['keywords'] = 'Python, Django'
+                return resp
+    #при передаче контроллеру по традиции называется request
+    #предоставляет ответ клиенту
+        .html
+        текстовыи фаил
+        данные в json
+        redirect
+        err msg
+    #при получении контроллером хранит различные сведения о полученном запросе
+        запрашиваемый url
+        данные полученные от пользователя
+        служебная информация от браузера
+
+
+ПЕРЕНАПРАВЛЕНИЕ
+#отсылка браузеру предписании переити на uri ⊃ ответе
+    ВРЕМЕННОЕ ПЕРЕНАПРАВЛЕНИЕ
+    #пример
+        после добавления объявления перенаправление на страницу ⊃ ∀ объявления
+    #для exe временного перенаправления исп HttpResponseRedirect ⊂ django.http производныи HttpResponse
+    ПОСТОЯННОЕ ПЕРЕНАПРАВЛЕНИЕ
+    #исп при переезде на другои домен
+    #(?это так)браузер получив уведомление о постоянном перенаправлении заменяет uri в истории, закладках, etc
+    #реализуется HttpResponsePermanentRedirect ⊂ django.http
+#см redirect() ⊂ django.shortcuts
+    
+        
 	
 	
 АДМИНИСТРАТИВНЫЙ САЙТ DJ
@@ -2651,7 +6833,7 @@ django.contrib.auth
 		#наиболее применяющаяся
 		#представляет поле внешнего ключа, фактических хранящий ключ записи из первичной модели
 		#имя поля внешнего ключа должно обозначать связываемую сущность и быть в единственном числе(напр rubric)
-		#на уровне бд поле внешнего ключа модели представляется полем таблицы с именем 
+		#на уровне бд поле внешнего ключа модели представляется полем таблицы с именем
 			#<имя поля внешнего ключа>_id
 		#в веб-форме такое поле представляется раскрывающимся списком ⊃ строковые представления записей первичной модели(?проверить)
 		#модель в которой создается - вторичная
@@ -2680,11 +6862,11 @@ django.contrib.auth
 					rubric = models.ForeingKey('rubrics.Rubric', on_delete=models.PROTECT)
 			рекурсивная связь => 'self'
 				parent_rubric = models.ForeignKey('self', on_delete=models.PROTECT)
-			on_delete 
-			#поведение при удалении записи первичной модели 
+			on_delete
+			#поведение при удалении записи первичной модели
 			#управляет каскадным удалением записей вторичной модели при удалении связанной записи в первичной
 			#if СУБД поддерживает межтабличные связи с сохранением ссылочной целостности, попытка удаления записи ⊂ primary с которыми связаны записи secondary обламается с IntegrityError exept ⊃ django.db.models
-			#v ⊃ django.db.models	
+			#v ⊃ django.db.models
 				CASCADE
 				#удаление ∀ связанных записей вроричной модели(каскадное)
 				PROTECT
@@ -2733,6 +6915,10 @@ django.contrib.auth
 			#True: создание связи в таблице бд позволяющая сохранить ссылочную целостность(?)
 			#False: ссылочная целостность поддерживается только на уровне dj
 				#используется только if модель создается на основе ∃ бд ⊃ некорректные данные
+		#в формах представляется тегом <select>
+		#миграции
+			#SQLite
+				"<field_name>" integer NULL REFERENCES "<to_value>" DEFERABLE INITIALLY DEFERRED
 		
 		
 		.OneToOneField(
@@ -2740,7 +6926,7 @@ django.contrib.auth
 			on_delete=django.db.models.<model>,
 			[...]
 		)
-		#связь "один-с-одним" 
+		#связь "один-с-одним"
 		#поле внешнего ключа
 		#исп для объединения моделей где одна ⊃ данные дополняющие другую модель(по сути JOIN с ограничениями)
 		#стандартная подсис-ма разграничения доступа ⊃ список зарегистрированных пользователей исп особую модель, которую можно заменить - ссылка на класс заменяемой модели пользователя указывается в параметре:
@@ -2769,7 +6955,7 @@ django.contrib.auth
 			db_constraint=][,
 			symmetrical][,
 			through][,
-			through_fields][,		
+			through_fields][,
 		...])
 		#связь "многие-со-многими"
 		#обе модели равноправны(нет primary/secondary)
@@ -2791,7 +6977,7 @@ django.contrib.auth
 			#ведомая, запчасти
 			class Spare(models.Model):
 				name = models.CharField(max_length=30)
-			#ведущая	
+			#ведущая
 			class Machine(models.Model):
 				name = models.CharField(max_length=30)
 				spares = models.ManyToMayField(Spare)
@@ -2828,8 +7014,8 @@ django.contrib.auth
 		
 		
 		.fields.related
-			
-binding:eng:связующий				
+		
+binding:eng:связующий
 			.RelatedManager
 			#диспетчер обратной связи
 			#класс представляющий набор связанных записей secondary таблицы
@@ -2862,8 +7048,8 @@ binding:eng:связующий
 					m1 = Machine.objects.create(name='Самосвал')
 					m2 = Machine.objects.create(name='Тепловоз')
 					m1.spares.add(s1, s2)
-					m1.spares.all()	
-					>> <QuerySet: [<Spare: Spare object (1)>, <Spare: Spare object (2)>, <Spare: Spare object (4)>]>	
+					m1.spares.all()
+					>> <QuerySet: [<Spare: Spare object (1)>, <Spare: Spare object (2)>, <Spare: Spare object (4)>]>
 
 					
 				.create(<fields_with_values>)
@@ -2921,7 +7107,7 @@ binding:eng:связующий
 						...
 						rubric = models.ForeignKey('Rubric')
 						
-						class Meta:	
+						class Meta:
 							order_with_respect_to = 'rubric'
 					
 					r = Rubric.objects.get(name='Мебель')
@@ -2931,7 +7117,7 @@ binding:eng:связующий
 				<primary_запись>.set_<secondary_name>_order()
 				#произвольное переупорядочивание записей
 				#задает новый порядок записей secondary согласно указанному списку ключей записей
-					class Bb(models.Model):	
+					class Bb(models.Model):
 						...
 						rubric = models.ForeignKey('Rubric')
 						
@@ -2973,10 +7159,15 @@ binding:eng:связующий
 СТРОКОВОЕ ПРЕДСТАВЛЕНИЕ МОДЕЛИ
 ...
 
-ОБРАТНОЕ РАЗРЕШЕНИЕ URLS
-...
 
 ФОРМЫ СВЯЗАННЫЕ С МОДЕЛЯМИ
+#по идее можно добавлять префикс к именам полеи моделеи чтобы можно было просто связать ∀ поля с формои
+	
+	class Post:
+		user_form_title = ...
+		user_form_post = ...
+		...
+	
 django.views.generic.edit
 
 	.CreateView
@@ -2996,13 +7187,26 @@ django.views.generic.edit
 django.forms
 
 	.ModelForm.as_p()
-	#вывод формы с эл-тами управления на отдельных абзацах
+	#вывод формы с эл-тами управления на отдельных абзацах(элементах <p>)
 	#генерирует только код создающий эл-ты управления => теги
 		<form>
 		<input>
 		#придется писать вручную
-		
-		
+	#пример структуры
+		#код шаблона
+			<form method="post">{% csrf_token %}
+				{{ form.as_p }}
+			</form>
+		#результат
+			<form method="post">
+				<input type="hidden" name="csrfmiddlewaretoken"
+				value="<token">
+				<p>
+					<label for="id_<field_name>"><titled_field_name>:</label>
+					<select id="id_<field_name>" name="fk">
+					...
+	
+				
 <form>
 #создание формы
 
@@ -3019,8 +7223,6 @@ django.forms
 "цифровой жетон"= токен
 
 
-КОНТРОЛЛЕРЫ-КЛАССЫ
-#в path() ⊂ urls.urlpatterns в случае контроллера-класса передается ссылка на результат возвращаемый .as_view() ⊃ контроллеру класса вместо самого контроллера-класса
 
 
 НАСЛЕДОВАНИЕ ШАБЛОНОВ
@@ -3045,7 +7247,7 @@ django.forms
 
 СТАТИЧЕСКИЕ ФАЙЛЫ
 #файлы не обрабатываемые программно, а пересылаются клиенту как есть
-#расположение по умолчанию	
+#расположение по умолчанию
 	<app>/static
 	#меняется в настройка проекта
 	
@@ -3080,9 +7282,9 @@ django.forms
 				#⊃ собственный коннектор
 					Connector/Python
 					#не требует клиента MySQL|доп python libs
-					#не рекомендован dj devs				
+					#не рекомендован dj devs
 			#требуется коннектор(python lib)
-				mysqlclient 
+				mysqlclient
 				#1.3.7+
 			#бд не создается автоматом
 			#требуется создать пользователя(с необходимыми правами(создание/Δ/удаление таблиц/индексов/связей)) от имени которого будет подключаться dj
@@ -3138,4 +7340,3 @@ django.forms
 APPS
 #приложения реализуют отдельные части fx проекта
 #∀ проект должен ⊃ min одно app
-			

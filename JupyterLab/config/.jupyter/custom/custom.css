@@ -1,0 +1,57 @@
+.cm-s-ipython span.cm-keyword {
+    color: #23807E !important;
+    font-weight: bold !important;
+}
+
+.cm-s-ipython span.cm-string {
+    color: #008080 !important;
+}
+
+.cm-s-ipython span.cm-variable {
+    color: #008080 !important;
+}
+
+.cm-s-ipython span.cm-builtin {
+    color: #2DBBB8 !important;
+}
+/* In [] */
+div.input_prompt {
+    color: #F0F0F0;
+}
+div.output_prompt {
+    color: #F0F0F0;
+}
+/*operator*/
+.cm-s-ipython span.cm-operator {
+    color: #23807E;
+    font-weight: bold;
+}
+/*func*/
+.cm-s-ipython span.cm-def {
+    color: #36A3D9;
+    font-weight: bold !important;
+}
+/*decorators & ... */
+.cm-s-ipython span.cm-meta {
+    color: #2DBBB8 !important;
+}
+
+/*numbers*/
+.cm-s-ipython span.cm-number {
+    color: #242C3A !important;
+}
+
+div.cell.selected::before, div.cell.selected.jupyter-soft-selected::before {
+    background: #666;
+}
+
+/* edit cell */
+.edit_mode div.cell.selected {
+    border-color: #ababab;
+}
+.edit_mode div.cell.selected::before {
+    background: #42A5F5;
+}
+.cell .code_cell .rendered selected {
+    background: #F00;
+}
