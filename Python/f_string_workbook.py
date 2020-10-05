@@ -1,7 +1,10 @@
 ФОРМАТИРОВАННЫЕ СТРОКОВЫЕ ЛИТЕРАЛЫ
 #подробнее: https://www.python.org/dev/peps/pep-0498/
-#быстрее .format|%
-#при exe exp в них оцериваются в собственной(?отдельной) ns 
+#пробелы вокруг exp недопустимы
+    f'{ x }'		>> ok
+    f'{ x:.2f }'	>> err
+#быстрее .format|%|templates
+#при exe exp в них оцериваются в собственной(?отдельной) ns
 	#оцениваются по мере exe и заменяются своими val при помощи __format__
 	f'<chars>{exp}<chars>'
 	F'<chars>{exp}<chars>'
@@ -16,12 +19,12 @@
 			
 		def __str__(self):
 			return f'{self.first_name} {self.last_name} is {self.age}.'
-			
+
 		def __repr__(self):
 			return f'{self.first_name} {self.last_name} is {self.age}. Surprise!'
-	
+
 	new_comedian = Comedian("Eric", "Idle", "74")
-	
+
 	print(f'{new_comedian}')	>> 'Eric Idle is 74.'
 #флаги преобразования
 	!r
@@ -29,15 +32,15 @@
 		class C:
 			def __init__(self):
 				...
-			
+
 			def __str__(self):
 				return 'str'
-			
+
 			def __repr__(self):
 				return 'repr'
 			
 		c_instance = C()
-		
+
 		print(f'{c_instance}')	>> 'str'
 		print(f'{c_instance!r}')	>> 'repr'
 #многострочные f-strings(~str)
