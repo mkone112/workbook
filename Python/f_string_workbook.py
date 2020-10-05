@@ -1,6 +1,9 @@
  ФОРМАТИРОВАННЫЕ СТРОКОВЫЕ ЛИТЕРАЛЫ
  #подробнее: https://www.python.org/dev/peps/pep-0498/
- #быстрее .format|%
+ #пробелы вокруг exp недопустимы
+ 	f'{ x }'		>> ok
+ 	f'{ x:.2f }'	>> err
+ #быстрее .format|%|templates
  #при exe exp в них оцериваются в собственной(?отдельной) ns 
 	f'<chars>{exp}<chars>'
 	F'<chars>{exp}<chars>'
