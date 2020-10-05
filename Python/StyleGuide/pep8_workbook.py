@@ -271,7 +271,13 @@ Strunk & White: "Elements of style"
         for x in lst: total += x
         while t < 10: t = delay()
     недопустимо не ставить их при исп (?блочных) операторов(try...finally, if...else)
-    
+
+
+MULTILINE COMPREHENSIONS
+#examples
+	memberdef_list = [elem for elem in from_cache(classname, 'memberdefs')
+        	          if elem.argsstring != '[]' and 
+                	     'std::string' in null2string(elem.vartype)]
     
 IMPORT
 # Импорт Δ модулей на разных строках

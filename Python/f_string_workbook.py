@@ -75,3 +75,9 @@ names = ['Adam', 'Bob', 'Cyril']
 nl = '\n'
 text = f"Winners are:{nl}{nl.join(names)}"
 print(text)
+
+MULTILINE/LONG
+return (
+	f'one{arg}\n'
+	f'two{arg}'
+)
