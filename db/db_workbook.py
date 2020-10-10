@@ -1,2 +1,6 @@
-MySQL выдерживает большие нагрузки чем SQLite
-Sqlite ⊃ таблицу sqlite_master вроде ⊃ историю запросов
+CRUD
+    CREATE?
+    READ?
+    UPDATE?
+    DELETE?
+для подключения к субд нужен клиенты
