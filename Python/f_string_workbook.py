@@ -84,3 +84,6 @@ return (
 	f'one{arg}\n'
 	f'two{arg}'
 )
+
+ВЛОЖЕННЫЕ ПОЛЯ/V В КАЧЕСТВЕ ФОРМАТА
+f"result: {value:{width}.{precision}}"  # nested fields
