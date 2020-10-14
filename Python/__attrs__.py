@@ -12,3 +12,9 @@ __mro__
     C.__mro__
     >>     
         (__main__.C, __main__.B, __main__.A, object)
+
+__class__
+#СОДЕЖ link на класс экземпляра
+    class C:...
+    
+    C().__class__   >> __main__.C

@@ -1,0 +1,1 @@
+#over Ethernet| иногда DSL
