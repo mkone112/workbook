@@ -28,7 +28,7 @@ max длинна строки
 
 # Перенос длинных строк кода
     предпочтительно ()|[]
-    | '\' if он выглядит лучше 
+    | '\' if он выглядит лучше (google против)
     в случае необходимости можно добавить дополнительную пару скобок вокруг exp
     отступы для перенесенных кусков дб соблюдены
     переносы после операторов ⊃ ','
@@ -36,9 +36,9 @@ max длинна строки
         class Rectangle(Blob):
             def __init__(self, width, height,
                          color='black', emphasis=None, highlight=0):
-                if width == 0 and height == 0 and \
-                   color == 'red' and emphasis == 'strong' or \
-                   highlight > 100:
+                if (width == 0 and height == 0 and
+                   color == 'red' and emphasis == 'strong' or
+                   highlight > 100):
                     raise ValueError("sorry, you lose")
                 if width == 0 and height == 0 and (color == 'red' or
                                                    emphasis is None):
