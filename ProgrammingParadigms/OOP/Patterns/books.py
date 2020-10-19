@@ -1,0 +1,1 @@
+Python: Master the Art of Design Patterns(Dusty Phillips, Chetan Giridhar, Sakis Kasampalis)
