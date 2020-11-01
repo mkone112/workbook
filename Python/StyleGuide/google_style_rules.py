@@ -134,7 +134,8 @@ DOCSTRING
                     Attributes:
                         likes_spam: A boolean indicates if we like SPAM or not.
                         eggs: An integer count of the eggs we have laid.
-                    """
+                    
+                    """ <- if СУЩ отступ -> нужен перенос
                     
                     def __init__(self, likes_spam=False):
                         """Inits SampleClass with blah."""

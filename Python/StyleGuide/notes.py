@@ -1,5 +1,5 @@
 отступы нужно сохранять чтобы при переходах сразу оказываться где нужно
-    
+#конфликтует с dj    
     def f():
     ∙∙∙∙#code
     ∙∙∙∙
@@ -7,6 +7,7 @@
     def g():
     ∙∙∙∙pass
     ∙∙∙∙
+
 
 МНОГОСТРОЧНЫЕ ЛИТЕРАЛЫ СТАРАТЬСЯ БИТЬ ПО \n
 
@@ -28,6 +29,22 @@
                f" {post.title}")
 
 
-КОД В КОММЕНТАРИЯХ В ''
-    # 'related_name' allows access to article comments ('post.comments.all()')
+КОД В КОММЕНТАРИЯХ В <>
+    # <related_name> allows access to article comments ('post.comments.all()')
     # , in addition to accessing the article from a comment ('comment.post').
+
+
+СОРТИРУЙ FX/МЕТОДЫ/КЛАССЫ/INLINE IMPORTS ПО ИСПОЛЬЗОВАНИЮ -> ПО ГРУППАМ -> АЛФАВИТУ И регистроЗАВИСИМО
+
+
+ПАРАМЕТРЫ В ЗАГОЛОВКАХ МЕТОДОВ СОРТИРУЮТСЯ ПО СМЫСЛУ -> АЛФАВИТУ И регистроЗАВИСИМО
+
+
+MULTILINE TODOES
+    # TODO(mk-dv): Check what happens if, for example, the 'request' is sent using 
+    #                  the POST method.
+    #              Other task.
+
+
+используй стиль typing в docstring
+    attr(list[str]): ...
