@@ -50,6 +50,7 @@ from django.http.response import (
 )
 
 модели
+# кастомные методы вроде clean_ должны быть вроде после Meta
     db fields
     custom managers
     Meta
@@ -69,4 +70,8 @@ choices style
 
 print(
     'if this strings',
+)
+
+raise Exception(
+    'Text'
 )
