@@ -32,3 +32,9 @@ insufficient
 negotiation
     согласование
 #networks/protocols -> Transparent Content Negotiation
+
+
+verbose
+    подробный
+    многословный
+#verbose level в cli's

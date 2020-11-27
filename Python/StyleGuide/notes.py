@@ -1,4 +1,5 @@
 отступы нужно сохранять чтобы при переходах сразу оказываться где нужно
+# это объсняет требование двух переносов после классов & fx
     
     def f():
     ∙∙∙∙#code
@@ -31,3 +32,6 @@
 КОД В КОММЕНТАРИЯХ В ''
     # 'related_name' allows access to article comments ('post.comments.all()')
     # , in addition to accessing the article from a comment ('comment.post').
+
+
+ПОСЛЕ DOCSTRINGS КЛАССОВ ВСЕГДА ПЕРЕНОС
