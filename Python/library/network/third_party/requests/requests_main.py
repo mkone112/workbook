@@ -12,7 +12,7 @@
 				import requests
 				
 				#поиск местонахождения для запроса на GitHub
-				response = request.get(
+				response = requests.get(
 					'https://api.github.com/search/repositories',
 					params={'q': 'requests+language:python'}
 				)

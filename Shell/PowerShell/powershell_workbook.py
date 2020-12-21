@@ -19,3 +19,8 @@ del
 copy
 #копирование файла win
     copy <currentPath> <newPath>
+
+
+get cli location
+
+gcm <cli>
