@@ -39,3 +39,8 @@
 точки в конце комментов позволяют убедиться что мысль дописана
 
 однострочные комменты до кода, так код уже, и легко модифицировать
+
+
+MRO
+class RetrieveAPIView(mixins.RetrieveModelMixin,
+                      GenericAPIView):
