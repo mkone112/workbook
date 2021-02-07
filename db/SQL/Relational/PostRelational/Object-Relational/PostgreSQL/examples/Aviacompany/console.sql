@@ -23,3 +23,17 @@ FROM   bookings b
        JOIN tickets t
          ON t.book_ref = b.book_ref
        JOIN boarding_passes bp;
+
+
+-- 10 самых задержавшихся рейсов
+SELECT f.flight_no, (f.actual_departure - f.scheduled_departure)::time AS delay
+  FROM flights f
+ WHERE f.actual_departure IS NOT NULL
+ ORDER BY delay DESC
+ LIMIT 5;
+
+CREATE FUNCTION abs(interval) RETURNS interval AS
+$$
+SELECT CASE WHEN ($1 < INTERVAL '0') THEN -$1 ELSE $1 END;
+$$
+  LANGUAGE sql IMMUTABLE;

@@ -51,3 +51,12 @@ $ git checkout --orphan <branc_name>
     chore — обычное обслуживание кода
 
 
+# склеить последние коммиты
+
+    backup
+        git rebase -i HEAD~3
+            в нижних(свежих) коммитах кроме первого заменить pick на squash
+            
+# изменить msg последнего коммита
+
+    git commit --amend            
