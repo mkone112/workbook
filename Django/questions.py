@@ -6,4 +6,6 @@ django.contrinb.postgres.search.SearchVector(weight='A')
         C 0.2
         D 0.1
 
-удаление моделей при on_delete=models.CASCADE действует в обе стороны?        
+удаление моделей при on_delete=models.CASCADE действует в обе стороны?
+
+GenericForeignKey?

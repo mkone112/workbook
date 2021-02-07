@@ -33,6 +33,7 @@ max длинна строки
     отступы для перенесенных кусков дб соблюдены
     переносы после операторов ⊃ ','
     # Examles
+        # ЭТОТ ПРИМЕР СПОРЕН
         class Rectangle(Blob):
             def __init__(self, width, height,
                          color='black', emphasis=None, highlight=0):
@@ -46,6 +47,10 @@ max длинна строки
                                      (width, height))
                 Blob.__init__(self, width, height,
                               color, emphasis, highlight)
+    # es2:
+        # опционально возможен отступ
+        a = base / app_dir
+            / other_dir
 # Blank strs
     отделяются 2 строками
         fx вершнего уровня(не внутренние) & классы

@@ -22,11 +22,17 @@ os?
 
 
 
-Примеры использования v env?
-
-
-
 Aбстрактные [базовые] классы?
+
+
+
+HADOOP
+
+
+
+cap теоремме
+https://habr.com/post/328792/
+https://habr.com/post/130577/
 
 
 
@@ -34,7 +40,8 @@ __all__
 
 
 
-Monkey patching?
+dict
+# https://www.youtube.com/watch?v=37S53yFg9wc&index=7&t=0s&list=PLmcXv3fDgVcjpZ6QnpXrSNTj7-RxtdFhA
 
 
 
@@ -61,10 +68,6 @@ Monkey patching?
 
 
 
-Как хранить ключи не в репе?
-
-
-
 Проверить все комменты в репе на грамматику.
 
 
@@ -73,21 +76,22 @@ Monkey patching?
 #пример вывести в консоль два столбца из os.environ
 
 
+
 Пофиксить blog
-# добавить env example
-# переписать в соотв с новым шаблоном
 # проверить что его можно собрать при pull
+
 
 
 делегирование?
 
+
+
 выложить вариации темы ayu для разных сред
+
 
 
 Спросить что подтянуть
 
 
+
 проверить резюме на qna
-
-
-что за пиздец в contribution github?

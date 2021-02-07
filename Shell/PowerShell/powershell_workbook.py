@@ -24,3 +24,7 @@ copy
 get cli location
 
 gcm <cli>
+
+
+последовательно выполнить похожие команды
+foreach ($c in 'makemigrations', 'migrate', 'createsuperuser') {py manage.py $c}

@@ -117,3 +117,108 @@ XMLHttpRequest
 ПРИЧИНЫ ИСПОЛЬЗОВАНИЯ ПРОМЕЖУТОЧНОЙ МОДЕЛИ
     сложность модификации одной из моделей(например встроейнной User)
     нужна доп информация об отношении
+    
+
+ОГРАНИЧЕНИЯ ПРОМЕЖУТОЧНОЙ МОДЕЛИ
+    неработает часть методов менеджеров
+        add()
+        create()
+        remvoe()
+        ...
+        # -> требуется явно удалять obj промежуточной модели
+
+ЗАДАНИЕ КАНОНИЧЕСКИХ URLS МОДЕЛЕЙ
+    либо get_user_model
+    
+    # by def={}
+    ABSOLUTE_URL_OVERRIDES = {
+        'app_label.model_name': lambda o: f'/blog/{o.slug}/'
+    }
+    #dj динамически добавляет .get_absolute_url для каждой модели перечисленной в dict(по умолчанию модель его не имеет) -> и им после этого мб пользоваться
+
+user.get_full_name() -> f'{self.first_name} {self.last_name}'
+
+
+{% include ... with v=val %}
+
+создадим модель для сохранения действий пользователя
+    для этого добавим поле target, по foreignKey может ссылаться только на одну модель
+        используем ПОДСИСТЕМУ ТИПОВ СОДЕРЖИМОГО
+
+
+django.contrib.contenttypes
+# предоставляет обобщенный интерфейс ко всем моделям проекта
+# используется другими apps ПРИНАДЛЕЖ django.contrib
+    подсис-мой аутентификации
+    админкой
+    
+    .models
+    
+        .ContentType
+        # модель чьи объекты содержат сведения о моделях проекта
+        # автоматом создает новые экземпляры при создании моделей
+            app_label
+            # имя модели, берется из Meta модели
+            model
+            # название класса модели
+            name
+            # человекочитаемое имя модели
+            # берется из Meta.verbose_name
+            
+            .model_class()
+            #получить класс модели
+            
+            .save
+            
+            .name
+            
+            natural_key
+            
+            objects
+            #orm
+                .get_for_model(model)
+                # получить тип для модели
+            id
+            
+            logentry_set
+            
+            model
+            
+            save_base
+            
+            serializable_value
+            
+            unique_error_message
+            
+            validate_unique
+            
+            refresh_from_db
+            
+            id
+            
+            get_deffered_fields
+            
+            get_object_for_this_type
+            
+            check
+            
+            clean
+            
+            clean_fields
+            
+            date_error_message
+            
+            delete
+            
+            get_all_objects_for_this_type
+
+ДОБАВЛЕНИЕ ОБОБЩЕННЫХ ОТНОШЕНИЙ
+# в обобщенных связях ContentType - посредник между моделями
+    добавляем поля в модель
+        ForeignKey на ContentType
+        #указывает на модель связанной с текущей
+        поле с id связанного obj
+        #обычно PositiveIntegerField для id автоматом созданных dj
+        поле для определения свзяи и управления ей
+        #обращается к ForeignKey на ContentType и полем с id связанного obj
+        # обычно GenericForeignKey
