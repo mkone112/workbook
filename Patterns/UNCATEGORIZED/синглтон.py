@@ -1,3 +1,0 @@
-примеры
-    Python
-        None
