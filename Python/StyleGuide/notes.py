@@ -1,6 +1,6 @@
 отступы нужно сохранять чтобы при переходах сразу оказываться где нужно
 # это объсняет требование двух переносов после классов & fx
-    
+#конфликтует с dj    
     def f():
     ∙∙∙∙#code
     ∙∙∙∙
@@ -29,10 +29,30 @@
                f" {post.title}")
 
 
-КОД В КОММЕНТАРИЯХ В ''
-    # 'related_name' allows access to article comments ('post.comments.all()')
-    # , in addition to accessing the article from a comment ('comment.post').
+КОД В КОММЕНТАРИЯХ В `
+#хорошо выглядит и стиль принят в django by def
+    # `related_name` allows access to article comments (`post.comments.all()`)
+    # , in addition to accessing the article from a comment (`comment.post`).
 
+
+СОРТИРУЙ FX/МЕТОДЫ/КЛАССЫ/INLINE IMPORTS ПО ИСПОЛЬЗОВАНИЮ -> ПО ГРУППАМ -> АЛФАВИТУ И регистроЗАВИСИМО
+
+
+ПАРАМЕТРЫ В ЗАГОЛОВКАХ МЕТОДОВ СОРТИРУЮТСЯ ПО СМЫСЛУ -> АЛФАВИТУ И регистроЗАВИСИМО
+
+
+MULTILINE TODOES
+    # TODO(mk-dv): Check what happens if, for example, the 'request' is sent using 
+    #               the POST method.
+    #              Other task.
+
+
+используй стиль typing в docstring
+    attr(list[str]): ...
+
+
+ВЫДЕЛЯТЬ КОРТЕЖИ СКОБКАМИ
+#несмотря на необязательность, явно дают понять что это один кортеж, а не несколько элтов
 
 ПОСЛЕ DOCSTRINGS КЛАССОВ ВСЕГДА ПЕРЕНОС
 
