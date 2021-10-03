@@ -13,7 +13,7 @@
 
 
 # вывод простого графа лога
-    git log --all --decorate --oneline --graph
+    git log dev1 --all --decorate --oneline --graph --pretty=format:"%ad %an"
 
 
 # влить все за один коммит
