@@ -22,6 +22,10 @@ mkdir
 cp
 #копирование файлов Unix
 
+json prettier
+    pip install pjson
+    echo '{"hi": "di"}' | pjson
+
 To suppress error output in bash, append 2>/dev/null to the end of your command. This redirects filehandle 2 (STDERR) to /dev/null. There are similar constructs in other shells, though the specific construct may vary slightly
 Redirect the error message (STDERR) to /dev/null:
     root@ubuntu:~$ cp /srv/ftp/201*/wha*/*.jj ~/. 2>/dev/null
