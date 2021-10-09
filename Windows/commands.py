@@ -1,0 +1,1 @@
+fsutil.exe file SetCaseSensitiveInfo C:\sensitive enable
