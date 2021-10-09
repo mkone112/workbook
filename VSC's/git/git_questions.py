@@ -124,3 +124,12 @@ pack-файлы?
 	Администрирование?
 
 	Низкоуровневые команды?
+
+
+unstash одного файла?
+
+как укоротить?
+	git checkout master
+	git pull
+	git checkout <ticket_name>
+	git merge master <ticket_name>
