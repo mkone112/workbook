@@ -60,3 +60,7 @@ $ git checkout --orphan <branc_name>
 # изменить msg последнего коммита
 
     git commit --amend            
+
+
+# сборосить staged
+    git rm --cached -r .idea
