@@ -1,4 +1,12 @@
 /* Mozilla and Lumosity Hybrid Style */  # единообразные комменты, если что - можно легко развернуть
+WITH
+  table_name AS (
+    SELECT
+      *,
+      b,
+    FROM
+      range(100)
+  )
 SELECT
   submission_date,
   experiment.key AS experiment_id,  # явный AS читабельнее, AS не выровнен, для избежания проблем с переименованием
@@ -20,6 +28,8 @@ GROUP BY
   experiment_id,
   experiment_branch
 HAVING
+  boolean_value
+  AND
   (
     first_name = 'Mike'
     AND
