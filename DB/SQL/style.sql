@@ -1,11 +1,20 @@
 /* Mozilla and Lumosity Hybrid Style */  # единообразные комменты, если что - можно легко развернуть
+CREATE FUNCTION func(char, int) RETURNS record AS
+$$  # на новой строке - явно отделяет сигнатуру от тела
+    SELECT $1, $2;
+$$ LANGUAGE plpgsql;  # указание яп на последней строке не перегружает сигнатуру
+
+# две строки между запросами
 WITH
-  table_name AS (
-    SELECT
-      *,
+  table_name AS (  # cte с отступами и каждое на новой строке
+    SELECT  # тело с отступом в два пробела
+      *,  # элементы select переносятся всегда
       b,
     FROM
       range(100)
+  ),
+  table_name2 AS (
+    ...
   )
 SELECT
   submission_date,
@@ -13,9 +22,13 @@ SELECT
   experiment.value AS experiment_branch,  -- inline коммент
   count(*) AS count
 FROM  # формирует единую таблицу - выделим это отступом
-  telemetry.clients_daily
+  telemetry.clients_daily  # единственное число, описательное имя
   CROSS JOIN  # явное указание джойнов
-    UNNEST(experiments.key_value) AS experiment
+    unnest(experiments.key_value) AS experiment  # fx - lower underscore, experiments - bad
+  CROSS JOIN
+    unnest(
+      experiments.key_value  # аргументы 2 пробела отбивка
+    ) AS experiment2
   INNER JOIN
     foreigner
     ON a < 1
